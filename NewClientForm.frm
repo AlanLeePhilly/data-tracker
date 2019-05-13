@@ -66,6 +66,8 @@ End Sub
 
 
 
+
+
 Private Sub SameDate_2_Click()
     CallInDate.value = ArrestDate.value
 End Sub
@@ -116,7 +118,6 @@ Private Sub Reload_Click()
     FirstName.value = Range(headerFind("First Name") & emptyRow).value
     LastName.value = Range(headerFind("Last Name") & emptyRow).value
     DateOfBirth.value = Range(headerFind("DOB") & emptyRow).value
-    'thing = Range(headerFind("Race") & emptyRow).value
     Race.value = Lookup("Race_Num")(Range(headerFind("Race") & emptyRow).value)
     Sex.value = Lookup("Sex_Num")(Range(headerFind("Sex") & emptyRow).value)
     Latino.value = Lookup("Latino_Num")(Range(headerFind("Latino/Not Latino") & emptyRow).value)
@@ -139,18 +140,22 @@ Private Sub Reload_Click()
     petitionHead = headerFind("PETITION")
     
     IncidentDate.value = Range(headerFind("Incident Date") & emptyRow).value
-    'TimeOfIncident_H.value =
-    'TimeOfIncident_M.value =
-    'TimeOfIncident_P.value =
+    TimeOfIncident_H.value = getHour(Range(headerFind("Time of Incident") & emptyRow).value)
+    TimeOfIncident_M.value = getMinute(Range(headerFind("Time of Incident") & emptyRow).value)
+    TimeOfIncident_P.value = getPeriod(Range(headerFind("Time of Incident") & emptyRow).value)
     IncidentDistrict.value = Lookup("Police_District_Name")(Range(headerFind("Incident District") & emptyRow).value)
     IncidentAddress.value = Range(headerFind("Incident Address") & emptyRow).value
     IncidentZipcode.value = Range(headerFind("Incident Zipcode") & emptyRow).value
     
     ArrestDate.value = Range(headerFind("Arrest Date", petitionHead) & emptyRow).value
-
-    'TimeReferredToDA_H.value =
-    'TimeReferredToDA_M.value =
-    'TimeReferredToDA_P.value =
+    
+    TimeOfArrest_H.value = getHour(Range(headerFind("Time of Arrest") & emptyRow).value)
+    TimeOfArrest_M.value = getMinute(Range(headerFind("Time of Arrest") & emptyRow).value)
+    TimeOfArrest_P.value = getPeriod(Range(headerFind("Time of Arrest") & emptyRow).value)
+    
+    TimeReferredToDA_H.value = getHour(Range(headerFind("Time of Referral to DA") & emptyRow).value)
+    TimeReferredToDA_M.value = getMinute(Range(headerFind("Time of Referral to DA") & emptyRow).value)
+    TimeReferredToDA_P.value = getPeriod(Range(headerFind("Time of Referral to DA") & emptyRow).value)
     ArrestingDistrict.value = Range(headerFind("Arresting District", petitionHead) & emptyRow).value
     
     ActiveAtArrest.value = Lookup("Generic_YNOU_Num")(Range(headerFind("Active in System at Time of Arrest?") & emptyRow))
@@ -364,6 +369,69 @@ Private Sub DeletePetition_Click()
     PetitionBox.RemoveItem (PetitionBox.listIndex)
 End Sub
 
+Private Sub EditPetition_Click()
+    Dim petitionNum As String
+    Dim i As Integer, j As Integer
+    Dim listIndex As Integer
+    Dim pBox, cBox
+    
+    Set pBox = PetitionBox
+    
+    If pBox.listIndex = -1 Then
+        Exit Sub
+    End If
+    
+    petitionNum = pBox.List(pBox.listIndex, 1)
+    MsgBox "Editing Petition #" & petitionNum
+    
+    With Modal_NewClient_Add_Petition
+        .headline.Caption = "Edit Petition"
+        .DateFiled.value = pBox.List(pBox.listIndex, 0)
+        .Num.value = pBox.List(pBox.listIndex, 1)
+        .ChargeGrade1.value = pBox.List(pBox.listIndex, 2)
+        .ChargeGroup1.value = pBox.List(pBox.listIndex, 3)
+        With .ChargeList1
+            .ColumnCount = 2
+            .ColumnWidths = "85;400;"
+            .AddItem pBox.List(pBox.listIndex, 4)
+                .List(.ListCount - 1, 1) = pBox.List(pBox.listIndex, 5)
+            .listIndex = 0
+        End With
+    
+        .isTransferred.value = pBox.List(pBox.listIndex, 6)
+    
+        listIndex = ChargeBox.ListCount - 1
+        j = 2
+        For i = 0 To listIndex
+            If ChargeBox.List(i, 0) = petitionNum Then
+                Select Case j
+                    Case 2
+                        Call .LoadBox(.ChargeList2, ChargeBox.List(i, 3), ChargeBox.List(i, 4))
+                        .ChargeGrade2 = ChargeBox.List(i, 1)
+                        .ChargeGroup2 = ChargeBox.List(i, 2)
+                        j = j + 1
+                    Case 3
+                        Call .LoadBox(.ChargeList3, ChargeBox.List(i, 3), ChargeBox.List(i, 4))
+                        .ChargeGrade3 = ChargeBox.List(i, 1)
+                        .ChargeGroup3 = ChargeBox.List(i, 2)
+                        j = j + 1
+                    Case 4
+                        Call .LoadBox(.ChargeList4, ChargeBox.List(i, 3), ChargeBox.List(i, 4))
+                        .ChargeGrade4 = ChargeBox.List(i, 1)
+                        .ChargeGroup4 = ChargeBox.List(i, 2)
+                        j = j + 1
+                    Case 5
+                        Call .LoadBox(.ChargeList5, ChargeBox.List(i, 3), ChargeBox.List(i, 4))
+                        .ChargeGrade5 = ChargeBox.List(i, 1)
+                        .ChargeGroup5 = ChargeBox.List(i, 2)
+                        j = j + 1
+                End Select
+            End If
+        Next i
+        Call DeletePetition_Click
+        .Show
+    End With
+End Sub
 
 
 Private Sub InitialHearingDate_Enter()

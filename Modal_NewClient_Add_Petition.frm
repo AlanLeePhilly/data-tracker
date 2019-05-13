@@ -13,6 +13,8 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
+
                         '''''''''''''
                         'VALIDATIONS'
                         '''''''''''''
@@ -23,6 +25,10 @@ Private Sub DateFiled_Exit(ByVal Cancel As MSForms.ReturnBoolean)
     Set ctl = Modal_NewClient_Add_Petition.DateFiled
 
     Call DateValidation(ctl, Cancel)
+End Sub
+
+Private Sub DateNotAvailable_Click()
+    DateFiled = "N/A"
 End Sub
 
                         ''''''''''''''''''
@@ -51,11 +57,6 @@ Private Sub Continue_Click()
         MsgBox "'Petition #' Required"
         Exit Sub
     End If
-
-    If Not HasContent(DateFiled) Then
-        MsgBox "'Date Filed' Required"
-        Exit Sub
-    End If
     
     If SelectedCharge1.Caption = "" Then
         MsgBox "'Selected Charge' Required"
@@ -75,7 +76,7 @@ Private Sub Continue_Click()
         Set pBox = Modal_New_Arrest.PetitionBox
         Set cBox = Modal_New_Arrest.ChargeBox
     Else
-        If headline.Caption = "New Client" Then
+        If headline.Caption = "New Client" Or headline.Caption = "Edit Petition" Then
             Set pBox = NewClientForm.PetitionBox
             Set cBox = NewClientForm.ChargeBox
         Else
@@ -416,3 +417,12 @@ Private Sub ChargeList5_click()
     SelectedCharge5.Caption = ChargeList5.List(ChargeList5.listIndex, 1)
 End Sub
 
+Sub LoadBox(targetBox As Object, cNum As String, cName As String)
+    With targetBox
+        .ColumnCount = 2
+        .ColumnWidths = "85;400;"
+        .AddItem cNum
+            .List(.ListCount - 1, 1) = cName
+        .listIndex = 0
+    End With
+End Sub

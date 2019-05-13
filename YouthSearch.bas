@@ -52,7 +52,7 @@ Sub YouthSearchPrint()
     PrintSheet.Range("D26").value = DataSheet.Range(hFind("Zipcode", "DEMOGRAPHICS") & userRow).value
     
     'example using a custom function
-    PrintSheet.Range("I19").value = ageAtTime(Format(Now(), "mm/dd/yyyy"), userRow)
+    PrintSheet.Range("I19").value = ageAtTime(VBA.Format(Now(), "mm/dd/yyyy"), userRow)
     
     PrintSheet.Range("I21").value = DataSheet.Range(hFind("Age @ Intake") & userRow).value
     PrintSheet.Range("I23").value = DataSheet.Range(hFind("Guardian First") & userRow).value & " " & DataSheet.Range(hFind("Guardian Last") & userRow).value
@@ -156,12 +156,12 @@ Sub YouthSearchPrint()
         
         Dim ArrestDate As String
         ArrestDate = DataSheet.Range(headerFind("Arrest Date (current petition)") & userRow).value
-        losArrest = DateDiff("d", ArrestDate, Format(Now(), "mm/dd/yyyy"))
+        losArrest = DateDiff("d", ArrestDate, VBA.Format(Now(), "mm/dd/yyyy"))
         PrintSheet.Range("D39").value = losArrest & " days"
         
         Dim petitionDate As String
         petitionDate = DataSheet.Range(hFind("Date Filed", "Petition") & userRow).value
-        losPetition = DateDiff("d", petitionDate, Format(Now(), "mm/dd/yyyy"))
+        losPetition = DateDiff("d", petitionDate, VBA.Format(Now(), "mm/dd/yyyy"))
         PrintSheet.Range("D41").value = losPetition & " days"
         
         'Active court proceedings
@@ -181,7 +181,7 @@ Sub YouthSearchPrint()
         PrintSheet.Range("G48") = Courtroom
         
         losCourtroom = DateDiff("d", DataSheet.Range(hFind("Start Date", Courtroom, "4G") & userRow).value, _
-            Format(Now(), "mm/dd/yyyy"))
+            VBA.Format(Now(), "mm/dd/yyyy"))
         PrintSheet.Range("J48") = losCourtroom & " days"
         
         Dim legalStatus As String
@@ -197,7 +197,7 @@ Sub YouthSearchPrint()
         PrintSheet.Range("G50") = legalStatus
         
         losLegalStatus = DateDiff("d", DataSheet.Range(hFind("Start Date", legalStatus, "Aggregates") & userRow).value, _
-            Format(Now(), "mm/dd/yyyy"))
+            VBA.Format(Now(), "mm/dd/yyyy"))
         PrintSheet.Range("J50") = losLegalStatus & " days"
         
         'Supervision Programs
@@ -217,7 +217,7 @@ Sub YouthSearchPrint()
         For supervisionI = 1 To supervisionArrLength
             PrintSheet.Range("D" & 53 + 2 * supervisionI) = Lookup("Supervision_Program_Num")(DataSheet.Range(hFind(supervisionProgramColumns(supervisionI - 1), "Aggregates") & userRow).value)
             supervisionStart = DataSheet.Range(hFind("Start Date", supervisionProgramColumns(supervisionI - 1), "Aggregates") & userRow).value
-            PrintSheet.Range("J" & 53 + 2 * supervisionI) = DateDiff("d", supervisionStart, Format(Now(), "mm/dd/yyyy")) & " days"
+            PrintSheet.Range("J" & 53 + 2 * supervisionI) = DateDiff("d", supervisionStart, VBA.Format(Now(), "mm/dd/yyyy")) & " days"
             If supervisionI = 3 Then Exit For
         Next supervisionI
         
@@ -237,7 +237,7 @@ Sub YouthSearchPrint()
         For conditionI = 1 To conditionArrLength
             PrintSheet.Range("D" & 62 + 2 * conditionI) = Lookup("Condition_Num")(DataSheet.Range(hFind(conditionsColumns(conditionI - 1), "Aggregates") & userRow).value)
             conditionStart = DataSheet.Range(hFind("Start Date", conditionsColumns(conditionI - 1), "Aggregates") & userRow).value
-            PrintSheet.Range("J" & 62 + 2 * conditionI) = DateDiff("d", conditionStart, Format(Now(), "mm/dd/yyyy")) & " days"
+            PrintSheet.Range("J" & 62 + 2 * conditionI) = DateDiff("d", conditionStart, VBA.Format(Now(), "mm/dd/yyyy")) & " days"
             If conditionI = 6 Then Exit For
         Next conditionI
     End If

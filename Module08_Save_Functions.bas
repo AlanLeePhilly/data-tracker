@@ -135,7 +135,7 @@ Sub SaveAs_Countdown()
         newFilePath _
         & fso.GetBaseName(ThisWorkbook.Name) _
         & " " _
-        & Format(Now(), "yyyy-MM-dd hh.mm.ss") _
+        & VBA.Format(Now(), "yyyy-MM-dd hh.mm.ss") _
         & ".xlsm"
     
     
@@ -177,7 +177,7 @@ Sub Archive()
         newFilePath _
         & fso.GetBaseName(ThisWorkbook.Name) _
         & " " _
-        & Format(Now(), "yyyy-MM-dd hh.mm.ss") _
+        & VBA.Format(Now(), "yyyy-MM-dd hh.mm.ss") _
         & ".xlsm"
     
     
@@ -222,7 +222,7 @@ Sub ExportDataFile()
         newFilePath _
         & fso.GetBaseName(ThisWorkbook.Name) _
         & " " _
-        & Format(Now(), "yyyy-MM-dd hh.mm.ss") _
+        & VBA.Format(Now(), "yyyy-MM-dd hh.mm.ss") _
         & ".xlsm"
     
     

@@ -1391,7 +1391,7 @@ Private Sub SetSelectionLabel(DateIn As Date)
         With lblSelectionDate
             .AutoSize = False
             .Width = frameCalendar.Width
-            .Caption = Format(DateIn, "mm/dd/yyyy")
+            .Caption = VBA.Format(DateIn, "mm/dd/yyyy")
             .AutoSize = True
         End With
     
