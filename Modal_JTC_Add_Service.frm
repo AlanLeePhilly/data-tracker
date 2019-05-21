@@ -72,7 +72,7 @@ Private Sub Continue_Click()
                 .List(ClientUpdateForm.JTC_Return_Service_Box.ListCount - 1, 6) = Reason1.value
                 .List(ClientUpdateForm.JTC_Return_Service_Box.ListCount - 1, 7) = Reason2.value
                 .List(ClientUpdateForm.JTC_Return_Service_Box.ListCount - 1, 8) = Reason3.value
-                .List(ClientUpdateForm.JTC_Return_Service_Box.ListCount - 1, 9) = ""
+                .List(ClientUpdateForm.JTC_Return_Service_Box.ListCount - 1, 9) = Notes
                 'notes
     End With
     

@@ -997,7 +997,8 @@ Sub JTC_Submit_Click()
                         Re2:=.List(i, 7), _
                         Re3:=.List(i, 8), _
                         NextCourtDate:=NextCourtDate.value, _
-                        phase:=JTC_Return_Phase.Caption)
+                        phase:=JTC_Return_Phase.Caption, _
+                        Notes:=.List(i, 9))
                         
                 Else
                     If Range(headerFind("Courtroom of Order", .List(i, 4)) & updateRow).value _
@@ -1548,7 +1549,8 @@ Sub Standard_Submit_Click()
                         NextCourtDate:=Standard_NextCourtDate.value, _
                         Re1:=.List(i, 6), _
                         Re2:=.List(i, 7), _
-                        Re3:=.List(i, 8))
+                        Re3:=.List(i, 8), _
+                        Notes:=.List(i, 9))
                 Else
                     If Range(headerFind("Courtroom of Order", .List(i, 4)) & updateRow).value _
                         = Lookup("Courtroom_Name")("Intake Conf.") Then
@@ -1834,7 +1836,7 @@ Private Sub PJJSC_Submit_Click()
             clientRow:=updateRow, _
             serviceType:="Detention (not respite)", _
             legalStatus:=Lookup("Legal_Status_Num")(Range(hFind("Legal Status") & updateRow).value), _
-            Courtroom:=DRev_NextHearingLocation.value, _
+            Courtroom:="PJJSC", _
             DA:=DA.value, _
             agency:=DRev_Facility.value, _
             startDate:=DateOfHearing.value, _

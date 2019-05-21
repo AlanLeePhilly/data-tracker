@@ -670,7 +670,9 @@ Private Sub Submit_Click()
         
         Range(headerFind("First Name") & emptyRow).value = FirstName.value
         Range(headerFind("Last Name") & emptyRow).value = LastName.value
-        Range(headerFind("Previous Court Dates") & emptyRow).value = InitialHearingDate.value
+        Range(headerFind("Next Court Date") & emptyRow).value = InitialHearingDate.value
+        Range(headerFind("Listing Type") & emptyRow).value = Lookup("Listing_Type_Name")(ListingType.value)
+        Range(headerFind("Previous Court Dates") & emptyRow).value = InConfDate.value
         Range(headerFind("Arrest Date (current petition)") & emptyRow).value = ArrestDate.value
         Range(headerFind("Initial Hearing Date") & emptyRow).value = InitialHearingDate.value
         Range(headerFind("Initial Hearing Location") & emptyRow).value _
