@@ -66,7 +66,7 @@ Private Sub Continue_Click()
                 .List(ClientUpdateForm.Standard_Return_Condition_Box.ListCount - 1, 6) = Reason1
                 .List(ClientUpdateForm.Standard_Return_Condition_Box.ListCount - 1, 7) = Reason2
                 .List(ClientUpdateForm.Standard_Return_Condition_Box.ListCount - 1, 8) = Reason3
-                .List(ClientUpdateForm.Standard_Return_Condition_Box.ListCount - 1, 9) = ""
+                .List(ClientUpdateForm.Standard_Return_Condition_Box.ListCount - 1, 9) = Notes
     End With
     
     With Modal_Standard_Drop_Condition.Condition_Box

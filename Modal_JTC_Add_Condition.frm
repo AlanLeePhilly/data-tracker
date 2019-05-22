@@ -13,6 +13,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
                         '''''''''''''
                         'VALIDATIONS'
                         '''''''''''''
@@ -66,7 +67,7 @@ Private Sub Continue_Click()
                 .List(ClientUpdateForm.JTC_Return_Condition_Box.ListCount - 1, 6) = Reason1
                 .List(ClientUpdateForm.JTC_Return_Condition_Box.ListCount - 1, 7) = Reason2
                 .List(ClientUpdateForm.JTC_Return_Condition_Box.ListCount - 1, 8) = Reason3
-                .List(ClientUpdateForm.JTC_Return_Condition_Box.ListCount - 1, 9) = ""
+                .List(ClientUpdateForm.JTC_Return_Condition_Box.ListCount - 1, 9) = Notes
     End With
     
     With Modal_JTC_Drop_Condition.Condition_Box

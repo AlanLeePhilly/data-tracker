@@ -60,14 +60,22 @@ Private Sub Continue_Click()
     
     If SelectedCharge1.Caption = "" Then
         MsgBox "'Selected Charge' Required"
+        Exit Sub
     End If
     
     If ChargeGrade1.value = "" Then
         MsgBox "Charge Grade Required"
+        Exit Sub
     End If
     
     If ChargeGroup1.value = "" Then
         MsgBox "Charge Group Required"
+        Exit Sub
+    End If
+    
+    If DateFiled.value = "" Then
+        MsgBox "Date Filed Required"
+        Exit Sub
     End If
 
     Dim pBox, cBox

@@ -1100,7 +1100,8 @@ Sub JTC_Submit_Click()
                         Re1:=.List(i, 6), _
                         Re2:=.List(i, 7), _
                         Re3:=.List(i, 8), _
-                        phase:=JTC_Return_Phase.Caption)
+                        phase:=JTC_Return_Phase.Caption, _
+                        Notes:=.List(i, 9))
                 Else
                     If Range(headerFind("Courtroom of Order", .List(i, 4)) & updateRow).value _
                         = Lookup("Courtroom_Name")("Intake Conf.") Then
@@ -1648,7 +1649,8 @@ Sub Standard_Submit_Click()
                         startDate:=.List(i, 2), _
                         Re1:=.List(i, 6), _
                         Re2:=.List(i, 7), _
-                        Re3:=.List(i, 8))
+                        Re3:=.List(i, 8), _
+                        Notes:=.List(i, 9))
                 Else
                     If Range(headerFind("Courtroom of Order", .List(i, 4)) & updateRow).value _
                         = Lookup("Courtroom_Name")("Intake Conf.") Then
