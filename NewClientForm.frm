@@ -68,6 +68,10 @@ End Sub
 
 
 
+Private Sub OverrideHoldRe1_Change()
+
+End Sub
+
 Private Sub SameDate_2_Click()
     CallInDate.value = ArrestDate.value
 End Sub
@@ -236,9 +240,9 @@ Private Sub Reload_Click()
     DRAI_Score.value = Range(headerFind("DRAI Score", tempHead) & emptyRow).value
     DRAI_Rec.value = Lookup("DRAI_Recommendation_Num")(Range(headerFind("DRAI Recommendation", tempHead) & emptyRow).value)
     DRAI_Action = Lookup("DRAI_Action_Num")(Range(headerFind("DRAI Action", tempHead) & emptyRow).value)
-    OverrideHoldRe1.value = Lookup("Detention_Hearing_Reason_Num")(Range(headerFind("Reason #1 for Override Hold", tempHead) & emptyRow).value)
-    OverrideHoldRe2.value = Lookup("Detention_Hearing_Reason_Num")(Range(headerFind("Reason #2 for Override Hold", tempHead) & emptyRow).value)
-    OverrideHoldRe3.value = Lookup("Detention_Hearing_Reason_Num")(Range(headerFind("Reason #3 for Override Hold", tempHead) & emptyRow).value)
+    OverrideHoldRe1.value = Lookup("DRAI_Override_Reason_Num")(Range(headerFind("Reason #1 for Override Hold", tempHead) & emptyRow).value)
+   ' OverrideHoldRe2.value = Lookup("DRAI_Override_Reason_Num")(Range(headerFind("Reason #2 for Override Hold", tempHead) & emptyRow).value)
+    'OverrideHoldRe3.value = Lookup("DRAI_Override_Reason_Num")(Range(headerFind("Reason #3 for Override Hold", tempHead) & emptyRow).value)
     
     ConfOutcome.value = Lookup("Intake_Conference_Outcome_Num")(Range(headerFind("Intake Conference Outcome", tempHead) & emptyRow).value)
     
@@ -965,11 +969,11 @@ Private Sub Submit_Click()
                     = Lookup("Detention_Facility_Name")(DetentionFacility.value)
             
             Range(headerFind("Reason #1 for Override Hold", tempHead) & emptyRow).value _
-                = Lookup("Detention_Hearing_Reason_Name")(OverrideHoldRe1.value)
+                = Lookup("DRAI_Override_Reason_Name")(OverrideHoldRe1.value)
             Range(headerFind("Reason #2 for Override Hold", tempHead) & emptyRow).value _
-                = Lookup("Detention_Hearing_Reason_Name")(OverrideHoldRe2.value)
+                = Lookup("DRAI_Override_Reason_Name")(OverrideHoldRe2.value)
             Range(headerFind("Reason #3 for Override Hold", tempHead) & emptyRow).value _
-                = Lookup("Detention_Hearing_Reason_Name")(OverrideHoldRe3.value)
+                = Lookup("DRAI_Override_Reason_Name")(OverrideHoldRe3.value)
         Else
             Range(headerFind("Did Youth Have Call-In?", tempHead) & emptyRow).value _
                 = Lookup("Generic_NYNOU_Name")("Unknown")

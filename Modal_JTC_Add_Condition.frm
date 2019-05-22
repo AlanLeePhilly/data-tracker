@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} Modal_JTC_Add_Condition 
    Caption         =   "JTC Add Condition"
-   ClientHeight    =   6765
+   ClientHeight    =   8085
    ClientLeft      =   45
    ClientTop       =   375
    ClientWidth     =   6360
