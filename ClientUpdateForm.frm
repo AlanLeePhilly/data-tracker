@@ -1198,7 +1198,7 @@ Sub JTC_Submit_Click()
         End If
         Call closeCallIn(DateOfHearing.value, updateRow)
         Call closeIntakeConference(DateOfHearing.value, updateRow)
-        Call addNotes("JTC", DateOfHearing.value, updateRow, JTC_Notes.value)
+        Call addNotes("JTC", DateOfHearing.value, updateRow, JTC_Notes.value, "JTC")
         Call Save_Countdown
         Call UnloadAll
 
@@ -1750,7 +1750,7 @@ Sub Standard_Submit_Click()
         Call closeIntakeConference(DateOfHearing.value, updateRow)
         Call UnloadAll
         
-        Call addNotes(oldCourtroom, DateOfHearing.value, updateRow, Standard_Notes)
+        Call addNotes(oldCourtroom, DateOfHearing.value, updateRow, Standard_Notes, Standard_Fetch_Legal_Status.Caption)
         Call Save_Countdown
         
         Call CheckForConcurrency(updateRow, DateOfHearing.value)

@@ -41,6 +41,7 @@ Private Sub Cancel_Click()
     Reason1.value = "N/A"
     Reason2.value = "N/A"
     Reason3.value = "N/A"
+    Notes.value = ""
     Me.Hide
 End Sub
 

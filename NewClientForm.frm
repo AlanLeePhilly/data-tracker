@@ -68,10 +68,6 @@ End Sub
 
 
 
-Private Sub OverrideHoldRe1_Change()
-
-End Sub
-
 Private Sub SameDate_2_Click()
     CallInDate.value = ArrestDate.value
 End Sub
@@ -1305,7 +1301,7 @@ Private Sub Submit_Click()
            
         
         
-        Call addNotes(InitialHearingLocation.value, InConfDate.value, emptyRow, GeneralNotes)
+        Call addNotes(InitialHearingLocation.value, InConfDate.value, emptyRow, GeneralNotes, "Pretrial")
         
         
         'ZERO FILL
