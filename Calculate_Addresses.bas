@@ -5,7 +5,7 @@ Sub FillCoordinates(addr As String, zip As String, latCol As String, lonCol As S
     Application.DisplayAlerts = False
     ActiveWindow.WindowState = xlMinimized
     Sheets("Entry").Activate
-    
+
     'Go through all entries with addresses and find latitudes and longitudes
     'Only calculate location if the address and zipcode are both present
     Dim i As Integer
@@ -19,7 +19,7 @@ Sub FillCoordinates(addr As String, zip As String, latCol As String, lonCol As S
             Cells(i, latCol).value = coords(1)
             Cells(i, lonCol).value = coords(2)
             Cells(i, zip).value = coords(3)
-            
+
             If Not StrComp(currZip, coords(3)) = 0 Then
                 MsgBox ("Row " & i & " || ALERT: The zipcode entered and zipcode found by geolocating services are different. Please check the new zipcode entered to make sure it is correct.")
             End If
@@ -34,19 +34,19 @@ Sub FillAddressCoordinates()
     Application.DisplayAlerts = False
     ActiveWindow.WindowState = xlMinimized
     Sheets("Entry").Activate
-    
+
     'Find columns to use to look up and fill coordinates
 
     Dim addr As String
     Dim zip As String
     addr = headerFind("Address")
     zip = headerFind("Zipcode")
-    
+
     Dim latCol As String
     latCol = headerFind("Latitude")
     Dim lonCol As String
     lonCol = headerFind("Longitude")
-    
+
     FillCoordinates addr, zip, latCol, lonCol
 
     MsgBox ("All addresses (re)calculated")
@@ -59,9 +59,9 @@ Sub FillIncidentAddressCoordinates()
     Application.DisplayAlerts = False
     ActiveWindow.WindowState = xlMinimized
     Sheets("Entry").Activate
-    
+
     'Find columns to use to look up and fill coordinates
-    
+
     Dim petitionHead As String
     petitionHead = hFind("PETITION")
 
@@ -69,12 +69,12 @@ Sub FillIncidentAddressCoordinates()
     Dim zip As String
     addr = headerFind("Incident Address", petitionHead)
     zip = headerFind("Incident Zipcode", petitionHead)
-    
+
     Dim latCol As String
     latCol = headerFind("Latitude", petitionHead)
     Dim lonCol As String
     lonCol = headerFind("Longitude", petitionHead)
-    
+
     FillCoordinates addr, zip, latCol, lonCol
 
     MsgBox ("All addresses (re)calculated")

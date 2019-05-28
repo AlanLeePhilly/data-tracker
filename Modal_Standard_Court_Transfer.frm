@@ -23,7 +23,7 @@ Private Sub Continue_Click()
         MsgBox "Detailed Outcome Required"
         Exit Sub
     End If
-    
+
     If Courtroom.value = "N/A" Then
         MsgBox "Courtroom Required"
         Exit Sub

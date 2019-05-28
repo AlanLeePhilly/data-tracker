@@ -14,7 +14,7 @@ Sub totalOutcome( _
     Range(headerFind("Notes on Outcome", outcomeHead) & clientRow).value = Notes
     Range(headerFind("Date of Overall Discharge", outcomeHead) & clientRow).value = dateOf
     Range(headerFind("Courtroom of Discharge", outcomeHead) & clientRow).value = Lookup("Courtroom_Name")(Courtroom)
-    
+
     Range(headerFind("DA", outcomeHead) & clientRow).value = Lookup("DA_Last_Name_Name")(DA)
     Range(headerFind("Legal Status of Discharge", outcomeHead) & clientRow).value _
         = Lookup("Legal_Status_Name")(legalStatus)
@@ -30,7 +30,7 @@ Sub totalOutcome( _
         = calcLOS(Range(hFind("Date Filed", "Petition #1") & clientRow).value, dateOf)
     Range(headerFind("Total LOS From Arrest", outcomeHead) & clientRow).value _
         = calcLOS(Range(hFind("Arrest Date") & clientRow).value, dateOf)
-    
+
     'TODO Confirm FoH values
     Range(headerFind("Petition D/C Date") & clientRow).value = dateOf
     Range(headerFind("Active or Discharged (in courtroom)?") & clientRow).value = Lookup("Active_Name")("Discharged")
@@ -49,17 +49,17 @@ Sub CourtroomOutcome( _
     Optional ByVal Notes As String = "" _
 )
     Dim outcomeHead As String
-    
+
     Select Case Courtroom
         Case "4G", "4E", "6F", "6H", "3E"
             outcomeHead = hFind("OUTCOMES", Courtroom)
             Range(headerFind("Notes on Outcome", outcomeHead) & clientRow).value = Notes
             Range(headerFind("Date of Overall Discharge", outcomeHead) & clientRow).value = dateOf
-            
+
             Range(headerFind("Legal Status of Discharge", outcomeHead) & clientRow).value _
                 = Lookup("Legal_Status_Name")(legalStatus)
             Range(headerFind("DA", outcomeHead) & clientRow).value = Lookup("DA_Last_Name_Name")(DA)
-            
+
             Range(headerFind("Active or Discharged", outcomeHead) & clientRow).value _
                 = Lookup("Active_Name")("Discharged")
             Range(headerFind("Nature of Courtroom Outcome", outcomeHead) & clientRow).value _

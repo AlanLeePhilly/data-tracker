@@ -39,17 +39,17 @@ Private Sub Continue_Click()
         MsgBox "Date of Expungement Required"
         Exit Sub
     End If
-    
+
     ClientUpdateForm.JTC_Expungement.BackColor = &H8000000A
-    
+
     ClientUpdateForm.JTC_Return_Phase.Caption = "Graduated, Record Expunged"
-    
+
     ClientUpdateForm.JTC_Accept_Reject_Date.Caption = ExpungementDate.value
     ClientUpdateForm.JTC_Accept_Reject_Date_Label.Visible = True
     ClientUpdateForm.JTC_Accept_Reject_Date_Label.Caption = "Date Expunged:"
-    
+
     ClientUpdateForm.JTC_Return_Phase_Label.Enabled = True
-    
+
     ClientUpdateForm.JTC_Return_Stepup_Date_Label.Visible = False
     ClientUpdateForm.JTC_Referred_To_Label.Visible = False
     ClientUpdateForm.JTC_Pushback_Reason_Label.Visible = False

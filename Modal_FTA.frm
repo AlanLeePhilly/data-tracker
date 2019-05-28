@@ -20,13 +20,13 @@ Private Sub Submit_Click()
         MsgBox "Bench warrant action required"
         Exit Sub
     End If
-    
-    
+
+
     'note: this modal serves JTC and standard updaters, so it colors buttons on both forms no matter who calls them
     ClientUpdateForm.JTC_FTA_No.BackColor = unselectedColor
     ClientUpdateForm.JTC_FTA_Yes.BackColor = selectedColor
     ClientUpdateForm.Standard_FTA_No.BackColor = unselectedColor
     ClientUpdateForm.Standard_FTA_Yes.BackColor = selectedColor
-    
+
     Me.Hide
 End Sub

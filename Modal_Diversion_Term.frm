@@ -21,21 +21,21 @@ End Sub
 
 Private Sub Continue_Click()
     Dim i As Integer
-    
+
     For i = 0 To DiversionUpdateForm.ReturnTerms.ListCount - 1
         If DiversionUpdateForm.ReturnTerms.List(i, 0) = EditTerms.List(EditTerms.listIndex, 0) Then
             DiversionUpdateForm.ReturnTerms.List(i, 1) = NewTerm
             DiversionUpdateForm.ReturnTerms.List(i, 2) = NewTermProvider
         End If
     Next i
-    
+
     Modal_Diversion_Term.Hide
 End Sub
 
 Private Sub EditTerms_Click()
     If EditTerms.listIndex >= 0 Then
         Dim i As Integer
-        
+
         For i = 0 To EditTerms.ListCount - 1
             NewTerm = EditTerms.List(EditTerms.listIndex, 1)
             NewTermProvider = EditTerms.List(EditTerms.listIndex, 2) '

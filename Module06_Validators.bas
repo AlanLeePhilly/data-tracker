@@ -3,28 +3,28 @@ Attribute VB_Name = "Module06_Validators"
 'usually called upon when user exits focus from a textbox which requires date formatting
 Public Sub DateValidation(ByRef DateBox As Control, ByRef Cancel As MSForms.ReturnBoolean)
     Dim splitDate() As String: splitDate = Split(DateBox.Text, "/")
-    
+
     'if the textbox value is blank (Trim function removes leading spaces if present,
     If Trim(DateBox.value) = "" Then
         'set textbox color to regular color and exit sub
         DateBox.BackColor = &H80000005
         Exit Sub
-    
-    'else if it's not a date
+
+        'else if it's not a date
     Else
         If IsDate(DateBox.Text) Then
-                If Len(splitDate(0)) < 3 Then
-                    If Len(splitDate(1)) < 3 Then
-                        If Len(splitDate(2)) > 1 And Len(splitDate(2)) < 5 Then
-                            'set textbox color to regular color and exit sub
-                            DateBox.BackColor = &H80000005
-                            Exit Sub
-                        End If
+            If Len(splitDate(0)) < 3 Then
+                If Len(splitDate(1)) < 3 Then
+                    If Len(splitDate(2)) > 1 And Len(splitDate(2)) < 5 Then
+                        'set textbox color to regular color and exit sub
+                        DateBox.BackColor = &H80000005
+                        Exit Sub
                     End If
                 End If
+            End If
         End If
     End If
-    
+
     'set textbox color to red, throw error pop-up
     DateBox.BackColor = &HFF& 'change the color of the textbox to red
     MsgBox "Illegal date value" + vbNewLine _
@@ -43,7 +43,7 @@ Sub Clear_Form(myForm As UserForm)
 
     'for each control (generic name for any field in form
     For Each ctl In myForm.Controls
-        
+
         'determine the type of control it is and reset value accordingly
         Select Case TypeName(ctl)
             Case "TextBox"

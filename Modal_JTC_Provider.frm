@@ -24,12 +24,12 @@ Private Sub Continue_Click()
         MsgBox "New Provider Required"
         Exit Sub
     End If
-    
+
     If Referral_Date.value = "" Then
         MsgBox "Referral Date Required"
         Exit Sub
     End If
-    
+
     ClientUpdateForm.JTC_Return_Treatment_Provider.Caption = New_Treatment_Provider.value
     ClientUpdateForm.JTC_Return_Stepdown_Date.Caption = ""
     ClientUpdateForm.JTC_Stepdown_Label.Visible = False
@@ -48,7 +48,7 @@ End Sub
 Private Sub Referral_Date_Enter()
 
     Referral_Date.value = CalendarForm.GetDate(RangeOfYears:=5)
-    
+
 End Sub
 
 

@@ -23,16 +23,16 @@ Attribute VB_Exposed = False
 
 
 
-                        ''''''''''''''''
-                        'INITIALIZATION'
-                        ''''''''''''''''
+''''''''''''''''
+'INITIALIZATION'
+''''''''''''''''
 Private Sub UserForm_Initialize()
     Current_Legal_Status = ClientUpdateForm.Standard_Fetch_Legal_Status
 End Sub
 
-                        '''''''''''''
-                        'VALIDATIONS'
-                        '''''''''''''
+'''''''''''''
+'VALIDATIONS'
+'''''''''''''
 Private Sub Current_Discharge_Date_Enter()
     Current_Discharge_Date.value = CalendarForm.GetDate(RangeOfYears:=5)
 End Sub
@@ -50,10 +50,10 @@ Private Sub New_Start_Date_Exit(ByVal Cancel As MSForms.ReturnBoolean)
     Call DateValidation(ctl, Cancel)
 End Sub
 
-                        ''''''''''''''''''
-                        '''''BUTTONS''''''
-                        ''''''''''''''''''
-    
+''''''''''''''''''
+'''''BUTTONS''''''
+''''''''''''''''''
+
 Private Sub InsertDoH1_Click()
     Current_Discharge_Date = ClientUpdateForm.DateOfHearing
 End Sub
@@ -65,9 +65,9 @@ Private Sub Cancel_Click()
 End Sub
 
 
-                        '''''''''''''''''''''
-                        '''''FORM LOGIC''''''
-                        '''''''''''''''''''''
+'''''''''''''''''''''
+'''''FORM LOGIC''''''
+'''''''''''''''''''''
 
 Private Sub Current_Discharge_Nature_Change()
     If Current_Discharge_Nature = "Negative" Then
@@ -92,9 +92,9 @@ Private Sub Current_Discharge_Nature_Change()
     End If
 End Sub
 
-                        '''''''''''''''''''''''
-                        '''''SUBMIT LOGIC''''''
-                        '''''''''''''''''''''''
+'''''''''''''''''''''''
+'''''SUBMIT LOGIC''''''
+'''''''''''''''''''''''
 
 Private Sub Continue_Click()
     'VALIDATIONS
@@ -110,10 +110,10 @@ Private Sub Continue_Click()
         MsgBox "New Legal Status Required"
         Exit Sub
     End If
-    
+
     ClientUpdateForm.Standard_Legal_Status_Update.BackColor = selectedColor
     ClientUpdateForm.Standard_Legal_Status_Remain.BackColor = unselectedColor
     ClientUpdateForm.Standard_Return_Legal_Status.Caption = New_Legal_Status
     Modal_Standard_Legal_Status.Hide
-    
+
 End Sub

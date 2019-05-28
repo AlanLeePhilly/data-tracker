@@ -17,9 +17,9 @@ Private Sub UserForm_Initialize()
     Call addPetitionsToBox(PetitionBox)
 End Sub
 
-                        '''''''''''''
-                        'VALIDATIONS'
-                        '''''''''''''
+'''''''''''''
+'VALIDATIONS'
+'''''''''''''
 Private Sub Adjudication_Date_Enter()
     Adjudication_Date.value = CalendarForm.GetDate(RangeOfYears:=5)
 End Sub
@@ -30,21 +30,21 @@ Private Sub Adjudication_Date_Exit(ByVal Cancel As MSForms.ReturnBoolean)
 End Sub
 
 
-                        ''''''''''''''''''
-                        '''''BUTTONS''''''
-                        ''''''''''''''''''
-    
+''''''''''''''''''
+'''''BUTTONS''''''
+''''''''''''''''''
+
 Private Sub InsertDoH_Click()
     Adjudication_Date = ClientUpdateForm.DateOfHearing
 End Sub
 Private Sub Cancel_Click()
-     Modal_JTC_Adjudication.Hide
+    Modal_JTC_Adjudication.Hide
 End Sub
 
 
-                        '''''''''''''''''''''
-                        '''''FORM LOGIC''''''
-                        '''''''''''''''''''''
+'''''''''''''''''''''
+'''''FORM LOGIC''''''
+'''''''''''''''''''''
 
 Private Sub Type_of_Change()
     If Type_of = "Technical Violations" Then
@@ -69,9 +69,9 @@ Private Sub Type_of_Change()
     End If
 End Sub
 
-                        '''''''''''''''''''''''
-                        '''''SUBMIT LOGIC''''''
-                        '''''''''''''''''''''''
+'''''''''''''''''''''''
+'''''SUBMIT LOGIC''''''
+'''''''''''''''''''''''
 
 Private Sub Continue_Click()
     'VALIDATIONS
@@ -91,11 +91,11 @@ Private Sub Continue_Click()
         MsgBox "Please select a petition"
         Exit Sub
     End If
-    
+
     ClientUpdateForm.JTC_Adjudication_Update.BackColor = selectedColor
     ClientUpdateForm.JTC_Adjudication_Remain.BackColor = unselectedColor
     ClientUpdateForm.JTC_Return_Adjudication.Caption = "Yes"
-    
+
     Modal_JTC_Adjudication.Hide
 End Sub
 

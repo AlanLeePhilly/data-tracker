@@ -28,7 +28,7 @@ End Sub
 Private Sub StepupDate_Enter()
 
     StepupDate.value = CalendarForm.GetDate(RangeOfYears:=5)
-    
+
 End Sub
 
 Private Sub Cancel_Click()
@@ -45,29 +45,29 @@ Private Sub Continue_Click()
         MsgBox "Date of Acceptance Required"
         Exit Sub
     End If
-    
+
     If StepupDate.value = "" Then
         MsgBox "Step-Up Date Required"
         Exit Sub
     End If
-    
-    
+
+
     ClientUpdateForm.JTC_Reject.BackColor = &H8000000F
     ClientUpdateForm.JTC_Accept.BackColor = &H8000000A
-    
+
     ClientUpdateForm.JTC_Return_Phase.Caption = 1
-    
+
     ClientUpdateForm.JTC_Accept_Reject_Date.Caption = DateOfAcceptance.value
     ClientUpdateForm.JTC_Accept_Reject_Date_Label.Visible = True
     ClientUpdateForm.JTC_Accept_Reject_Date_Label.Caption = "Date Accepted:"
-    
+
     ClientUpdateForm.JTC_Return_Phase_Label.Enabled = True
     ClientUpdateForm.JTC_Return_Stepup_Date_Label.Visible = True
     ClientUpdateForm.JTC_Return_Stepup_Date.Caption = StepupDate.value
-    
+
     ClientUpdateForm.JTC_Referred_To_Label.Visible = False
     ClientUpdateForm.JTC_Referred_To.Caption = ""
-    
+
     ClientUpdateForm.JTC_Pushback_Reason_Label.Enabled = True
     ClientUpdateForm.JTC_Treatment_Stepdown.Enabled = True
     ClientUpdateForm.JTC_Treatment_Provider_Update.Enabled = True

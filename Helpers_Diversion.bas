@@ -45,7 +45,7 @@ End Function
 Public Function getOpenTermEdit(row As Long) As Integer
     getOpenTermEdit = 0
     Dim i As Integer
-    
+
     For i = 1 To 5
         If isEmptyOrZero(Range(headerFind("Which Term Was Updated #" & i, headerFind("DIVERSION")) & row)) Then
             getOpenTermEdit = i

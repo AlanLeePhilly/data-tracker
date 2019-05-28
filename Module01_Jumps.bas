@@ -183,7 +183,7 @@ Sub Restitution()
     Range("EM2").Select
 End Sub
 Sub NextRestitutionEntry()
-' Jumps to next restitution entry
+    ' Jumps to next restitution entry
     ActiveWindow.SmallScroll ToRight:=-17
     ActiveCell.Offset(1, -25).Range("A1").Select
 End Sub

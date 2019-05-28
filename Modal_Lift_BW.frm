@@ -34,7 +34,7 @@ Private Sub Submit_Click()
         MsgBox "Date required"
         Exit Sub
     End If
-    
+
     ClientUpdateForm.JTC_Lift_BW.BackColor = selectedColor
     ClientUpdateForm.Standard_Lift_BW.BackColor = selectedColor
     Me.Hide

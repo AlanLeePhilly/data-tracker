@@ -22,11 +22,11 @@ Private Sub SupervisionType_Change()
     End If
 End Sub
 
-                        
-                        
-                        '''''''''''''
-                        'VALIDATIONS'
-                        '''''''''''''
+
+
+'''''''''''''
+'VALIDATIONS'
+'''''''''''''
 Private Sub Start_Date_Enter()
     Start_Date.value = CalendarForm.GetDate(RangeOfYears:=5)
 End Sub
@@ -36,10 +36,10 @@ Private Sub Start_Date_Exit(ByVal Cancel As MSForms.ReturnBoolean)
     Call DateValidation(ctl, Cancel)
 End Sub
 
-                        ''''''''''''''''''
-                        '''''BUTTONS''''''
-                        ''''''''''''''''''
-    
+''''''''''''''''''
+'''''BUTTONS''''''
+''''''''''''''''''
+
 Private Sub InsertDoH_Click()
     Start_Date = ClientUpdateForm.DateOfHearing
 End Sub
@@ -47,10 +47,10 @@ End Sub
 Private Sub Cancel_Click()
     Unload Modal_Standard_Add_Supervision
 End Sub
-                         
-                        '''''''''''''''''''''''
-                        '''''SUBMIT LOGIC''''''
-                        '''''''''''''''''''''''
+
+'''''''''''''''''''''''
+'''''SUBMIT LOGIC''''''
+'''''''''''''''''''''''
 
 Private Sub Continue_Click()
     'VALIDATIONS
@@ -68,30 +68,30 @@ Private Sub Continue_Click()
         .ColumnCount = 10
         .ColumnWidths = "50;50;50;50;0;0;0;0;0;0;"
         .AddItem
-                .List(ClientUpdateForm.Standard_Return_Supervision_Box.ListCount - 1, 0) = SupervisionType
-                .List(ClientUpdateForm.Standard_Return_Supervision_Box.ListCount - 1, 1) = Provider
-                .List(ClientUpdateForm.Standard_Return_Supervision_Box.ListCount - 1, 2) = Start_Date
-                'end date
-                .List(ClientUpdateForm.Standard_Return_Supervision_Box.ListCount - 1, 4) = "New"
-                'nature
-                .List(ClientUpdateForm.Standard_Return_Supervision_Box.ListCount - 1, 6) = Reason1
-                .List(ClientUpdateForm.Standard_Return_Supervision_Box.ListCount - 1, 7) = Reason2
-                .List(ClientUpdateForm.Standard_Return_Supervision_Box.ListCount - 1, 8) = Reason3
-                .List(ClientUpdateForm.Standard_Return_Supervision_Box.ListCount - 1, 9) = Notes
+        .List(ClientUpdateForm.Standard_Return_Supervision_Box.ListCount - 1, 0) = SupervisionType
+        .List(ClientUpdateForm.Standard_Return_Supervision_Box.ListCount - 1, 1) = Provider
+        .List(ClientUpdateForm.Standard_Return_Supervision_Box.ListCount - 1, 2) = Start_Date
+        'end date
+        .List(ClientUpdateForm.Standard_Return_Supervision_Box.ListCount - 1, 4) = "New"
+        'nature
+        .List(ClientUpdateForm.Standard_Return_Supervision_Box.ListCount - 1, 6) = Reason1
+        .List(ClientUpdateForm.Standard_Return_Supervision_Box.ListCount - 1, 7) = Reason2
+        .List(ClientUpdateForm.Standard_Return_Supervision_Box.ListCount - 1, 8) = Reason3
+        .List(ClientUpdateForm.Standard_Return_Supervision_Box.ListCount - 1, 9) = Notes
 
     End With
-    
+
     With Modal_Standard_Drop_Supervision.Supervision_Box
-         .ColumnCount = 10
-         .ColumnWidths = "50;50;50;50;0;0;0;0;0;0;"
-         .AddItem
-                 .List(Modal_Standard_Drop_Supervision.Supervision_Box.ListCount - 1, 0) = SupervisionType
-                 .List(Modal_Standard_Drop_Supervision.Supervision_Box.ListCount - 1, 1) = Provider
-                 .List(Modal_Standard_Drop_Supervision.Supervision_Box.ListCount - 1, 2) = Start_Date
-                 'end date
-                 .List(Modal_Standard_Drop_Supervision.Supervision_Box.ListCount - 1, 4) = "New"
-     End With
-    
+        .ColumnCount = 10
+        .ColumnWidths = "50;50;50;50;0;0;0;0;0;0;"
+        .AddItem
+        .List(Modal_Standard_Drop_Supervision.Supervision_Box.ListCount - 1, 0) = SupervisionType
+        .List(Modal_Standard_Drop_Supervision.Supervision_Box.ListCount - 1, 1) = Provider
+        .List(Modal_Standard_Drop_Supervision.Supervision_Box.ListCount - 1, 2) = Start_Date
+        'end date
+        .List(Modal_Standard_Drop_Supervision.Supervision_Box.ListCount - 1, 4) = "New"
+    End With
+
     Unload Modal_Standard_Add_Supervision
 End Sub
 

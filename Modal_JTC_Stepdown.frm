@@ -33,7 +33,7 @@ Private Sub Continue_Click()
     ClientUpdateForm.JTC_Treatment_Stepdown.BackColor = &H8000000A
     ClientUpdateForm.JTC_Treatment_Provider_Update.BackColor = &H8000000F
     ClientUpdateForm.JTC_Treatment_Discharge.BackColor = &H8000000F
-    
+
     Me.Hide
 End Sub
 
@@ -47,7 +47,7 @@ End Sub
 Private Sub Stepdown_Date_Enter()
 
     Stepdown_Date.value = CalendarForm.GetDate(RangeOfYears:=5)
-    
+
 End Sub
 Private Sub Stepdown_Date_Exit(ByVal Cancel As MSForms.ReturnBoolean)
     Set ctl = Me.Stepdown_Date

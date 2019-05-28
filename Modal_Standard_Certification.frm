@@ -23,11 +23,11 @@ Private Sub UserForm_Initialize()
         MultiPage1.value = 0
     End If
 End Sub
-                        
-                        
-                        '''''''''''''
-                        'VALIDATIONS'
-                        '''''''''''''
+
+
+'''''''''''''
+'VALIDATIONS'
+'''''''''''''
 Private Sub Motion_Date_Enter()
     Motion_Date.value = CalendarForm.GetDate(RangeOfYears:=5)
 End Sub
@@ -37,10 +37,10 @@ Private Sub Motion_Date_Exit(ByVal Cancel As MSForms.ReturnBoolean)
     Call DateValidation(ctl, Cancel)
 End Sub
 
-                        ''''''''''''''''''
-                        '''''BUTTONS''''''
-                        ''''''''''''''''''
-    
+''''''''''''''''''
+'''''BUTTONS''''''
+''''''''''''''''''
+
 Private Sub InsertDoH_Click()
     Motion_Date = ClientUpdateForm.DateOfHearing
 End Sub
@@ -48,10 +48,10 @@ End Sub
 Private Sub Cancel_Click()
     Unload Modal_Standard_Certification
 End Sub
-                         
-                        '''''''''''''''''''''''
-                        '''''SUBMIT LOGIC''''''
-                        '''''''''''''''''''''''
+
+'''''''''''''''''''''''
+'''''SUBMIT LOGIC''''''
+'''''''''''''''''''''''
 
 Private Sub Continue_Click()
     'VALIDATIONS
@@ -70,12 +70,12 @@ Private Sub Continue_Click()
             Exit Sub
         End If
     End If
-    
-    
-    
+
+
+
     ClientUpdateForm.Standard_Certification_Update.BackColor = selectedColor
     ClientUpdateForm.Standard_Certification_Remain.BackColor = unselectedColor
-    
+
     If Prior_Status.Caption = "Filed" Then
         ClientUpdateForm.Standard_Return_Certification.Caption = Motion_Result
     Else
@@ -85,7 +85,7 @@ Private Sub Continue_Click()
             ClientUpdateForm.Standard_Return_Certification.Caption = "None"
         End If
     End If
-    
+
     Modal_Standard_Certification.Hide
 End Sub
 

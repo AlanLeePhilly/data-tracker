@@ -34,7 +34,7 @@ Private Sub Continue_Click()
     ClientUpdateForm.JTC_Continuance_Update.BackColor = selectedColor
     ClientUpdateForm.JTC_Continuance_Remain.BackColor = unselectedColor
     ClientUpdateForm.JTC_Return_Continuance.Caption = "Yes"
-    
+
     Modal_JTC_Continuance.Hide
 End Sub
 

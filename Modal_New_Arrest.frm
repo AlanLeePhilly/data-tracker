@@ -45,13 +45,13 @@ Private Sub DeletePetition_Click()
     Dim petitionNum As String
     Dim i As Integer
     Dim listIndex As Integer
-    
+
     If PetitionBox.listIndex = -1 Then
         Exit Sub
     End If
-    
+
     petitionNum = PetitionBox.List(PetitionBox.listIndex, 1)
-    
+
     MsgBox "Removing Petition #" & petitionNum
     listIndex = ChargeBox.ListCount - 1
     For i = listIndex To 0 Step -1
@@ -102,160 +102,160 @@ End Sub
 
 Private Sub Submit_Click()
     Dim restorer As Variant
-    
+
     Call Generate_Dictionaries
     'define variable Long(a big integer) named updateRow
     Dim updateRow As Long
-    
+
     'activate the spreadsheet as default selector
     Worksheets("Entry").Activate
-                                               
+
     With Application
         .ScreenUpdating = False
         .Calculation = xlCalculationManual
     End With
-    
+
     updateRow = Active_Row.Caption
     restorer = Range("C" & updateRow & ":" & hFind("END") & updateRow).value
-    
+
     If isNotEmptyOrZero(Range(hFind("Arrest Date #5", "REARRESTS", "AGGREGATES") & updateRow)) Then
         MsgBox "It looks like there are already 5 re-arrests on this client. Supported maximum reached"
         Exit Sub
     End If
-    
+
     On Error GoTo err
-        Dim i As Integer
-        Dim sectionHead As String
-        Dim bucketHead As String
-        
-        sectionHead = hFind("REARRESTS", "AGGREGATES")
-        Call flagYes(Range(headerFind("Was Youth Rearrested?", sectionHead) & updateRow))
-        
-        For i = 1 To 5
-            If isEmptyOrZero(Range(headerFind("Arrest Date #" & i, sectionHead) & updateRow)) Then
-                bucketHead = headerFind("Arrest Date #" & i, sectionHead)
-                i = 5
+    Dim i As Integer
+    Dim sectionHead As String
+    Dim bucketHead As String
+
+    sectionHead = hFind("REARRESTS", "AGGREGATES")
+    Call flagYes(Range(headerFind("Was Youth Rearrested?", sectionHead) & updateRow))
+
+    For i = 1 To 5
+        If isEmptyOrZero(Range(headerFind("Arrest Date #" & i, sectionHead) & updateRow)) Then
+            bucketHead = headerFind("Arrest Date #" & i, sectionHead)
+            i = 5
+        End If
+    Next i
+
+    Range(bucketHead & updateRow).value _
+            = ArrestDate.value
+    Range(headerFind("Day of Arrest", bucketHead) & updateRow).value _
+            = Weekday(ArrestDate.value, vbMonday) * 2 - 1
+    Range(headerFind("Time of Arrest", bucketHead) & updateRow).value _
+            = TimeOfArrest_H.value & ":" & TimeOfArrest_M.value & " " & TimeOfArrest_P.value
+    Range(headerFind("Time Category of Arrest", bucketHead) & updateRow).value _
+            = calcTimeGroup(TimeOfArrest_H.value, TimeOfArrest_P.value)
+    Range(headerFind("Arresting District", bucketHead) & updateRow).value _
+            = ArrestingDistrict.value
+    Range(headerFind("Time of Referral to DA") & updateRow).value _
+            = TimeReferredToDA_H.value & ":" & TimeReferredToDA_M.value & " " & TimeReferredToDA_P.value
+
+    Range(headerFind("DC #", bucketHead) & updateRow).value = DCNum.value
+    Range(headerFind("PID #", bucketHead) & updateRow).value = PIDNum.value
+    Range(headerFind("DC-PID #", bucketHead) & updateRow).value = DCNum.value & "-" & PIDNum.value
+    Range(headerFind("SID #", bucketHead) & updateRow).value = SIDNum.value
+
+    Range(headerFind("Officer #1", bucketHead) & updateRow).value = Officer1.value
+    Range(headerFind("Officer #2", bucketHead) & updateRow).value = Officer2.value
+    Range(headerFind("Officer #3", bucketHead) & updateRow).value = Officer3.value
+    Range(headerFind("Officer #4", bucketHead) & updateRow).value = Officer4.value
+    Range(headerFind("Officer #5", bucketHead) & updateRow).value = Officer5.value
+
+    Range(headerFind("Victim First Name", bucketHead) & updateRow) _
+            = VictimFirstName.value
+    Range(headerFind("Victim Last Name", bucketHead) & updateRow) _
+            = VictimLastName.value
+
+    Range(headerFind("Incident Date", bucketHead) & updateRow).value _
+            = IncidentDate.value
+    Range(headerFind("Day of Incident", bucketHead) & updateRow).value _
+            = Weekday(IncidentDate.value, vbMonday) * 2 - 1
+    Range(headerFind("Time of Incident", bucketHead) & updateRow).value _
+            = TimeOfIncident_H.value & ":" & TimeOfIncident_M.value & " " & TimeOfIncident_P.value
+    Range(headerFind("Time Category of Incident", bucketHead) & updateRow).value _
+            = calcTimeGroup(TimeOfIncident_H.value, TimeOfIncident_P.value)
+    Range(headerFind("Incident District", bucketHead) & updateRow).value _
+            = IncidentDistrict.value
+    Range(headerFind("Incident Address", bucketHead) & updateRow).value _
+            = IncidentAddress.value
+    Range(headerFind("Incident Zipcode", bucketHead) & updateRow).value _
+            = IncidentZipcode.value
+
+    Dim Num As Long
+
+    Dim j As Integer
+
+    For Num = 1 To PetitionBox.ListCount
+        tempHead = headerFind("Petition #" & Num, bucketHead)
+
+        Range(headerFind("Petition Filed?", tempHead) & updateRow).value _
+                = Lookup("Generic_YNOU_Name")("Yes")
+        Range(headerFind("Was Petition Transferred from Other County?", tempHead) & updateRow).value _
+                = Lookup("Generic_YNOU_Name")(PetitionBox.List(Num - 1, 6))
+        Range(tempHead & updateRow).value _
+                = PetitionBox.List(Num - 1, 1)
+        Range(headerFind("Date Filed", tempHead) & updateRow).value _
+                = PetitionBox.List(Num - 1, 0)
+        Range(headerFind("Lead Charge Code", tempHead) & updateRow).value _
+                = PetitionBox.List(Num - 1, 4)
+        Range(headerFind("Lead Charge Name", tempHead) & updateRow).value _
+                = PetitionBox.List(Num - 1, 5)
+        Range(headerFind("Charge Category #1", tempHead) & updateRow).value _
+                = Lookup("Charge_Name")(PetitionBox.List(Num - 1, 3))
+        Range(headerFind("Charge Grade (specific) #1", tempHead) & updateRow).value _
+                = Lookup("Charge_Grade_Specific_Name")(PetitionBox.List(Num - 1, 2))
+        Range(headerFind("Charge Grade (broad) #1", tempHead) & updateRow).value _
+                = calcChargeBroad(PetitionBox.List(Num - 1, 2))
+
+        j = 2
+        For i = 0 To ChargeBox.ListCount - 1
+            If ChargeBox.ListCount > 0 Then
+                If ChargeBox.List(i, 0) = PetitionBox.List(Num - 1, 1) Then
+                    Range(headerFind("Charge Code #" & j, tempHead) & updateRow).value _
+                            = ChargeBox.List(i, 3)
+                    Range(headerFind("Charge Name #" & j, tempHead) & updateRow).value _
+                            = ChargeBox.List(i, 4)
+                    Range(headerFind("Charge Category #" & j, tempHead) & updateRow).value _
+                            = Lookup("Charge_Name")(ChargeBox.List(i, 2))
+                    Range(headerFind("Charge Grade (specific) #" & j, tempHead) & updateRow).value _
+                            = Lookup("Charge_Grade_Specific_Name")(ChargeBox.List(i, 1))
+                    Range(headerFind("Charge Grade (broad) #" & j, tempHead) & updateRow).value _
+                            = calcChargeBroad(ChargeBox.List(i, 1))
+                    j = j + 1
+                End If
             End If
         Next i
-        
-        Range(bucketHead & updateRow).value _
-            = ArrestDate.value
-        Range(headerFind("Day of Arrest", bucketHead) & updateRow).value _
-            = Weekday(ArrestDate.value, vbMonday) * 2 - 1
-        Range(headerFind("Time of Arrest", bucketHead) & updateRow).value _
-            = TimeOfArrest_H.value & ":" & TimeOfArrest_M.value & " " & TimeOfArrest_P.value
-        Range(headerFind("Time Category of Arrest", bucketHead) & updateRow).value _
-            = calcTimeGroup(TimeOfArrest_H.value, TimeOfArrest_P.value)
-        Range(headerFind("Arresting District", bucketHead) & updateRow).value _
-            = ArrestingDistrict.value
-        Range(headerFind("Time of Referral to DA") & updateRow).value _
-            = TimeReferredToDA_H.value & ":" & TimeReferredToDA_M.value & " " & TimeReferredToDA_P.value
-            
-        Range(headerFind("DC #", bucketHead) & updateRow).value = DCNum.value
-        Range(headerFind("PID #", bucketHead) & updateRow).value = PIDNum.value
-        Range(headerFind("DC-PID #", bucketHead) & updateRow).value = DCNum.value & "-" & PIDNum.value
-        Range(headerFind("SID #", bucketHead) & updateRow).value = SIDNum.value
+    Next Num
 
-        Range(headerFind("Officer #1", bucketHead) & updateRow).value = Officer1.value
-        Range(headerFind("Officer #2", bucketHead) & updateRow).value = Officer2.value
-        Range(headerFind("Officer #3", bucketHead) & updateRow).value = Officer3.value
-        Range(headerFind("Officer #4", bucketHead) & updateRow).value = Officer4.value
-        Range(headerFind("Officer #5", bucketHead) & updateRow).value = Officer5.value
-            
-        Range(headerFind("Victim First Name", bucketHead) & updateRow) _
-            = VictimFirstName.value
-        Range(headerFind("Victim Last Name", bucketHead) & updateRow) _
-            = VictimLastName.value
-        
-        Range(headerFind("Incident Date", bucketHead) & updateRow).value _
-            = IncidentDate.value
-        Range(headerFind("Day of Incident", bucketHead) & updateRow).value _
-            = Weekday(IncidentDate.value, vbMonday) * 2 - 1
-        Range(headerFind("Time of Incident", bucketHead) & updateRow).value _
-            = TimeOfIncident_H.value & ":" & TimeOfIncident_M.value & " " & TimeOfIncident_P.value
-        Range(headerFind("Time Category of Incident", bucketHead) & updateRow).value _
-            = calcTimeGroup(TimeOfIncident_H.value, TimeOfIncident_P.value)
-        Range(headerFind("Incident District", bucketHead) & updateRow).value _
-            = IncidentDistrict.value
-        Range(headerFind("Incident Address", bucketHead) & updateRow).value _
-            = IncidentAddress.value
-        Range(headerFind("Incident Zipcode", bucketHead) & updateRow).value _
-            = IncidentZipcode.value
-        
-        Dim Num As Long
 
-        Dim j As Integer
-        
-        For Num = 1 To PetitionBox.ListCount
-            tempHead = headerFind("Petition #" & Num, bucketHead)
-            
-            Range(headerFind("Petition Filed?", tempHead) & updateRow).value _
-                = Lookup("Generic_YNOU_Name")("Yes")
-            Range(headerFind("Was Petition Transferred from Other County?", tempHead) & updateRow).value _
-                = Lookup("Generic_YNOU_Name")(PetitionBox.List(Num - 1, 6))
-            Range(tempHead & updateRow).value _
-                = PetitionBox.List(Num - 1, 1)
-            Range(headerFind("Date Filed", tempHead) & updateRow).value _
-                = PetitionBox.List(Num - 1, 0)
-            Range(headerFind("Lead Charge Code", tempHead) & updateRow).value _
-                = PetitionBox.List(Num - 1, 4)
-            Range(headerFind("Lead Charge Name", tempHead) & updateRow).value _
-                = PetitionBox.List(Num - 1, 5)
-            Range(headerFind("Charge Category #1", tempHead) & updateRow).value _
-                = Lookup("Charge_Name")(PetitionBox.List(Num - 1, 3))
-            Range(headerFind("Charge Grade (specific) #1", tempHead) & updateRow).value _
-                = Lookup("Charge_Grade_Specific_Name")(PetitionBox.List(Num - 1, 2))
-            Range(headerFind("Charge Grade (broad) #1", tempHead) & updateRow).value _
-                = calcChargeBroad(PetitionBox.List(Num - 1, 2))
-            
-            j = 2
-            For i = 0 To ChargeBox.ListCount - 1
-                If ChargeBox.ListCount > 0 Then
-                    If ChargeBox.List(i, 0) = PetitionBox.List(Num - 1, 1) Then
-                        Range(headerFind("Charge Code #" & j, tempHead) & updateRow).value _
-                            = ChargeBox.List(i, 3)
-                        Range(headerFind("Charge Name #" & j, tempHead) & updateRow).value _
-                            = ChargeBox.List(i, 4)
-                        Range(headerFind("Charge Category #" & j, tempHead) & updateRow).value _
-                            = Lookup("Charge_Name")(ChargeBox.List(i, 2))
-                        Range(headerFind("Charge Grade (specific) #" & j, tempHead) & updateRow).value _
-                            = Lookup("Charge_Grade_Specific_Name")(ChargeBox.List(i, 1))
-                        Range(headerFind("Charge Grade (broad) #" & j, tempHead) & updateRow).value _
-                            = calcChargeBroad(ChargeBox.List(i, 1))
-                        j = j + 1
-                    End If
-                End If
-            Next i
-        Next Num
-        
-        
-        
-        'ZERO FILL
-        
-        'Dim counter As Long
-        
-        
-        'For counter = (alphaToNum(headerFind("PETITION")) + 1) _
-        '    To (alphaToNum(headerFind("DRAI")) - 1)
-        '
-        '    If Cells(updateRow, counter).value = "" Then
-        '        Cells(updateRow, counter).value = 0
-        '    End If
-        'Next counter
-        
-        'For counter = (alphaToNum(headerFind("DEMOGRAPHICS")) + 1) _
-        '    To (alphaToNum(headerFind("PETITION")) - 1)
-        '
-        '    If Cells(updateRow, counter).value = "" Then
-        '        Cells(updateRow, counter).value = 0
-        '    End If
-        'Next counter
-        'Call aggFlag(updateRow)
+
+    'ZERO FILL
+
+    'Dim counter As Long
+
+
+    'For counter = (alphaToNum(headerFind("PETITION")) + 1) _
+    '    To (alphaToNum(headerFind("DRAI")) - 1)
+    '
+    '    If Cells(updateRow, counter).value = "" Then
+    '        Cells(updateRow, counter).value = 0
+    '    End If
+    'Next counter
+
+    'For counter = (alphaToNum(headerFind("DEMOGRAPHICS")) + 1) _
+    '    To (alphaToNum(headerFind("PETITION")) - 1)
+    '
+    '    If Cells(updateRow, counter).value = "" Then
+    '        Cells(updateRow, counter).value = 0
+    '    End If
+    'Next counter
+    'Call aggFlag(updateRow)
 done:
     'Call SaveAs_Countdown
-     Call Save_Countdown
-     Call UnloadAll
-    
+    Call Save_Countdown
+    Call UnloadAll
+
     Worksheets("User Entry").Activate
     With Application
         .ScreenUpdating = True
@@ -263,9 +263,9 @@ done:
     End With
     Exit Sub
 err:
-    
+
     Range("C" & updateRow & ":" & headerFind("END") & updateRow).value = restorer
-    
+
     Stop 'press F8 twice to see the error point
     Resume
     MsgBox "Something went wrong. Database has been restored to state prior to submission. " _
@@ -283,55 +283,55 @@ Private Sub TestFillDiversion_Click()
     Race.value = "White"
     Sex.value = "Male"
     Latino = "Not Latino"
-    
+
     GuardianFirstName.value = "Mother Serlin"
     GuardianLastName.value = "Serlin"
-    
+
     Address.value = "817 N. 2nd St."
     Zipcode.value = "19123"
-    
-    
+
+
     PhoneNumber.value = "123-456-7890"
     School.value = "Franklin High School"
     Grade.value = "12"
 
-    
+
     IncidentDate.value = "02/01/2019"
     TimeOfIncident_H.value = "04"
     TimeOfIncident_M.value = "00"
     TimeOfIncident_P.value = "PM"
     IncidentDistrict.value = "25"
-    
-    
-    
+
+
+
     ArrestDate.value = "01/29/2019"
     TimeOfArrest_H.value = "01"
     TimeOfArrest_M.value = "15"
     TimeOfArrest_P.value = "PM"
-    
+
     DCNum.value = "12345"
     PIDNum.value = "5467"
     SIDNum.value = "87980"
-    
+
     VictimFirstName = "VicFirstTest"
     VictimLastName = "VicLastTest"
-    
+
     ArrestingDistrict.value = "25"
-    
-    
-    
-    
+
+
+
+
     NumOfPriorArrests.value = 0
     ActiveAtArrest.value = "No"
     InitialHearingDate.value = "07/01/2017"
     InitialHearingLocation.value = "3E"
 
-    
+
     Officer1.value = "AO1Test"
     Officer2.value = "AO2Test"
     Officer3.value = "AO3Test"
     Officer4.value = "AO4Test"
-    
+
     TimeReferredToDA_H.value = "08"
     TimeReferredToDA_M.value = "55"
     TimeReferredToDA_P.value = "AM"
@@ -340,44 +340,44 @@ Private Sub TestFillDiversion_Click()
     ReferralSource.value = "Pre-Petition DA"
     NameOfProgram.value = "YAP"
     YAPDistrict.value = 2
-    
-    
+
+
     NextCourtDate = "2/2/2019"
 
     DA.value = "Keller"
-   
+
     GeneralNotes.value = "Gen Notes Test"
-    
+
 End Sub
 
 Private Sub TestFillPetition_Click()
 
     '''Demographics
-    
+
     FirstName.value = "Adam"
     LastName.value = "PetSerlin"
     DateOfBirth.value = "3/7/2002"
-    
+
     Race.value = "White"
     Sex.value = "Male"
     Latino = "Not Latino"
-    
-    
+
+
     '''Community
-    
+
     GuardianFirstName.value = "Mother Serlin"
     GuardianLastName.value = "Serlin"
-    
+
     Address.value = "817 N. 2nd St."
     Zipcode.value = "19123"
-    
-    
+
+
     PhoneNumber.value = "123-456-7890"
     School.value = "Franklin High School"
     Grade.value = "12"
-    
+
     '''Incident and Arrest
-    
+
     IncidentDate.value = "02/01/2019"
     TimeOfIncident_H.value = "04"
     TimeOfIncident_M.value = "00"
@@ -385,7 +385,7 @@ Private Sub TestFillPetition_Click()
     IncidentDistrict.value = "22"
     IncidentAddress.value = "1501 Market St."
     IncidentZipcode.value = "19102"
-    
+
     ArrestDate.value = "02/01/2019"
     TimeOfArrest_H.value = "02"
     TimeOfArrest_M.value = "30"
@@ -394,77 +394,77 @@ Private Sub TestFillPetition_Click()
     TimeReferredToDA_M.value = "00"
     TimeReferredToDA_P.value = "AM"
     ArrestingDistrict.value = "22"
-    
+
     ActiveAtArrest.value = "No"
     NumOfPriorArrests.value = 0
     DCNum.value = "12345"
     PIDNum.value = "5467"
     SIDNum.value = "87980"
-    
+
     Officer1.value = "AO1Test"
     Officer2.value = "AO2Test"
     Officer3.value = "AO3Test"
     Officer4.value = "AO4Test"
     Officer4.value = "AO5Test"
-    
+
     VictimFirstName = "VicFirstTest"
     VictimLastName = "VicLastTest"
-    
-    
+
+
     'Petitions
-    
+
     With PetitionBox
         .ColumnCount = 7
         .ColumnWidths = "50;50;30;50;65;50;0"
         .AddItem "07/01/2017"
-            .List(0, 1) = "13579"
-            .List(0, 2) = "F"
-            .List(0, 3) = "Assaults"
-            .List(0, 4) = "18 - 2702"
-            .List(0, 5) = "AGGRAVATED ASSAULT"
-            .List(0, 6) = "No"
+        .List(0, 1) = "13579"
+        .List(0, 2) = "F"
+        .List(0, 3) = "Assaults"
+        .List(0, 4) = "18 - 2702"
+        .List(0, 5) = "AGGRAVATED ASSAULT"
+        .List(0, 6) = "No"
     End With
-    
-   
+
+
     GeneralNotes.value = "Gen Notes Test"
-    
+
     InitialHearingDate.value = "02/01/2019"
     InitialHearingLocation.value = "3E"
-    
 
-    
-    
+
+
+
     DiversionProgram.value = "No"
-    
+
 End Sub
 
 Private Sub TestFillIntake_Click()
-'''Demographics
-    
+    '''Demographics
+
     FirstName.value = "Chad"
     LastName.value = "Merlin"
     DateOfBirth.value = "3/22/2002"
-    
+
     Race.value = "White"
     Sex.value = "Male"
     Latino = "Not Latino"
-    
-    
+
+
     '''Community
-    
+
     GuardianFirstName.value = "Jane"
     GuardianLastName.value = "Merlin"
-    
+
     Address.value = "716 S. 12th St."
     Zipcode.value = "19148"
-    
-    
+
+
     PhoneNumber.value = "142-534-6346"
     School.value = "Wells High School"
     Grade.value = "10"
-    
+
     '''Incident and Arrest
-    
+
     IncidentDate.value = "02/23/2019"
     TimeOfIncident_H.value = "06"
     TimeOfIncident_M.value = "15"
@@ -472,7 +472,7 @@ Private Sub TestFillIntake_Click()
     IncidentDistrict.value = "19"
     IncidentAddress.value = "1000 Sansom St."
     IncidentZipcode.value = "19031"
-    
+
     ArrestDate.value = "02/24/2019"
     TimeOfArrest_H.value = "02"
     TimeOfArrest_M.value = "30"
@@ -481,47 +481,47 @@ Private Sub TestFillIntake_Click()
     TimeReferredToDA_M.value = "00"
     TimeReferredToDA_P.value = "AM"
     ArrestingDistrict.value = "22"
-    
+
     ActiveAtArrest.value = "No"
     NumOfPriorArrests.value = 0
     DCNum.value = "12345"
     PIDNum.value = "5467"
     SIDNum.value = "87980"
-    
+
     Officer1.value = "Off1"
     Officer2.value = "Off2"
     Officer3.value = "Off3"
     Officer4.value = "Off4"
     Officer4.value = "Off5"
-    
+
     VictimFirstName = "VicFirst"
     VictimLastName = "VicLast"
-    
-    
+
+
     'Petitions
-    
+
     With PetitionBox
         .ColumnCount = 7
         .ColumnWidths = "50;50;30;50;65;50;0"
         .AddItem "07/01/2017"
-            .List(0, 1) = "13579"
-            .List(0, 2) = "F"
-            .List(0, 3) = "Assaults"
-            .List(0, 4) = "18 - 2702"
-            .List(0, 5) = "AGGRAVATED ASSAULT"
-            .List(0, 6) = "No"
+        .List(0, 1) = "13579"
+        .List(0, 2) = "F"
+        .List(0, 3) = "Assaults"
+        .List(0, 4) = "18 - 2702"
+        .List(0, 5) = "AGGRAVATED ASSAULT"
+        .List(0, 6) = "No"
     End With
-    
-    
+
+
     GeneralNotes.value = "Gen Notes Test"
-    
+
     InitialHearingDate.value = "02/01/2019"
     InitialHearingLocation.value = "3E"
-    
 
-    
 
-    
+
+
+
 End Sub
 
 
@@ -541,7 +541,7 @@ Private Sub TestFill1_Click()
     IncidentDistrict.value = "22"
     IncidentAddress.value = "1501 Market St."
     IncidentZipcode.value = "19102"
-    
+
     ArrestDate.value = "02/01/2019"
     TimeOfArrest_H.value = "02"
     TimeOfArrest_M.value = "30"
@@ -550,34 +550,34 @@ Private Sub TestFill1_Click()
     TimeReferredToDA_M.value = "00"
     TimeReferredToDA_P.value = "AM"
     ArrestingDistrict.value = "22"
-    
+
     ActiveAtArrest.value = "No"
     NumOfPriorArrests.value = 0
     DCNum.value = "12345"
     PIDNum.value = "5467"
     SIDNum.value = "87980"
-    
+
     Officer1.value = "AO1Test"
     Officer2.value = "AO2Test"
     Officer3.value = "AO3Test"
     Officer4.value = "AO4Test"
     Officer4.value = "AO5Test"
-    
+
     VictimFirstName = "VicFirstTest"
     VictimLastName = "VicLastTest"
-     
+
     'Petitions
-    
+
     With PetitionBox
         .ColumnCount = 7
         .ColumnWidths = "50;50;30;50;65;50;0"
         .AddItem "07/01/2017"
-            .List(0, 1) = "13579"
-            .List(0, 2) = "F"
-            .List(0, 3) = "Assaults"
-            .List(0, 4) = "18 - 2702"
-            .List(0, 5) = "AGGRAVATED ASSAULT"
-            .List(0, 6) = "No"
+        .List(0, 1) = "13579"
+        .List(0, 2) = "F"
+        .List(0, 3) = "Assaults"
+        .List(0, 4) = "18 - 2702"
+        .List(0, 5) = "AGGRAVATED ASSAULT"
+        .List(0, 6) = "No"
     End With
-    
+
 End Sub

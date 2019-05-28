@@ -1,7 +1,7 @@
 Attribute VB_Name = "JTC_Buttons"
-                        '''''''''''''''''''
-                        'JTC_PHASE_UPDATES'
-                        '''''''''''''''''''
+'''''''''''''''''''
+'JTC_PHASE_UPDATES'
+'''''''''''''''''''
 Sub JTC_Accept_Click()
     Modal_JTC_Accept.Show
 End Sub
@@ -25,13 +25,13 @@ Sub JTC_Phase_Remain_Click()
     'take displayed phase and stepup
     JTC_Return_Phase.Caption = JTC_Fetch_Phase.Caption
     JTC_Return_Stepup_Date.Caption = JTC_Fetch_Stepup_Date.Caption
-    
+
     'hide pushback display
     JTC_Pushback_Reason_Label.Visible = False
     JTC_Pushback_Reason1.Caption = ""
     JTC_Pushback_Reason2.Caption = ""
     JTC_Pushback_Reason3.Caption = ""
-    
+
     'color buttons
     JTC_Phase_Remain.BackColor = &H8000000A
     JTC_Phase_Stepup.BackColor = &H8000000F
@@ -39,10 +39,10 @@ Sub JTC_Phase_Remain_Click()
     JTC_Discharge.BackColor = &H8000000F
 End Sub
 
-                        '''''''''''''''''''''''
-                        'JTC_TREATMENT_UPDATES'
-                        '''''''''''''''''''''''
-                        
+'''''''''''''''''''''''
+'JTC_TREATMENT_UPDATES'
+'''''''''''''''''''''''
+
 Sub JTC_Treatment_Stepdown_Click()
     Modal_JTC_Stepdown.Show
 End Sub
@@ -54,11 +54,11 @@ End Sub
 Sub JTC_Treatment_Provider_Remain_Click()
     'push provider name
     JTC_Return_Treatment_Provider.Caption = JTC_Fetch_Treatment_Provider.Caption
-    
+
     'hide stepdown display
     JTC_Return_Stepdown_Date.Caption = ""
     ClientUpdateForm.JTC_Stepdown_Label.Visible = False
-    
+
     'color buttons
     JTC_Treatment_Provider_Remain.BackColor = &H8000000A
     JTC_Treatment_Stepdown.BackColor = &H8000000F

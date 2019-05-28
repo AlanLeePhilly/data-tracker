@@ -17,18 +17,18 @@ Attribute VB_Exposed = False
 Option Explicit
 
 
-                        ''''''''''''''''
-                        'INITIALIZATION'
-                        ''''''''''''''''
-                        
+''''''''''''''''
+'INITIALIZATION'
+''''''''''''''''
+
 Private Sub UserForm_Initialize()
     Call Generate_Dictionaries
 End Sub
 
-                        '''''''''''''
-                        'VALIDATIONS'
-                        '''''''''''''
-                        
+'''''''''''''
+'VALIDATIONS'
+'''''''''''''
+
 Private Sub DateOfReferral_Exit(ByVal Cancel As MSForms.ReturnBoolean)
     Dim ctl As Control
     Set ctl = Me.DateOfReferral
@@ -45,38 +45,38 @@ End Sub
 
 Private Sub SearchButton_Click()
     On Error Resume Next
-    
+
     'define variable Long(a big integer) named emptyRow
     Dim lastRow As Long
     Dim Query As String
     Dim lookCell As String
     Dim lookRow As Long
-    
+
     'activate the spreadsheet as default selector
     Worksheets("Entry").Activate
-    
+
     'define variable of search query in UPPERCASE named 'query'
     Query = UCase(SearchTextBox.value)
-    
+
     SearchResultsBox.Clear
-    
+
     lastRow = Range("C" & Rows.count).End(xlUp).row
-    
+
     For lookRow = 3 To lastRow
 
         lookCell = UCase(Range(headerFind(Search_Type.value) & lookRow))
-        
+
         If InStr(1, lookCell, Query) > 0 Then
             With SearchResultsBox
                 .ColumnCount = 5
                 .AddItem lookRow
-                    .List(SearchResultsBox.ListCount - 1, 1) = _
+                .List(SearchResultsBox.ListCount - 1, 1) = _
                         Range(headerFind("First Name") & lookRow)
-                    .List(SearchResultsBox.ListCount - 1, 2) = _
+                .List(SearchResultsBox.ListCount - 1, 2) = _
                         Range(headerFind("Last Name") & lookRow)
-                    .List(SearchResultsBox.ListCount - 1, 3) = _
+                .List(SearchResultsBox.ListCount - 1, 3) = _
                         Range(headerFind("Arrest Date") & lookRow)
-                    .List(SearchResultsBox.ListCount - 1, 4) = _
+                .List(SearchResultsBox.ListCount - 1, 4) = _
                         Lookup("Courtroom_Num")(Range(headerFind("Active Courtroom") & lookRow).value)
             End With
         End If
@@ -119,7 +119,7 @@ End Sub
 
 Private Sub Submit_Click()
     Dim restorer As Variant
-    
+
     With Application
         .ScreenUpdating = False
         .Calculation = xlCalculationManual
@@ -128,43 +128,43 @@ Private Sub Submit_Click()
     Worksheets("Entry").Activate
     Dim fromHead As String
     Dim toHead As String
-     
+
     If IsEmpty(ReferredTo.value) Then
         MsgBox "Courtroom Referred To is required"
         Exit Sub
     End If
-    
+
     If IsEmpty(DateOfReferral.value) Then
         MsgBox "Date of Referral Required"
         Exit Sub
     End If
-    
+
     restorer = Range("C" & updateRow & ":" & hFind("END") & updateRow).value
     On Error GoTo err
-        
-        
-        
-        'universal
-        Range(headerFind("Next Court Date") & updateRow).value _
+
+
+
+    'universal
+    Range(headerFind("Next Court Date") & updateRow).value _
             = DateOfNextHearing.value
-        
-        
-            
-        Call prepend(Range(headerFind("Previous Court Dates") & updateRow), DateOfNextHearing.value)
-        'Call ReferClientFrom(
-        Call ReferClientTo( _
+
+
+
+    Call prepend(Range(headerFind("Previous Court Dates") & updateRow), DateOfNextHearing.value)
+    'Call ReferClientFrom(
+    Call ReferClientTo( _
             referralDate:=DateOfReferral.value, _
             clientRow:=updateRow, _
             toCR:=ReferredTo.value, _
             fromCR:=ReferredFrom.value, _
             Notes:=Notes.value _
             )
-    
+
 done:
     Worksheets("User Entry").Activate
     Unload Me
-    
-        
+
+
     With Application
         .ScreenUpdating = True
         .Calculation = xlCalculationAutomatic

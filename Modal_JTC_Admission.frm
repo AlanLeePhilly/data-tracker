@@ -17,10 +17,10 @@ Attribute VB_Exposed = False
 Private Sub UserForm_Initialize()
     Call addPetitionsToBox(PetitionBox)
 End Sub
-                        
-                        '''''''''''''
-                        'VALIDATIONS'
-                        '''''''''''''
+
+'''''''''''''
+'VALIDATIONS'
+'''''''''''''
 Private Sub Admission_Date_Enter()
     Admission_Date.value = CalendarForm.GetDate(RangeOfYears:=5)
 End Sub
@@ -30,21 +30,21 @@ Private Sub Admission_Date_Exit(ByVal Cancel As MSForms.ReturnBoolean)
     Call DateValidation(ctl, Cancel)
 End Sub
 
-                        ''''''''''''''''''
-                        '''''BUTTONS''''''
-                        ''''''''''''''''''
-    
+''''''''''''''''''
+'''''BUTTONS''''''
+''''''''''''''''''
+
 Private Sub InsertDoH_Click()
     Admission_Date = ClientUpdateForm.DateOfHearing
 End Sub
 
 Private Sub Cancel_Click()
-     Modal_JTC_Admission.Hide
+    Modal_JTC_Admission.Hide
 End Sub
-                         
-                        '''''''''''''''''''''''
-                        '''''SUBMIT LOGIC''''''
-                        '''''''''''''''''''''''
+
+'''''''''''''''''''''''
+'''''SUBMIT LOGIC''''''
+'''''''''''''''''''''''
 
 Private Sub Continue_Click()
     'VALIDATIONS
@@ -60,12 +60,12 @@ Private Sub Continue_Click()
         MsgBox "Please select a petition"
         Exit Sub
     End If
-    
+
     ClientUpdateForm.JTC_Admission_Update.BackColor = selectedColor
     ClientUpdateForm.JTC_Admission_Remain.BackColor = unselectedColor
     ClientUpdateForm.JTC_Return_Admission.Caption = "Yes"
-    
-    
+
+
     Modal_JTC_Admission.Hide
 End Sub
 

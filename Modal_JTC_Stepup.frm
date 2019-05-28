@@ -29,27 +29,27 @@ Private Sub Continue_Click()
         Case 2
             ClientUpdateForm.JTC_Return_Phase.Caption = 3
     End Select
-    
+
     'set new step-up date
     ClientUpdateForm.JTC_Return_Stepup_Date.Caption = New_Stepup_Date.value
-    
+
     'hide pushback display
     ClientUpdateForm.JTC_Pushback_Reason_Label.Visible = False
     ClientUpdateForm.JTC_Pushback_Reason1.Caption = ""
     ClientUpdateForm.JTC_Pushback_Reason2.Caption = ""
     ClientUpdateForm.JTC_Pushback_Reason3.Caption = ""
-    
+
     'color buttons
     ClientUpdateForm.JTC_Phase_Remain.BackColor = &H8000000F
     ClientUpdateForm.JTC_Phase_Stepup.BackColor = &H8000000A
     ClientUpdateForm.JTC_Phase_Pushback.BackColor = &H8000000F
     ClientUpdateForm.JTC_Discharge.BackColor = &H8000000F
-    
+
     Me.Hide
 End Sub
 
 Private Sub UserForm_Initialize()
-  Current_Phase.Caption = ClientUpdateForm.JTC_Fetch_Phase.Caption
+    Current_Phase.Caption = ClientUpdateForm.JTC_Fetch_Phase.Caption
 End Sub
 
 Private Sub Cancel_Click()
@@ -61,7 +61,7 @@ End Sub
 Private Sub New_Stepup_Date_Enter()
 
     New_Stepup_Date.value = CalendarForm.GetDate(RangeOfYears:=5)
-    
+
 End Sub
 
 
@@ -69,7 +69,7 @@ End Sub
 Private Sub New_Stepup_Date_Exit(ByVal Cancel As MSForms.ReturnBoolean)
 
     Set ctl = Me.New_Stepup_Date
-    
+
     'send to date validation
     Call DateValidation(ctl, Cancel)
 End Sub

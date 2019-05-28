@@ -14,14 +14,14 @@ Sub addSupervision( _
     Optional NextCourtDate As String, _
     Optional endDate As String = "", _
     Optional CourtroomOfOrder As String = "")
-'WORKS FOR STANDARD (+Cross & WRAP) AND JTC (+ AGG), ADD PHASE FOR LEGAL FOR JTC
+    'WORKS FOR STANDARD (+Cross & WRAP) AND JTC (+ AGG), ADD PHASE FOR LEGAL FOR JTC
     Worksheets("Entry").Activate
-    
+
     Dim Num As Integer
     Dim bucketHead As String
     Dim section As String
     Dim i As Integer
-    
+
     If serviceType = "Placement" Then
         Call startPlacement( _
             clientRow:=clientRow, _
@@ -37,7 +37,7 @@ Sub addSupervision( _
             Re3:=Re3 _
         )
     End If
-    
+
     For i = 1 To 2
         If Courtroom = "Intake Conf." _
         Or Courtroom = "Call-In" _
@@ -45,7 +45,7 @@ Sub addSupervision( _
             i = 2
             'if intake conf or PJJSC, only aggregate is needed
         End If
-    
+
         Select Case i
             Case 1
                 section = Courtroom
@@ -76,19 +76,19 @@ Sub addSupervision( _
                     End If
                 Next Num
         End Select
-        
+
         If Courtroom = "JTC" Then
             Range(bucketHead & clientRow).value = Lookup("Supervision_Program_Name")(serviceType)
         Else
             Range(bucketHead & clientRow).value = Lookup("Supervision_Program_Name")(serviceType)
         End If
-                 
+
         If section = "JTC" Then
             Range(headerFind("Phase of Order", bucketHead) & clientRow).value = Lookup("JTC_Phase_Name")(phase)
         Else
             Range(headerFind("Legal Status of Order", bucketHead) & clientRow).value = Lookup("Legal_Status_Name")(legalStatus)
         End If
-        
+
         If CourtroomOfOrder = "" Then
             Range(headerFind("Courtroom of Order", bucketHead) & clientRow).value = Lookup("Courtroom_Name")(Courtroom)
         Else
@@ -105,11 +105,11 @@ Sub addSupervision( _
         Range(headerFind("Reason #2 for Referral", bucketHead) & clientRow).value = Lookup("Supervision_Referral_Reason_Name")(Re2)
         Range(headerFind("Reason #3 for Referral", bucketHead) & clientRow).value = Lookup("Supervision_Referral_Reason_Name")(Re3)
         Range(headerFind("Supervision Description", bucketHead) & clientRow).value = Notes
-        
+
         If Not endDate = "" Then
             Range(headerFind("End Date", bucketHead) & clientRow).value = endDate
             Range(headerFind("LOS", bucketHead) & clientRow).value = calcLOS(startDate, endDate)
-            
+
         End If
     Next i
 End Sub
@@ -124,14 +124,14 @@ Sub dropSupervision( _
     ByVal Nature As String, _
     Optional Re1 As String, Optional Re2 As String, Optional Re3 As String, _
     Optional Notes As String = "")
-    
+
     Worksheets("Entry").Activate
-        'WORKS FOR STANDARD (+Cross & WRAP) AND JTC (+ AGG)
-    
+    'WORKS FOR STANDARD (+Cross & WRAP) AND JTC (+ AGG)
+
     Dim bucketHead
     Dim section As String
     Dim i As Integer
-    
+
     If serviceType = "Placement" Then
         Call endPlacement( _
             clientRow:=clientRow, _
@@ -145,45 +145,45 @@ Sub dropSupervision( _
             Re3:=Re3 _
         )
     End If
-    
+
     For i = 1 To 2
-    
-    
+
+
         Select Case i
             Case 1
                 bucketHead = head
             Case 2
                 section = "AGGREGATES"
         End Select
-        
+
         Select Case section
 
             Case "AGGREGATES"
                 For Num = 1 To 30
                     bucketHead = hFind("Supervision Ordered #" & Num, "AGGREGATES")
-                
+
                     If Range(bucketHead & clientRow) = Lookup("Supervision_Program_Name")(serviceType) _
                     And Range(headerFind("Start Date", bucketHead) & clientRow) = startDate Then
                         Num = 30
                     End If
                 Next Num
         End Select
-        
-    Range(headerFind("End Date", bucketHead) & clientRow).value = endDate
-    Range(headerFind("Nature of Discharge", bucketHead) & clientRow) = Lookup("Nature_of_Discharge_Name")(Nature)
 
-    If Not Nature = "Positive" Then
-        Range(headerFind("Reason #1 for Negative D/C", bucketHead) & clientRow) = Lookup("Negative_Discharge_Reason_Name")(Re1)
-        Range(headerFind("Reason #2 for Negative D/C", bucketHead) & clientRow) = Lookup("Negative_Discharge_Reason_Name")(Re2)
-        Range(headerFind("Reason #3 for Negative D/C", bucketHead) & clientRow) = Lookup("Negative_Discharge_Reason_Name")(Re3)
-    End If
-        
-    Call append(Range(headerFind("Discharge Description", bucketHead) & clientRow), Notes)
-    Range(headerFind("LOS", bucketHead) & clientRow) = calcLOS(startDate, endDate)
-    
-    If alphaToNum(head) > alphaToNum(hFind("AGGREGATES")) Then
-        i = 2
-    End If
+        Range(headerFind("End Date", bucketHead) & clientRow).value = endDate
+        Range(headerFind("Nature of Discharge", bucketHead) & clientRow) = Lookup("Nature_of_Discharge_Name")(Nature)
+
+        If Not Nature = "Positive" Then
+            Range(headerFind("Reason #1 for Negative D/C", bucketHead) & clientRow) = Lookup("Negative_Discharge_Reason_Name")(Re1)
+            Range(headerFind("Reason #2 for Negative D/C", bucketHead) & clientRow) = Lookup("Negative_Discharge_Reason_Name")(Re2)
+            Range(headerFind("Reason #3 for Negative D/C", bucketHead) & clientRow) = Lookup("Negative_Discharge_Reason_Name")(Re3)
+        End If
+
+        Call append(Range(headerFind("Discharge Description", bucketHead) & clientRow), Notes)
+        Range(headerFind("LOS", bucketHead) & clientRow) = calcLOS(startDate, endDate)
+
+        If alphaToNum(head) > alphaToNum(hFind("AGGREGATES")) Then
+            i = 2
+        End If
     Next i
 End Sub
 
@@ -200,29 +200,29 @@ Sub addCondition( _
     Optional phase As String = "1", _
     Optional CourtroomOfOrder As String = "" _
     )
-'WORKS FOR STANDARD (+Cross & WRAP) AND JTC (+ AGG), ADD PHASE FOR LEGAL FOR JTC
+    'WORKS FOR STANDARD (+Cross & WRAP) AND JTC (+ AGG), ADD PHASE FOR LEGAL FOR JTC
     Worksheets("Entry").Activate
-        
+
     Dim Num As Integer
     Dim bucketHead As String
     Dim section As String
     Dim i As Integer
-    
+
     For i = 1 To 2
         If Courtroom = "Intake Conf." _
         Or Courtroom = "PJJSC" Then
             i = 2
             'if intake conf or PJJSC, only aggregate is needed
         End If
-    
+
         Select Case i
             Case 1
                 section = Courtroom
             Case 2
                 section = "AGGREGATES"
         End Select
-    
-    
+
+
         Select Case section
             Case "4G", "4E", "6F", "6H", "3E", "JTC", "5E", "WRAP"
                 For Num = 1 To 15
@@ -246,20 +246,20 @@ Sub addCondition( _
                     End If
                 Next Num
         End Select
-        
+
         Range(bucketHead & clientRow).value = Lookup("Condition_Name")(condition)
         If section = "JTC" Then
             Range(headerFind("Phase of Order", bucketHead) & clientRow).value = Lookup("JTC_Phase_Name")(phase)
         Else
             Range(headerFind("Legal Status of Order", bucketHead) & clientRow).value = Lookup("Legal_Status_Name")(legalStatus)
         End If
-        
+
         If CourtroomOfOrder = "" Then
             Range(headerFind("Courtroom of Order", bucketHead) & clientRow).value = Lookup("Courtroom_Name")(Courtroom)
         Else
             Range(headerFind("Courtroom of Order", bucketHead) & clientRow).value = Lookup("Courtroom_Name")(CourtroomOfOrder)
         End If
-        
+
         Range(headerFind("DA", bucketHead) & clientRow).value = Lookup("DA_Last_Name_Name")(DA)
 
         Range(headerFind("Condition Agency", bucketHead) & clientRow).value = Lookup("Condition_Provider_Name")(agency)
@@ -280,15 +280,15 @@ Sub dropCondition( _
     ByVal Nature As String, _
     Optional Re1 As Variant, Optional Re2 As Variant, Optional Re3 As Variant, _
     Optional Notes As String = "")
-    
+
     Worksheets("Entry").Activate
-        
+
     'WORKS FOR STANDARD (+Cross & WRAP) AND JTC (+ AGG)
-    
+
     Dim bucketHead
     Dim section As String
     Dim i As Integer
-    
+
     For i = 1 To 2
         Select Case i
             Case 1
@@ -296,35 +296,35 @@ Sub dropCondition( _
             Case 2
                 section = "AGGREGATES"
         End Select
-        
+
         Select Case section
 
             Case "AGGREGATES"
                 For Num = 1 To 20
                     bucketHead = hFind("Condition Ordered #" & Num, "AGGREGATES")
-                
+
                     If Range(bucketHead & clientRow) = Lookup("Condition_Name")(condition) _
                     And Range(headerFind("Start Date", bucketHead) & clientRow) = startDate Then
                         Num = 20
                     End If
                 Next Num
         End Select
-        
-    Range(headerFind("End Date", bucketHead) & clientRow).value = endDate
-    Range(headerFind("Nature of Discharge", bucketHead) & clientRow) = Lookup("Nature_of_Discharge_Name")(Nature)
 
-    If Not Nature = "Positive" Then
-        Range(headerFind("Reason #1 for Negative D/C", bucketHead) & clientRow) = Lookup("Negative_Discharge_Reason_Name")(Re1)
-        Range(headerFind("Reason #2 for Negative D/C", bucketHead) & clientRow) = Lookup("Negative_Discharge_Reason_Name")(Re2)
-        Range(headerFind("Reason #3 for Negative D/C", bucketHead) & clientRow) = Lookup("Negative_Discharge_Reason_Name")(Re3)
-    End If
-        
-    Call append(Range(headerFind("Discharge Description", bucketHead) & clientRow), Notes)
-    Range(headerFind("LOS", bucketHead) & clientRow) = calcLOS(startDate, endDate)
-    
-    If alphaToNum(head) > alphaToNum(hFind("AGGREGATES")) Then
-        i = 2
-    End If
+        Range(headerFind("End Date", bucketHead) & clientRow).value = endDate
+        Range(headerFind("Nature of Discharge", bucketHead) & clientRow) = Lookup("Nature_of_Discharge_Name")(Nature)
+
+        If Not Nature = "Positive" Then
+            Range(headerFind("Reason #1 for Negative D/C", bucketHead) & clientRow) = Lookup("Negative_Discharge_Reason_Name")(Re1)
+            Range(headerFind("Reason #2 for Negative D/C", bucketHead) & clientRow) = Lookup("Negative_Discharge_Reason_Name")(Re2)
+            Range(headerFind("Reason #3 for Negative D/C", bucketHead) & clientRow) = Lookup("Negative_Discharge_Reason_Name")(Re3)
+        End If
+
+        Call append(Range(headerFind("Discharge Description", bucketHead) & clientRow), Notes)
+        Range(headerFind("LOS", bucketHead) & clientRow) = calcLOS(startDate, endDate)
+
+        If alphaToNum(head) > alphaToNum(hFind("AGGREGATES")) Then
+            i = 2
+        End If
     Next i
 End Sub
 

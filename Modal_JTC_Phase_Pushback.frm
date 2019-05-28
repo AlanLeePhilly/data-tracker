@@ -28,7 +28,7 @@ Private Sub Continue_Click()
         MsgBox "New Step-Up Date Required"
         Exit Sub
     End If
-    
+
     'validate presence of reason
     If Reason1.value = "" Then
         MsgBox "Pushback Reason Required"
@@ -37,7 +37,7 @@ Private Sub Continue_Click()
 
     'maintain current phase
     ClientUpdateForm.JTC_Return_Phase.Caption = ClientUpdateForm.JTC_Fetch_Phase.Caption
-    
+
     'Print new date and reason for pushback
     ClientUpdateForm.JTC_Return_Stepup_Date.Caption = New_Stepup_Date
     ClientUpdateForm.JTC_Pushback_Reason_Label.Visible = True
@@ -50,18 +50,18 @@ Private Sub Continue_Click()
             ClientUpdateForm.JTC_Pushback_Reason3.Caption = Reason3
         End If
     End If
-    
+
     'update button color
     ClientUpdateForm.JTC_Phase_Remain.BackColor = &H8000000F
     ClientUpdateForm.JTC_Phase_Stepup.BackColor = &H8000000F
     ClientUpdateForm.JTC_Phase_Pushback.BackColor = &H8000000A
     ClientUpdateForm.JTC_Discharge.BackColor = &H8000000F
 
-    
+
     Modal_JTC_Phase_Pushback.Hide
 End Sub
 Private Sub New_Stepup_Date_Enter()
-    
+
     New_Stepup_Date.value = CalendarForm.GetDate(RangeOfYears:=5)
 
 End Sub
@@ -69,7 +69,7 @@ End Sub
 
 Private Sub New_Stepup_Date_Exit(ByVal Cancel As MSForms.ReturnBoolean)
     Set ctl = Me.New_Stepup_Date
-    
+
     'send to date validation
     Call DateValidation(ctl, Cancel)
 End Sub

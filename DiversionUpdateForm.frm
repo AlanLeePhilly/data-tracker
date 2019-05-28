@@ -40,10 +40,10 @@ Private Sub ExitOpt_Click()
     FollowupMP.value = 2
 End Sub
 
-                        ''''''''''''''''
-                        'INITIALIZATION'
-                        ''''''''''''''''
-                        
+''''''''''''''''
+'INITIALIZATION'
+''''''''''''''''
+
 Private Sub UserForm_Initialize()
     HearingMP.value = 0
     FirstHearingMP.value = 0
@@ -51,9 +51,9 @@ Private Sub UserForm_Initialize()
     Me.ScrollTop = 0
 End Sub
 
-                        '''''''''''''
-                        'VALIDATIONS'
-                        '''''''''''''
+'''''''''''''
+'VALIDATIONS'
+'''''''''''''
 Private Sub DateOfHearing_Exit(ByVal Cancel As MSForms.ReturnBoolean)
     Set ctl = Me.DateOfHearing
 
@@ -87,7 +87,7 @@ End Sub
 
 Private Sub FirstTerm1_Change()
     Dim i As Integer
-    
+
     If FirstTerm1.value = "None" Then
         FirstTerm1Provider.value = ""
         FirstTerm1Provider.Enabled = False
@@ -111,12 +111,12 @@ Private Sub FirstTerm1_Change()
         FirstTerm1Provider.Enabled = True
         FirstTerm2.Enabled = True
     End If
-    
+
 End Sub
 
 Private Sub FirstTerm2_Change()
     Dim i As Integer
-    
+
     If FirstTerm2.value = "None" Then
         FirstTerm2Provider.value = ""
         FirstTerm2Provider.Enabled = False
@@ -140,7 +140,7 @@ End Sub
 
 Private Sub FirstTerm3_Change()
     Dim i As Integer
-    
+
     If FirstTerm3.value = "None" Then
         FirstTerm3Provider.value = ""
         FirstTerm3Provider.Enabled = False
@@ -160,7 +160,7 @@ End Sub
 
 Private Sub FirstTerm4_Change()
     Dim i As Integer
-    
+
     If FirstTerm4.value = "None" Then
         FirstTerm4Provider.value = ""
         FirstTerm4Provider.Enabled = False
@@ -176,7 +176,7 @@ End Sub
 
 Private Sub FirstTerm5_Change()
     Dim i As Integer
-    
+
     If FirstTerm5.value = "None" Then
         FirstTerm5Provider.value = ""
         FirstTerm5Provider.Enabled = False
@@ -188,34 +188,34 @@ End Sub
 
 Private Sub SearchButton_Click()
     On Error Resume Next
-    
+
     'define variable Long(a big integer) named emptyRow
     Dim lastRow As Long
     Dim Query As String
     Dim lookCell As String
     Dim lookRow As Long
-    
+
     'activate the spreadsheet as default selector
     With Worksheets("Entry")
-        
+
         'define variable of search query in UPPERCASE named 'query'
         Query = UCase(SearchTextBox.value)
-        
+
         SearchResultsBox.Clear
-        
+
         lastRow = .Range("C" & Rows.count).End(xlUp).row
-        
+
         For lookRow = 3 To lastRow
-    
+
             lookCell = UCase(.Range(headerFind(Search_Type.value) & lookRow))
-            
+
             If InStr(1, lookCell, Query) > 0 Then
                 With SearchResultsBox
                     .ColumnCount = 4
                     .AddItem lookRow
-                        .List(SearchResultsBox.ListCount - 1, 1) = Worksheets("Entry").Range(headerFind("First Name") & lookRow)
-                        .List(SearchResultsBox.ListCount - 1, 2) = Worksheets("Entry").Range(headerFind("Last Name") & lookRow)
-                        .List(SearchResultsBox.ListCount - 1, 3) = Worksheets("Entry").Range(headerFind("Arrest Date") & lookRow)
+                    .List(SearchResultsBox.ListCount - 1, 1) = Worksheets("Entry").Range(headerFind("First Name") & lookRow)
+                    .List(SearchResultsBox.ListCount - 1, 2) = Worksheets("Entry").Range(headerFind("Last Name") & lookRow)
+                    .List(SearchResultsBox.ListCount - 1, 3) = Worksheets("Entry").Range(headerFind("Arrest Date") & lookRow)
                 End With
             End If
         Next lookRow
@@ -258,29 +258,29 @@ Private Sub LookupData_Click()
     Dim diversionHead As String
     'courtHead = headerFind(ReferredTo.value)
     diversionHead = headerFind("DIVERSION")
-    
+
     If DateOfHearing.value = "" Then
         MsgBox "Date of Hearing Required for Lookup"
         Exit Sub
     End If
-    
+
     Referral_Source.Caption _
         = Lookup("Diversion_Referral_Source_Num")(Range(headerFind("Referral Source", diversionHead) & updateRow).value)
-        
+
     Referral_Date.Caption _
         = Range(headerFind("Referral Date", diversionHead) & updateRow).value
-      
+
 
     Select Case True
         Case IsEmpty(Range(headerFind("Date of First Hearing", diversionHead) & updateRow).value)
             Status.Caption = "Referred"
             HearingMP.value = 1
-        
+
         Case Range(headerFind("Outcomes of First Hearing", diversionHead) & updateRow).value _
                 = Lookup("YAP_First_Hearing_Outcome_Name")("FTA - Continue")
             Status.Caption = "Referred"
             HearingMP.value = 1
-        
+
         Case Range(headerFind("Outcomes of First Hearing", diversionHead) & updateRow).value _
                 = Lookup("YAP_First_Hearing_Outcome_Name")("Contract Received")
             Status.Caption = "Contract Granted"
@@ -293,13 +293,13 @@ Private Sub LookupData_Click()
         Case Range(headerFind("Outcomes of First Hearing", diversionHead) & updateRow).value = 99
             Status.Caption = "Unknown"
     End Select
-    
+
     FetchMonitorFirst = Range(headerFind("Monitor First Name", diversionHead) & updateRow)
     FetchMonitorLast = Range(headerFind("Monitor Last Name", diversionHead) & updateRow)
     FetchVictimFirst = Range(headerFind("Victim First Name", diversionHead) & updateRow)
     FetchVictimLast = Range(headerFind("Victim Last Name", diversionHead) & updateRow)
     FetchYAPPanel = Lookup("Police_District_Num")(Range(headerFind("YAP Panel District #", diversionHead) & updateRow))
-    
+
     If Status.Caption = "Contract Granted" Then
         Dim i As Long
         Dim j As String
@@ -316,17 +316,17 @@ Private Sub LookupData_Click()
                     .ColumnCount = 4
                     .ColumnWidths = "0;70;70;30;"
                     .AddItem i
-                        .List(FetchTerms.ListCount - 1, 1) = Lookup("Condition_Num")(getContractTerm(updateRow, i))
-                        .List(FetchTerms.ListCount - 1, 2) = Lookup("Condition_Provider_Num")(getContractTermProvider(updateRow, i))
-                        .List(FetchTerms.ListCount - 1, 3) = DateDiff("d", getContractTermDate(updateRow, i), DateOfHearing)
+                    .List(FetchTerms.ListCount - 1, 1) = Lookup("Condition_Num")(getContractTerm(updateRow, i))
+                    .List(FetchTerms.ListCount - 1, 2) = Lookup("Condition_Provider_Num")(getContractTermProvider(updateRow, i))
+                    .List(FetchTerms.ListCount - 1, 3) = DateDiff("d", getContractTermDate(updateRow, i), DateOfHearing)
                 End With
                 With ReturnTerms
                     .ColumnCount = 5
                     .ColumnWidths = "0;70;70;0;0" 'term number, term, provider, LOS, edit flag
                     .AddItem i
-                        .List(ReturnTerms.ListCount - 1, 1) = Lookup("Condition_Num")(getContractTerm(updateRow, i))
-                        .List(ReturnTerms.ListCount - 1, 2) = Lookup("Condition_Provider_Num")(getContractTermProvider(updateRow, i))
-                        .List(ReturnTerms.ListCount - 1, 3) = DateDiff("d", getContractTermDate(updateRow, i), DateOfHearing)
+                    .List(ReturnTerms.ListCount - 1, 1) = Lookup("Condition_Num")(getContractTerm(updateRow, i))
+                    .List(ReturnTerms.ListCount - 1, 2) = Lookup("Condition_Provider_Num")(getContractTermProvider(updateRow, i))
+                    .List(ReturnTerms.ListCount - 1, 3) = DateDiff("d", getContractTermDate(updateRow, i), DateOfHearing)
                 End With
             End If
         Next i
@@ -352,23 +352,23 @@ End Sub
 
 Private Sub EditTerms_Click()
     Dim i As Integer
-    
+
     For i = 0 To ReturnTerms.ListCount - 1
         With Modal_Diversion_Term.EditTerms
             .ColumnCount = 4
             .ColumnWidths = "10;70;70;0;"
             .AddItem
-                .List(i, 0) = ReturnTerms.List(i, 0)
-                .List(i, 1) = ReturnTerms.List(i, 1)
-                .List(i, 2) = ReturnTerms.List(i, 2)
-                .List(i, 3) = ReturnTerms.List(i, 3)
+            .List(i, 0) = ReturnTerms.List(i, 0)
+            .List(i, 1) = ReturnTerms.List(i, 1)
+            .List(i, 2) = ReturnTerms.List(i, 2)
+            .List(i, 3) = ReturnTerms.List(i, 3)
         End With
     Next i
     Modal_Diversion_Term.Show
 End Sub
 
 Private Sub FirstHearingSubmit_Click()
-            
+
     With Application
         .ScreenUpdating = False
         .Calculation = xlCalculationManual
@@ -381,21 +381,21 @@ Private Sub FirstHearingSubmit_Click()
     diversionHead = headerFind("DIVERSION")
 
     'ADD FRONT NEXT COURT DATE & BUMP TO PREVIOUS
-    
+
     Range(headerFind("Next Court Date") & updateRow).value _
         = FirstHearingNextCourtDate.value
-    
+
     Range(headerFind("Outcomes of First Hearing", diversionHead) & updateRow).value _
         = Lookup("YAP_First_Hearing_Outcome_Name")(FirstHearingResult.value)
-        
+
     If FirstHearingResult.value = "Contract Received" Then
         Range(headerFind("Date of Contract", diversionHead) & updateRow).value = DateOfContract.value
         Range(headerFind("Date of First Hearing", diversionHead) & updateRow).value = DateOfHearing.value
         Range(headerFind("Projected Completion Date", diversionHead) & updateRow).value = FirstHearingNextCourtDate.value
-       
+
         Range(headerFind("Monitor First Name", diversionHead) & updateRow).value = MonitorFirstName.value
         Range(headerFind("Monitor Last Name", diversionHead) & updateRow).value = MonitorLastName.value
-        
+
         Range(headerFind("Contract Term #1", diversionHead) & updateRow).value = Lookup("Condition_Name")(FirstTerm1.value)
         Range(headerFind("Contract Term #1 Provider", diversionHead) & updateRow).value = Lookup("Condition_Provider_Name")(FirstTerm1Provider.value)
         Range(headerFind("Contract Term #2", diversionHead) & updateRow).value = Lookup("Condition_Name")(FirstTerm2.value)
@@ -407,14 +407,14 @@ Private Sub FirstHearingSubmit_Click()
         Range(headerFind("Contract Term #5", diversionHead) & updateRow).value = Lookup("Condition_Name")(FirstTerm5.value)
         Range(headerFind("Contract Term #5 Provider", diversionHead) & updateRow).value = Lookup("Condition_Provider_Name")(FirstTerm5Provider.value)
     End If
-    
+
     If FirstHearingResult.value = "FTA - Breach" Then
         Range(headerFind("Reason #1 Recommended to Court", diversionHead) & updateRow).value _
             = Lookup("Diversion_Court_Recommendation_Reason_Name")("FTA")
         Range(headerFind("Date of First Hearing", diversionHead) & updateRow).value = DateOfHearing.value
         Range(headerFind("Courtroom of Transfer", diversionHead) & updateRow).value _
             = Lookup("Courtroom_Name")(BreachCourtroom.value)
-        
+
         Range(headerFind("Nature of Discharge", diversionHead) & updateRow).value = 2 'negative
         Range(headerFind("Discharge Date", diversionHead) & updateRow).value = DateOfHearing.value
         Range(headerFind("LOS Diversion", diversionHead) & updateRow).value _
@@ -431,7 +431,7 @@ Private Sub FirstHearingSubmit_Click()
             Lookup("Courtroom_Num")(Range(hFind("Active Courtroom") & updateRow).value), _
             "Diversion")
     End If
-    
+
     If FirstHearingResult.value = "FTA - Continue" Then
         Call addFTA( _
             updateRow, _
@@ -439,7 +439,7 @@ Private Sub FirstHearingSubmit_Click()
             Lookup("Courtroom_Num")(Range(hFind("Active Courtroom") & updateRow).value), _
             "Diversion")
     End If
-    
+
     If FirstHearingResult.value = "Recommended to Court" Then
         Range(headerFind("Reason #1 Recommended to Court", diversionHead) & updateRow).value _
             = Lookup("Diversion_Court_Recommendation_Reason_Name")(RecToCourtReason1.value)
@@ -451,7 +451,7 @@ Private Sub FirstHearingSubmit_Click()
             = Lookup("Diversion_Court_Recommendation_Reason_Name")(RecToCourtReason4.value)
         Range(headerFind("Reason #5 Recommended to Court", diversionHead) & updateRow).value _
             = Lookup("Diversion_Court_Recommendation_Reason_Name")(RecToCourtReason5.value)
-            
+
         Range(headerFind("Courtroom of Transfer", diversionHead) & updateRow).value _
             = Lookup("Courtroom")(CourtroomReferredTo.value)
         Range(headerFind("Nature of Discharge", diversionHead) & updateRow).value = 2 'negative
@@ -461,11 +461,11 @@ Private Sub FirstHearingSubmit_Click()
         Range(headerFind("Detailed YAP Outcome", diversionHead) & updateRow).value = 14 'Admittance Not Granted
         'TODO ReferTo
     End If
-    
-    
+
+
     Unload DiversionUpdateForm
-    
-        
+
+
     With Application
         .ScreenUpdating = True
         .Calculation = xlCalculationAutomatic
@@ -488,7 +488,7 @@ Private Sub FollowupSubmit_Click()
     'ADD FRONT NEXT COURT DATE & BUMP TO PREVIOUS
     Range(headerFind("Next Court Date") & updateRow).value _
             = FirstHearingNextCourtDate.value
-            
+
     If ReviewOpt = False Then
         If ExitOpt = False Then
             MsgBox "Please Select Type of Hearing"
@@ -501,105 +501,105 @@ Private Sub FollowupSubmit_Click()
         hearingType = "Review"
         Range(headerFind("Did Youth Receive a Review Hearing?", diversionHead) & updateRow).value = 1
     End If
-        
-        Dim i As Integer
-        
-        If IsEmpty(Range(headerFind("Date of " & hearingType & " Hearing #1", diversionHead) & updateRow).value) Then
-            i = 1
+
+    Dim i As Integer
+
+    If IsEmpty(Range(headerFind("Date of " & hearingType & " Hearing #1", diversionHead) & updateRow).value) Then
+        i = 1
+    Else
+        If IsEmpty(Range(headerFind("Date of " & hearingType & " Hearing #2", diversionHead) & updateRow).value) Then
+            i = 2
         Else
-            If IsEmpty(Range(headerFind("Date of " & hearingType & " Hearing #2", diversionHead) & updateRow).value) Then
-                i = 2
+            If IsEmpty(Range(headerFind("Date of " & hearingType & " Hearing #3", diversionHead) & updateRow).value) Then
+                i = 3
             Else
-                If IsEmpty(Range(headerFind("Date of " & hearingType & " Hearing #3", diversionHead) & updateRow).value) Then
-                    i = 3
-                Else
-                    MsgBox "Already 3 " & hearingType & " hearings on record. See administrator for more information."
-                    Exit Sub
-                End If
+                MsgBox "Already 3 " & hearingType & " hearings on record. See administrator for more information."
+                Exit Sub
             End If
         End If
-        '2
-       
-        Range(headerFind("Date of " & hearingType & " Hearing #" & i, diversionHead) & updateRow).value = DateOfHearing.value
-        Range(headerFind("Result of " & hearingType & " Hearing #" & i, diversionHead) & updateRow).value = Lookup("Diversion_Review_Hearing_Outcome_Name")(FollowupResult.value)
-                
-        Dim j As Integer
-        
-        For j = 0 To FetchTerms.ListCount - 1
-            If FetchTerms.List(j, 1) = ReturnTerms.List(j, 1) And FetchTerms.List(j, 2) = ReturnTerms.List(j, 2) Then
+    End If
+    '2
+
+    Range(headerFind("Date of " & hearingType & " Hearing #" & i, diversionHead) & updateRow).value = DateOfHearing.value
+    Range(headerFind("Result of " & hearingType & " Hearing #" & i, diversionHead) & updateRow).value = Lookup("Diversion_Review_Hearing_Outcome_Name")(FollowupResult.value)
+
+    Dim j As Integer
+
+    For j = 0 To FetchTerms.ListCount - 1
+        If FetchTerms.List(j, 1) = ReturnTerms.List(j, 1) And FetchTerms.List(j, 2) = ReturnTerms.List(j, 2) Then
+        Else
+            If getOpenTermEdit(updateRow) = 0 Then
+                MsgBox "Already 5 term edits. See administrator for more information"
+                Exit Sub
             Else
-                If getOpenTermEdit(updateRow) = 0 Then
-                    MsgBox "Already 5 term edits. See administrator for more information"
-                    Exit Sub
-                Else
-                    tempHead = headerFind("Which Term Was Updated #" & getOpenTermEdit(updateRow), diversionHead)
-                    Range(headerFind("Which Term Was Updated #" & getOpenTermEdit(updateRow), diversionHead) & updateRow) = FetchTerms.List(j, 0)
-                    Range(headerFind("Date of Update", tempHead) & updateRow) = DateOfHearing
-                    Range(headerFind("Previous Term", tempHead) & updateRow) = Lookup("Condition_Name")(FetchTerms.List(j, 1))
-                    Range(headerFind("New Term", tempHead) & updateRow) = Lookup("Condition_Name")(ReturnTerms.List(j, 1))
-                    Range(headerFind("New Term Provider", tempHead) & updateRow) = Lookup("Condition_Provider_Name")(ReturnTerms.List(j, 2))
-                End If
+                tempHead = headerFind("Which Term Was Updated #" & getOpenTermEdit(updateRow), diversionHead)
+                Range(headerFind("Which Term Was Updated #" & getOpenTermEdit(updateRow), diversionHead) & updateRow) = FetchTerms.List(j, 0)
+                Range(headerFind("Date of Update", tempHead) & updateRow) = DateOfHearing
+                Range(headerFind("Previous Term", tempHead) & updateRow) = Lookup("Condition_Name")(FetchTerms.List(j, 1))
+                Range(headerFind("New Term", tempHead) & updateRow) = Lookup("Condition_Name")(ReturnTerms.List(j, 1))
+                Range(headerFind("New Term Provider", tempHead) & updateRow) = Lookup("Condition_Provider_Name")(ReturnTerms.List(j, 2))
             End If
-        Next j
-                
-        Select Case FollowupResult
-            Case "Rearrest"
+        End If
+    Next j
+
+    Select Case FollowupResult
+        Case "Rearrest"
             'TODO Rearrest
-            Case "FTA - Breach"
-                Range(headerFind("Reason #1 Recommended to Court", diversionHead) & updateRow).value _
+        Case "FTA - Breach"
+            Range(headerFind("Reason #1 Recommended to Court", diversionHead) & updateRow).value _
                     = Lookup("Diversion_Court_Recommendation_Reason_Name")("FTA")
-                Range(headerFind("Courtroom of Transfer", diversionHead) & updateRow).value _
+            Range(headerFind("Courtroom of Transfer", diversionHead) & updateRow).value _
                     = Lookup("Courtroom_Name")(FollowupBreachCourt.value)
-                
-                Range(headerFind("Nature of Discharge", diversionHead) & updateRow).value = 2 'negative
-                Range(headerFind("Discharge Date", diversionHead) & updateRow).value = DateOfHearing.value
-                Range(headerFind("LOS Diversion", diversionHead) & updateRow).value _
+
+            Range(headerFind("Nature of Discharge", diversionHead) & updateRow).value = 2 'negative
+            Range(headerFind("Discharge Date", diversionHead) & updateRow).value = DateOfHearing.value
+            Range(headerFind("LOS Diversion", diversionHead) & updateRow).value _
                     = DateDiff("d", Range(headerFind("Arrest Date") & updateRow).value, DateOfHearing.value)
-                Range(headerFind("Detailed YAP Outcome", diversionHead) & updateRow).value = 2 'FTA
-                Call ReferClientTo( _
+            Range(headerFind("Detailed YAP Outcome", diversionHead) & updateRow).value = 2 'FTA
+            Call ReferClientTo( _
                     referralDate:=DateOfHearing.value, _
                     clientRow:=updateRow, _
                     toCR:=FollowupBreachCourt.value _
                     )
-                Call addFTA( _
+            Call addFTA( _
                     updateRow, _
                     DateOfHearing.value, _
                     Lookup("Courtroom_Num")(Range(hFind("Active Courtroom") & updateRow).value), _
                     "Diversion")
-            Case "FTA - Continue"
-                Call addFTA( _
+        Case "FTA - Continue"
+            Call addFTA( _
                     updateRow, _
                     DateOfHearing.value, _
                     Lookup("Courtroom_Num")(Range(hFind("Active Courtroom") & updateRow).value), _
                     "Diversion")
-            Case "Recommended to Court"
-                Range(headerFind("Reason #1 Recommended to Court", diversionHead) & updateRow).value _
+        Case "Recommended to Court"
+            Range(headerFind("Reason #1 Recommended to Court", diversionHead) & updateRow).value _
                     = Lookup("Diversion_Court_Recommendation_Reason_Name")(FollowupRecReason.value)
-                Range(headerFind("Reasons Recommended to Court #" & i, headerFind(hearingType, diversionHead)) & updateRow).value _
+            Range(headerFind("Reasons Recommended to Court #" & i, headerFind(hearingType, diversionHead)) & updateRow).value _
                     = Lookup("Diversion_Court_Recommendation_Reason_Name")(FollowupRecReason.value)
-                Range(headerFind("Courtroom of Transfer", diversionHead) & updateRow).value _
+            Range(headerFind("Courtroom of Transfer", diversionHead) & updateRow).value _
                     = Lookup("Courtroom_Name")(FollowupCourtroom.value)
-                Call ReferClientTo( _
+            Call ReferClientTo( _
                     referralDate:=DateOfHearing.value, _
                     clientRow:=updateRow, _
                     toCR:=FollowupCourtroom.value _
                     )
-                Range(headerFind("Nature of Discharge", diversionHead) & updateRow).value = 2 'negative
-                Range(headerFind("Discharge Date", diversionHead) & updateRow).value = DateOfHearing.value
-                Range(headerFind("LOS Diversion", diversionHead) & updateRow).value _
+            Range(headerFind("Nature of Discharge", diversionHead) & updateRow).value = 2 'negative
+            Range(headerFind("Discharge Date", diversionHead) & updateRow).value = DateOfHearing.value
+            Range(headerFind("LOS Diversion", diversionHead) & updateRow).value _
                     = DateDiff("d", Range(headerFind("Arrest Date") & updateRow).value, DateOfHearing.value) / 365
-                Range(headerFind("Detailed YAP Outcome", diversionHead) & updateRow).value = 13 'Contract Breach
-                
-            Case "Pending Completion - Orginal Timeline"
-            Case "Pending Completion - Extension"
-                Range(headerFind("Projected Completion Date", diversionHead) & updateRow).value = DateOfHearing.value
-            Case "Positive Completion"
-                Range(headerFind("Nature of Discharge", diversionHead) & updateRow).value = 1 'positive
-                Range(headerFind("Discharge Date", diversionHead) & updateRow).value = DateOfHearing.value
-                Range(headerFind("LOS Diversion", diversionHead) & updateRow).value _
+            Range(headerFind("Detailed YAP Outcome", diversionHead) & updateRow).value = 13 'Contract Breach
+
+        Case "Pending Completion - Orginal Timeline"
+        Case "Pending Completion - Extension"
+            Range(headerFind("Projected Completion Date", diversionHead) & updateRow).value = DateOfHearing.value
+        Case "Positive Completion"
+            Range(headerFind("Nature of Discharge", diversionHead) & updateRow).value = 1 'positive
+            Range(headerFind("Discharge Date", diversionHead) & updateRow).value = DateOfHearing.value
+            Range(headerFind("LOS Diversion", diversionHead) & updateRow).value _
                     = DateDiff("d", Range(headerFind("Arrest Date") & updateRow).value, DateOfHearing.value) / 365
-                Range(headerFind("Detailed YAP Outcome", diversionHead) & updateRow).value = 6 ' positive completion
-                Call totalOutcome( _
+            Range(headerFind("Detailed YAP Outcome", diversionHead) & updateRow).value = 6 ' positive completion
+            Call totalOutcome( _
                     updateRow, _
                     DateOfHearing.value, _
                     Lookup("Courtroom_Num")(Range(hFind("Active Courtroom") & updateRow).value), _
@@ -608,16 +608,16 @@ Private Sub FollowupSubmit_Click()
                     "Positive", _
                     "Petition Diverted & Withdrawn", _
                     FollowupNotes.value)
-                    
-                    
-        End Select
-    
-        'zerofill?
-    
-    
+
+
+    End Select
+
+    'zerofill?
+
+
     Unload DiversionUpdateForm
-    
-        
+
+
     With Application
         .ScreenUpdating = True
         .Calculation = xlCalculationAutomatic

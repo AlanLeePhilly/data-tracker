@@ -4,10 +4,10 @@ Public Function headerFind(ByVal Query As String, Optional ByVal Start As String
     If Start = "" Then
         Start = "A"
     End If
-    
+
     Set Result = Worksheets("Entry").Range(Start & "2:TRJ2").Find(Query, LookAt:=xlWhole)
 
-    
+
     If Result Is Nothing Then
         err.Raise 9999, "headerFind", _
         "Error: Tried to find column header " & Chr(34) & Query & Chr(34) _
@@ -17,7 +17,7 @@ Public Function headerFind(ByVal Query As String, Optional ByVal Start As String
         headerFind = numToAlpha(Result.Column)
         Exit Function
     End If
-    
+
 End Function
 
 Public Function numToAlpha(ByVal ColNum As Long) As String
@@ -29,14 +29,14 @@ Public Function alphaToNum(ColAlpha As String) As Long
 End Function
 
 Function hFind(ParamArray myArgs() As Variant) As String
-' PASS THIS FUNCTION JUST A LIST OF STRING ARGUMENTS IN ASCENDING SPECIFICITY
-' EXAMPLE: Call hFind("Start Date", "Pretrial", "4E")
+    ' PASS THIS FUNCTION JUST A LIST OF STRING ARGUMENTS IN ASCENDING SPECIFICITY
+    ' EXAMPLE: Call hFind("Start Date", "Pretrial", "4E")
 
     Dim Result As Variant
     Dim Start As String
     Dim length As Integer
     Dim i As Integer
-    
+
     length = UBound(myArgs) - LBound(myArgs) + 1
     For i = UBound(myArgs) To LBound(myArgs) Step -1
         If length = 1 Then
@@ -48,6 +48,6 @@ Function hFind(ParamArray myArgs() As Variant) As String
     Next i
     hFind = Start
     Debug.Print Start
-    
+
 End Function
 

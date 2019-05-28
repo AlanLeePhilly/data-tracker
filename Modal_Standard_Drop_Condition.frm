@@ -14,9 +14,9 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
-                        '''''''''''''
-                        'VALIDATIONS'
-                        '''''''''''''
+'''''''''''''
+'VALIDATIONS'
+'''''''''''''
 Private Sub Start_Date_Enter()
     Start_Date.value = CalendarForm.GetDate(RangeOfYears:=5)
 End Sub
@@ -37,10 +37,10 @@ Private Sub Discharge_Date_Exit(ByVal Cancel As MSForms.ReturnBoolean)
 
 End Sub
 
-                        ''''''''''''''''''
-                        '''''BUTTONS''''''
-                        ''''''''''''''''''
-    
+''''''''''''''''''
+'''''BUTTONS''''''
+''''''''''''''''''
+
 Private Sub InsertDoH_Click()
     Discharge_Date = ClientUpdateForm.DateOfHearing
 End Sub
@@ -57,7 +57,7 @@ Private Sub Continue_Click()
     End If
     Dim returnBox As Object
     Set returnBox = ClientUpdateForm.Standard_Return_Condition_Box
-    
+
     With Condition_Box
         For i = 0 To .ListCount - 1
             If .Selected(i) = True Then

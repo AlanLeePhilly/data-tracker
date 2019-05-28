@@ -14,9 +14,9 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
-                        '''''''''''''
-                        'VALIDATIONS'
-                        '''''''''''''
+'''''''''''''
+'VALIDATIONS'
+'''''''''''''
 Private Sub Start_Date_Enter()
     Start_Date.value = CalendarForm.GetDate(RangeOfYears:=5)
 End Sub
@@ -26,10 +26,10 @@ Private Sub Start_Date_Exit(ByVal Cancel As MSForms.ReturnBoolean)
     Call DateValidation(ctl, Cancel)
 End Sub
 
-                        ''''''''''''''''''
-                        '''''BUTTONS''''''
-                        ''''''''''''''''''
-    
+''''''''''''''''''
+'''''BUTTONS''''''
+''''''''''''''''''
+
 Private Sub InsertDoH_Click()
     Start_Date = ClientUpdateForm.DateOfHearing
 End Sub
@@ -37,10 +37,10 @@ End Sub
 Private Sub Cancel_Click()
     Unload Modal_JTC_Add_Condition
 End Sub
-                         
-                        '''''''''''''''''''''''
-                        '''''SUBMIT LOGIC''''''
-                        '''''''''''''''''''''''
+
+'''''''''''''''''''''''
+'''''SUBMIT LOGIC''''''
+'''''''''''''''''''''''
 
 Private Sub Continue_Click()
     'VALIDATIONS
@@ -58,29 +58,29 @@ Private Sub Continue_Click()
         .ColumnCount = 10
         .ColumnWidths = "90;75;75;75;0;0;0;0;0;0;"
         .AddItem
-                .List(ClientUpdateForm.JTC_Return_Condition_Box.ListCount - 1, 0) = ConditionType
-                .List(ClientUpdateForm.JTC_Return_Condition_Box.ListCount - 1, 1) = Provider
-                .List(ClientUpdateForm.JTC_Return_Condition_Box.ListCount - 1, 2) = Start_Date
-                'end date
-                .List(ClientUpdateForm.JTC_Return_Condition_Box.ListCount - 1, 4) = "New"
-                'nature
-                .List(ClientUpdateForm.JTC_Return_Condition_Box.ListCount - 1, 6) = Reason1
-                .List(ClientUpdateForm.JTC_Return_Condition_Box.ListCount - 1, 7) = Reason2
-                .List(ClientUpdateForm.JTC_Return_Condition_Box.ListCount - 1, 8) = Reason3
-                .List(ClientUpdateForm.JTC_Return_Condition_Box.ListCount - 1, 9) = Notes
+        .List(ClientUpdateForm.JTC_Return_Condition_Box.ListCount - 1, 0) = ConditionType
+        .List(ClientUpdateForm.JTC_Return_Condition_Box.ListCount - 1, 1) = Provider
+        .List(ClientUpdateForm.JTC_Return_Condition_Box.ListCount - 1, 2) = Start_Date
+        'end date
+        .List(ClientUpdateForm.JTC_Return_Condition_Box.ListCount - 1, 4) = "New"
+        'nature
+        .List(ClientUpdateForm.JTC_Return_Condition_Box.ListCount - 1, 6) = Reason1
+        .List(ClientUpdateForm.JTC_Return_Condition_Box.ListCount - 1, 7) = Reason2
+        .List(ClientUpdateForm.JTC_Return_Condition_Box.ListCount - 1, 8) = Reason3
+        .List(ClientUpdateForm.JTC_Return_Condition_Box.ListCount - 1, 9) = Notes
     End With
-    
+
     With Modal_JTC_Drop_Condition.Condition_Box
         .ColumnCount = 10
         .ColumnWidths = "90;75;75;75;0;0;0;0;0;0;"
         .AddItem
-                 .List(Modal_JTC_Drop_Condition.Condition_Box.ListCount - 1, 0) = ConditionType
-                 .List(Modal_JTC_Drop_Condition.Condition_Box.ListCount - 1, 1) = Provider
-                 .List(Modal_JTC_Drop_Condition.Condition_Box.ListCount - 1, 2) = Start_Date
-                                  
-                 .List(Modal_JTC_Drop_Condition.Condition_Box.ListCount - 1, 4) = "New"
-     End With
-    
+        .List(Modal_JTC_Drop_Condition.Condition_Box.ListCount - 1, 0) = ConditionType
+        .List(Modal_JTC_Drop_Condition.Condition_Box.ListCount - 1, 1) = Provider
+        .List(Modal_JTC_Drop_Condition.Condition_Box.ListCount - 1, 2) = Start_Date
+
+        .List(Modal_JTC_Drop_Condition.Condition_Box.ListCount - 1, 4) = "New"
+    End With
+
     Unload Modal_JTC_Add_Condition
 End Sub
 

@@ -18,7 +18,7 @@ Attribute VB_Exposed = False
 
 Private Sub DB_Section_Change()
     DB_Subsection.value = "All"
-    
+
     Select Case DB_Section.value
         Case "Demographics", "Petition", "DRAI", "Detention"
             DB_Subsection.RowSource = "DB_Subsection_All"
@@ -49,24 +49,24 @@ Private Sub Edit_Click()
     Dim ColAlpha As String
     Dim HeaderName As String
     Dim CellVal As String
-    
+
     ColAlpha = ClientEdit.LookupBox.List(ClientEdit.LookupBox.listIndex, 1)
     HeaderName = ClientEdit.LookupBox.List(ClientEdit.LookupBox.listIndex, 2)
     CellVal = ClientEdit.LookupBox.List(ClientEdit.LookupBox.listIndex, 3)
-    
+
     Modal_Client_Edit.Column_Name.Caption = HeaderName
     Modal_Client_Edit.Column_Value.Caption = CellVal
     If (Not IsEmpty(Range(ColAlpha + "1"))) Then
-        
+
         Modal_Client_Edit.New_Value_Box.RowSource = Range(ColAlpha + "1")
         Modal_Client_Edit.New_Value_Text.Visible = False
         Modal_Client_Edit.New_Value_Box.Visible = True
     Else
-        
+
         Modal_Client_Edit.New_Value_Text.Visible = True
         Modal_Client_Edit.New_Value_Box.Visible = False
     End If
-        
+
     Modal_Client_Edit.Show
 End Sub
 
@@ -85,9 +85,9 @@ Private Sub Lookup_Button_Click()
     Dim startCol As Long
     Dim endCol As Long
     Dim count As Long
-    
+
     LookupBox.Clear
-    
+
     Select Case DB_Section
         Case "Demographics"
             startCol = alphaToNum(headerFind("DEMOGRAPHICS")) + 1
@@ -202,7 +202,7 @@ Private Sub Lookup_Button_Click()
             End Select
         Case "JTC"
             courtHead = headerFind("JTC")
-            
+
             Select Case DB_Subsection.value
                 Case "All"
                     startCol = alphaToNum(courtHead) + 1
@@ -241,7 +241,7 @@ Private Sub Lookup_Button_Click()
             End Select
         Case "Adult"
             courtHead = headerFind("ADULT")
-            
+
             Select Case DB_Subsection.value
                 Case "All"
                     startCol = alphaToNum(courtHead) + 1
@@ -280,7 +280,7 @@ Private Sub Lookup_Button_Click()
             End Select
         Case "Aggregates"
             courtHead = headerFind("AGGREGATES")
-            
+
             Select Case DB_Subsection.value
                 Case "All"
                     startCol = alphaToNum(courtHead) + 1
@@ -328,27 +328,27 @@ Private Sub Lookup_Button_Click()
             End Select
         Case Else
     End Select
-    
+
     For count = startCol To endCol
         With LookupBox
-                .ColumnCount = 4
-                .ColumnWidths = "0;20;130;130;"
-                .AddItem count
-                    .List(LookupBox.ListCount - 1, 1) = numToAlpha(count)
-                    .List(LookupBox.ListCount - 1, 2) = Cells(2, count)
-                    If (Not IsEmpty(Cells(1, count))) Then
-                        Dim word As String
-                        Dim word2 As Long
-                        Dim word3 As String
-                        
-                        word = Cells(1, count).value + "_Num"
-                        word2 = Cells(updateRow, count).value
-                        word3 = Lookup(word)(word2)
-                        .List(LookupBox.ListCount - 1, 3) = word3
-                    Else
-                        .List(LookupBox.ListCount - 1, 3) = Cells(updateRow, count)
-                    End If
-                    
+            .ColumnCount = 4
+            .ColumnWidths = "0;20;130;130;"
+            .AddItem count
+            .List(LookupBox.ListCount - 1, 1) = numToAlpha(count)
+            .List(LookupBox.ListCount - 1, 2) = Cells(2, count)
+            If (Not IsEmpty(Cells(1, count))) Then
+                Dim word As String
+                Dim word2 As Long
+                Dim word3 As String
+
+                word = Cells(1, count).value + "_Num"
+                word2 = Cells(updateRow, count).value
+                word3 = Lookup(word)(word2)
+                .List(LookupBox.ListCount - 1, 3) = word3
+            Else
+                .List(LookupBox.ListCount - 1, 3) = Cells(updateRow, count)
+            End If
+
         End With
     Next count
 End Sub
@@ -358,37 +358,37 @@ End Sub
 
 Private Sub SearchButton_Click()
     On Error Resume Next
-    
+
     'define variable Long(a big integer) named emptyRow
     Dim lastRow As Long
     Dim Query As String
     Dim lookRow As Long
     'activate the spreadsheet as default selector
     Worksheets("Entry").Activate
-    
+
     'define variable of search query in UPPERCASE named 'query'
     Query = UCase(SearchTextBox.value)
-    
+
     SearchResultsBox.Clear
-    
+
     lastRow = Range("C" & Rows.count).End(xlUp).row
-    
+
     For lookRow = 3 To lastRow
 
         lookCell = UCase(Range(headerFind(Search_Type.value) & lookRow))
-        
+
         If InStr(1, lookCell, Query) > 0 Then
             With SearchResultsBox
                 .ColumnCount = 8
                 .ColumnWidths = "30;70;80;80;70;70;70;70;"
                 .AddItem lookRow
-                    .List(SearchResultsBox.ListCount - 1, 1) = Range(headerFind("First Name") & lookRow)
-                    .List(SearchResultsBox.ListCount - 1, 2) = Range(headerFind("Last Name") & lookRow)
-                    .List(SearchResultsBox.ListCount - 1, 3) = Range(headerFind("DOB") & lookRow)
-                    .List(SearchResultsBox.ListCount - 1, 4) = Range(headerFind("Arrest Date") & lookRow)
-                    .List(SearchResultsBox.ListCount - 1, 5) = Range(headerFind("Petition #1") & lookRow)
-                    .List(SearchResultsBox.ListCount - 1, 6) = Lookup("Courtroom_Num")(Range(headerFind("Active Courtroom") & lookRow).value)
-                    .List(SearchResultsBox.ListCount - 1, 7) = Lookup("Legal_Status_Num")(Range(headerFind("Legal Status") & lookRow).value)
+                .List(SearchResultsBox.ListCount - 1, 1) = Range(headerFind("First Name") & lookRow)
+                .List(SearchResultsBox.ListCount - 1, 2) = Range(headerFind("Last Name") & lookRow)
+                .List(SearchResultsBox.ListCount - 1, 3) = Range(headerFind("DOB") & lookRow)
+                .List(SearchResultsBox.ListCount - 1, 4) = Range(headerFind("Arrest Date") & lookRow)
+                .List(SearchResultsBox.ListCount - 1, 5) = Range(headerFind("Petition #1") & lookRow)
+                .List(SearchResultsBox.ListCount - 1, 6) = Lookup("Courtroom_Num")(Range(headerFind("Active Courtroom") & lookRow).value)
+                .List(SearchResultsBox.ListCount - 1, 7) = Lookup("Legal_Status_Num")(Range(headerFind("Legal Status") & lookRow).value)
             End With
         End If
     Next lookRow
@@ -396,7 +396,7 @@ End Sub
 
 Private Sub Submit_Click()
     Dim count As Long
-    
+
     For count = 0 To (UpdateBox.ListCount - 1)
         If Not IsEmpty(Range(UpdateBox.List(count, 1) & "1")) Then
             Range(UpdateBox.List(count, 1) & updateRow).value _
@@ -406,7 +406,7 @@ Private Sub Submit_Click()
                 = UpdateBox.List(count, 3)
         End If
     Next count
-    
+
     Unload Me
 End Sub
 

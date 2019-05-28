@@ -14,9 +14,9 @@ Sub initialDetention( _
     ByVal Re5 As String)
 
     Dim bucketHead As String
-    
+
     bucketHead = hFind("DETENTION")
-    
+
     Call flagYes(Range(headerFind("Did Youth Have Initial Detention Hearing?", bucketHead) & clientRow))
     Range(headerFind("Date of Initial Detention Hearing", bucketHead) & clientRow).value = dateOf
     Range(headerFind("Type of Detention Hearing", bucketHead) & clientRow).value _
@@ -31,7 +31,7 @@ Sub initialDetention( _
         = Lookup("Detention_Decision_Name")(decision)
     Range(headerFind("Detention Facility", bucketHead) & clientRow).value _
         = Lookup("Detention_Facility_Name")(Facility)
-        
+
     Range(headerFind("Reason #1 for Detention Commit", bucketHead) & clientRow).value _
         = Lookup("Detention_Hearing_Reason_Name")(Re1)
     Range(headerFind("Reason #2 for Detention Commit", bucketHead) & clientRow).value _

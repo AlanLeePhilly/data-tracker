@@ -13,9 +13,9 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-                        '''''''''''''
-                        'VALIDATIONS'
-                        '''''''''''''
+'''''''''''''
+'VALIDATIONS'
+'''''''''''''
 Private Sub Discharge_Date_Enter()
     Discharge_Date.value = CalendarForm.GetDate(RangeOfYears:=5)
 End Sub
@@ -25,10 +25,10 @@ Private Sub Discharge_Date_Exit(ByVal Cancel As MSForms.ReturnBoolean)
     Call DateValidation(ctl, Cancel)
 End Sub
 
-                        ''''''''''''''''''
-                        '''''BUTTONS''''''
-                        ''''''''''''''''''
-    
+''''''''''''''''''
+'''''BUTTONS''''''
+''''''''''''''''''
+
 Private Sub InsertDoH_Click()
     Discharge_Date = ClientUpdateForm.DateOfHearing
 End Sub
@@ -45,7 +45,7 @@ Private Sub Continue_Click()
     End If
     Dim returnBox As Object
     Set returnBox = ClientUpdateForm.JTC_Return_Service_Box
-    
+
     With Service_Box
         For i = 0 To .ListCount - 1
             If .Selected(i) = True Then
@@ -64,7 +64,7 @@ Private Sub Continue_Click()
         Next
     End With
     Modal_JTC_Drop_Service.Hide
-    
+
     Service_Box.listIndex = -1
     Discharge_Date.value = ""
     Nature.value = "N/A"
@@ -95,7 +95,7 @@ End Sub
 
 Private Sub UserForm_QueryClose(Cancel As Integer, CloseMode As Integer)
     If CloseMode = vbFormControlMenu Then
-    Modal_JTC_Drop_Service.Hide
+        Modal_JTC_Drop_Service.Hide
         Cancel = True
     End If
 End Sub

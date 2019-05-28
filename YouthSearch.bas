@@ -23,15 +23,15 @@ Sub YouthSearchPrint0()
 
     Call RefreshNamedRanges
     Call Generate_Dictionaries
-    
+
     Dim PrintSheet As Worksheet
     Dim DataSheet As Worksheet
     Set PrintSheet = Worksheets("Youth Search")
     Set DataSheet = Worksheets("Entry")
-    
+
     Dim userRow As Long
     userRow = PrintSheet.Range("J5").value
-    
+
     'identifiers
     PrintSheet.Range("D12").Select
     Selection.ClearContents
@@ -41,7 +41,7 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("I14").Select
     Selection.ClearContents
-    
+
     'Demographics
     PrintSheet.Range("D19").Select
     Selection.ClearContents
@@ -63,8 +63,8 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("E30").Select
     Selection.ClearContents
-    
-    
+
+
     'Arrest Info
     PrintSheet.Range("O12").Select
     Selection.ClearContents
@@ -78,7 +78,7 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("N23").Select
     Selection.ClearContents
-    
+
     'Petition Info
     PrintSheet.Range("T12").Select
     Selection.ClearContents
@@ -108,34 +108,34 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("AC20").Select
     Selection.ClearContents
-        PrintSheet.Range("T23").Select
-        Selection.ClearContents
-        PrintSheet.Range("T25").Select
-        Selection.ClearContents
-        PrintSheet.Range("T27").Select
-        Selection.ClearContents
-        PrintSheet.Range("T29").Select
-        Selection.ClearContents
-        PrintSheet.Range("Y23").Select
-        Selection.ClearContents
-        PrintSheet.Range("Y25").Select
-        Selection.ClearContents
-        PrintSheet.Range("Y27").Select
-        Selection.ClearContents
-        PrintSheet.Range("Y29").Select
-        Selection.ClearContents
-        PrintSheet.Range("Y31").Select
-        Selection.ClearContents
-        PrintSheet.Range("AC23").Select
-        Selection.ClearContents
-        PrintSheet.Range("AC25").Select
-        Selection.ClearContents
-        PrintSheet.Range("AC27").Select
-        Selection.ClearContents
-        PrintSheet.Range("AC29").Select
-        Selection.ClearContents
-        PrintSheet.Range("AC31").Select
-        Selection.ClearContents
+    PrintSheet.Range("T23").Select
+    Selection.ClearContents
+    PrintSheet.Range("T25").Select
+    Selection.ClearContents
+    PrintSheet.Range("T27").Select
+    Selection.ClearContents
+    PrintSheet.Range("T29").Select
+    Selection.ClearContents
+    PrintSheet.Range("Y23").Select
+    Selection.ClearContents
+    PrintSheet.Range("Y25").Select
+    Selection.ClearContents
+    PrintSheet.Range("Y27").Select
+    Selection.ClearContents
+    PrintSheet.Range("Y29").Select
+    Selection.ClearContents
+    PrintSheet.Range("Y31").Select
+    Selection.ClearContents
+    PrintSheet.Range("AC23").Select
+    Selection.ClearContents
+    PrintSheet.Range("AC25").Select
+    Selection.ClearContents
+    PrintSheet.Range("AC27").Select
+    Selection.ClearContents
+    PrintSheet.Range("AC29").Select
+    Selection.ClearContents
+    PrintSheet.Range("AC31").Select
+    Selection.ClearContents
     PrintSheet.Range("T34").Select
     Selection.ClearContents
     PrintSheet.Range("T36").Select
@@ -164,36 +164,36 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("AC42").Select
     Selection.ClearContents
-        PrintSheet.Range("T45").Select
-        Selection.ClearContents
-        PrintSheet.Range("T47").Select
-        Selection.ClearContents
-        PrintSheet.Range("T49").Select
-        Selection.ClearContents
-        PrintSheet.Range("T51").Select
-        Selection.ClearContents
-        PrintSheet.Range("Y45").Select
-        Selection.ClearContents
-        PrintSheet.Range("Y47").Select
-        Selection.ClearContents
-        PrintSheet.Range("Y49").Select
-        Selection.ClearContents
-        PrintSheet.Range("Y51").Select
-        Selection.ClearContents
-        PrintSheet.Range("Y53").Select
-        Selection.ClearContents
-        PrintSheet.Range("AC45").Select
-        Selection.ClearContents
-        PrintSheet.Range("AC47").Select
-        Selection.ClearContents
-        PrintSheet.Range("AC49").Select
-        Selection.ClearContents
-        PrintSheet.Range("AC51").Select
-        Selection.ClearContents
-        PrintSheet.Range("AC53").Select
-        Selection.ClearContents
-    
-    
+    PrintSheet.Range("T45").Select
+    Selection.ClearContents
+    PrintSheet.Range("T47").Select
+    Selection.ClearContents
+    PrintSheet.Range("T49").Select
+    Selection.ClearContents
+    PrintSheet.Range("T51").Select
+    Selection.ClearContents
+    PrintSheet.Range("Y45").Select
+    Selection.ClearContents
+    PrintSheet.Range("Y47").Select
+    Selection.ClearContents
+    PrintSheet.Range("Y49").Select
+    Selection.ClearContents
+    PrintSheet.Range("Y51").Select
+    Selection.ClearContents
+    PrintSheet.Range("Y53").Select
+    Selection.ClearContents
+    PrintSheet.Range("AC45").Select
+    Selection.ClearContents
+    PrintSheet.Range("AC47").Select
+    Selection.ClearContents
+    PrintSheet.Range("AC49").Select
+    Selection.ClearContents
+    PrintSheet.Range("AC51").Select
+    Selection.ClearContents
+    PrintSheet.Range("AC53").Select
+    Selection.ClearContents
+
+
     'Associated Petitions
     PrintSheet.Range("O40").Select
     Selection.ClearContents
@@ -211,7 +211,7 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("O55").Select
     Selection.ClearContents
-    
+
     'Status of Arrest
     PrintSheet.Range("D37").Select
     Selection.ClearContents
@@ -233,7 +233,7 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("J41").Select
     Selection.ClearContents
-    
+
     'Active Court Proceedings
     PrintSheet.Range("D48").Select
     Selection.ClearContents
@@ -247,8 +247,8 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("J50").Select
     Selection.ClearContents
-    
-    
+
+
     'Active Supervision Programs
     PrintSheet.Range("D55").Select
     Selection.ClearContents
@@ -268,8 +268,8 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("J59").Select
     Selection.ClearContents
-    
-    
+
+
     'Active Conditions
     PrintSheet.Range("D64").Select
     Selection.ClearContents
@@ -307,8 +307,8 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("J74").Select
     Selection.ClearContents
-    
-    
+
+
     'Courtroom History
     PrintSheet.Range("D84").Select
     Selection.ClearContents
@@ -320,16 +320,16 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("D86").Select
     Selection.ClearContents
-        PrintSheet.Range("D94").Select
-        Selection.ClearContents
-        PrintSheet.Range("G94").Select
-        Selection.ClearContents
-        PrintSheet.Range("J94").Select
-        Selection.ClearContents
-        PrintSheet.Range("N94").Select
-        Selection.ClearContents
-        PrintSheet.Range("D96").Select
-        Selection.ClearContents
+    PrintSheet.Range("D94").Select
+    Selection.ClearContents
+    PrintSheet.Range("G94").Select
+    Selection.ClearContents
+    PrintSheet.Range("J94").Select
+    Selection.ClearContents
+    PrintSheet.Range("N94").Select
+    Selection.ClearContents
+    PrintSheet.Range("D96").Select
+    Selection.ClearContents
     PrintSheet.Range("D104").Select
     Selection.ClearContents
     PrintSheet.Range("G104").Select
@@ -340,16 +340,16 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("D106").Select
     Selection.ClearContents
-        PrintSheet.Range("D114").Select
-        Selection.ClearContents
-        PrintSheet.Range("G114").Select
-        Selection.ClearContents
-        PrintSheet.Range("J114").Select
-        Selection.ClearContents
-        PrintSheet.Range("N114").Select
-        Selection.ClearContents
-        PrintSheet.Range("D116").Select
-        Selection.ClearContents
+    PrintSheet.Range("D114").Select
+    Selection.ClearContents
+    PrintSheet.Range("G114").Select
+    Selection.ClearContents
+    PrintSheet.Range("J114").Select
+    Selection.ClearContents
+    PrintSheet.Range("N114").Select
+    Selection.ClearContents
+    PrintSheet.Range("D116").Select
+    Selection.ClearContents
     PrintSheet.Range("D124").Select
     Selection.ClearContents
     PrintSheet.Range("G124").Select
@@ -360,16 +360,16 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("D126").Select
     Selection.ClearContents
-        PrintSheet.Range("D134").Select
-        Selection.ClearContents
-        PrintSheet.Range("G134").Select
-        Selection.ClearContents
-        PrintSheet.Range("J134").Select
-        Selection.ClearContents
-        PrintSheet.Range("N134").Select
-        Selection.ClearContents
-        PrintSheet.Range("D136").Select
-        Selection.ClearContents
+    PrintSheet.Range("D134").Select
+    Selection.ClearContents
+    PrintSheet.Range("G134").Select
+    Selection.ClearContents
+    PrintSheet.Range("J134").Select
+    Selection.ClearContents
+    PrintSheet.Range("N134").Select
+    Selection.ClearContents
+    PrintSheet.Range("D136").Select
+    Selection.ClearContents
     PrintSheet.Range("D144").Select
     Selection.ClearContents
     PrintSheet.Range("G144").Select
@@ -380,16 +380,16 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("D146").Select
     Selection.ClearContents
-        PrintSheet.Range("D154").Select
-        Selection.ClearContents
-        PrintSheet.Range("G154").Select
-        Selection.ClearContents
-        PrintSheet.Range("J154").Select
-        Selection.ClearContents
-        PrintSheet.Range("N154").Select
-        Selection.ClearContents
-        PrintSheet.Range("D156").Select
-        Selection.ClearContents
+    PrintSheet.Range("D154").Select
+    Selection.ClearContents
+    PrintSheet.Range("G154").Select
+    Selection.ClearContents
+    PrintSheet.Range("J154").Select
+    Selection.ClearContents
+    PrintSheet.Range("N154").Select
+    Selection.ClearContents
+    PrintSheet.Range("D156").Select
+    Selection.ClearContents
     PrintSheet.Range("D164").Select
     Selection.ClearContents
     PrintSheet.Range("G164").Select
@@ -400,16 +400,16 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("D166").Select
     Selection.ClearContents
-        PrintSheet.Range("D174").Select
-        Selection.ClearContents
-        PrintSheet.Range("G174").Select
-        Selection.ClearContents
-        PrintSheet.Range("J174").Select
-        Selection.ClearContents
-        PrintSheet.Range("N174").Select
-        Selection.ClearContents
-        PrintSheet.Range("D176").Select
-        Selection.ClearContents
+    PrintSheet.Range("D174").Select
+    Selection.ClearContents
+    PrintSheet.Range("G174").Select
+    Selection.ClearContents
+    PrintSheet.Range("J174").Select
+    Selection.ClearContents
+    PrintSheet.Range("N174").Select
+    Selection.ClearContents
+    PrintSheet.Range("D176").Select
+    Selection.ClearContents
     PrintSheet.Range("D184").Select
     Selection.ClearContents
     PrintSheet.Range("G184").Select
@@ -420,10 +420,10 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("D186").Select
     Selection.ClearContents
-    
-    
+
+
     'Legal Status History
-    
+
     PrintSheet.Range("S84").Select
     Selection.ClearContents
     PrintSheet.Range("V84").Select
@@ -438,20 +438,20 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("V88").Select
     Selection.ClearContents
-        PrintSheet.Range("S96").Select
-        Selection.ClearContents
-        PrintSheet.Range("V96").Select
-        Selection.ClearContents
-        PrintSheet.Range("Z96").Select
-        Selection.ClearContents
-        PrintSheet.Range("AC96").Select
-        Selection.ClearContents
-        PrintSheet.Range("V98").Select
-        Selection.ClearContents
-        PrintSheet.Range("Z98").Select
-        Selection.ClearContents
-        PrintSheet.Range("V100").Select
-        Selection.ClearContents
+    PrintSheet.Range("S96").Select
+    Selection.ClearContents
+    PrintSheet.Range("V96").Select
+    Selection.ClearContents
+    PrintSheet.Range("Z96").Select
+    Selection.ClearContents
+    PrintSheet.Range("AC96").Select
+    Selection.ClearContents
+    PrintSheet.Range("V98").Select
+    Selection.ClearContents
+    PrintSheet.Range("Z98").Select
+    Selection.ClearContents
+    PrintSheet.Range("V100").Select
+    Selection.ClearContents
     PrintSheet.Range("S108").Select
     Selection.ClearContents
     PrintSheet.Range("V108").Select
@@ -466,20 +466,20 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("V112").Select
     Selection.ClearContents
-        PrintSheet.Range("S120").Select
-        Selection.ClearContents
-        PrintSheet.Range("V120").Select
-        Selection.ClearContents
-        PrintSheet.Range("Z120").Select
-        Selection.ClearContents
-        PrintSheet.Range("AC120").Select
-        Selection.ClearContents
-        PrintSheet.Range("V122").Select
-        Selection.ClearContents
-        PrintSheet.Range("Z122").Select
-        Selection.ClearContents
-        PrintSheet.Range("V124").Select
-        Selection.ClearContents
+    PrintSheet.Range("S120").Select
+    Selection.ClearContents
+    PrintSheet.Range("V120").Select
+    Selection.ClearContents
+    PrintSheet.Range("Z120").Select
+    Selection.ClearContents
+    PrintSheet.Range("AC120").Select
+    Selection.ClearContents
+    PrintSheet.Range("V122").Select
+    Selection.ClearContents
+    PrintSheet.Range("Z122").Select
+    Selection.ClearContents
+    PrintSheet.Range("V124").Select
+    Selection.ClearContents
     PrintSheet.Range("S132").Select
     Selection.ClearContents
     PrintSheet.Range("V132").Select
@@ -494,20 +494,20 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("V136").Select
     Selection.ClearContents
-        PrintSheet.Range("S144").Select
-        Selection.ClearContents
-        PrintSheet.Range("V144").Select
-        Selection.ClearContents
-        PrintSheet.Range("Z144").Select
-        Selection.ClearContents
-        PrintSheet.Range("AC144").Select
-        Selection.ClearContents
-        PrintSheet.Range("V146").Select
-        Selection.ClearContents
-        PrintSheet.Range("Z146").Select
-        Selection.ClearContents
-        PrintSheet.Range("V148").Select
-        Selection.ClearContents
+    PrintSheet.Range("S144").Select
+    Selection.ClearContents
+    PrintSheet.Range("V144").Select
+    Selection.ClearContents
+    PrintSheet.Range("Z144").Select
+    Selection.ClearContents
+    PrintSheet.Range("AC144").Select
+    Selection.ClearContents
+    PrintSheet.Range("V146").Select
+    Selection.ClearContents
+    PrintSheet.Range("Z146").Select
+    Selection.ClearContents
+    PrintSheet.Range("V148").Select
+    Selection.ClearContents
     PrintSheet.Range("S156").Select
     Selection.ClearContents
     PrintSheet.Range("V156").Select
@@ -522,9 +522,9 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("V160").Select
     Selection.ClearContents
-    
-    
-    
+
+
+
     'Supervision History
     PrintSheet.Range("D200").Select
     Selection.ClearContents
@@ -544,24 +544,24 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("E206").Select
     Selection.ClearContents
-        PrintSheet.Range("D214").Select
-        Selection.ClearContents
-        PrintSheet.Range("G214").Select
-        Selection.ClearContents
-        PrintSheet.Range("K214").Select
-        Selection.ClearContents
-        PrintSheet.Range("N214").Select
-        Selection.ClearContents
-        PrintSheet.Range("G216").Select
-        Selection.ClearContents
-        PrintSheet.Range("K216").Select
-        Selection.ClearContents
-        PrintSheet.Range("G218").Select
-        Selection.ClearContents
-        PrintSheet.Range("K218").Select
-        Selection.ClearContents
-        PrintSheet.Range("E220").Select
-        Selection.ClearContents
+    PrintSheet.Range("D214").Select
+    Selection.ClearContents
+    PrintSheet.Range("G214").Select
+    Selection.ClearContents
+    PrintSheet.Range("K214").Select
+    Selection.ClearContents
+    PrintSheet.Range("N214").Select
+    Selection.ClearContents
+    PrintSheet.Range("G216").Select
+    Selection.ClearContents
+    PrintSheet.Range("K216").Select
+    Selection.ClearContents
+    PrintSheet.Range("G218").Select
+    Selection.ClearContents
+    PrintSheet.Range("K218").Select
+    Selection.ClearContents
+    PrintSheet.Range("E220").Select
+    Selection.ClearContents
     PrintSheet.Range("D228").Select
     Selection.ClearContents
     PrintSheet.Range("G228").Select
@@ -580,24 +580,24 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("E234").Select
     Selection.ClearContents
-        PrintSheet.Range("D242").Select
-        Selection.ClearContents
-        PrintSheet.Range("G242").Select
-        Selection.ClearContents
-        PrintSheet.Range("K242").Select
-        Selection.ClearContents
-        PrintSheet.Range("N242").Select
-        Selection.ClearContents
-        PrintSheet.Range("G244").Select
-        Selection.ClearContents
-        PrintSheet.Range("K244").Select
-        Selection.ClearContents
-        PrintSheet.Range("G246").Select
-        Selection.ClearContents
-        PrintSheet.Range("K246").Select
-        Selection.ClearContents
-        PrintSheet.Range("E248").Select
-        Selection.ClearContents
+    PrintSheet.Range("D242").Select
+    Selection.ClearContents
+    PrintSheet.Range("G242").Select
+    Selection.ClearContents
+    PrintSheet.Range("K242").Select
+    Selection.ClearContents
+    PrintSheet.Range("N242").Select
+    Selection.ClearContents
+    PrintSheet.Range("G244").Select
+    Selection.ClearContents
+    PrintSheet.Range("K244").Select
+    Selection.ClearContents
+    PrintSheet.Range("G246").Select
+    Selection.ClearContents
+    PrintSheet.Range("K246").Select
+    Selection.ClearContents
+    PrintSheet.Range("E248").Select
+    Selection.ClearContents
     PrintSheet.Range("D256").Select
     Selection.ClearContents
     PrintSheet.Range("G256").Select
@@ -616,24 +616,24 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("E262").Select
     Selection.ClearContents
-        PrintSheet.Range("D270").Select
-        Selection.ClearContents
-        PrintSheet.Range("G270").Select
-        Selection.ClearContents
-        PrintSheet.Range("K270").Select
-        Selection.ClearContents
-        PrintSheet.Range("N270").Select
-        Selection.ClearContents
-        PrintSheet.Range("G272").Select
-        Selection.ClearContents
-        PrintSheet.Range("K272").Select
-        Selection.ClearContents
-        PrintSheet.Range("G274").Select
-        Selection.ClearContents
-        PrintSheet.Range("K274").Select
-        Selection.ClearContents
-        PrintSheet.Range("E276").Select
-        Selection.ClearContents
+    PrintSheet.Range("D270").Select
+    Selection.ClearContents
+    PrintSheet.Range("G270").Select
+    Selection.ClearContents
+    PrintSheet.Range("K270").Select
+    Selection.ClearContents
+    PrintSheet.Range("N270").Select
+    Selection.ClearContents
+    PrintSheet.Range("G272").Select
+    Selection.ClearContents
+    PrintSheet.Range("K272").Select
+    Selection.ClearContents
+    PrintSheet.Range("G274").Select
+    Selection.ClearContents
+    PrintSheet.Range("K274").Select
+    Selection.ClearContents
+    PrintSheet.Range("E276").Select
+    Selection.ClearContents
     PrintSheet.Range("D284").Select
     Selection.ClearContents
     PrintSheet.Range("G284").Select
@@ -652,24 +652,24 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("E290").Select
     Selection.ClearContents
-        PrintSheet.Range("D298").Select
-        Selection.ClearContents
-        PrintSheet.Range("G298").Select
-        Selection.ClearContents
-        PrintSheet.Range("K298").Select
-        Selection.ClearContents
-        PrintSheet.Range("N298").Select
-        Selection.ClearContents
-        PrintSheet.Range("G300").Select
-        Selection.ClearContents
-        PrintSheet.Range("K300").Select
-        Selection.ClearContents
-        PrintSheet.Range("G302").Select
-        Selection.ClearContents
-        PrintSheet.Range("K302").Select
-        Selection.ClearContents
-        PrintSheet.Range("E304").Select
-        Selection.ClearContents
+    PrintSheet.Range("D298").Select
+    Selection.ClearContents
+    PrintSheet.Range("G298").Select
+    Selection.ClearContents
+    PrintSheet.Range("K298").Select
+    Selection.ClearContents
+    PrintSheet.Range("N298").Select
+    Selection.ClearContents
+    PrintSheet.Range("G300").Select
+    Selection.ClearContents
+    PrintSheet.Range("K300").Select
+    Selection.ClearContents
+    PrintSheet.Range("G302").Select
+    Selection.ClearContents
+    PrintSheet.Range("K302").Select
+    Selection.ClearContents
+    PrintSheet.Range("E304").Select
+    Selection.ClearContents
     PrintSheet.Range("D312").Select
     Selection.ClearContents
     PrintSheet.Range("G312").Select
@@ -688,24 +688,24 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("E318").Select
     Selection.ClearContents
-        PrintSheet.Range("D326").Select
-        Selection.ClearContents
-        PrintSheet.Range("G326").Select
-        Selection.ClearContents
-        PrintSheet.Range("K326").Select
-        Selection.ClearContents
-        PrintSheet.Range("N326").Select
-        Selection.ClearContents
-        PrintSheet.Range("G328").Select
-        Selection.ClearContents
-        PrintSheet.Range("K328").Select
-        Selection.ClearContents
-        PrintSheet.Range("G330").Select
-        Selection.ClearContents
-        PrintSheet.Range("K330").Select
-        Selection.ClearContents
-        PrintSheet.Range("E332").Select
-        Selection.ClearContents
+    PrintSheet.Range("D326").Select
+    Selection.ClearContents
+    PrintSheet.Range("G326").Select
+    Selection.ClearContents
+    PrintSheet.Range("K326").Select
+    Selection.ClearContents
+    PrintSheet.Range("N326").Select
+    Selection.ClearContents
+    PrintSheet.Range("G328").Select
+    Selection.ClearContents
+    PrintSheet.Range("K328").Select
+    Selection.ClearContents
+    PrintSheet.Range("G330").Select
+    Selection.ClearContents
+    PrintSheet.Range("K330").Select
+    Selection.ClearContents
+    PrintSheet.Range("E332").Select
+    Selection.ClearContents
     PrintSheet.Range("D340").Select
     Selection.ClearContents
     PrintSheet.Range("G340").Select
@@ -724,24 +724,24 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("E346").Select
     Selection.ClearContents
-        PrintSheet.Range("D354").Select
-        Selection.ClearContents
-        PrintSheet.Range("G354").Select
-        Selection.ClearContents
-        PrintSheet.Range("K354").Select
-        Selection.ClearContents
-        PrintSheet.Range("N354").Select
-        Selection.ClearContents
-        PrintSheet.Range("G356").Select
-        Selection.ClearContents
-        PrintSheet.Range("K356").Select
-        Selection.ClearContents
-        PrintSheet.Range("G358").Select
-        Selection.ClearContents
-        PrintSheet.Range("K358").Select
-        Selection.ClearContents
-        PrintSheet.Range("E360").Select
-        Selection.ClearContents
+    PrintSheet.Range("D354").Select
+    Selection.ClearContents
+    PrintSheet.Range("G354").Select
+    Selection.ClearContents
+    PrintSheet.Range("K354").Select
+    Selection.ClearContents
+    PrintSheet.Range("N354").Select
+    Selection.ClearContents
+    PrintSheet.Range("G356").Select
+    Selection.ClearContents
+    PrintSheet.Range("K356").Select
+    Selection.ClearContents
+    PrintSheet.Range("G358").Select
+    Selection.ClearContents
+    PrintSheet.Range("K358").Select
+    Selection.ClearContents
+    PrintSheet.Range("E360").Select
+    Selection.ClearContents
     PrintSheet.Range("D368").Select
     Selection.ClearContents
     PrintSheet.Range("G368").Select
@@ -760,24 +760,24 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("E374").Select
     Selection.ClearContents
-        PrintSheet.Range("D382").Select
-        Selection.ClearContents
-        PrintSheet.Range("G382").Select
-        Selection.ClearContents
-        PrintSheet.Range("K382").Select
-        Selection.ClearContents
-        PrintSheet.Range("N382").Select
-        Selection.ClearContents
-        PrintSheet.Range("G384").Select
-        Selection.ClearContents
-        PrintSheet.Range("K384").Select
-        Selection.ClearContents
-        PrintSheet.Range("G386").Select
-        Selection.ClearContents
-        PrintSheet.Range("K386").Select
-        Selection.ClearContents
-        PrintSheet.Range("E388").Select
-        Selection.ClearContents
+    PrintSheet.Range("D382").Select
+    Selection.ClearContents
+    PrintSheet.Range("G382").Select
+    Selection.ClearContents
+    PrintSheet.Range("K382").Select
+    Selection.ClearContents
+    PrintSheet.Range("N382").Select
+    Selection.ClearContents
+    PrintSheet.Range("G384").Select
+    Selection.ClearContents
+    PrintSheet.Range("K384").Select
+    Selection.ClearContents
+    PrintSheet.Range("G386").Select
+    Selection.ClearContents
+    PrintSheet.Range("K386").Select
+    Selection.ClearContents
+    PrintSheet.Range("E388").Select
+    Selection.ClearContents
     PrintSheet.Range("D396").Select
     Selection.ClearContents
     PrintSheet.Range("G396").Select
@@ -796,24 +796,24 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("E402").Select
     Selection.ClearContents
-        PrintSheet.Range("D410").Select
-        Selection.ClearContents
-        PrintSheet.Range("G410").Select
-        Selection.ClearContents
-        PrintSheet.Range("K410").Select
-        Selection.ClearContents
-        PrintSheet.Range("N410").Select
-        Selection.ClearContents
-        PrintSheet.Range("G412").Select
-        Selection.ClearContents
-        PrintSheet.Range("K412").Select
-        Selection.ClearContents
-        PrintSheet.Range("G414").Select
-        Selection.ClearContents
-        PrintSheet.Range("K414").Select
-        Selection.ClearContents
-        PrintSheet.Range("E416").Select
-        Selection.ClearContents
+    PrintSheet.Range("D410").Select
+    Selection.ClearContents
+    PrintSheet.Range("G410").Select
+    Selection.ClearContents
+    PrintSheet.Range("K410").Select
+    Selection.ClearContents
+    PrintSheet.Range("N410").Select
+    Selection.ClearContents
+    PrintSheet.Range("G412").Select
+    Selection.ClearContents
+    PrintSheet.Range("K412").Select
+    Selection.ClearContents
+    PrintSheet.Range("G414").Select
+    Selection.ClearContents
+    PrintSheet.Range("K414").Select
+    Selection.ClearContents
+    PrintSheet.Range("E416").Select
+    Selection.ClearContents
     PrintSheet.Range("D424").Select
     Selection.ClearContents
     PrintSheet.Range("G424").Select
@@ -832,24 +832,24 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("E430").Select
     Selection.ClearContents
-        PrintSheet.Range("D438").Select
-        Selection.ClearContents
-        PrintSheet.Range("G438").Select
-        Selection.ClearContents
-        PrintSheet.Range("K438").Select
-        Selection.ClearContents
-        PrintSheet.Range("N438").Select
-        Selection.ClearContents
-        PrintSheet.Range("G440").Select
-        Selection.ClearContents
-        PrintSheet.Range("K440").Select
-        Selection.ClearContents
-        PrintSheet.Range("G442").Select
-        Selection.ClearContents
-        PrintSheet.Range("K442").Select
-        Selection.ClearContents
-        PrintSheet.Range("E444").Select
-        Selection.ClearContents
+    PrintSheet.Range("D438").Select
+    Selection.ClearContents
+    PrintSheet.Range("G438").Select
+    Selection.ClearContents
+    PrintSheet.Range("K438").Select
+    Selection.ClearContents
+    PrintSheet.Range("N438").Select
+    Selection.ClearContents
+    PrintSheet.Range("G440").Select
+    Selection.ClearContents
+    PrintSheet.Range("K440").Select
+    Selection.ClearContents
+    PrintSheet.Range("G442").Select
+    Selection.ClearContents
+    PrintSheet.Range("K442").Select
+    Selection.ClearContents
+    PrintSheet.Range("E444").Select
+    Selection.ClearContents
     PrintSheet.Range("D452").Select
     Selection.ClearContents
     PrintSheet.Range("G452").Select
@@ -868,26 +868,26 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("E458").Select
     Selection.ClearContents
-        PrintSheet.Range("D466").Select
-        Selection.ClearContents
-        PrintSheet.Range("G466").Select
-        Selection.ClearContents
-        PrintSheet.Range("K466").Select
-        Selection.ClearContents
-        PrintSheet.Range("N466").Select
-        Selection.ClearContents
-        PrintSheet.Range("G468").Select
-        Selection.ClearContents
-        PrintSheet.Range("K468").Select
-        Selection.ClearContents
-        PrintSheet.Range("G470").Select
-        Selection.ClearContents
-        PrintSheet.Range("K470").Select
-        Selection.ClearContents
-        PrintSheet.Range("E472").Select
-        Selection.ClearContents
-    
-    
+    PrintSheet.Range("D466").Select
+    Selection.ClearContents
+    PrintSheet.Range("G466").Select
+    Selection.ClearContents
+    PrintSheet.Range("K466").Select
+    Selection.ClearContents
+    PrintSheet.Range("N466").Select
+    Selection.ClearContents
+    PrintSheet.Range("G468").Select
+    Selection.ClearContents
+    PrintSheet.Range("K468").Select
+    Selection.ClearContents
+    PrintSheet.Range("G470").Select
+    Selection.ClearContents
+    PrintSheet.Range("K470").Select
+    Selection.ClearContents
+    PrintSheet.Range("E472").Select
+    Selection.ClearContents
+
+
     'Condition History
     PrintSheet.Range("S200").Select
     Selection.ClearContents
@@ -907,24 +907,24 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("U206").Select
     Selection.ClearContents
-        PrintSheet.Range("S214").Select
-        Selection.ClearContents
-        PrintSheet.Range("W214").Select
-        Selection.ClearContents
-        PrintSheet.Range("AA214").Select
-        Selection.ClearContents
-        PrintSheet.Range("N214").Select
-        Selection.ClearContents
-        PrintSheet.Range("W216").Select
-        Selection.ClearContents
-        PrintSheet.Range("AA216").Select
-        Selection.ClearContents
-        PrintSheet.Range("W218").Select
-        Selection.ClearContents
-        PrintSheet.Range("AA218").Select
-        Selection.ClearContents
-        PrintSheet.Range("U220").Select
-        Selection.ClearContents
+    PrintSheet.Range("S214").Select
+    Selection.ClearContents
+    PrintSheet.Range("W214").Select
+    Selection.ClearContents
+    PrintSheet.Range("AA214").Select
+    Selection.ClearContents
+    PrintSheet.Range("N214").Select
+    Selection.ClearContents
+    PrintSheet.Range("W216").Select
+    Selection.ClearContents
+    PrintSheet.Range("AA216").Select
+    Selection.ClearContents
+    PrintSheet.Range("W218").Select
+    Selection.ClearContents
+    PrintSheet.Range("AA218").Select
+    Selection.ClearContents
+    PrintSheet.Range("U220").Select
+    Selection.ClearContents
     PrintSheet.Range("S228").Select
     Selection.ClearContents
     PrintSheet.Range("W228").Select
@@ -943,24 +943,24 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("U234").Select
     Selection.ClearContents
-        PrintSheet.Range("S242").Select
-        Selection.ClearContents
-        PrintSheet.Range("W242").Select
-        Selection.ClearContents
-        PrintSheet.Range("AA242").Select
-        Selection.ClearContents
-        PrintSheet.Range("N242").Select
-        Selection.ClearContents
-        PrintSheet.Range("W244").Select
-        Selection.ClearContents
-        PrintSheet.Range("AA244").Select
-        Selection.ClearContents
-        PrintSheet.Range("W246").Select
-        Selection.ClearContents
-        PrintSheet.Range("AA246").Select
-        Selection.ClearContents
-        PrintSheet.Range("U248").Select
-        Selection.ClearContents
+    PrintSheet.Range("S242").Select
+    Selection.ClearContents
+    PrintSheet.Range("W242").Select
+    Selection.ClearContents
+    PrintSheet.Range("AA242").Select
+    Selection.ClearContents
+    PrintSheet.Range("N242").Select
+    Selection.ClearContents
+    PrintSheet.Range("W244").Select
+    Selection.ClearContents
+    PrintSheet.Range("AA244").Select
+    Selection.ClearContents
+    PrintSheet.Range("W246").Select
+    Selection.ClearContents
+    PrintSheet.Range("AA246").Select
+    Selection.ClearContents
+    PrintSheet.Range("U248").Select
+    Selection.ClearContents
     PrintSheet.Range("S256").Select
     Selection.ClearContents
     PrintSheet.Range("W256").Select
@@ -979,24 +979,24 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("U262").Select
     Selection.ClearContents
-        PrintSheet.Range("S270").Select
-        Selection.ClearContents
-        PrintSheet.Range("W270").Select
-        Selection.ClearContents
-        PrintSheet.Range("AA270").Select
-        Selection.ClearContents
-        PrintSheet.Range("N270").Select
-        Selection.ClearContents
-        PrintSheet.Range("W272").Select
-        Selection.ClearContents
-        PrintSheet.Range("AA272").Select
-        Selection.ClearContents
-        PrintSheet.Range("W274").Select
-        Selection.ClearContents
-        PrintSheet.Range("AA274").Select
-        Selection.ClearContents
-        PrintSheet.Range("U276").Select
-        Selection.ClearContents
+    PrintSheet.Range("S270").Select
+    Selection.ClearContents
+    PrintSheet.Range("W270").Select
+    Selection.ClearContents
+    PrintSheet.Range("AA270").Select
+    Selection.ClearContents
+    PrintSheet.Range("N270").Select
+    Selection.ClearContents
+    PrintSheet.Range("W272").Select
+    Selection.ClearContents
+    PrintSheet.Range("AA272").Select
+    Selection.ClearContents
+    PrintSheet.Range("W274").Select
+    Selection.ClearContents
+    PrintSheet.Range("AA274").Select
+    Selection.ClearContents
+    PrintSheet.Range("U276").Select
+    Selection.ClearContents
     PrintSheet.Range("S284").Select
     Selection.ClearContents
     PrintSheet.Range("W284").Select
@@ -1015,24 +1015,24 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("U290").Select
     Selection.ClearContents
-        PrintSheet.Range("S298").Select
-        Selection.ClearContents
-        PrintSheet.Range("W298").Select
-        Selection.ClearContents
-        PrintSheet.Range("AA298").Select
-        Selection.ClearContents
-        PrintSheet.Range("N298").Select
-        Selection.ClearContents
-        PrintSheet.Range("W300").Select
-        Selection.ClearContents
-        PrintSheet.Range("AA300").Select
-        Selection.ClearContents
-        PrintSheet.Range("W302").Select
-        Selection.ClearContents
-        PrintSheet.Range("AA302").Select
-        Selection.ClearContents
-        PrintSheet.Range("U304").Select
-        Selection.ClearContents
+    PrintSheet.Range("S298").Select
+    Selection.ClearContents
+    PrintSheet.Range("W298").Select
+    Selection.ClearContents
+    PrintSheet.Range("AA298").Select
+    Selection.ClearContents
+    PrintSheet.Range("N298").Select
+    Selection.ClearContents
+    PrintSheet.Range("W300").Select
+    Selection.ClearContents
+    PrintSheet.Range("AA300").Select
+    Selection.ClearContents
+    PrintSheet.Range("W302").Select
+    Selection.ClearContents
+    PrintSheet.Range("AA302").Select
+    Selection.ClearContents
+    PrintSheet.Range("U304").Select
+    Selection.ClearContents
     PrintSheet.Range("S312").Select
     Selection.ClearContents
     PrintSheet.Range("W312").Select
@@ -1051,24 +1051,24 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("U318").Select
     Selection.ClearContents
-        PrintSheet.Range("S326").Select
-        Selection.ClearContents
-        PrintSheet.Range("W326").Select
-        Selection.ClearContents
-        PrintSheet.Range("AA326").Select
-        Selection.ClearContents
-        PrintSheet.Range("N326").Select
-        Selection.ClearContents
-        PrintSheet.Range("W328").Select
-        Selection.ClearContents
-        PrintSheet.Range("AA328").Select
-        Selection.ClearContents
-        PrintSheet.Range("W330").Select
-        Selection.ClearContents
-        PrintSheet.Range("AA330").Select
-        Selection.ClearContents
-        PrintSheet.Range("U332").Select
-        Selection.ClearContents
+    PrintSheet.Range("S326").Select
+    Selection.ClearContents
+    PrintSheet.Range("W326").Select
+    Selection.ClearContents
+    PrintSheet.Range("AA326").Select
+    Selection.ClearContents
+    PrintSheet.Range("N326").Select
+    Selection.ClearContents
+    PrintSheet.Range("W328").Select
+    Selection.ClearContents
+    PrintSheet.Range("AA328").Select
+    Selection.ClearContents
+    PrintSheet.Range("W330").Select
+    Selection.ClearContents
+    PrintSheet.Range("AA330").Select
+    Selection.ClearContents
+    PrintSheet.Range("U332").Select
+    Selection.ClearContents
     PrintSheet.Range("S340").Select
     Selection.ClearContents
     PrintSheet.Range("W340").Select
@@ -1087,24 +1087,24 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("U346").Select
     Selection.ClearContents
-        PrintSheet.Range("S354").Select
-        Selection.ClearContents
-        PrintSheet.Range("W354").Select
-        Selection.ClearContents
-        PrintSheet.Range("AA354").Select
-        Selection.ClearContents
-        PrintSheet.Range("N354").Select
-        Selection.ClearContents
-        PrintSheet.Range("W356").Select
-        Selection.ClearContents
-        PrintSheet.Range("AA356").Select
-        Selection.ClearContents
-        PrintSheet.Range("W358").Select
-        Selection.ClearContents
-        PrintSheet.Range("AA358").Select
-        Selection.ClearContents
-        PrintSheet.Range("U360").Select
-        Selection.ClearContents
+    PrintSheet.Range("S354").Select
+    Selection.ClearContents
+    PrintSheet.Range("W354").Select
+    Selection.ClearContents
+    PrintSheet.Range("AA354").Select
+    Selection.ClearContents
+    PrintSheet.Range("N354").Select
+    Selection.ClearContents
+    PrintSheet.Range("W356").Select
+    Selection.ClearContents
+    PrintSheet.Range("AA356").Select
+    Selection.ClearContents
+    PrintSheet.Range("W358").Select
+    Selection.ClearContents
+    PrintSheet.Range("AA358").Select
+    Selection.ClearContents
+    PrintSheet.Range("U360").Select
+    Selection.ClearContents
     PrintSheet.Range("S368").Select
     Selection.ClearContents
     PrintSheet.Range("W368").Select
@@ -1123,24 +1123,24 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("U374").Select
     Selection.ClearContents
-        PrintSheet.Range("S382").Select
-        Selection.ClearContents
-        PrintSheet.Range("W382").Select
-        Selection.ClearContents
-        PrintSheet.Range("AA382").Select
-        Selection.ClearContents
-        PrintSheet.Range("N382").Select
-        Selection.ClearContents
-        PrintSheet.Range("W384").Select
-        Selection.ClearContents
-        PrintSheet.Range("AA384").Select
-        Selection.ClearContents
-        PrintSheet.Range("W386").Select
-        Selection.ClearContents
-        PrintSheet.Range("AA386").Select
-        Selection.ClearContents
-        PrintSheet.Range("U388").Select
-        Selection.ClearContents
+    PrintSheet.Range("S382").Select
+    Selection.ClearContents
+    PrintSheet.Range("W382").Select
+    Selection.ClearContents
+    PrintSheet.Range("AA382").Select
+    Selection.ClearContents
+    PrintSheet.Range("N382").Select
+    Selection.ClearContents
+    PrintSheet.Range("W384").Select
+    Selection.ClearContents
+    PrintSheet.Range("AA384").Select
+    Selection.ClearContents
+    PrintSheet.Range("W386").Select
+    Selection.ClearContents
+    PrintSheet.Range("AA386").Select
+    Selection.ClearContents
+    PrintSheet.Range("U388").Select
+    Selection.ClearContents
     PrintSheet.Range("S396").Select
     Selection.ClearContents
     PrintSheet.Range("W396").Select
@@ -1159,24 +1159,24 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("U402").Select
     Selection.ClearContents
-        PrintSheet.Range("S410").Select
-        Selection.ClearContents
-        PrintSheet.Range("W410").Select
-        Selection.ClearContents
-        PrintSheet.Range("AA410").Select
-        Selection.ClearContents
-        PrintSheet.Range("N410").Select
-        Selection.ClearContents
-        PrintSheet.Range("W412").Select
-        Selection.ClearContents
-        PrintSheet.Range("AA412").Select
-        Selection.ClearContents
-        PrintSheet.Range("W414").Select
-        Selection.ClearContents
-        PrintSheet.Range("AA414").Select
-        Selection.ClearContents
-        PrintSheet.Range("U416").Select
-        Selection.ClearContents
+    PrintSheet.Range("S410").Select
+    Selection.ClearContents
+    PrintSheet.Range("W410").Select
+    Selection.ClearContents
+    PrintSheet.Range("AA410").Select
+    Selection.ClearContents
+    PrintSheet.Range("N410").Select
+    Selection.ClearContents
+    PrintSheet.Range("W412").Select
+    Selection.ClearContents
+    PrintSheet.Range("AA412").Select
+    Selection.ClearContents
+    PrintSheet.Range("W414").Select
+    Selection.ClearContents
+    PrintSheet.Range("AA414").Select
+    Selection.ClearContents
+    PrintSheet.Range("U416").Select
+    Selection.ClearContents
     PrintSheet.Range("S424").Select
     Selection.ClearContents
     PrintSheet.Range("W424").Select
@@ -1195,24 +1195,24 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("U430").Select
     Selection.ClearContents
-        PrintSheet.Range("S438").Select
-        Selection.ClearContents
-        PrintSheet.Range("W438").Select
-        Selection.ClearContents
-        PrintSheet.Range("AA438").Select
-        Selection.ClearContents
-        PrintSheet.Range("N438").Select
-        Selection.ClearContents
-        PrintSheet.Range("W440").Select
-        Selection.ClearContents
-        PrintSheet.Range("AA440").Select
-        Selection.ClearContents
-        PrintSheet.Range("W442").Select
-        Selection.ClearContents
-        PrintSheet.Range("AA442").Select
-        Selection.ClearContents
-        PrintSheet.Range("U444").Select
-        Selection.ClearContents
+    PrintSheet.Range("S438").Select
+    Selection.ClearContents
+    PrintSheet.Range("W438").Select
+    Selection.ClearContents
+    PrintSheet.Range("AA438").Select
+    Selection.ClearContents
+    PrintSheet.Range("N438").Select
+    Selection.ClearContents
+    PrintSheet.Range("W440").Select
+    Selection.ClearContents
+    PrintSheet.Range("AA440").Select
+    Selection.ClearContents
+    PrintSheet.Range("W442").Select
+    Selection.ClearContents
+    PrintSheet.Range("AA442").Select
+    Selection.ClearContents
+    PrintSheet.Range("U444").Select
+    Selection.ClearContents
     PrintSheet.Range("S452").Select
     Selection.ClearContents
     PrintSheet.Range("W452").Select
@@ -1231,27 +1231,27 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("U458").Select
     Selection.ClearContents
-        PrintSheet.Range("S466").Select
-        Selection.ClearContents
-        PrintSheet.Range("W466").Select
-        Selection.ClearContents
-        PrintSheet.Range("AA466").Select
-        Selection.ClearContents
-        PrintSheet.Range("N466").Select
-        Selection.ClearContents
-        PrintSheet.Range("W468").Select
-        Selection.ClearContents
-        PrintSheet.Range("AA468").Select
-        Selection.ClearContents
-        PrintSheet.Range("W470").Select
-        Selection.ClearContents
-        PrintSheet.Range("AA470").Select
-        Selection.ClearContents
-        PrintSheet.Range("U472").Select
-        Selection.ClearContents
-    
-    
-    
+    PrintSheet.Range("S466").Select
+    Selection.ClearContents
+    PrintSheet.Range("W466").Select
+    Selection.ClearContents
+    PrintSheet.Range("AA466").Select
+    Selection.ClearContents
+    PrintSheet.Range("N466").Select
+    Selection.ClearContents
+    PrintSheet.Range("W468").Select
+    Selection.ClearContents
+    PrintSheet.Range("AA468").Select
+    Selection.ClearContents
+    PrintSheet.Range("W470").Select
+    Selection.ClearContents
+    PrintSheet.Range("AA470").Select
+    Selection.ClearContents
+    PrintSheet.Range("U472").Select
+    Selection.ClearContents
+
+
+
     'Court Listings History
     PrintSheet.Range("K487").Select
     Selection.ClearContents
@@ -1261,14 +1261,14 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("P487").Select
     Selection.ClearContents
-        PrintSheet.Range("K495").Select
-        Selection.ClearContents
-        PrintSheet.Range("K497").Select
-        Selection.ClearContents
-        PrintSheet.Range("K499").Select
-        Selection.ClearContents
-        PrintSheet.Range("P495").Select
-        Selection.ClearContents
+    PrintSheet.Range("K495").Select
+    Selection.ClearContents
+    PrintSheet.Range("K497").Select
+    Selection.ClearContents
+    PrintSheet.Range("K499").Select
+    Selection.ClearContents
+    PrintSheet.Range("P495").Select
+    Selection.ClearContents
     PrintSheet.Range("K503").Select
     Selection.ClearContents
     PrintSheet.Range("K505").Select
@@ -1277,14 +1277,14 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("P503").Select
     Selection.ClearContents
-        PrintSheet.Range("K511").Select
-        Selection.ClearContents
-        PrintSheet.Range("K513").Select
-        Selection.ClearContents
-        PrintSheet.Range("K515").Select
-        Selection.ClearContents
-        PrintSheet.Range("P511").Select
-        Selection.ClearContents
+    PrintSheet.Range("K511").Select
+    Selection.ClearContents
+    PrintSheet.Range("K513").Select
+    Selection.ClearContents
+    PrintSheet.Range("K515").Select
+    Selection.ClearContents
+    PrintSheet.Range("P511").Select
+    Selection.ClearContents
     PrintSheet.Range("K519").Select
     Selection.ClearContents
     PrintSheet.Range("K521").Select
@@ -1293,14 +1293,14 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("P519").Select
     Selection.ClearContents
-        PrintSheet.Range("K527").Select
-        Selection.ClearContents
-        PrintSheet.Range("K529").Select
-        Selection.ClearContents
-        PrintSheet.Range("K531").Select
-        Selection.ClearContents
-        PrintSheet.Range("P527").Select
-        Selection.ClearContents
+    PrintSheet.Range("K527").Select
+    Selection.ClearContents
+    PrintSheet.Range("K529").Select
+    Selection.ClearContents
+    PrintSheet.Range("K531").Select
+    Selection.ClearContents
+    PrintSheet.Range("P527").Select
+    Selection.ClearContents
     PrintSheet.Range("K535").Select
     Selection.ClearContents
     PrintSheet.Range("K537").Select
@@ -1309,14 +1309,14 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("P535").Select
     Selection.ClearContents
-        PrintSheet.Range("K543").Select
-        Selection.ClearContents
-        PrintSheet.Range("K545").Select
-        Selection.ClearContents
-        PrintSheet.Range("K547").Select
-        Selection.ClearContents
-        PrintSheet.Range("P543").Select
-        Selection.ClearContents
+    PrintSheet.Range("K543").Select
+    Selection.ClearContents
+    PrintSheet.Range("K545").Select
+    Selection.ClearContents
+    PrintSheet.Range("K547").Select
+    Selection.ClearContents
+    PrintSheet.Range("P543").Select
+    Selection.ClearContents
     PrintSheet.Range("K551").Select
     Selection.ClearContents
     PrintSheet.Range("K553").Select
@@ -1325,14 +1325,14 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("P551").Select
     Selection.ClearContents
-        PrintSheet.Range("K559").Select
-        Selection.ClearContents
-        PrintSheet.Range("K561").Select
-        Selection.ClearContents
-        PrintSheet.Range("K563").Select
-        Selection.ClearContents
-        PrintSheet.Range("P559").Select
-        Selection.ClearContents
+    PrintSheet.Range("K559").Select
+    Selection.ClearContents
+    PrintSheet.Range("K561").Select
+    Selection.ClearContents
+    PrintSheet.Range("K563").Select
+    Selection.ClearContents
+    PrintSheet.Range("P559").Select
+    Selection.ClearContents
     PrintSheet.Range("K567").Select
     Selection.ClearContents
     PrintSheet.Range("K569").Select
@@ -1341,14 +1341,14 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("P567").Select
     Selection.ClearContents
-        PrintSheet.Range("K575").Select
-        Selection.ClearContents
-        PrintSheet.Range("K577").Select
-        Selection.ClearContents
-        PrintSheet.Range("K579").Select
-        Selection.ClearContents
-        PrintSheet.Range("P575").Select
-        Selection.ClearContents
+    PrintSheet.Range("K575").Select
+    Selection.ClearContents
+    PrintSheet.Range("K577").Select
+    Selection.ClearContents
+    PrintSheet.Range("K579").Select
+    Selection.ClearContents
+    PrintSheet.Range("P575").Select
+    Selection.ClearContents
     PrintSheet.Range("K583").Select
     Selection.ClearContents
     PrintSheet.Range("K585").Select
@@ -1357,14 +1357,14 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("P583").Select
     Selection.ClearContents
-        PrintSheet.Range("K591").Select
-        Selection.ClearContents
-        PrintSheet.Range("K593").Select
-        Selection.ClearContents
-        PrintSheet.Range("K595").Select
-        Selection.ClearContents
-        PrintSheet.Range("P591").Select
-        Selection.ClearContents
+    PrintSheet.Range("K591").Select
+    Selection.ClearContents
+    PrintSheet.Range("K593").Select
+    Selection.ClearContents
+    PrintSheet.Range("K595").Select
+    Selection.ClearContents
+    PrintSheet.Range("P591").Select
+    Selection.ClearContents
     PrintSheet.Range("K599").Select
     Selection.ClearContents
     PrintSheet.Range("K601").Select
@@ -1373,14 +1373,14 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("P599").Select
     Selection.ClearContents
-        PrintSheet.Range("K607").Select
-        Selection.ClearContents
-        PrintSheet.Range("K609").Select
-        Selection.ClearContents
-        PrintSheet.Range("K611").Select
-        Selection.ClearContents
-        PrintSheet.Range("P607").Select
-        Selection.ClearContents
+    PrintSheet.Range("K607").Select
+    Selection.ClearContents
+    PrintSheet.Range("K609").Select
+    Selection.ClearContents
+    PrintSheet.Range("K611").Select
+    Selection.ClearContents
+    PrintSheet.Range("P607").Select
+    Selection.ClearContents
     PrintSheet.Range("K615").Select
     Selection.ClearContents
     PrintSheet.Range("K617").Select
@@ -1389,14 +1389,14 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("P615").Select
     Selection.ClearContents
-        PrintSheet.Range("K623").Select
-        Selection.ClearContents
-        PrintSheet.Range("K625").Select
-        Selection.ClearContents
-        PrintSheet.Range("K627").Select
-        Selection.ClearContents
-        PrintSheet.Range("P623").Select
-        Selection.ClearContents
+    PrintSheet.Range("K623").Select
+    Selection.ClearContents
+    PrintSheet.Range("K625").Select
+    Selection.ClearContents
+    PrintSheet.Range("K627").Select
+    Selection.ClearContents
+    PrintSheet.Range("P623").Select
+    Selection.ClearContents
     PrintSheet.Range("K631").Select
     Selection.ClearContents
     PrintSheet.Range("K633").Select
@@ -1405,14 +1405,14 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("P631").Select
     Selection.ClearContents
-        PrintSheet.Range("K639").Select
-        Selection.ClearContents
-        PrintSheet.Range("K641").Select
-        Selection.ClearContents
-        PrintSheet.Range("K643").Select
-        Selection.ClearContents
-        PrintSheet.Range("P639").Select
-        Selection.ClearContents
+    PrintSheet.Range("K639").Select
+    Selection.ClearContents
+    PrintSheet.Range("K641").Select
+    Selection.ClearContents
+    PrintSheet.Range("K643").Select
+    Selection.ClearContents
+    PrintSheet.Range("P639").Select
+    Selection.ClearContents
     PrintSheet.Range("K647").Select
     Selection.ClearContents
     PrintSheet.Range("K649").Select
@@ -1421,14 +1421,14 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("P647").Select
     Selection.ClearContents
-        PrintSheet.Range("K655").Select
-        Selection.ClearContents
-        PrintSheet.Range("K657").Select
-        Selection.ClearContents
-        PrintSheet.Range("K659").Select
-        Selection.ClearContents
-        PrintSheet.Range("P655").Select
-        Selection.ClearContents
+    PrintSheet.Range("K655").Select
+    Selection.ClearContents
+    PrintSheet.Range("K657").Select
+    Selection.ClearContents
+    PrintSheet.Range("K659").Select
+    Selection.ClearContents
+    PrintSheet.Range("P655").Select
+    Selection.ClearContents
     PrintSheet.Range("K663").Select
     Selection.ClearContents
     PrintSheet.Range("K665").Select
@@ -1437,14 +1437,14 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("P663").Select
     Selection.ClearContents
-        PrintSheet.Range("K671").Select
-        Selection.ClearContents
-        PrintSheet.Range("K673").Select
-        Selection.ClearContents
-        PrintSheet.Range("K675").Select
-        Selection.ClearContents
-        PrintSheet.Range("P671").Select
-        Selection.ClearContents
+    PrintSheet.Range("K671").Select
+    Selection.ClearContents
+    PrintSheet.Range("K673").Select
+    Selection.ClearContents
+    PrintSheet.Range("K675").Select
+    Selection.ClearContents
+    PrintSheet.Range("P671").Select
+    Selection.ClearContents
     PrintSheet.Range("K679").Select
     Selection.ClearContents
     PrintSheet.Range("K681").Select
@@ -1453,14 +1453,14 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("P679").Select
     Selection.ClearContents
-        PrintSheet.Range("K687").Select
-        Selection.ClearContents
-        PrintSheet.Range("K689").Select
-        Selection.ClearContents
-        PrintSheet.Range("K691").Select
-        Selection.ClearContents
-        PrintSheet.Range("P687").Select
-        Selection.ClearContents
+    PrintSheet.Range("K687").Select
+    Selection.ClearContents
+    PrintSheet.Range("K689").Select
+    Selection.ClearContents
+    PrintSheet.Range("K691").Select
+    Selection.ClearContents
+    PrintSheet.Range("P687").Select
+    Selection.ClearContents
     PrintSheet.Range("K695").Select
     Selection.ClearContents
     PrintSheet.Range("K697").Select
@@ -1469,14 +1469,14 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("P695").Select
     Selection.ClearContents
-        PrintSheet.Range("K703").Select
-        Selection.ClearContents
-        PrintSheet.Range("K705").Select
-        Selection.ClearContents
-        PrintSheet.Range("K707").Select
-        Selection.ClearContents
-        PrintSheet.Range("P703").Select
-        Selection.ClearContents
+    PrintSheet.Range("K703").Select
+    Selection.ClearContents
+    PrintSheet.Range("K705").Select
+    Selection.ClearContents
+    PrintSheet.Range("K707").Select
+    Selection.ClearContents
+    PrintSheet.Range("P703").Select
+    Selection.ClearContents
     PrintSheet.Range("K711").Select
     Selection.ClearContents
     PrintSheet.Range("K713").Select
@@ -1485,14 +1485,14 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("P711").Select
     Selection.ClearContents
-        PrintSheet.Range("K719").Select
-        Selection.ClearContents
-        PrintSheet.Range("K721").Select
-        Selection.ClearContents
-        PrintSheet.Range("K723").Select
-        Selection.ClearContents
-        PrintSheet.Range("P719").Select
-        Selection.ClearContents
+    PrintSheet.Range("K719").Select
+    Selection.ClearContents
+    PrintSheet.Range("K721").Select
+    Selection.ClearContents
+    PrintSheet.Range("K723").Select
+    Selection.ClearContents
+    PrintSheet.Range("P719").Select
+    Selection.ClearContents
     PrintSheet.Range("K727").Select
     Selection.ClearContents
     PrintSheet.Range("K729").Select
@@ -1501,14 +1501,14 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("P727").Select
     Selection.ClearContents
-        PrintSheet.Range("K735").Select
-        Selection.ClearContents
-        PrintSheet.Range("K737").Select
-        Selection.ClearContents
-        PrintSheet.Range("K739").Select
-        Selection.ClearContents
-        PrintSheet.Range("P735").Select
-        Selection.ClearContents
+    PrintSheet.Range("K735").Select
+    Selection.ClearContents
+    PrintSheet.Range("K737").Select
+    Selection.ClearContents
+    PrintSheet.Range("K739").Select
+    Selection.ClearContents
+    PrintSheet.Range("P735").Select
+    Selection.ClearContents
     PrintSheet.Range("K743").Select
     Selection.ClearContents
     PrintSheet.Range("K745").Select
@@ -1517,14 +1517,14 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("P743").Select
     Selection.ClearContents
-        PrintSheet.Range("K751").Select
-        Selection.ClearContents
-        PrintSheet.Range("K753").Select
-        Selection.ClearContents
-        PrintSheet.Range("K755").Select
-        Selection.ClearContents
-        PrintSheet.Range("P751").Select
-        Selection.ClearContents
+    PrintSheet.Range("K751").Select
+    Selection.ClearContents
+    PrintSheet.Range("K753").Select
+    Selection.ClearContents
+    PrintSheet.Range("K755").Select
+    Selection.ClearContents
+    PrintSheet.Range("P751").Select
+    Selection.ClearContents
     PrintSheet.Range("K759").Select
     Selection.ClearContents
     PrintSheet.Range("K761").Select
@@ -1533,14 +1533,14 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("P759").Select
     Selection.ClearContents
-        PrintSheet.Range("K767").Select
-        Selection.ClearContents
-        PrintSheet.Range("K769").Select
-        Selection.ClearContents
-        PrintSheet.Range("K771").Select
-        Selection.ClearContents
-        PrintSheet.Range("P767").Select
-        Selection.ClearContents
+    PrintSheet.Range("K767").Select
+    Selection.ClearContents
+    PrintSheet.Range("K769").Select
+    Selection.ClearContents
+    PrintSheet.Range("K771").Select
+    Selection.ClearContents
+    PrintSheet.Range("P767").Select
+    Selection.ClearContents
     PrintSheet.Range("K775").Select
     Selection.ClearContents
     PrintSheet.Range("K777").Select
@@ -1549,14 +1549,14 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("P775").Select
     Selection.ClearContents
-        PrintSheet.Range("K783").Select
-        Selection.ClearContents
-        PrintSheet.Range("K785").Select
-        Selection.ClearContents
-        PrintSheet.Range("K787").Select
-        Selection.ClearContents
-        PrintSheet.Range("P783").Select
-        Selection.ClearContents
+    PrintSheet.Range("K783").Select
+    Selection.ClearContents
+    PrintSheet.Range("K785").Select
+    Selection.ClearContents
+    PrintSheet.Range("K787").Select
+    Selection.ClearContents
+    PrintSheet.Range("P783").Select
+    Selection.ClearContents
     PrintSheet.Range("K791").Select
     Selection.ClearContents
     PrintSheet.Range("K793").Select
@@ -1565,67 +1565,67 @@ Sub YouthSearchPrint0()
     Selection.ClearContents
     PrintSheet.Range("P791").Select
     Selection.ClearContents
-        PrintSheet.Range("K799").Select
-        Selection.ClearContents
-        PrintSheet.Range("K801").Select
-        Selection.ClearContents
-        PrintSheet.Range("K803").Select
-        Selection.ClearContents
-        PrintSheet.Range("P799").Select
-        Selection.ClearContents
-    
-    
-    
-    
+    PrintSheet.Range("K799").Select
+    Selection.ClearContents
+    PrintSheet.Range("K801").Select
+    Selection.ClearContents
+    PrintSheet.Range("K803").Select
+    Selection.ClearContents
+    PrintSheet.Range("P799").Select
+    Selection.ClearContents
+
+
+
+
     PrintSheet.Range("K5").Select
-    
+
     Call YouthSearchPrint
-    
-    
-    
-    End Sub
+
+
+
+End Sub
 
 Sub YouthSearchPrint()
     Call RefreshNamedRanges
     Call Generate_Dictionaries
-    
+
     Dim PrintSheet As Worksheet
     Dim DataSheet As Worksheet
     Set PrintSheet = Worksheets("Youth Search")
     Set DataSheet = Worksheets("Entry")
-    
+
     Dim userRow As Long
     userRow = PrintSheet.Range("J5").value
-    
+
     'PRINT IDENTIFIERS BOX
-    
+
     'example stringing together two different cell values to print
     PrintSheet.Range("D12").value = DataSheet.Range(hFind("First Name") & userRow).value & " " & DataSheet.Range(hFind("Last Name") & userRow).value
-    
+
     'basic examples
     PrintSheet.Range("D14").value = DataSheet.Range(hFind("DOB") & userRow).value
     PrintSheet.Range("I12").value = DataSheet.Range(hFind("PID #") & userRow).value
     PrintSheet.Range("I14").value = DataSheet.Range(hFind("SID #") & userRow).value
-    
+
     'examples with Lookup dictionary
     PrintSheet.Range("D19").value = Lookup("Sex_Num")(DataSheet.Range(hFind("Sex") & userRow).value)
     PrintSheet.Range("D21").value = Lookup("Race_Num")(DataSheet.Range(hFind("Race") & userRow).value)
-    
+
     'basic example
     PrintSheet.Range("D23").value = DataSheet.Range(hFind("Address") & userRow).value
     PrintSheet.Range("D26").value = DataSheet.Range(hFind("Zipcode", "DEMOGRAPHICS") & userRow).value
-    
+
     'example using a custom function
     PrintSheet.Range("I19").value = ageAtTime(VBA.Format(Now(), "mm/dd/yyyy"), userRow)
-    
+
     PrintSheet.Range("I21").value = DataSheet.Range(hFind("Age @ Intake") & userRow).value
     PrintSheet.Range("I23").value = DataSheet.Range(hFind("Guardian First") & userRow).value & " " & DataSheet.Range(hFind("Guardian Last") & userRow).value
 
     PrintSheet.Range("E28").value = DataSheet.Range(hFind("School") & userRow).value
     PrintSheet.Range("E30").value = DataSheet.Range(hFind("Grade") & userRow).value
     PrintSheet.Range("I26").value = DataSheet.Range(hFind("Phone #") & userRow).value
-    
-    
+
+
     'PRINT ARREST & PETITION INFO BOX
     'Arrest info
     PrintSheet.Range("O12").value = DataSheet.Range(hFind("DC #") & userRow).value
@@ -1633,10 +1633,10 @@ Sub YouthSearchPrint()
     PrintSheet.Range("P16").value = DataSheet.Range(hFind("Arrest Date") & userRow).value
     PrintSheet.Range("P18").value = Lookup("Generic_YNOU_Num")(DataSheet.Range(hFind("Active in System at Time of Arrest?", "Petition") & userRow).value)
     PrintSheet.Range("P20").value = DataSheet.Range(hFind("# of Prior Arrests") & userRow).value
-    
+
     'Notes from Intake
     PrintSheet.Range("N23").value = DataSheet.Range(hFind("General Notes from Intake") & userRow).value
-    
+
     'Petition #1
     PrintSheet.Range("T12").value = DataSheet.Range(hFind("Petition #1") & userRow).value
     PrintSheet.Range("Y12").value = DataSheet.Range(hFind("Lead Charge Name", "Petition #1") & userRow).value
@@ -1649,10 +1649,10 @@ Sub YouthSearchPrint()
     PrintSheet.Range("AC18").value = Lookup("Charge_Grade_Specific_Num")(DataSheet.Range(hFind("Charge Grade (specific) #4", "Petition #1") & userRow).value)
     PrintSheet.Range("Y20").value = DataSheet.Range(hFind("Charge Name #5", "Petition #1") & userRow).value
     PrintSheet.Range("AC20").value = Lookup("Charge_Grade_Specific_Num")(DataSheet.Range(hFind("Charge Grade (specific) #5", "Petition #1") & userRow).value)
-    
+
     PrintSheet.Range("T14").value = DataSheet.Range(hFind("Date Filed", "Petition #1") & userRow).value
-    
-    
+
+
     'Petition #2
     PrintSheet.Range("T23").value = DataSheet.Range(hFind("Petition #2") & userRow).value
     PrintSheet.Range("Y23").value = DataSheet.Range(hFind("Lead Charge Name", "Petition #2") & userRow).value
@@ -1709,25 +1709,25 @@ Sub YouthSearchPrint()
     PrintSheet.Range("J37").value = Lookup("Generic_YNOU_Num")(DataSheet.Range(hFind("Adjudicated Delinquent?", "COURT PROCEEDINGS", "AGGREGATES") & userRow).value)
     PrintSheet.Range("G39").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Admissions", "AGGREGATES") & userRow).value)
     PrintSheet.Range("J39").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Adjudicating Courtroom", "Adjudications", "AGGREGATES") & userRow).value)
-    
-    
+
+
     'SHONA'S LOS CALCULATIONS
-    
+
     If StrComp(activeStatus, "Active") = 0 Then
         'LoS for arrest and petition
         Dim losArrest As Integer
         Dim losPetition As Integer
-        
+
         Dim ArrestDate As String
         ArrestDate = DataSheet.Range(headerFind("Arrest Date (current petition)") & userRow).value
         losArrest = DateDiff("d", ArrestDate, VBA.Format(Now(), "mm/dd/yyyy"))
         PrintSheet.Range("D39").value = losArrest & " days"
-        
+
         Dim petitionDate As String
         petitionDate = DataSheet.Range(hFind("Date Filed", "Petition") & userRow).value
         losPetition = DateDiff("d", petitionDate, VBA.Format(Now(), "mm/dd/yyyy"))
         PrintSheet.Range("D41").value = losPetition & " days"
-        
+
         'Active court proceedings
         Dim Courtroom As String
         Dim losCourtroom As Integer
@@ -1743,16 +1743,16 @@ Sub YouthSearchPrint()
         courtroomOptions(9) = "ADULT"
         Courtroom = findFirstValue(DataSheet, userRow, "4G", courtroomOptions, "Start Date", "End Date")
         PrintSheet.Range("G48") = Courtroom
-        
-          'if courtroom exists
+
+        'if courtroom exists
         If Not StrComp(Courtroom, "") = 0 Then
             losCourtroom = DateDiff("d", DataSheet.Range(hFind("Start Date", Courtroom, "4G") & userRow).value, _
                 VBA.Format(Now(), "mm/dd/yyyy"))
             PrintSheet.Range("J48") = losCourtroom & " days"
         End If
-        
-        
-        
+
+
+
         Dim legalStatus As String
         Dim losLegalStatus As Integer
         Dim lostLegalStatus As Integer
@@ -1764,44 +1764,44 @@ Sub YouthSearchPrint()
         legalStatusOptions(5) = "Aftercare Probation"
         legalStatus = findFirstValue(DataSheet, userRow, "Aggregates", legalStatusOptions, "Start Date", "End Date")
         PrintSheet.Range("G50") = legalStatus
-        
-         'if legal status exists
+
+        'if legal status exists
         If Not StrComp(legalStatus, "") = 0 Then
-           losLegalStatus = DateDiff("d", DataSheet.Range(hFind("Start Date", legalStatus, "Aggregates") & userRow).value, _
+            losLegalStatus = DateDiff("d", DataSheet.Range(hFind("Start Date", legalStatus, "Aggregates") & userRow).value, _
             VBA.Format(Now(), "mm/dd/yyyy"))
-        PrintSheet.Range("J50") = losLegalStatus & " days"
-           
+            PrintSheet.Range("J50") = losLegalStatus & " days"
+
         End If
-        
-        
-        
-        
+
+
+
+
         'Supervision Programs
         Dim supervisionProgramColumns() As String
         supervisionProgramColumns = findAllValues(DataSheet, userRow, "Aggregates", "Supervision Ordered", "Start Date", "End Date")
         Dim supervisionArrLength As Integer
-        
+
         If (Not supervisionProgramColumns) = -1 Then
             supervisionArrLength = 0
         Else
             supervisionArrLength = UBound(supervisionProgramColumns) - LBound(supervisionProgramColumns) + 1
         End If
-        
+
         Dim supervisionI As Integer
         Dim supervisionStart As String
-        
+
         For supervisionI = 1 To supervisionArrLength
             PrintSheet.Range("D" & 53 + 2 * supervisionI) = Lookup("Supervision_Program_Num")(DataSheet.Range(hFind(supervisionProgramColumns(supervisionI - 1), "Aggregates") & userRow).value)
             supervisionStart = DataSheet.Range(hFind("Start Date", supervisionProgramColumns(supervisionI - 1), "Aggregates") & userRow).value
             PrintSheet.Range("J" & 53 + 2 * supervisionI) = DateDiff("d", supervisionStart, VBA.Format(Now(), "mm/dd/yyyy")) & " days"
             If supervisionI = 3 Then Exit For
         Next supervisionI
-        
+
         'Conditions
         Dim conditionsColumns() As String
         conditionsColumns = findAllValues(DataSheet, userRow, "Aggregates", "Condition Ordered", "Start Date", "End Date")
         Dim conditionArrLength As Integer
-        
+
         If (Not conditionsColumns) = -1 Then
             conditionArrLength = 0
         Else
@@ -1809,7 +1809,7 @@ Sub YouthSearchPrint()
         End If
         Dim conditionI As Integer
         Dim conditionStart As String
-        
+
         For conditionI = 1 To conditionArrLength
             PrintSheet.Range("D" & 62 + 2 * conditionI) = Lookup("Condition_Num")(DataSheet.Range(hFind(conditionsColumns(conditionI - 1), "Aggregates") & userRow).value)
             conditionStart = DataSheet.Range(hFind("Start Date", conditionsColumns(conditionI - 1), "Aggregates") & userRow).value
@@ -1817,20 +1817,20 @@ Sub YouthSearchPrint()
             If conditionI = 6 Then Exit For
         Next conditionI
     End If
-    
+
     PrintSheet.Range("D43").value = DataSheet.Range(hFind("Total LOS From Arrest", "Petition Outcomes") & userRow).value
-    
+
     'COURT PROCEEDINGS
     PrintSheet.Range("D48").value = DataSheet.Range(hFind("Next Court Date") & userRow).value
     'Replaced by courtroom & legal status calculation above
     'PrintSheet.Range("G48").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Active Courtroom") & userRow).value)
     'PrintSheet.Range("G50").value = Lookup("Legal_Status_Num")(DataSheet.Range(hFind("Legal Status") & userRow).value)
-    
-    
+
+
     'SUPERVISION PROGRAMS
     'PrintSheet.Range("D55").value = Lookup("Supervision_Program_Num")(DataSheet.Range(hFind("Active Supervision") & userRow).value)
     'PrintSheet.Range("G55").value = Lookup("Residential_Supervision_Provider_Num")(DataSheet.Range(hFind("Active Supervision Provider") & userRow).value)
-    
+
     'COURTROOM HISTORY
     'Detention
     PrintSheet.Range("D84").value = Lookup("Generic_YNOU_Num")(DataSheet.Range(hFind("Did Youth Have Initial Detention Hearing?", "DETENTION") & userRow).value)
@@ -1838,75 +1838,75 @@ Sub YouthSearchPrint()
     PrintSheet.Range("J84").value = DataSheet.Range(hFind("Date of Release", "DETENTION") & userRow).value
     PrintSheet.Range("N84").value = DataSheet.Range(hFind("LOS in Detention", "DETENTION") & userRow).value
     PrintSheet.Range("D86").value = DataSheet.Range(hFind("Notes on Detention", "DETENTION") & userRow).value
-    
+
     '4G
     PrintSheet.Range("D94").value = Lookup("Generic_YNOU_Num")(DataSheet.Range(hFind("Was Youth in 4G?") & userRow).value)
     PrintSheet.Range("G94").value = DataSheet.Range(hFind("Start Date", "4G") & userRow).value
     PrintSheet.Range("J94").value = DataSheet.Range(hFind("End Date", "4G") & userRow).value
     PrintSheet.Range("N94").value = DataSheet.Range(hFind("LOS", "4G") & userRow).value
     PrintSheet.Range("D96").value = DataSheet.Range(hFind("Notes on 4G", "4G") & userRow).value
-    
+
     '3E
     PrintSheet.Range("D104").value = Lookup("Generic_YNOU_Num")(DataSheet.Range(hFind("Was Youth in 3E?") & userRow).value)
     PrintSheet.Range("G104").value = DataSheet.Range(hFind("Start Date", "3E") & userRow).value
     PrintSheet.Range("J104").value = DataSheet.Range(hFind("End Date", "3E") & userRow).value
     PrintSheet.Range("N104").value = DataSheet.Range(hFind("LOS", "3E") & userRow).value
     PrintSheet.Range("D106").value = DataSheet.Range(hFind("Notes on 3E", "3E") & userRow).value
-    
+
     'JTC
     PrintSheet.Range("D114").value = Lookup("Generic_YNOU_Num")(DataSheet.Range(hFind("Was Youth in JTC?") & userRow).value)
     PrintSheet.Range("G114").value = DataSheet.Range(hFind("Referral Date", "JTC") & userRow).value
     PrintSheet.Range("J114").value = DataSheet.Range(hFind("Date of Overall Discharge", "JTC") & userRow).value
     PrintSheet.Range("N114").value = DataSheet.Range(hFind("Total LOS in JTC", "JTC") & userRow).value
     PrintSheet.Range("D116").value = DataSheet.Range(hFind("Notes on Outcome", "JTC") & userRow).value
-    
+
     'CROSSOVER
     PrintSheet.Range("D124").value = Lookup("Generic_YNOU_Num")(DataSheet.Range(hFind("Was Youth on Crossover Status?") & userRow).value)
     PrintSheet.Range("G124").value = DataSheet.Range(hFind("Referral Date", "Crossover") & userRow).value
     PrintSheet.Range("J124").value = DataSheet.Range(hFind("End Date", "Crossover") & userRow).value
     PrintSheet.Range("N124").value = DataSheet.Range(hFind("LOS", "Crossover") & userRow).value
     PrintSheet.Range("D126").value = DataSheet.Range(hFind("Notes on Outcome", "Crossover") & userRow).value
-    
+
     'WRAP
     PrintSheet.Range("D134").value = Lookup("Generic_YNOU_Num")(DataSheet.Range(hFind("Was Youth on WRAP Status?") & userRow).value)
     PrintSheet.Range("G134").value = DataSheet.Range(hFind("Referral Date", "WRAP") & userRow).value
     PrintSheet.Range("J134").value = DataSheet.Range(hFind("End Date", "WRAP") & userRow).value
     PrintSheet.Range("N134").value = DataSheet.Range(hFind("LOS", "WRAP") & userRow).value
     PrintSheet.Range("D136").value = DataSheet.Range(hFind("Notes on Outcome", "WRAP") & userRow).value
-    
+
     '4E
     PrintSheet.Range("D144").value = Lookup("Generic_YNOU_Num")(DataSheet.Range(hFind("Was Youth in 4E?") & userRow).value)
     PrintSheet.Range("G144").value = DataSheet.Range(hFind("Start Date", "4E") & userRow).value
     PrintSheet.Range("J144").value = DataSheet.Range(hFind("End Date", "4E") & userRow).value
     PrintSheet.Range("N144").value = DataSheet.Range(hFind("LOS", "4E") & userRow).value
     PrintSheet.Range("D146").value = DataSheet.Range(hFind("Notes on 4E", "4E") & userRow).value
-    
+
     '5F
-    
-    
+
+
     '6F
     PrintSheet.Range("D164").value = Lookup("Generic_YNOU_Num")(DataSheet.Range(hFind("Was Youth in 6F?") & userRow).value)
     PrintSheet.Range("G164").value = DataSheet.Range(hFind("Start Date", "6F") & userRow).value
     PrintSheet.Range("J164").value = DataSheet.Range(hFind("End Date", "6F") & userRow).value
     PrintSheet.Range("N164").value = DataSheet.Range(hFind("LOS", "6F") & userRow).value
     PrintSheet.Range("D166").value = DataSheet.Range(hFind("Notes on 6F", "6F") & userRow).value
-    
+
     '6H
     PrintSheet.Range("D174").value = Lookup("Generic_YNOU_Num")(DataSheet.Range(hFind("Was Youth in 6H?") & userRow).value)
     PrintSheet.Range("G174").value = DataSheet.Range(hFind("Start Date", "6H") & userRow).value
     PrintSheet.Range("J174").value = DataSheet.Range(hFind("End Date", "6H") & userRow).value
     PrintSheet.Range("N174").value = DataSheet.Range(hFind("LOS", "6H") & userRow).value
     PrintSheet.Range("D176").value = DataSheet.Range(hFind("Notes on 6H", "6H") & userRow).value
-    
+
     'Adult
     PrintSheet.Range("D184").value = Lookup("Generic_YNOU_Num")(DataSheet.Range(hFind("Was Youth in Adult?") & userRow).value)
     PrintSheet.Range("G184").value = DataSheet.Range(hFind("Start Date", "Adult") & userRow).value
     PrintSheet.Range("J184").value = DataSheet.Range(hFind("End Date", "Adult") & userRow).value
     PrintSheet.Range("N184").value = DataSheet.Range(hFind("LOS", "Adult") & userRow).value
     PrintSheet.Range("D186").value = DataSheet.Range(hFind("Notes on Adult", "Adult") & userRow).value
-    
-    
-    
+
+
+
     'LEGAL STATUS HISTORY
     'Diversion
     PrintSheet.Range("S84").value = Lookup("Generic_YNOU_Num")(DataSheet.Range(hFind("Referred to Diversion?") & userRow).value)
@@ -1951,7 +1951,7 @@ Sub YouthSearchPrint()
     PrintSheet.Range("V134").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom of Origin", "Probation", "AGGREGATES") & userRow).value)
     PrintSheet.Range("Z134").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Discharging Courtroom", "Probation", "AGGREGATES") & userRow).value)
     PrintSheet.Range("V136").value = DataSheet.Range(hFind("Notes on Probation", "AGGREGATES") & userRow).value
-    
+
     'Aftercare Probation
     PrintSheet.Range("S144").value = Lookup("Generic_YNOU_Num")(DataSheet.Range(hFind("Was Youth on Aftercare Probation?", "AGGREGATES") & userRow).value)
     PrintSheet.Range("V144").value = DataSheet.Range(hFind("Start Date", "Aftercare Probation", "AGGREGATES") & userRow).value
@@ -1960,7 +1960,7 @@ Sub YouthSearchPrint()
     PrintSheet.Range("V146").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom of Origin", "Aftercare Probation", "AGGREGATES") & userRow).value)
     PrintSheet.Range("Z146").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Discharging Courtroom", "Aftercare Probation", "AGGREGATES") & userRow).value)
     PrintSheet.Range("V148").value = DataSheet.Range(hFind("Notes on Aftercare Probation", "AGGREGATES") & userRow).value
-    
+
     'Adult
     PrintSheet.Range("S144").value = Lookup("Generic_YNOU_Num")(DataSheet.Range(hFind("Was Youth on Aftercare Probation?", "AGGREGATES") & userRow).value)
     PrintSheet.Range("V144").value = DataSheet.Range(hFind("Start Date", "Aftercare Probation", "AGGREGATES") & userRow).value
@@ -1970,7 +1970,7 @@ Sub YouthSearchPrint()
     PrintSheet.Range("Z146").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Discharging Courtroom", "Aftercare Probation", "AGGREGATES") & userRow).value)
     PrintSheet.Range("V148").value = DataSheet.Range(hFind("Notes on Aftercare Probation", "AGGREGATES") & userRow).value
 
-   
+
     Call YouthSearchPrint2
 
 End Sub
@@ -1980,12 +1980,12 @@ Sub YouthSearchPrint2()
 
     Call RefreshNamedRanges
     Call Generate_Dictionaries
-    
+
     Dim PrintSheet As Worksheet
     Dim DataSheet As Worksheet
     Set PrintSheet = Worksheets("Youth Search")
     Set DataSheet = Worksheets("Entry")
-    
+
     Dim userRow As Long
     userRow = PrintSheet.Range("J5").value
 
@@ -2012,7 +2012,7 @@ Sub YouthSearchPrint2()
     PrintSheet.Range("N214").value = Lookup("Residential_Supervision_Provider_Num")(DataSheet.Range(hFind("Residential Agency", "Supervision Ordered #2", "Supervision Programs", "AGGREGATES") & userRow).value)
     PrintSheet.Range("K216").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom of Order", "Supervision Ordered #2", "Supervision Programs", "AGGREGATES") & userRow).value)
     PrintSheet.Range("K218").value = Lookup("Legal_Status_Num")(DataSheet.Range(hFind("Legal Status of Order", "Supervision Ordered #2", "Supervision Programs", "AGGREGATES") & userRow).value)
-    
+
     '#3
     PrintSheet.Range("D228").value = Lookup("Supervision_Program_Num")(DataSheet.Range(hFind("Supervision Ordered #3", "Supervision Programs", "AGGREGATES") & userRow).value)
     PrintSheet.Range("G228").value = DataSheet.Range(hFind("Start Date", "Supervision Ordered #3", "Supervision Programs", "AGGREGATES") & userRow).value
@@ -2156,7 +2156,7 @@ Sub YouthSearchPrint2()
     PrintSheet.Range("K398").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom of Order", "Supervision Ordered #15", "Supervision Programs", "AGGREGATES") & userRow).value)
     PrintSheet.Range("K400").value = Lookup("Legal_Status_Num")(DataSheet.Range(hFind("Legal Status of Order", "Supervision Ordered #15", "Supervision Programs", "AGGREGATES") & userRow).value)
 
-   '#16
+    '#16
     PrintSheet.Range("D410").value = Lookup("Supervision_Program_Num")(DataSheet.Range(hFind("Supervision Ordered #16", "Supervision Programs", "AGGREGATES") & userRow).value)
     PrintSheet.Range("G410").value = DataSheet.Range(hFind("Start Date", "Supervision Ordered #16", "Supervision Programs", "AGGREGATES") & userRow).value
     PrintSheet.Range("G412").value = DataSheet.Range(hFind("End Date", "Supervision Ordered #16", "Supervision Programs", "AGGREGATES") & userRow).value
@@ -2177,7 +2177,7 @@ Sub YouthSearchPrint2()
     PrintSheet.Range("N424").value = Lookup("Residential_Supervision_Provider_Num")(DataSheet.Range(hFind("Residential Agency", "Supervision Ordered #17", "Supervision Programs", "AGGREGATES") & userRow).value)
     PrintSheet.Range("K426").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom of Order", "Supervision Ordered #17", "Supervision Programs", "AGGREGATES") & userRow).value)
     PrintSheet.Range("K428").value = Lookup("Legal_Status_Num")(DataSheet.Range(hFind("Legal Status of Order", "Supervision Ordered #17", "Supervision Programs", "AGGREGATES") & userRow).value)
-    
+
     '#18
     PrintSheet.Range("D438").value = Lookup("Supervision_Program_Num")(DataSheet.Range(hFind("Supervision Ordered #18", "Supervision Programs", "AGGREGATES") & userRow).value)
     PrintSheet.Range("G438").value = DataSheet.Range(hFind("Start Date", "Supervision Ordered #18", "Supervision Programs", "AGGREGATES") & userRow).value
@@ -2188,7 +2188,7 @@ Sub YouthSearchPrint2()
     PrintSheet.Range("N438").value = Lookup("Residential_Supervision_Provider_Num")(DataSheet.Range(hFind("Residential Agency", "Supervision Ordered #18", "Supervision Programs", "AGGREGATES") & userRow).value)
     PrintSheet.Range("K440").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom of Order", "Supervision Ordered #18", "Supervision Programs", "AGGREGATES") & userRow).value)
     PrintSheet.Range("K442").value = Lookup("Legal_Status_Num")(DataSheet.Range(hFind("Legal Status of Order", "Supervision Ordered #18", "Supervision Programs", "AGGREGATES") & userRow).value)
-    
+
     '#19
     PrintSheet.Range("D452").value = Lookup("Supervision_Program_Num")(DataSheet.Range(hFind("Supervision Ordered #19", "Supervision Programs", "AGGREGATES") & userRow).value)
     PrintSheet.Range("G452").value = DataSheet.Range(hFind("Start Date", "Supervision Ordered #19", "Supervision Programs", "AGGREGATES") & userRow).value
@@ -2210,8 +2210,8 @@ Sub YouthSearchPrint2()
     PrintSheet.Range("N466").value = Lookup("Residential_Supervision_Provider_Num")(DataSheet.Range(hFind("Residential Agency", "Supervision Ordered #20", "Supervision Programs", "AGGREGATES") & userRow).value)
     PrintSheet.Range("K468").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom of Order", "Supervision Ordered #20", "Supervision Programs", "AGGREGATES") & userRow).value)
     PrintSheet.Range("K470").value = Lookup("Legal_Status_Num")(DataSheet.Range(hFind("Legal Status of Order", "Supervision Ordered #20", "Supervision Programs", "AGGREGATES") & userRow).value)
-   
-    
+
+
     Call YouthSearchPrint3
 
 End Sub
@@ -2220,19 +2220,19 @@ End Sub
 Sub YouthSearchPrint3()
 
 
-Call RefreshNamedRanges
+    Call RefreshNamedRanges
     Call Generate_Dictionaries
-    
+
     Dim PrintSheet As Worksheet
     Dim DataSheet As Worksheet
     Set PrintSheet = Worksheets("Youth Search")
     Set DataSheet = Worksheets("Entry")
-    
+
     Dim userRow As Long
     userRow = PrintSheet.Range("J5").value
 
 
-'Conditions HISTORY
+    'Conditions HISTORY
     '#1
     PrintSheet.Range("S200").value = Lookup("Condition_Num")(DataSheet.Range(hFind("Condition Ordered #1", "Conditions", "AGGREGATES") & userRow).value)
     PrintSheet.Range("W200").value = DataSheet.Range(hFind("Start Date", "Condition Ordered #1", "Conditions", "AGGREGATES") & userRow).value
@@ -2252,7 +2252,7 @@ Call RefreshNamedRanges
     PrintSheet.Range("AA214").value = Lookup("Condition_Provider_Num")(DataSheet.Range(hFind("Condition Agency", "Condition Ordered #2", "Conditions", "AGGREGATES") & userRow).value)
     PrintSheet.Range("AA216").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom of Order", "Condition Ordered #2", "Conditions", "AGGREGATES") & userRow).value)
     PrintSheet.Range("AA218").value = Lookup("Legal_Status_Num")(DataSheet.Range(hFind("Legal Status of Order", "Condition Ordered #2", "Conditions", "AGGREGATES") & userRow).value)
-    
+
     '#3
     PrintSheet.Range("S228").value = Lookup("Condition_Num")(DataSheet.Range(hFind("Condition Ordered #3", "Conditions", "AGGREGATES") & userRow).value)
     PrintSheet.Range("W228").value = DataSheet.Range(hFind("Start Date", "Condition Ordered #3", "Conditions", "AGGREGATES") & userRow).value
@@ -2424,7 +2424,7 @@ Call RefreshNamedRanges
     PrintSheet.Range("AA452").value = Lookup("Condition_Provider_Num")(DataSheet.Range(hFind("Condition Agency", "Condition Ordered #19", "Conditions", "AGGREGATES") & userRow).value)
     PrintSheet.Range("AA454").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom of Order", "Condition Ordered #19", "Conditions", "AGGREGATES") & userRow).value)
     PrintSheet.Range("AA456").value = Lookup("Legal_Status_Num")(DataSheet.Range(hFind("Legal Status of Order", "Condition Ordered #19", "Conditions", "AGGREGATES") & userRow).value)
-    
+
     '#20
     PrintSheet.Range("S466").value = Lookup("Condition_Num")(DataSheet.Range(hFind("Condition Ordered #20", "Conditions", "AGGREGATES") & userRow).value)
     PrintSheet.Range("V466").value = DataSheet.Range(hFind("Start Date", "Condition Ordered #20", "Conditions", "AGGREGATES") & userRow).value
@@ -2435,27 +2435,27 @@ Call RefreshNamedRanges
     PrintSheet.Range("AA468").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom of Order", "Condition Ordered #20", "Conditions", "AGGREGATES") & userRow).value)
     PrintSheet.Range("AA470").value = Lookup("Legal_Status_Num")(DataSheet.Range(hFind("Legal Status of Order", "Condition Ordered #20", "Conditions", "AGGREGATES") & userRow).value)
 
-Call YouthSearchPrint4
+    Call YouthSearchPrint4
 
 End Sub
 
-    
-   Sub YouthSearchPrint4()
+
+Sub YouthSearchPrint4()
 
 
-Call RefreshNamedRanges
+    Call RefreshNamedRanges
     Call Generate_Dictionaries
-    
+
     Dim PrintSheet As Worksheet
     Dim DataSheet As Worksheet
     Set PrintSheet = Worksheets("Youth Search")
     Set DataSheet = Worksheets("Entry")
-    
+
     Dim userRow As Long
     userRow = PrintSheet.Range("J5").value
-    
-    
-    
+
+
+
     'COURT LISTINGS HISTORY
     '#1
     PrintSheet.Range("K487").value = DataSheet.Range(hFind("Court Date #1", "LISTINGS") & userRow).value
@@ -2466,92 +2466,92 @@ Call RefreshNamedRanges
     PrintSheet.Range("K495").value = DataSheet.Range(hFind("Court Date #2", "LISTINGS") & userRow).value
     PrintSheet.Range("K497").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #2", "LISTINGS") & userRow).value)
     PrintSheet.Range("P495").value = DataSheet.Range(hFind("Notes", "Court Date #2", "LISTINGS") & userRow).value
-    
+
     '#3
     PrintSheet.Range("K503").value = DataSheet.Range(hFind("Court Date #3", "LISTINGS") & userRow).value
     PrintSheet.Range("K505").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #3", "LISTINGS") & userRow).value)
     PrintSheet.Range("P503").value = DataSheet.Range(hFind("Notes", "Court Date #3", "LISTINGS") & userRow).value
-    
+
     '#4
     PrintSheet.Range("K511").value = DataSheet.Range(hFind("Court Date #4", "LISTINGS") & userRow).value
     PrintSheet.Range("K513").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #4", "LISTINGS") & userRow).value)
     PrintSheet.Range("P511").value = DataSheet.Range(hFind("Notes", "Court Date #4", "LISTINGS") & userRow).value
-    
+
     '#5
     PrintSheet.Range("K519").value = DataSheet.Range(hFind("Court Date #5", "LISTINGS") & userRow).value
     PrintSheet.Range("K521").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #5", "LISTINGS") & userRow).value)
     PrintSheet.Range("P519").value = DataSheet.Range(hFind("Notes", "Court Date #5", "LISTINGS") & userRow).value
-    
+
     '#6
     PrintSheet.Range("K527").value = DataSheet.Range(hFind("Court Date #6", "LISTINGS") & userRow).value
     PrintSheet.Range("K529").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #6", "LISTINGS") & userRow).value)
     PrintSheet.Range("P527").value = DataSheet.Range(hFind("Notes", "Court Date #6", "LISTINGS") & userRow).value
-    
+
     '#7
     PrintSheet.Range("K535").value = DataSheet.Range(hFind("Court Date #7", "LISTINGS") & userRow).value
     PrintSheet.Range("K537").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #7", "LISTINGS") & userRow).value)
     PrintSheet.Range("P535").value = DataSheet.Range(hFind("Notes", "Court Date #7", "LISTINGS") & userRow).value
-    
+
     '#8
     PrintSheet.Range("K543").value = DataSheet.Range(hFind("Court Date #8", "LISTINGS") & userRow).value
     PrintSheet.Range("K545").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #8", "LISTINGS") & userRow).value)
     PrintSheet.Range("P543").value = DataSheet.Range(hFind("Notes", "Court Date #8", "LISTINGS") & userRow).value
-    
+
     '#9
     PrintSheet.Range("K551").value = DataSheet.Range(hFind("Court Date #9", "LISTINGS") & userRow).value
     PrintSheet.Range("K553").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #9", "LISTINGS") & userRow).value)
     PrintSheet.Range("P551").value = DataSheet.Range(hFind("Notes", "Court Date #9", "LISTINGS") & userRow).value
-    
+
     '#10
     PrintSheet.Range("K559").value = DataSheet.Range(hFind("Court Date #10", "LISTINGS") & userRow).value
     PrintSheet.Range("K561").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #10", "LISTINGS") & userRow).value)
     PrintSheet.Range("P559").value = DataSheet.Range(hFind("Notes", "Court Date #10", "LISTINGS") & userRow).value
-    
+
     '#11
     PrintSheet.Range("K567").value = DataSheet.Range(hFind("Court Date #11", "LISTINGS") & userRow).value
     PrintSheet.Range("K569").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #11", "LISTINGS") & userRow).value)
     PrintSheet.Range("P567").value = DataSheet.Range(hFind("Notes", "Court Date #11", "LISTINGS") & userRow).value
-    
+
     '#12
     PrintSheet.Range("K575").value = DataSheet.Range(hFind("Court Date #12", "LISTINGS") & userRow).value
     PrintSheet.Range("K577").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #12", "LISTINGS") & userRow).value)
     PrintSheet.Range("P575").value = DataSheet.Range(hFind("Notes", "Court Date #12", "LISTINGS") & userRow).value
-    
+
     '#13
     PrintSheet.Range("K583").value = DataSheet.Range(hFind("Court Date #13", "LISTINGS") & userRow).value
     PrintSheet.Range("K585").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #13", "LISTINGS") & userRow).value)
     PrintSheet.Range("P583").value = DataSheet.Range(hFind("Notes", "Court Date #13", "LISTINGS") & userRow).value
-    
+
     '#14
     PrintSheet.Range("K591").value = DataSheet.Range(hFind("Court Date #14", "LISTINGS") & userRow).value
     PrintSheet.Range("K593").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #14", "LISTINGS") & userRow).value)
     PrintSheet.Range("P591").value = DataSheet.Range(hFind("Notes", "Court Date #14", "LISTINGS") & userRow).value
-    
+
     '#15
     PrintSheet.Range("K599").value = DataSheet.Range(hFind("Court Date #15", "LISTINGS") & userRow).value
     PrintSheet.Range("K601").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #15", "LISTINGS") & userRow).value)
     PrintSheet.Range("P599").value = DataSheet.Range(hFind("Notes", "Court Date #15", "LISTINGS") & userRow).value
-    
+
     '#16
     PrintSheet.Range("K607").value = DataSheet.Range(hFind("Court Date #16", "LISTINGS") & userRow).value
     PrintSheet.Range("K609").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #16", "LISTINGS") & userRow).value)
     PrintSheet.Range("P607").value = DataSheet.Range(hFind("Notes", "Court Date #16", "LISTINGS") & userRow).value
-    
+
     '#17
     PrintSheet.Range("K615").value = DataSheet.Range(hFind("Court Date #17", "LISTINGS") & userRow).value
     PrintSheet.Range("K617").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #17", "LISTINGS") & userRow).value)
     PrintSheet.Range("P615").value = DataSheet.Range(hFind("Notes", "Court Date #17", "LISTINGS") & userRow).value
-    
+
     '#18
     PrintSheet.Range("K623").value = DataSheet.Range(hFind("Court Date #18", "LISTINGS") & userRow).value
     PrintSheet.Range("K625").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #18", "LISTINGS") & userRow).value)
     PrintSheet.Range("P623").value = DataSheet.Range(hFind("Notes", "Court Date #18", "LISTINGS") & userRow).value
-    
+
     '#19
     PrintSheet.Range("K631").value = DataSheet.Range(hFind("Court Date #19", "LISTINGS") & userRow).value
     PrintSheet.Range("K633").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #19", "LISTINGS") & userRow).value)
     PrintSheet.Range("P631").value = DataSheet.Range(hFind("Notes", "Court Date #19", "LISTINGS") & userRow).value
-    
+
     '#20
     PrintSheet.Range("K639").value = DataSheet.Range(hFind("Court Date #20", "LISTINGS") & userRow).value
     PrintSheet.Range("K641").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #20", "LISTINGS") & userRow).value)
@@ -2581,7 +2581,7 @@ Call RefreshNamedRanges
     PrintSheet.Range("K679").value = DataSheet.Range(hFind("Court Date #25", "LISTINGS") & userRow).value
     PrintSheet.Range("K681").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #25", "LISTINGS") & userRow).value)
     PrintSheet.Range("P679").value = DataSheet.Range(hFind("Notes", "Court Date #25", "LISTINGS") & userRow).value
-    
+
     '#26
     PrintSheet.Range("K687").value = DataSheet.Range(hFind("Court Date #26", "LISTINGS") & userRow).value
     PrintSheet.Range("K689").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #26", "LISTINGS") & userRow).value)
@@ -2591,7 +2591,7 @@ Call RefreshNamedRanges
     PrintSheet.Range("K695").value = DataSheet.Range(hFind("Court Date #27", "LISTINGS") & userRow).value
     PrintSheet.Range("K697").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #27", "LISTINGS") & userRow).value)
     PrintSheet.Range("P695").value = DataSheet.Range(hFind("Notes", "Court Date #27", "LISTINGS") & userRow).value
-    
+
     '#28
     PrintSheet.Range("K703").value = DataSheet.Range(hFind("Court Date #28", "LISTINGS") & userRow).value
     PrintSheet.Range("K705").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #28", "LISTINGS") & userRow).value)
@@ -2601,7 +2601,7 @@ Call RefreshNamedRanges
     PrintSheet.Range("K711").value = DataSheet.Range(hFind("Court Date #29", "LISTINGS") & userRow).value
     PrintSheet.Range("K713").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #29", "LISTINGS") & userRow).value)
     PrintSheet.Range("P711").value = DataSheet.Range(hFind("Notes", "Court Date #29", "LISTINGS") & userRow).value
-    
+
     '#30
     PrintSheet.Range("K719").value = DataSheet.Range(hFind("Court Date #30", "LISTINGS") & userRow).value
     PrintSheet.Range("K721").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #30", "LISTINGS") & userRow).value)
@@ -2610,4 +2610,4 @@ Call RefreshNamedRanges
 
 
 
-    End Sub
+End Sub

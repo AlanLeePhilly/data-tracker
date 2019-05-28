@@ -10,7 +10,7 @@ Function calcTimeGroup(ByVal hrs As Integer, ByVal per As String) As Long
                 calcTimeGroup = Lookup("Time_Block_Name")("7:00AM - 2:59PM")
         End Select
     End If
-    
+
     If per = "PM" Then
         Select Case hrs
             Case 12, 1, 2
@@ -21,7 +21,7 @@ Function calcTimeGroup(ByVal hrs As Integer, ByVal per As String) As Long
                 calcTimeGroup = Lookup("Time_Block_Name")("8:00PM - 11:59PM")
         End Select
     End If
-    
+
     If Not IsNumeric(calcTimeGroup) Then
         err.Raise 9998, "calcTimeGroup"
         Exit Function
@@ -41,10 +41,10 @@ Function calcChargeBroad(ByVal chargeSpecific As String) As Long
         Case "Unknown"
             calcChargeBroad = Lookup("Charge_Grade_Broad_Name")("Unknown")
     End Select
-        If Not IsNumeric(calcChargeBroad) Then
-            err.Raise 9998, "calcChargeBroad"
-            Exit Function
-        End If
+    If Not IsNumeric(calcChargeBroad) Then
+        err.Raise 9998, "calcChargeBroad"
+        Exit Function
+    End If
 End Function
 
 Function commonwealthCat(ByVal reason As String) As Long
@@ -57,5 +57,5 @@ Function commonwealthCat(ByVal reason As String) As Long
             commonwealthCat = 2
         Case Else
             commonwealthCat = 99
-            End Select
+    End Select
 End Function

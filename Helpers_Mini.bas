@@ -3,13 +3,13 @@ Attribute VB_Name = "Helpers_Mini"
 
 Sub append(ByRef rng As Range, val As String, Optional dateMark As String = "1/1/1900")
     Dim payload As String
-    
+
     If Not dateMark = "1/1/1900" Then
         payload = dateMark & " - " & val & ";"
     Else
         payload = val & ";"
     End If
-    
+
     If IsEmpty(rng) Then
         rng.value = payload
     Else
@@ -19,13 +19,13 @@ End Sub
 
 Sub prepend(ByRef rng As Range, val As String, Optional dateMark As String = "1/1/1900")
     Dim payload As String
-    
+
     If Not dateMark = "1/1/1900" Then
         payload = dateMark & " - " & val & ";"
     Else
         payload = val & ";"
     End If
-    
+
     If IsEmpty(rng) Then
         rng.value = payload
     Else
@@ -41,7 +41,7 @@ Sub trimmer()
                 Debug.Print numToAlpha(count)
                 Debug.Print .Range(numToAlpha(count) & "2").value
                 Debug.Print Trim(.Range(numToAlpha(count) & "2").value)
-                
+
                 '.Range(numToAlpha(count) & "2").value = Trim(.Range(numToAlpha(count) & "2").value)
             End If
         Next count
@@ -51,17 +51,17 @@ End Sub
 Sub trimmer2()
     Dim countX As Long
     Dim countY As Long
-    
+
     With Sheets("MasterList")
         For countX = 1 To 200
             For countY = 1 To 200
                 If Not Trim(.Range(numToAlpha(countX) & countY).value) = .Range(numToAlpha(countX) & countY).value _
                     And Not IsNumeric(.Range(numToAlpha(countX) & countY).value) Then
-                    
+
                     Debug.Print numToAlpha(countX) + CStr(countY)
                     Debug.Print .Range(numToAlpha(countX) & countY).value
                     Debug.Print Trim(.Range(numToAlpha(countX) & countY).value)
-                    
+
                     '.Range(numToAlpha(countX) & countY).value = Trim(.Range(numToAlpha(countX) & countY).value)
                 End If
             Next countY
@@ -100,17 +100,17 @@ Sub toggleSelect( _
     Optional ByVal unselVal As String = "" _
 )
     'If btn.BackColor = selectedColor Then
-        'btn.BackColor = unselectedColor
-        'If Not targLabel Is Nothing Then
-            'targLabel.Caption = unselVal
-        'End If
+    'btn.BackColor = unselectedColor
+    'If Not targLabel Is Nothing Then
+    'targLabel.Caption = unselVal
+    'End If
     'Else
-        'If btn.BackColor = unselectedColor Then
-            btn.BackColor = selectedColor
-            If Not targLabel Is Nothing Then
-                targLabel.Caption = selVal
-            End If
-        'End If
+    'If btn.BackColor = unselectedColor Then
+    btn.BackColor = selectedColor
+    If Not targLabel Is Nothing Then
+        targLabel.Caption = selVal
+    End If
+    'End If
     'End If
 End Sub
 
@@ -118,14 +118,14 @@ Function findFirstValue(ds As Worksheet, rowNum As Long, header As String, secti
     'Used to go through several columns in a section, and returns first one that does not have end value
     Dim arrLength As Integer
     arrLength = UBound(sectionHeads) - LBound(sectionHeads) + 1
-    
+
     Dim i As Integer
     Dim startFound As String
     Dim endFound As String
     For i = 1 To arrLength
         startFound = ds.Cells(rowNum, hFind(startColName, sectionHeads(i), header)).value
         endFound = ds.Cells(rowNum, hFind(endColName, sectionHeads(i), header)).value
-        
+
         'If start found, but no end found, return sectionHeads of this index
         If Not StrComp(startFound, "") = 0 Then
             If StrComp(endFound, "") = 0 Then
@@ -141,14 +141,14 @@ Function findAllValues(ds As Worksheet, rowNum As Long, header As String, sectio
     Dim returnArr() As String
     Dim returnValues As Integer
     returnValues = 0
-    
+
     Dim i As Integer
     Dim startFound As String
     Dim endFound As String
     For i = 1 To 6
         startFound = ds.Cells(rowNum, hFind(startColName, sectionHead & " #" & i, header)).value
         endFound = ds.Cells(rowNum, hFind(endColName, sectionHead & " #" & i, header)).value
-        
+
         'If start found, but no end found, return sectionHeads of this index
         If Not StrComp(startFound, "") = 0 Then
             If StrComp(endFound, "") = 0 Then
@@ -158,7 +158,7 @@ Function findAllValues(ds As Worksheet, rowNum As Long, header As String, sectio
             End If
         End If
     Next i
-    
+
     findAllValues = returnArr
 End Function
 
@@ -181,7 +181,7 @@ Function timeDiff(time1 As Double, time2 As Double) As Double
 End Function
 
 Sub flagNo(ByRef rng As Range)
-'WILL NOT OVERWRITE A "YES" or "NO"
+    'WILL NOT OVERWRITE A "YES" or "NO"
     If isEmptyOrZero(rng) Then
         rng.value = Lookup("Generic_YN_Name")("No")
     End If
@@ -196,12 +196,12 @@ Sub addNotes(Courtroom As String, dateOf As String, userRow As Long, Notes As St
     For i = 1 To 100
         If IsEmpty(Range(hFind("Court Date #" & i, "LISTINGS") & userRow)) Then
             bucketHead = hFind("Court Date #" & i, "LISTINGS")
-            
+
             Range(bucketHead & userRow).value = dateOf
             Range(headerFind("Courtroom", bucketHead) & userRow).value = Lookup("Courtroom_Name")(Courtroom)
             Range(headerFind("Legal Status", bucketHead) & userRow).value = Lookup("Legal_Status_Name")(legalStatus)
             Range(headerFind("Notes", bucketHead) & userRow).value = Notes
-        
+
             i = 100
         End If
     Next i
@@ -212,39 +212,39 @@ Sub addPetitionsToBox(ByRef MyBox As Object)
     Dim bucketHead As String
     MyBox.Clear
     Worksheets("Entry").Activate
-    
+
     For i = 1 To 5
         If Range(hFind("Petition Filed?", "Petition #" & i, "PETITION") & updateRow).value = Lookup("Generic_YNOU_Name")("Yes") Then
             bucketHead = hFind("Petition #" & i, "PETITION")
             With MyBox
                 .ColumnCount = 6
                 .ColumnWidths = "50;50;30;50;65;50"
-                    ' 0 Petition Number
-                    ' 1 Date Filed
-                    ' 2 Charge Grade
-                    ' 3 Charge Group
-                    ' 4 Charge Code
-                    ' 5 Charge Name
-                 
+                ' 0 Petition Number
+                ' 1 Date Filed
+                ' 2 Charge Grade
+                ' 3 Charge Group
+                ' 4 Charge Code
+                ' 5 Charge Name
+
                 .AddItem Range(bucketHead & updateRow).value
-                    .List(MyBox.ListCount - 1, 0) = Range(bucketHead & updateRow).value
-                    .List(MyBox.ListCount - 1, 1) = Range(headerFind("Date Filed", bucketHead) & updateRow).value
-                    .List(MyBox.ListCount - 1, 2) = Lookup("Charge_Grade_Specific_Num")(Range(headerFind("Charge Grade (specific) #1", bucketHead) & updateRow).value)
-                    .List(MyBox.ListCount - 1, 3) = Lookup("Charge_Num")(Range(headerFind("Charge Category #1", bucketHead) & updateRow).value)
-                    .List(MyBox.ListCount - 1, 4) = Range(headerFind("Lead Charge Code", bucketHead) & updateRow).value
-                    .List(MyBox.ListCount - 1, 5) = Range(headerFind("Lead Charge Name", bucketHead) & updateRow).value
+                .List(MyBox.ListCount - 1, 0) = Range(bucketHead & updateRow).value
+                .List(MyBox.ListCount - 1, 1) = Range(headerFind("Date Filed", bucketHead) & updateRow).value
+                .List(MyBox.ListCount - 1, 2) = Lookup("Charge_Grade_Specific_Num")(Range(headerFind("Charge Grade (specific) #1", bucketHead) & updateRow).value)
+                .List(MyBox.ListCount - 1, 3) = Lookup("Charge_Num")(Range(headerFind("Charge Category #1", bucketHead) & updateRow).value)
+                .List(MyBox.ListCount - 1, 4) = Range(headerFind("Lead Charge Code", bucketHead) & updateRow).value
+                .List(MyBox.ListCount - 1, 5) = Range(headerFind("Lead Charge Name", bucketHead) & updateRow).value
 
             End With
         End If
     Next i
-    
+
 End Sub
 
 Sub UnloadAll()
     Dim objLoop As Object
     Dim nameOf As String
-    
-    
+
+
     Dim i As Long
     For i = VBA.UserForms.count - 1 To 0 Step -1
         nameOf = VBA.UserForms(i).Name

@@ -34,7 +34,7 @@ Private Sub Continue_Click()
     ClientUpdateForm.Standard_Continuance_Update.BackColor = selectedColor
     ClientUpdateForm.Standard_Continuance_Remain.BackColor = unselectedColor
     ClientUpdateForm.Standard_Return_Continuance.Caption = "Yes"
-    
+
     Modal_Standard_Continuance.Hide
 End Sub
 

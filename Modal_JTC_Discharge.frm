@@ -20,13 +20,13 @@ Private Sub Continue_Click()
         MsgBox "Detailed Outcome Required"
         Exit Sub
     End If
-    
+
     ''''''''''''
     'VALIDATION NEEDED: only some detailed outcomes can match with certain Natures of Discharge
     ''''''''''''
 
     Modal_JTC_Discharge.Hide
-    
+
     Select Case DetailedOutcome.value
         Case "Rearrested & Held (adult)", "Aged out", "Show Cause"
             ClientUpdateForm.JTC_Return_Phase.Caption = "Negative Discharge"
@@ -36,15 +36,15 @@ Private Sub Continue_Click()
             ClientUpdateForm.JTC_Return_Phase.Caption = "Positive Discharge"
         Case Else
     End Select
-    
+
     ClientUpdateForm.JTC_Return_Stepup_Date.Caption = "N/A"
-    
+
     'hide reason for pushback display on the main update form
     ClientUpdateForm.JTC_Pushback_Reason_Label.Visible = False
     ClientUpdateForm.JTC_Pushback_Reason1.Caption = ""
     ClientUpdateForm.JTC_Pushback_Reason2.Caption = ""
     ClientUpdateForm.JTC_Pushback_Reason3.Caption = ""
-    
+
     'color buttons on the main update form
     ClientUpdateForm.JTC_Phase_Remain.BackColor = &H8000000F
     ClientUpdateForm.JTC_Phase_Stepup.BackColor = &H8000000F
@@ -64,13 +64,13 @@ Private Sub DetailedOutcome_Change()
             New_CR_Label.Enabled = False
             New_CR.Enabled = False
             New_CR.value = "N/A"
-        'Case "Acceptance Not Granted", "Show Cause", "Hosp. (Mental Health)", "Hosp. (Physical Health)", "Other", "Unknown"
+            'Case "Acceptance Not Granted", "Show Cause", "Hosp. (Mental Health)", "Hosp. (Physical Health)", "Other", "Unknown"
         Case Else
             New_CR_Label.Enabled = True
             New_CR.Enabled = True
-            
+
     End Select
-    
+
     Select Case DetailedOutcome.value
         Case "Rearrested & Held (adult)", "Aged Out", "Show Cause"
             ReasonForDischarge1.Enabled = True

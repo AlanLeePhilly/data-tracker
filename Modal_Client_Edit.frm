@@ -20,23 +20,23 @@ End Sub
 
 Private Sub Submit_Click()
     With ClientEdit.UpdateBox
-            .ColumnCount = 4
-            .ColumnWidths = "0;20;130;130;"
-            .AddItem count
-                .List(ClientEdit.UpdateBox.ListCount - 1, 1) _
+        .ColumnCount = 4
+        .ColumnWidths = "0;20;130;130;"
+        .AddItem count
+        .List(ClientEdit.UpdateBox.ListCount - 1, 1) _
                     = ClientEdit.LookupBox.List(ClientEdit.LookupBox.listIndex, 1)
-                .List(ClientEdit.UpdateBox.ListCount - 1, 2) _
+        .List(ClientEdit.UpdateBox.ListCount - 1, 2) _
                     = ClientEdit.LookupBox.List(ClientEdit.LookupBox.listIndex, 2)
-                
-                If Modal_Client_Edit.New_Value_Text.Visible = True Then
-                    .List(ClientEdit.UpdateBox.ListCount - 1, 3) _
+
+        If Modal_Client_Edit.New_Value_Text.Visible = True Then
+            .List(ClientEdit.UpdateBox.ListCount - 1, 3) _
                         = New_Value_Text
-                Else
-                    .List(ClientEdit.UpdateBox.ListCount - 1, 3) _
+        Else
+            .List(ClientEdit.UpdateBox.ListCount - 1, 3) _
                         = New_Value_Box
-                End If
+        End If
     End With
-    
+
     Unload Me
 End Sub
 
