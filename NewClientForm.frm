@@ -274,6 +274,7 @@ Private Sub Reload_Click()
 
     InitialHearingDate.value = Range(headerFind("Initial Hearing Date") & emptyRow).value
     InitialHearingLocation.value = Lookup("Courtroom_Num")(Range(headerFind("Initial Hearing Location") & emptyRow).value)
+    ListingType.value = Lookup("Listing_Type_Num")(Range(headerFind("Listing Type") & emptyRow).value)
     DA.value = Lookup("DA_Last_Name_Num")(Range(headerFind("DA") & emptyRow).value)
 
     GeneralNotes.value = Range(headerFind("General Notes from Intake") & emptyRow).value
@@ -658,6 +659,11 @@ Private Sub Submit_Click()
         MsgBox "Call-in Date required if record available"
         Exit Sub
     End If
+    
+    If PetitionBox.ListCount = 0 Then
+        MsgBox "Petition required"
+        Exit Sub
+    End If
 
     If DRAI_Action.value = "Follow - Hold" Or DRAI_Action.value = "Override - Hold" Then
         If DetentionFacility.value = "N/A" Then
@@ -889,20 +895,28 @@ Private Sub Submit_Click()
         Call startLegalStatus( _
             clientRow:=emptyRow, _
             statusType:="Diversion", _
-            Courtroom:=InitialHearingLocation.value, _
+            Courtroom:="PJJSC", _
             DA:=DA.value, _
-            startDate:=InitialHearingDate.value)
+            startDate:=DiversionProgramReferralDate.value)
 
     Else
-        
+        If ConfOutcome.value = "Hold for Detention" _
+        Or ConfOutcome.value = "Roll to Detention Hearing" Then
             Call startLegalStatus( _
                 clientRow:=emptyRow, _
                 statusType:="Pretrial", _
-                Courtroom:=InitialHearingLocation.value, _
+                Courtroom:="PJJSC", _
                 DA:=DA.value, _
-                startDate:=InitialHearingDate.value)
+                startDate:=PetitionBox.List(0, 0))
+        Else
+            Call startLegalStatus( _
+                clientRow:=emptyRow, _
+                statusType:="Pretrial", _
+                Courtroom:="Intake Conf.", _
+                DA:=DA.value, _
+                startDate:=PetitionBox.List(0, 0))
+        End If
     End If
-
 
 
 
@@ -1073,7 +1087,7 @@ Private Sub Submit_Click()
 
             Case "Release for Court"
                 Call ReferClientTo( _
-                        referralDate:=InitialHearingDate.value, _
+                        referralDate:=InConfDate.value, _
                         clientRow:=emptyRow, _
                         toCR:=InitialHearingLocation.value _
                         )
@@ -1178,7 +1192,7 @@ Private Sub Submit_Click()
         Select Case InitialHearingLocation.value
             Case "4G", "4E", "6F", "6H", "3E", "JTC", "5E", "WRAP", "Adult"
                 Call ReferClientTo( _
-                        referralDate:=InitialHearingDate.value, _
+                        referralDate:=PetitionBox.List(0, 0), _
                         clientRow:=emptyRow, _
                         toCR:=InitialHearingLocation.value _
                         )

@@ -1729,6 +1729,9 @@ Sub YouthSearchPrint()
         PrintSheet.Range("D41").value = losPetition & " days"
 
         'Active court proceedings
+        
+        PrintSheet.Range("D50").value = Lookup("Listing_Type_Num")(DataSheet.Range(hFind("Listing Type", "DEMOGRAPHICS") & userRow).value)
+        
         Dim Courtroom As String
         Dim losCourtroom As Integer
         Dim courtroomOptions(1 To 9) As String
@@ -1797,6 +1800,30 @@ Sub YouthSearchPrint()
             If supervisionI = 3 Then Exit For
         Next supervisionI
 
+        
+        'Supervision Providers
+        Dim supervisionProviderColumns() As String
+        supervisionProviderColumns = findAllValues(DataSheet, userRow, "Aggregates", "Supervision Ordered", "Start Date", "End Date")
+        Dim supervisionProviderArrLength As Integer
+
+        If (Not supervisionProviderColumns) = -1 Then
+            supervisionArrLength = 0
+        Else
+            supervisionProviderArrLength = UBound(supervisionProviderColumns) - LBound(supervisionProviderColumns) + 1
+        End If
+
+        Dim supervisionProviderI As Integer
+        Dim supervisionProviderStart As String
+
+        For supervisionProviderI = 1 To supervisionArrLength
+            PrintSheet.Range("G" & 53 + 2 * supervisionProviderI) = Lookup("Community_Based_Supervision_Provider_Num")(DataSheet.Range(hFind(supervisionProviderColumns(supervisionProviderI - 1), "Aggregates") & userRow).value)
+            If supervisionProviderI = 3 Then Exit For
+        
+        Next supervisionProviderI
+        
+        
+        
+        
         'Conditions
         Dim conditionsColumns() As String
         conditionsColumns = findAllValues(DataSheet, userRow, "Aggregates", "Condition Ordered", "Start Date", "End Date")
