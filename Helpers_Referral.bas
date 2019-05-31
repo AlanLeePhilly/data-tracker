@@ -78,6 +78,8 @@ Sub ReferClientTo( _
             fromHead = headerFind("DETENTION")
         Case "5E"
             fromHead = headerFind("Crossover")
+        Case "Intake Conf."
+            fromHead = headerFind("INTAKE CONFERENCE")
         Case "N/A"
             fromHead = "A"
         Case Else
@@ -249,7 +251,10 @@ Sub ReferClientTo( _
             = Lookup("Courtroom_Name")(toCR)
     End Select
 
-    If Not toCR = "N/A" And Not fromCR = "N/A" And Not fromCR = "PJJSC" Then
+    If Not toCR = "N/A" _
+    And Not fromCR = "N/A" _
+    And Not fromCR = "PJJSC" _
+    And Not fromCR = "Intake Conf." Then
 
         Dim i As Integer
         Dim bucketCount As Integer
@@ -424,7 +429,9 @@ Sub ReferClientTo( _
     End If
 
     If Not toCR = "N/A" Then
-        If submitLegalStatus = "JTC" Or submitLegalStatus = "WRAP" Or submitLegalStatus = "Crossover" Then
+        If submitLegalStatus = "JTC" _
+        Or submitLegalStatus = "WRAP" _
+        Or submitLegalStatus = "Crossover" Then
             'we don't submit new statuses for these courts because they require acceptance
         Else
             Call startLegalStatus( _

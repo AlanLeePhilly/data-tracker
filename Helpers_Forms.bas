@@ -53,8 +53,8 @@ Sub RearrestIntake(userRow As Long, rearrestNum As Long)
         .ActiveAtArrest.value = "Yes"
         .NumOfPriorArrests.value = Lookup("Num_Prior_Arrests_Num")(Range(headerFind("# of Prior Arrests") & userRow).value)
         .DCNum.value = Range(headerFind("DC #", bucketHead) & userRow).value
-        .PIDNum.value = Range(headerFind("PID #", bucketHead) & userRow).value
-        .SIDNum.value = Range(headerFind("SID #", bucketHead) & userRow).value
+        .PIDNum.value = Range(headerFind("PID #") & userRow).value
+        .SIDNum.value = Range(headerFind("SID #") & userRow).value
 
         .Officer1.value = Range(headerFind("Officer #1", bucketHead) & userRow).value
         .Officer2.value = Range(headerFind("Officer #2", bucketHead) & userRow).value

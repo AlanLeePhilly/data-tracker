@@ -1089,6 +1089,7 @@ Private Sub Submit_Click()
                 Call ReferClientTo( _
                         referralDate:=InConfDate.value, _
                         clientRow:=emptyRow, _
+                        fromCR:="Intake Conf.", _
                         toCR:=InitialHearingLocation.value _
                         )
                 If InitialHearingLocation.value = "5E" Then
