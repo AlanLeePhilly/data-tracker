@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} NewClientForm 
    Caption         =   "NewClientUserForm"
-   ClientHeight    =   11025
+   ClientHeight    =   11580
    ClientLeft      =   45
    ClientTop       =   375
    ClientWidth     =   18075
@@ -655,11 +655,16 @@ Private Sub Submit_Click()
         Exit Sub
     End If
 
+    If ConfOutcome.value = "N/A" And InConfRecord.value = "Yes" Then
+        MsgBox "Conference Outcome Required if record available"
+        Exit Sub
+    End If
+
     If CallInDate.value = "" And CallInRecord.value = "Yes" Then
         MsgBox "Call-in Date required if record available"
         Exit Sub
     End If
-    
+
     If PetitionBox.ListCount = 0 Then
         MsgBox "Petition required"
         Exit Sub

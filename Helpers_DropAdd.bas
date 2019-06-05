@@ -184,6 +184,8 @@ Sub dropSupervision( _
         If alphaToNum(head) > alphaToNum(hFind("AGGREGATES")) Then
             i = 2
         End If
+
+
     Next i
 End Sub
 

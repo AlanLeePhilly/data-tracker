@@ -125,8 +125,10 @@ Private Sub Submit_Click()
 
     On Error GoTo err
     Dim i As Integer
+    Dim j As Integer
     Dim sectionHead As String
     Dim bucketHead As String
+    Dim altHead As String
 
     sectionHead = hFind("REARRESTS", "AGGREGATES")
     Call flagYes(Range(headerFind("Was Youth Rearrested?", sectionHead) & updateRow))
@@ -140,6 +142,30 @@ Private Sub Submit_Click()
 
     Range(bucketHead & updateRow).value _
             = ArrestDate.value
+
+    Range(headerFind("Active Courtroom", bucketHead) & updateRow).value _
+            = Range(headerFind("Active Courtroom") & updateRow).value
+    Range(headerFind("Active Legal Status", bucketHead) & updateRow).value _
+            = Range(headerFind("Legal Status") & updateRow).value
+
+    j = 1
+    For i = 1 To 30
+        altHead = hFind("Supervision Ordered #" & i, "AGGREGATES")
+        If isNotEmptyOrZero(Range(headerFind("Start Date", altHead) & updateRow)) _
+        And isEmptyOrZero(Range(headerFind("End Date", altHead) & updateRow)) _
+        And j < 3 Then
+
+            Range(headerFind("Active Supervision #" & j, bucketHead) & updateRow).value _
+                    = Range(altHead & updateRow).value
+            Range(headerFind("Active Community-Based Agency #" & j, bucketHead) & updateRow).value _
+                    = Range(headerFind("Community-Based Agency", altHead) & updateRow)
+            Range(headerFind("Active Residential Agency #" & j, bucketHead) & updateRow).value _
+                    = Range(headerFind("Residential Agency", altHead) & updateRow)
+            j = j + 1
+        End If
+    Next i
+
+
     Range(headerFind("Day of Arrest", bucketHead) & updateRow).value _
             = Weekday(ArrestDate.value, vbMonday) * 2 - 1
     Range(headerFind("Time of Arrest", bucketHead) & updateRow).value _
@@ -183,8 +209,6 @@ Private Sub Submit_Click()
             = IncidentZipcode.value
 
     Dim Num As Long
-
-    Dim j As Integer
 
     For Num = 1 To PetitionBox.ListCount
         tempHead = headerFind("Petition #" & Num, bucketHead)

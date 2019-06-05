@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} ClientUpdateForm 
    Caption         =   "ClientUpdateForm"
-   ClientHeight    =   10335
+   ClientHeight    =   11580
    ClientLeft      =   45
    ClientTop       =   -75
    ClientWidth     =   17910
@@ -639,10 +639,23 @@ Sub JTC_Submit_Click()
 
     If JTC_Accept.BackColor = selectedColor Then
         Range(headerFind("Phase") & updateRow).value = "1"
-        Range(headerFind("Accepted (Y/N)", courtHead) & updateRow).value = 1
+        Range(headerFind("Accepted (Y/N)", courtHead) & updateRow).value = 1 'Yes
         Range(headerFind("Accepted Date", courtHead) & updateRow).value = JTC_Accept_Reject_Date.Caption
         Range(headerFind("Start Date", newPhaseHead) & updateRow).value = JTC_Accept_Reject_Date.Caption
         Range(headerFind("Scheduled Step-Up Date", newPhaseHead) & updateRow) = JTC_Return_Stepup_Date.Caption
+
+        Call endLegalStatus( _
+            clientRow:=updateRow, _
+            statusType:=Lookup("Legal_Status_Num")(Range(hFind("Legal Status") & updateRow).value), _
+            Courtroom:=Lookup("Courtroom_Num")(Range(hFind("Courtroom of Origin", "JTC") & updateRow).value), _
+            DA:=DA.value, _
+            endDate:=JTC_Accept_Reject_Date.Caption, _
+            Nature:="Neutral", _
+            detailed:="Neutral Transfer of Status", _
+            Notes:="Accepted to JTC", _
+            withAgg:=True, _
+            dischargingCourtroom:="JTC")
+
         Call startLegalStatus( _
             clientRow:=updateRow, _
             statusType:="JTC", _
@@ -840,32 +853,32 @@ Sub JTC_Submit_Click()
         Range(headerFind("IOP Provider") & updateRow) = Lookup("IOP_Provider_Name")(JTC_Return_Treatment_Provider.Caption)
         'find latest entry & update provider
         Select Case True
-            Case IsEmpty(Range(headerFind("IOP Provider #1", courtHead) & updateRow))
-                Range(headerFind("IOP Provider #1", courtHead) & updateRow) = _
+            Case isEmptyOrZero(Range(hFind("IOP Provider #1", "JTC") & updateRow))
+                Range(hFind("IOP Provider #1", "JTC") & updateRow) = _
                                 Lookup("IOP_Provider_Name")(JTC_Return_Treatment_Provider.Caption)
-                Range(headerFind("Referral Date", headerFind("IOP Provider #1", courtHead)) & updateRow) = _
+                Range(hFind("Referral Date", "IOP Provider #1", "JTC") & updateRow) = _
                                 Modal_JTC_Provider.Referral_Date
 
-            Case IsEmpty(Range(headerFind("IOP Provider #2", courtHead) & updateRow))
-                Range(headerFind("IOP Provider #2", courtHead) & updateRow) = _
+            Case isEmptyOrZero(Range(hFind("IOP Provider #2", "JTC") & updateRow))
+                Range(hFind("IOP Provider #2", "JTC") & updateRow) = _
                                 Lookup("IOP_Provider_Name")(JTC_Return_Treatment_Provider.Caption)
-                Range(headerFind("Referral Date", headerFind("IOP Provider #2", courtHead)) & updateRow) = Modal_JTC_Provider.Referral_Date
-                Range(headerFind("Discharge Date", headerFind("IOP Provider #1", courtHead)) & updateRow) = DateOfHearing
-                Range(headerFind("LOS IOP", headerFind("IOP Provider #1", courtHead)) & updateRow) = _
-                                DateDiff("d", Range(headerFind("Referral Date", headerFind("IOP Provider #1", courtHead)) & updateRow).value, Modal_JTC_Provider.Referral_Date.value)
+                Range(hFind("Referral Date", "IOP Provider #2", "JTC") & updateRow) = Modal_JTC_Provider.Referral_Date
+                Range(hFind("Discharge Date", "IOP Provider #1", "JTC") & updateRow) = DateOfHearing
+                Range(hFind("LOS IOP", "IOP Provider #1", "JTC") & updateRow) = _
+                                DateDiff("d", Range(headerFind("Referral Date", hFind("IOP Provider #1", "JTC")) & updateRow).value, Modal_JTC_Provider.Referral_Date.value)
 
-            Case IsEmpty(Range(headerFind("IOP Provider #3", courtHead) & updateRow))
-                Range(headerFind("IOP Provider #3", courtHead) & updateRow) = _
+            Case isEmptyOrZero(Range(hFind("IOP Provider #3", "JTC") & updateRow))
+                Range(hFind("IOP Provider #3", "JTC") & updateRow) = _
                                 Lookup("IOP_Provider_Name")(JTC_Return_Treatment_Provider.Caption)
-                Range(headerFind("Referral Date", headerFind("IOP Provider #3", courtHead)) & updateRow) = Modal_JTC_Provider.Referral_Date
-                Range(headerFind("Discharge Date", headerFind("IOP Provider #2", courtHead)) & updateRow) = DateOfHearing
-                Range(headerFind("LOS IOP", headerFind("IOP Provider #2", courtHead)) & updateRow) = _
+                Range(hFind("Referral Date", "IOP Provider #3", "JTC") & updateRow) = Modal_JTC_Provider.Referral_Date
+                Range(hFind("Discharge Date", "IOP Provider #2", "JTC") & updateRow) = DateOfHearing
+                Range(hFind("LOS IOP", "IOP Provider #2", "JTC") & updateRow) = _
                                 DateDiff("d", Range(headerFind("Referral Date", headerFind("IOP Provider #2", courtHead)) & updateRow).value, Modal_JTC_Provider.Referral_Date.value)
 
             Case Else
-                Range(headerFind("Discharge Date", headerFind("IOP Provider #3", courtHead)) & updateRow) = DateOfHearing
-                Range(headerFind("LOS IOP", headerFind("IOP Provider #3", courtHead)) & updateRow) = _
-                                DateDiff("d", Range(headerFind("Referral Date", headerFind("IOP Provider #3", courtHead)) & updateRow).value, Modal_JTC_Provider.Referral_Date.value)
+                Range(hFind("Discharge Date", hFind("IOP Provider #3", "JTC")) & updateRow) = DateOfHearing
+                Range(hFind("LOS IOP", "IOP Provider #3", "JTC") & updateRow) = _
+                                DateDiff("d", Range(hFind("Referral Date", "IOP Provider #3", "JTC") & updateRow).value, Modal_JTC_Provider.Referral_Date.value)
         End Select
 
     End If
@@ -874,12 +887,12 @@ Sub JTC_Submit_Click()
     If JTC_Treatment_Stepdown.BackColor = selectedColor Then
         'find latest entry & enter DoH as stepdown date
         Select Case False
-            Case IsEmpty(Range(headerFind("IOP Provider #3", courtHead) & updateRow))
-                Range(headerFind("Step-Down Date", headerFind("IOP Provider #3", courtHead)) & updateRow) = JTC_Return_Stepdown_Date
-            Case IsEmpty(Range(headerFind("IOP Provider #2", courtHead) & updateRow))
-                Range(headerFind("Step-Down Date", headerFind("IOP Provider #2", courtHead)) & updateRow) = JTC_Return_Stepdown_Date
-            Case IsEmpty(Range(headerFind("IOP Provider #1", courtHead) & updateRow))
-                Range(headerFind("Step-Down Date", headerFind("IOP Provider #1", courtHead)) & updateRow) = JTC_Return_Stepdown_Date
+            Case isEmptyOrZero(Range(hFind("IOP Provider #3", "JTC") & updateRow))
+                Range(hFind("Step-Down Date", "IOP Provider #3", "JTC") & updateRow) = JTC_Return_Stepdown_Date
+            Case isEmptyOrZero(Range(hFind("IOP Provider #2", "JTC") & updateRow))
+                Range(hFind("Step-Down Date", "IOP Provider #2", "JTC") & updateRow) = JTC_Return_Stepdown_Date
+            Case isEmptyOrZero(Range(hFind("IOP Provider #1", "JTC") & updateRow))
+                Range(hFind("Step-Down Date", "IOP Provider #1", "JTC") & updateRow) = JTC_Return_Stepdown_Date
         End Select
     End If
 
@@ -887,23 +900,23 @@ Sub JTC_Submit_Click()
     If JTC_Treatment_Discharge.BackColor = selectedColor Then
         'find latest entry & enter DoH as discharge date
         Select Case True
-            Case Range(headerFind("IOP Provider #3", courtHead) & updateRow).value = Lookup("JTC_Supervision_Provider_Name")(JTC_Return_Treatment_Provider.Caption)
-                Range(headerFind("Discharge Date", headerFind("IOP Provider #3", courtHead)) & updateRow) = DateOfHearing
-                Range(headerFind("LOS IOP", headerFind("IOP Provider #3", courtHead)) & updateRow) _
-                                = DateDiff("d", Range(headerFind("Referral Date", headerFind("IOP Provider #3", courtHead)) & updateRow), _
-                                  Range(headerFind("Discharge Date", headerFind("IOP Provider #3", courtHead)) & updateRow))
+            Case Range(hFind("IOP Provider #3", "JTC") & updateRow).value = Lookup("IOP_Provider_Name")(JTC_Return_Treatment_Provider.Caption)
+                Range(hFind("Discharge Date", "IOP Provider #3", "JTC") & updateRow) = DateOfHearing
+                Range(hFind("LOS IOP", "IOP Provider #3", "JTC") & updateRow) _
+                    = DateDiff("d", Range(hFind("Referral Date", "IOP Provider #3", "JTC") & updateRow), _
+                      Range(hFind("Discharge Date", "IOP Provider #3", "JTC") & updateRow))
 
-            Case Range(headerFind("IOP Provider #2", courtHead) & updateRow).value = Lookup("JTC_Supervision_Provider_Name")(JTC_Return_Treatment_Provider.Caption)
-                Range(headerFind("Discharge Date", headerFind("IOP Provider #2", courtHead)) & updateRow) = DateOfHearing
-                Range(headerFind("LOS IOP", headerFind("IOP Provider #2", courtHead)) & updateRow) _
-                                = DateDiff("d", Range(headerFind("Referral Date", headerFind("IOP Provider #2", courtHead)) & updateRow), _
-                                  Range(headerFind("Discharge Date", headerFind("IOP Provider #2", courtHead)) & updateRow))
+            Case Range(hFind("IOP Provider #2", "JTC") & updateRow).value = Lookup("IOP_Provider_Name")(JTC_Return_Treatment_Provider.Caption)
+                Range(hFind("Discharge Date", "IOP Provider #2", "JTC") & updateRow) = DateOfHearing
+                Range(hFind("LOS IOP", "IOP Provider #2", "JTC") & updateRow) _
+                    = DateDiff("d", Range(hFind("Referral Date", "IOP Provider #2", "JTC") & updateRow), _
+                      Range(hFind("Discharge Date", "IOP Provider #2", "JTC") & updateRow))
 
-            Case Range(headerFind("IOP Provider #1", courtHead) & updateRow).value = Lookup("JTC_Supervision_Provider_Name")(JTC_Return_Treatment_Provider.Caption)
-                Range(headerFind("Discharge Date", headerFind("IOP Provider #1", courtHead)) & updateRow) = DateOfHearing
-                Range(headerFind("LOS IOP", headerFind("IOP Provider #1", courtHead)) & updateRow) _
-                                = DateDiff("d", Range(headerFind("Referral Date", headerFind("IOP Provider #1", courtHead)) & updateRow), _
-                                  Range(headerFind("Discharge Date", headerFind("IOP Provider #1", courtHead)) & updateRow))
+            Case Range(hFind("IOP Provider #1", "JTC") & updateRow).value = Lookup("IOP_Provider_Name")(JTC_Return_Treatment_Provider.Caption)
+                Range(hFind("Discharge Date", "IOP Provider #1", "JTC") & updateRow) = DateOfHearing
+                Range(hFind("LOS IOP", "IOP Provider #1", "JTC") & updateRow) _
+                      = DateDiff("d", Range(hFind("Referral Date", "IOP Provider #1", "JTC") & updateRow), _
+                        Range(hFind("Discharge Date", "IOP Provider #1", "JTC") & updateRow))
         End Select
     End If
 
@@ -1778,6 +1791,7 @@ Private Sub PJJSC_Submit_Click()
     Dim detentionHead As String
 
     Worksheets("Entry").Activate
+    Call addNotes(DRev_Facility.value, DateOfHearing.value, updateRow, "", Range(hFind("Legal Status") & updateRow).value)
 
     detentionHead = headerFind("DETENTION")
 
@@ -1835,9 +1849,9 @@ Private Sub PJJSC_Submit_Click()
             agency:=DRev_Facility.value, _
             startDate:=DateOfHearing.value, _
             NextCourtDate:=PJJSC_NextCourtDate.value, _
-            Re1:="N/A", _
-            Re2:="N/A", _
-            Re3:="N/A")
+            Re1:=ReasonForDetentionCommit1.value, _
+            Re2:=ReasonForDetentionCommit2.value, _
+            Re3:=ReasonForDetentionCommit3.value)
     End If
 
     'IF RELEASED
@@ -1989,9 +2003,17 @@ Private Sub PJJSC_Submit_Click()
         Range(headerFind("LOS from Arrest Until Hearing", bucketHead) & updateRow).value _
             = calcLOS(Range(hFind("Arrest Date") & updateRow).value, Range(hFind("Date of Initial Detention Hearing", "DETENTION") & updateRow).value)
     End If
+
+
+    'Update Next Court Date in Front of Database
+    Range(headerFind("Next Court Date") & updateRow) = PJJSC_NextCourtDate.value
+
+
+
     Call closeCallIn(DateOfHearing.value, updateRow)
     Call closeIntakeConference(DateOfHearing.value, updateRow)
     Call closeIntakeDetentions(DateOfHearing.value, updateRow)
+
     Worksheets("User Entry").Activate
     Call Save_Countdown
     Call UnloadAll

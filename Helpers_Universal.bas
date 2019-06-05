@@ -58,7 +58,7 @@ Sub startLegalStatus( _
 
         Range(headerFind("Was Youth on " & statusType & "?", bucketHead) & clientRow) _
             = Lookup("Generic_YNOU_Name")("Yes")
-        
+
         If courtroomOfOrigin = "" Then
             Range(headerFind("Courtroom of Origin", bucketHead) & clientRow) _
                 = Lookup("Courtroom_Name")(Courtroom)
@@ -66,7 +66,7 @@ Sub startLegalStatus( _
             Range(headerFind("Courtroom of Origin", bucketHead) & clientRow) _
                 = Lookup("Courtroom_Name")(courtroomOfOrigin)
         End If
-        
+
         Range(headerFind("DA", bucketHead) & clientRow) _
             = Lookup("DA_Last_Name_Name")(DA)
 
@@ -84,15 +84,15 @@ End Sub
 
 Sub endLegalStatus( _
     clientRow As Long, _
-    statusType As String, _
-    Courtroom As String, _
+    ByVal statusType As String, _
+    ByVal Courtroom As String, _
     DA As String, _
     endDate As String, _
     Nature As String, _
     detailed As String, _
     Optional Reason1 As String = "N/A", Optional Reason2 As String = "N/A", Optional Reason3 As String = "N/A", Optional Reason4 As String = "N/A", Optional Reason5 As String = "N/A", _
     Optional withAgg As Boolean = False, _
-    Optional dischargingCourtoom As String = "", _
+    Optional dischargingCourtroom As String = "", _
     Optional Notes As String = "" _
 )
     Worksheets("Entry").Activate
@@ -135,14 +135,14 @@ Sub endLegalStatus( _
         End Select
 
 
-        If DischargingCourtroom = "" Then
+        If dischargingCourtroom = "" Then
             Range(headerFind("Discharging Courtroom", bucketHead) & clientRow) _
                 = Lookup("Courtroom_Name")(Courtroom)
         Else
             Range(headerFind("Discharging Courtroom", bucketHead) & clientRow) _
-                = Lookup("Courtroom_Name")(DischargingCourtroom)
+                = Lookup("Courtroom_Name")(dischargingCourtroom)
         End If
-            
+
         Range(headerFind("Discharging DA", bucketHead) & clientRow) _
             = Lookup("DA_Last_Name_Name")(DA)
         Range(headerFind("End Date", bucketHead) & clientRow) _
@@ -209,9 +209,9 @@ Sub closeOpenLegalStatuses(clientRow As Long, dateOf As String, Courtroom As Str
 
             If isNotEmptyOrZero(Range(headerFind("Start Date", bucketHead) & clientRow)) And _
                isEmptyOrZero(Range(headerFind("End Date", bucketHead) & clientRow)) Then
-               
+
                 MsgBox "Closing bucket for " & statusType & " in " & section & " (automated)"
-                
+
                 Range(headerFind("Discharging Courtroom", bucketHead) & clientRow) _
                     = Lookup("Courtroom_Name")(Courtroom)
                 Range(headerFind("Discharging DA", bucketHead) & clientRow) _

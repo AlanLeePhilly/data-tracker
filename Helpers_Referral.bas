@@ -181,7 +181,7 @@ Sub ReferClientTo( _
                 Range(headerFind("Next Court Date", toHead) & clientRow).value _
                     = referralDate
                 Range(headerFind("Phase", toHead) & clientRow).value = Lookup("JTC_Phase_Name")("Referred")
-                
+
                 Range(headerFind("Active or Discharged", toHead) & clientRow).value _
                     = Lookup("Active_Name")("Active")
                 Range(headerFind("Nature of Discharge", toHead) & clientRow).value _
@@ -390,9 +390,9 @@ Sub ReferClientTo( _
     Dim CRofOrigin As String
 
     currentStatus = Lookup("Legal_Status_Num")(Range(headerFind("Legal Status") & clientRow).value)
-    
+
     CRofOrigin = toCR
-    
+
     If newLegalStatus = "" Then
         submitLegalStatus = currentStatus
     Else
@@ -413,9 +413,13 @@ Sub ReferClientTo( _
         submitWithAgg = True
     End If
 
-    If Not fromCR = "N/A" Then
+    If Not fromCR = "N/A" _
+    And Not toCR = "JTC" _
+    And Not toCR = "WRAP" _
+    And Not toCR = "Crossover" Then
+
         CRofOrigin = fromCR
-    
+
         Call endLegalStatus( _
             clientRow:=clientRow, _
             statusType:=currentStatus, _
@@ -432,6 +436,7 @@ Sub ReferClientTo( _
         If submitLegalStatus = "JTC" _
         Or submitLegalStatus = "WRAP" _
         Or submitLegalStatus = "Crossover" Then
+
             'we don't submit new statuses for these courts because they require acceptance
         Else
             Call startLegalStatus( _
@@ -446,6 +451,4 @@ Sub ReferClientTo( _
     End If
 
 End Sub
-
-
 

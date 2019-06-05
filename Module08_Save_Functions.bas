@@ -481,6 +481,29 @@ Sub ExportDataFile()
     OverwriteExisting = True
     ActiveWorkbook.Close
 
+    'Madeline EXPORT
+
+    Dim newFilePath8 As String
+    Dim newFileName8 As String
+
+
+    newFilePath8 = "H:\SJS Analysis\Madeline\Aggregate Data Set\"
+    newFileName8 = _
+        newFilePath8 _
+        & "Aggregate Data Set.xlsm"
+    If Len(Dir(newFileName8)) Then Kill newFileName8 'identifies if file name already exists and deletes as SaveCopyAs doesn't allow overwrite
+
+    ThisWorkbook.SaveCopyAs _
+            Filename:=newFileName8
+    OverwriteExisting = True
+
+    Workbooks.Open Filename:="H:\SJS Analysis\Madeline\Aggregate Data Set\Aggregate Data Set.xlsm", Password:="DeathStar_911"
+    Application.ScreenUpdating = False
+    Application.Calculation = xlCalculationManual
+    Application.DisplayAlerts = False
+    ActiveWorkbook.SaveAs Filename:="H:\SJS Analysis\Madeline\Aggregate Data Set\Aggregate Data Set.xlsm", Password:="DeathStar_911"
+    OverwriteExisting = True
+    ActiveWorkbook.Close
 
 
 

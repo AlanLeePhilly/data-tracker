@@ -136,6 +136,32 @@ Function findFirstValue(ds As Worksheet, rowNum As Long, header As String, secti
     Next i
 End Function
 
+Function findFirstValue2(ds As Worksheet, rowNum As Long, header As String, sectionHeads() As String, searchVariable As String, startColName As String, endColName As String) As String
+    'Used to go through several columns in a section, and returns first one that does not have end value
+    Dim arrLength As Integer
+    arrLength = UBound(sectionHeads) - LBound(sectionHeads) + 1
+
+    Dim i As Integer
+    Dim startFound As String
+    Dim endFound As String
+    For i = 1 To arrLength
+        searchVariableFound = ds.Cells(rowNum, hFind(searchVariableName, sectionHeads(i), header)).value
+        startFound = ds.Cells(rowNum, hFind(startColName, sectionHeads(i), header)).value
+        endFound = ds.Cells(rowNum, hFind(endColName, sectionHeads(i), header)).value
+
+        'If search variable found, start found, but no end found, return searchvariable of this index
+        If Not StrComp(searchVariableFound, "") = 0 Then
+            If Not StrComp(startFound, "") = 0 Then
+                If StrComp(endFound, "") = 0 Then
+                    findFirstValue2 = sectionHeads(i)
+                    Exit Function
+                End If
+            End If
+        End If
+    Next i
+End Function
+
+
 Function findAllValues(ds As Worksheet, rowNum As Long, header As String, sectionHead As String, startColName As String, endColName As String) As String()
     'Used to go through several columns in a section, and returns first one that does not have end value
     Dim returnArr() As String
@@ -161,6 +187,33 @@ Function findAllValues(ds As Worksheet, rowNum As Long, header As String, sectio
 
     findAllValues = returnArr
 End Function
+Function findAllValues2(ds As Worksheet, rowNum As Long, header As String, sectionHead As String, searchVariable As String, startColName As String, endColName As String) As String()
+    'Used to go through several columns in a section, and returns first one that does not have end value
+    Dim returnArr() As String
+    Dim returnValues As Integer
+    returnValues = 0
+
+    Dim i As Integer
+    Dim startFound As String
+    Dim endFound As String
+    For i = 1 To 7
+        startFound = ds.Cells(rowNum, hFind(startColName, sectionHead & " #" & i, header)).value
+        endFound = ds.Cells(rowNum, hFind(endColName, sectionHead & " #" & i, header)).value
+
+        'If start found, but no end found, return sectionHeads of this index
+        If Not StrComp(startFound, "") = 0 Then
+            If StrComp(endFound, "") = 0 Then
+                ReDim Preserve returnArr(returnValues)
+                returnArr(returnValues) = sectionHead & " #" & i
+                returnValues = returnValues + 1
+            End If
+        End If
+    Next i
+
+    findAllValues2 = returnArr
+End Function
+
+
 
 Function ageAtTime(eventDate As String, rowNum As Long) As Double
     Dim DOB As String

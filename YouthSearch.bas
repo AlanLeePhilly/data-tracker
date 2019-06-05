@@ -1711,7 +1711,7 @@ Sub YouthSearchPrint()
     PrintSheet.Range("J39").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Adjudicating Courtroom", "Adjudications", "AGGREGATES") & userRow).value)
 
 
-    'SHONA'S LOS CALCULATIONS
+    'SHONA & ADAM'S LOS CALCULATIONS
 
     If StrComp(activeStatus, "Active") = 0 Then
         'LoS for arrest and petition
@@ -1728,22 +1728,22 @@ Sub YouthSearchPrint()
         losPetition = DateDiff("d", petitionDate, VBA.Format(Now(), "mm/dd/yyyy"))
         PrintSheet.Range("D41").value = losPetition & " days"
 
-        'Active court proceedings
-        
+
+        'ACTIVE COURT PROCEEDINGS
+
+        'Print listing type from lookup values
+
         PrintSheet.Range("D50").value = Lookup("Listing_Type_Num")(DataSheet.Range(hFind("Listing Type", "DEMOGRAPHICS") & userRow).value)
-        
+
         Dim Courtroom As String
         Dim losCourtroom As Integer
-        Dim courtroomOptions(1 To 9) As String
+        Dim courtroomOptions(1 To 6) As String
         courtroomOptions(1) = "4G"
         courtroomOptions(2) = "4E"
         courtroomOptions(3) = "6F"
         courtroomOptions(4) = "6H"
         courtroomOptions(5) = "3E"
-        courtroomOptions(6) = "Crossover"
-        courtroomOptions(7) = "WRAP"
-        courtroomOptions(8) = "JTC"
-        courtroomOptions(9) = "ADULT"
+        courtroomOptions(6) = "ADULT"
         Courtroom = findFirstValue(DataSheet, userRow, "4G", courtroomOptions, "Start Date", "End Date")
         PrintSheet.Range("G48") = Courtroom
 
@@ -1752,6 +1752,29 @@ Sub YouthSearchPrint()
             losCourtroom = DateDiff("d", DataSheet.Range(hFind("Start Date", Courtroom, "4G") & userRow).value, _
                 VBA.Format(Now(), "mm/dd/yyyy"))
             PrintSheet.Range("J48") = losCourtroom & " days"
+
+        Else
+
+
+            Dim SpecialtyCourtroom As String
+            Dim losSpecialtyCourtroom As Integer
+            Dim SpecialtyCourtroomOptions(1 To 3) As String
+            SpecialtyCourtroomOptions(1) = "Crossover"
+            SpecialtyCourtroomOptions(2) = "WRAP"
+            SpecialtyCourtroomOptions(3) = "JTC"
+            SpecialtyCourtroom = findFirstValue(DataSheet, userRow, "Crossover", SpecialtyCourtroomOptions, "Referral Date", "Date of Overall Discharge")
+            PrintSheet.Range("G48") = SpecialtyCourtroom
+
+
+            'if courtroom exists
+            If Not StrComp(SpecialtyCourtroom, "") = 0 Then
+                losSpecialtyCourtroom = DateDiff("d", DataSheet.Range(hFind("Referral Date", SpecialtyCourtroom, "Crossover") & userRow).value, _
+                VBA.Format(Now(), "mm/dd/yyyy"))
+                PrintSheet.Range("J48") = losSpecialtyCourtroom & " days"
+
+
+            End If
+
         End If
 
 
@@ -1778,52 +1801,171 @@ Sub YouthSearchPrint()
 
 
 
+        Dim SpecialtyLegalStatus As String
+        Dim losSpecialtyLegalStatus As Integer
+        Dim lostSpecialtyLegalStatus As Integer
+        Dim SpecialtyLegalStatusOptions(1 To 3) As String
+        SpecialtyLegalStatusOptions(1) = "Crossover"
+        SpecialtyLegalStatusOptions(2) = "WRAP"
+        SpecialtyLegalStatusOptions(3) = "JTC"
+
+        'Find if youth has "Accepted Date" to courtroom and then return that he/she is on that legal status
+        SpecialtyLegalStatus = findFirstValue(DataSheet, userRow, "Crossover", SpecialtyLegalStatusOptions, "Accepted Date", "Date of Overall Discharge")
+        PrintSheet.Range("G50") = SpecialtyLegalStatus
+
+        'If youth as been accepted to that courtroom, date-diff acceptance date to show LOS of specialty court legal status
+        If Not StrComp(SpecialtyLegalStatus, "") = 0 Then
+            losSpecialtyLegalStatus = DateDiff("d", DataSheet.Range(hFind("Accepted Date", SpecialtyLegalStatus) & userRow).value, _
+            VBA.Format(Now(), "mm/dd/yyyy"))
+            PrintSheet.Range("J50") = losSpecialtyLegalStatus & " days"
+
+        Else
+
+            'If youth is in specialty courtroom and accepted date is still "0" (ie, has not yet been accepted),
+            'print legal status as "Pretrial" - LOS Pretrial will get handled by standard LOS sweep)
+
+            PrintSheet.Range("G50") = "Pretrial"
+
+
+        End If
+
+
+
 
         'Supervision Programs
-        Dim supervisionProgramColumns() As String
-        supervisionProgramColumns = findAllValues(DataSheet, userRow, "Aggregates", "Supervision Ordered", "Start Date", "End Date")
-        Dim supervisionArrLength As Integer
+        '        Dim supervisionProgramColumns() As String
+        '        supervisionProgramColumns = findAllValues(DataSheet, userRow, "Aggregates", "Supervision Ordered", "Start Date", "End Date")
+        '        Dim supervisionArrLength As Integer
+        '
+        '        If (Not supervisionProgramColumns) = -1 Then
+        '            supervisionArrLength = 0
+        '        Else
+        '            supervisionArrLength = UBound(supervisionProgramColumns) - LBound(supervisionProgramColumns) + 1
+        '        End If
+        '
+        '        Dim supervisionI As Integer
+        '        Dim supervisionStart As String
+        '
+        '        For supervisionI = 1 To supervisionArrLength
+        '            PrintSheet.Range("D" & 53 + 2 * supervisionI) = Lookup("Supervision_Program_Num")(DataSheet.Range(hFind(supervisionProgramColumns(supervisionI - 1), "Aggregates") & userRow).value)
+        '            supervisionStart = DataSheet.Range(hFind("Start Date", supervisionProgramColumns(supervisionI - 1), "Aggregates") & userRow).value
+        '            PrintSheet.Range("J" & 53 + 2 * supervisionI) = DateDiff("d", supervisionStart, VBA.Format(Now(), "mm/dd/yyyy")) & " days"
+        '            If supervisionI = 3 Then Exit For
+        '
+        '        Next supervisionI
+        '
+        '
+        '        'Supervision Providers
+        '        'Provider
+        '        Dim cbsupervisionProviderColumnsI() As String
+        '        cbsupervisionProviderColumnsI = findAllValues2(DataSheet, userRow, "Aggregates", "Supervision Ordered", "Community-Based Agency", "Start Date", "End Date")
+        '        Dim cbsupervisionProviderArrLengthI As Integer
+        '
+        '
+        '        If (Not cbsupervisionProviderColumnsI) = -1 Then
+        '            cbsupervisionProviderArrLengthI = 0
+        '        Else
+        '            cbsupervisionProviderArrLengthI = UBound(cbsupervisionProviderColumnsI) - LBound(cbsupervisionProviderColumnsI) + 1
+        '
+        '        End If
+        '
+        '
+        '        Dim cbsupervisionProviderI As Integer
+        '        Dim cbsupervisionProviderStart As String
+        '
+        '        Dim i As Integer
+        '        Dim j As Integer
+        '            i = (DataSheet.Range(hFind("Community-Based Agency", "Supervision Ordered #1", "Aggregates", "Start Date", "End Date") & userRow).value)
+        '            j = (DataSheet.Range(hFind("Residential Agency", "Supervision Ordered #1", "Aggregates", "Start Date", "End Date") & userRow).value)
+        '
+        '
+        '       For cbsupervisionProviderI = 1 To cbsupervisionProviderArrLengthI
+        '        'If i > 0 Then
+        '            PrintSheet.Range("G55") = Lookup("Community_Based_Supervision_Provider_Num")(DataSheet.Range(hFind(cbsupervisionProviderColumnsI(cbsupervisionProviderI - 1), "Aggregates") & userRow).value)
+        '        'End If
+        '
+        '        'If j > 0 Then
+        '            'PrintSheet.Range("G55") = Lookup("Residential_Supervision_Provider_Num")(DataSheet.Range(hFind(cbsupervisionProviderColumnsI(cbsupervisionProviderI - 1), "Aggregates") & userRow).value)
+        '        'End If
+        '         'End If
+        '        If cbsupervisionProviderI = 3 Then Exit For
+        '
+        '
+        '        Next cbsupervisionProviderI
+        '
 
-        If (Not supervisionProgramColumns) = -1 Then
-            supervisionArrLength = 0
-        Else
-            supervisionArrLength = UBound(supervisionProgramColumns) - LBound(supervisionProgramColumns) + 1
-        End If
+        Dim i As Integer
+        Dim bucketHead As String
+        Dim printRow As Long
+        Dim programType As String
+        Dim providerName As String
+        Dim thing1 As String, thing2 As String
 
-        Dim supervisionI As Integer
-        Dim supervisionStart As String
+        printRow = 55
 
-        For supervisionI = 1 To supervisionArrLength
-            PrintSheet.Range("D" & 53 + 2 * supervisionI) = Lookup("Supervision_Program_Num")(DataSheet.Range(hFind(supervisionProgramColumns(supervisionI - 1), "Aggregates") & userRow).value)
-            supervisionStart = DataSheet.Range(hFind("Start Date", supervisionProgramColumns(supervisionI - 1), "Aggregates") & userRow).value
-            PrintSheet.Range("J" & 53 + 2 * supervisionI) = DateDiff("d", supervisionStart, VBA.Format(Now(), "mm/dd/yyyy")) & " days"
-            If supervisionI = 3 Then Exit For
-        Next supervisionI
+        For i = 1 To 30
+            bucketHead = hFind("Supervision Ordered #" & i, "AGGREGATES")
 
-        
-        'Supervision Providers
-        Dim supervisionProviderColumns() As String
-        supervisionProviderColumns = findAllValues(DataSheet, userRow, "Aggregates", "Supervision Ordered", "Start Date", "End Date")
-        Dim supervisionProviderArrLength As Integer
+            thing1 = DataSheet.Range(headerFind("Start Date", bucketHead) & userRow).value
+            thing2 = DataSheet.Range(headerFind("End Date", bucketHead) & userRow).value
 
-        If (Not supervisionProviderColumns) = -1 Then
-            supervisionArrLength = 0
-        Else
-            supervisionProviderArrLength = UBound(supervisionProviderColumns) - LBound(supervisionProviderColumns) + 1
-        End If
+            If isNotEmptyOrZero(DataSheet.Range(headerFind("Start Date", bucketHead) & userRow)) _
+              And isEmptyOrZero(DataSheet.Range(headerFind("End Date", bucketHead) & userRow)) Then
 
-        Dim supervisionProviderI As Integer
-        Dim supervisionProviderStart As String
+                programType = Lookup("Supervision_Program_Num")(DataSheet.Range(bucketHead & userRow).value)
 
-        For supervisionProviderI = 1 To supervisionArrLength
-            PrintSheet.Range("G" & 53 + 2 * supervisionProviderI) = Lookup("Community_Based_Supervision_Provider_Num")(DataSheet.Range(hFind(supervisionProviderColumns(supervisionProviderI - 1), "Aggregates") & userRow).value)
-            If supervisionProviderI = 3 Then Exit For
-        
-        Next supervisionProviderI
-        
-        
-        
-        
+                If isResidential(programType) Then
+                    providerName = Lookup("Residential_Supervision_Provider_Num")(DataSheet.Range(headerFind("Residential Agency", bucketHead) & userRow).value)
+                Else
+                    providerName = Lookup("Community_Based_Supervision_Provider_Num")(DataSheet.Range(headerFind("Community-Based Agency", bucketHead) & userRow).value)
+                End If
+
+                If printRow > 59 Then
+                    MsgBox "The following Active Supervision will not be printed due to space constraints: " _
+                        & vbNewLine & "Program: " & programType _
+                        & vbNewLine & "Provider: " & providerName _
+                        & vbNewLine & "Start Date: " & DataSheet.Range(headerFind("Start Date", bucketHead) & userRow).value
+                End If
+
+                PrintSheet.Range("D" & printRow) = programType
+                PrintSheet.Range("G" & printRow) = providerName
+                PrintSheet.Range("J" & printRow) = DateDiff("d", DataSheet.Range(headerFind("Start Date", bucketHead) & userRow).value, Date) & " days"
+
+                printRow = printRow + 2
+            End If
+
+        Next i
+
+
+        'El
+
+
+        'residential
+        'Dim rsupervisionProviderColumnsI() As String
+        'rsupervisionProviderColumnsI = findAllValues(DataSheet, userRow, "Aggregates", "Supervision Ordered", "Start Date", "End Date")
+        'Dim rsupervisionProviderArrLengthI As Integer
+
+        'If (Not rsupervisionProviderColumnsI) = -1 Then
+        'rsupervisionProviderArrLengthI = 0
+        'Else
+        'rsupervisionProviderArrLengthI = UBound(rsupervisionProviderColumnsI) - LBound(rsupervisionProviderColumnsI) + 1
+        'End If
+
+        'Dim rsupervisionProviderI As Integer
+        'Dim rsupervisionProviderStart As String
+
+        'For rsupervisionProviderI = 1 To rsupervisionProviderArrLengthI
+        'PrintSheet.Range("G" & 53 + 2 * rsupervisionProviderI) = Lookup("Residential_Supervision_Provider_Num")(DataSheet.Range(hFind(rsupervisionProviderColumnsI(rsupervisionProviderI - 1), "Aggregates") & userRow).value)
+        'PrintSheet.Range("G" & 53 + 2 * supervisionProviderI) = Lookup("Residential_Supervision_Provider_Num")(DataSheet.Range(hFind(supervisionProviderColumns(supervisionProviderI - 1), "Aggregates") & userRow).value)
+        'If rsupervisionProviderI = 3 Then Exit For
+
+        'Next cbsupervisionProviderI
+
+
+
+
+
+
         'Conditions
         Dim conditionsColumns() As String
         conditionsColumns = findAllValues(DataSheet, userRow, "Aggregates", "Condition Ordered", "Start Date", "End Date")
