@@ -23,19 +23,22 @@ Private Sub ConfOutcome_Change()
             DiversionProgram.value = "No"
     End Select
 End Sub
-Private Sub DRAIRecommendationChange()
-    Select Case DRAI_Score.value
-        Case Is = 99
-            DRAI_Rec.value = "Unknown"
-        Case Is < 10
-            DRAI_Rec.value = "Release"
-        Case Is < 15
-            DRAI_Rec.value = "Release w/ Supervision"
-        Case Is < 30
-            DRAI_Rec.value = "Hold"
-        Case Else
-            DRAI_Rec.value = "Unknown"
-    End Select
+
+Private Sub DRAI_Score_Change()
+    If IsNumeric(DRAI_Score.value) Then
+        Select Case DRAI_Score.value
+            Case Is = 99
+                DRAI_Rec.value = "Unknown"
+            Case Is < 10
+                DRAI_Rec.value = "Release"
+            Case Is < 15
+                DRAI_Rec.value = "Release w/ Supervision"
+            Case Is >= 15
+                DRAI_Rec.value = "Hold"
+            Case Else
+                DRAI_Rec.value = "N/A"
+        End Select
+    End If
 End Sub
 Private Sub DRAI_Action_Change()
     Select Case DRAI_Action.value
@@ -86,9 +89,6 @@ Private Sub DRAI_Action_Change()
     End Select
 End Sub
 
-Private Sub DRAI_Score_Change()
-
-End Sub
 
 Private Sub SameDate_2_Click()
     CallInDate.value = ArrestDate.value
@@ -957,21 +957,21 @@ Private Sub Submit_Click()
                 = DRAI_Score.value
 
         Select Case DRAI_Score.value
-        Case Is = 99
-            Range(headerFind("DRAI Recommendation", "CALL-IN") & emptyRow).value _
-                    = Lookup("DRAI_Recommendation_Name")("Unknown")
-        Case Is < 10
-            Range(headerFind("DRAI Recommendation", "CALL-IN") & emptyRow).value _
-                    = Lookup("DRAI_Recommendation_Name")("Release")
-        Case Is < 15
-            Range(headerFind("DRAI Recommendation", "CALL-IN") & emptyRow).value _
-                    = Lookup("DRAI_Recommendation_Name")("Release w/ Supervision")
-        Case Is < 30
-            Range(headerFind("DRAI Recommendation", "CALL-IN") & emptyRow).value _
-                    = Lookup("DRAI_Recommendation_Name")("Release w/ Supervision")
-        Case Else
-            Range(headerFind("DRAI Recommendation", "CALL-IN") & emptyRow).value _
-                    = Lookup("DRAI_Recommendation_Name")("Unknown")
+            Case Is = 99
+                Range(hFind("DRAI Recommendation", "CALL-IN") & emptyRow).value _
+                        = Lookup("DRAI_Recommendation_Name")("N/A")
+            Case Is < 10
+                Range(hFind("DRAI Recommendation", "CALL-IN") & emptyRow).value _
+                        = Lookup("DRAI_Recommendation_Name")("Release")
+            Case Is < 15
+                Range(hFind("DRAI Recommendation", "CALL-IN") & emptyRow).value _
+                        = Lookup("DRAI_Recommendation_Name")("Release w/ Supervision")
+            Case Is < 30
+                Range(hFind("DRAI Recommendation", "CALL-IN") & emptyRow).value _
+                        = Lookup("DRAI_Recommendation_Name")("Release w/ Supervision")
+            Case Else
+                Range(hFind("DRAI Recommendation", "CALL-IN") & emptyRow).value _
+                        = Lookup("DRAI_Recommendation_Name")("N/A")
         End Select
             
         

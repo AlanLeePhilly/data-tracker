@@ -763,7 +763,7 @@ Sub JTC_Submit_Click()
                     Range(headerFind("Phase", courtHead) & updateRow) = Lookup("JTC_Phase_Name")("Graduated, Awaiting Expungment")
                     Range(headerFind("Record Expunged?", newPhaseHead) & updateRow) = Lookup("Generic_YN_Name")("No")
                     Range(headerFind("LOS", oldPhaseHead) & updateRow).value _
-                                = DateDiff("d", Range(headerFind("Arrest Date") & updateRow).value, DateOfHearing.value)
+                                = DateDiff("d", Range(headerFind("Start Date", oldPhaseHead) & updateRow).value, DateOfHearing.value)
                 End If
                 Range(headerFind("LOS (discharged)") & updateRow).value _
                             = DateDiff("d", Range(headerFind("Arrest Date") & updateRow).value, DateOfHearing.value)
