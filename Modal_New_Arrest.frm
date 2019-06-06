@@ -207,6 +207,10 @@ Private Sub Submit_Click()
             = IncidentAddress.value
     Range(headerFind("Incident Zipcode", bucketHead) & updateRow).value _
             = IncidentZipcode.value
+    Range(headerFind("LOS Until Rearrest", bucketHead) & updateRow).value _
+                = calcLOS(Range(hFind("Arrest Date", "PETITION") & updateRow).value, ArrestDate.value)
+
+
 
     Dim Num As Long
 
@@ -252,7 +256,7 @@ Private Sub Submit_Click()
         Next i
     Next Num
 
-
+    
 
     'ZERO FILL
 

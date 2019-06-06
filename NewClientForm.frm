@@ -23,7 +23,20 @@ Private Sub ConfOutcome_Change()
             DiversionProgram.value = "No"
     End Select
 End Sub
-
+Private Sub DRAIRecommendationChange()
+    Select Case DRAI_Score.value
+        Case Is = 99
+            DRAI_Rec.value = "Unknown"
+        Case Is < 10
+            DRAI_Rec.value = "Release"
+        Case Is < 15
+            DRAI_Rec.value = "Release w/ Supervision"
+        Case Is < 30
+            DRAI_Rec.value = "Hold"
+        Case Else
+            DRAI_Rec.value = "Unknown"
+    End Select
+End Sub
 Private Sub DRAI_Action_Change()
     Select Case DRAI_Action.value
         Case "Follow - Hold", "Override - Hold"
@@ -73,9 +86,9 @@ Private Sub DRAI_Action_Change()
     End Select
 End Sub
 
+Private Sub DRAI_Score_Change()
 
-
-
+End Sub
 
 Private Sub SameDate_2_Click()
     CallInDate.value = ArrestDate.value
@@ -282,8 +295,6 @@ Private Sub Reload_Click()
 
 
 End Sub
-
-
 
 
 Private Sub Supv2_Change()
@@ -945,6 +956,25 @@ Private Sub Submit_Click()
         Range(headerFind("DRAI Score", tempHead) & emptyRow).value _
                 = DRAI_Score.value
 
+        Select Case DRAI_Score.value
+        Case Is = 99
+            Range(headerFind("DRAI Recommendation", "CALL-IN") & emptyRow).value _
+                    = Lookup("DRAI_Recommendation_Name")("Unknown")
+        Case Is < 10
+            Range(headerFind("DRAI Recommendation", "CALL-IN") & emptyRow).value _
+                    = Lookup("DRAI_Recommendation_Name")("Release")
+        Case Is < 15
+            Range(headerFind("DRAI Recommendation", "CALL-IN") & emptyRow).value _
+                    = Lookup("DRAI_Recommendation_Name")("Release w/ Supervision")
+        Case Is < 30
+            Range(headerFind("DRAI Recommendation", "CALL-IN") & emptyRow).value _
+                    = Lookup("DRAI_Recommendation_Name")("Release w/ Supervision")
+        Case Else
+            Range(headerFind("DRAI Recommendation", "CALL-IN") & emptyRow).value _
+                    = Lookup("DRAI_Recommendation_Name")("Unknown")
+        End Select
+            
+        
         Range(headerFind("DRAI Recommendation", tempHead) & emptyRow).value _
                 = Lookup("DRAI_Recommendation_Name")(DRAI_Rec.value)
 
