@@ -4,7 +4,7 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} ClientUpdateForm
    ClientHeight    =   11580
    ClientLeft      =   45
    ClientTop       =   -75
-   ClientWidth     =   17910
+   ClientWidth     =   15975
    OleObjectBlob   =   "ClientUpdateForm.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -85,7 +85,6 @@ Private Sub DRev_DetentionDecision_Change()
             MultiPage2.value = 0
     End Select
 End Sub
-
 
 
 Private Sub DRev_HoldAndTransfer_Change()
@@ -1791,7 +1790,7 @@ Private Sub PJJSC_Submit_Click()
     Dim detentionHead As String
 
     Worksheets("Entry").Activate
-    Call addNotes(DRev_Facility.value, DateOfHearing.value, updateRow, "", Range(hFind("Legal Status") & updateRow).value)
+    Call addNotes(("PJJSC"), DateOfHearing.value, updateRow, PJJSC_NotesOnDetentionOutcome, "Pretrial")
 
     detentionHead = headerFind("DETENTION")
 
@@ -1831,7 +1830,9 @@ Private Sub PJJSC_Submit_Click()
     Range(headerFind("DA Action Accepted?", bucketHead) & updateRow).value = Lookup("Generic_YNOU_Name")(DRev_ActionAccepted.value)
     Range(headerFind("Detention Decision", bucketHead) & updateRow).value = Lookup("Detention_Decision_Name")(DRev_DetentionDecision.value)
     Range(headerFind("Detention Facility", bucketHead) & updateRow).value = Lookup("Detention_Facility_Name")(DRev_Facility.value)
-
+    Range(headerFind("Notes on Detention", bucketHead) & updateRow).value = PJJSC_NotesOnDetentionOutcome.value
+    
+    
     If DRev_DetentionDecision.value = "Held" _
         And DRev_HoldAndTransfer.value = "Yes" Then
         Call ReferClientTo( _

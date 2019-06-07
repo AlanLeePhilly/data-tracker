@@ -27,8 +27,6 @@ End Sub
 Private Sub DRAI_Score_Change()
     If IsNumeric(DRAI_Score.value) Then
         Select Case DRAI_Score.value
-            Case Is = 99
-                DRAI_Rec.value = "Unknown"
             Case Is < 10
                 DRAI_Rec.value = "Release"
             Case Is < 15
@@ -36,7 +34,7 @@ Private Sub DRAI_Score_Change()
             Case Is >= 15
                 DRAI_Rec.value = "Hold"
             Case Else
-                DRAI_Rec.value = "N/A"
+                DRAI_Rec.value = "Unknown"
         End Select
     End If
 End Sub
@@ -957,9 +955,6 @@ Private Sub Submit_Click()
                 = DRAI_Score.value
 
         Select Case DRAI_Score.value
-            Case Is = 99
-                Range(hFind("DRAI Recommendation", "CALL-IN") & emptyRow).value _
-                        = Lookup("DRAI_Recommendation_Name")("N/A")
             Case Is < 10
                 Range(hFind("DRAI Recommendation", "CALL-IN") & emptyRow).value _
                         = Lookup("DRAI_Recommendation_Name")("Release")
@@ -971,11 +966,11 @@ Private Sub Submit_Click()
                         = Lookup("DRAI_Recommendation_Name")("Release w/ Supervision")
             Case Else
                 Range(hFind("DRAI Recommendation", "CALL-IN") & emptyRow).value _
-                        = Lookup("DRAI_Recommendation_Name")("N/A")
+                        = Lookup("DRAI_Recommendation_Name")("Unknown")
         End Select
             
         
-        Range(headerFind("DRAI Recommendation", tempHead) & emptyRow).value _
+        'Range(headerFind("DRAI Recommendation", tempHead) & emptyRow).value _
                 = Lookup("DRAI_Recommendation_Name")(DRAI_Rec.value)
 
         Range(headerFind("DRAI Action", tempHead) & emptyRow).value _
@@ -994,7 +989,7 @@ Private Sub Submit_Click()
                             Courtroom:="Call-In", _
                             CourtroomOfOrder:="Call-In", _
                             DA:=DA.value, _
-                            agency:="", _
+                            agency:="PJJSC", _
                             startDate:=CallInDate.value, _
                             endDate:=InConfDate.value, _
                             Re1:="", _

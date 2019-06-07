@@ -68,7 +68,7 @@ Sub CourtroomOutcome( _
                 = Lookup("Detailed_Petition_Outcome_Name")(detailed)
             Range(headerFind("Acquittal or Supervision Discharge?", outcomeHead) & clientRow).value _
                 = Lookup("Acquittal_or_Supervision_Discharge_Name")("Completion of Terms")
-            Range(headerFind("Total LOS in " & Courtrom, outcomeHead) & clientRow).value _
+            Range(headerFind("Total LOS in " & Courtroom, outcomeHead) & clientRow).value _
                 = calcLOS(Range(hFind("Date Filed", "Petition #1") & clientRow).value, dateOf)
             Range(headerFind("Total LOS From Arrest", outcomeHead) & clientRow).value _
                 = calcLOS(Range(hFind("Arrest Date") & clientRow).value, dateOf)

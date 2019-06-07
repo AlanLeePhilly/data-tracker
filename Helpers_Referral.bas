@@ -67,7 +67,7 @@ Sub ReferClientTo( _
     Dim toHead As String
     Dim fromHead As String
     Dim legalStatusVar As String
-
+    Dim Courtroom As String
     '''''''''''
     'SET HEADS'
     '''''''''''
@@ -113,6 +113,7 @@ Sub ReferClientTo( _
                     = DateDiff("d", _
                         Range(headerFind("Start Date", fromHead) & clientRow).value, _
                         Range(headerFind("End Date", fromHead) & clientRow).value)
+                        'Range (headerFind("Total LOS in " & Courtroom, fromHead) & clientRow).value
                 Range(headerFind("Courtroom of Transfer (if relevant)", fromHead) & clientRow).value _
                     = Lookup("Courtroom_Name")(toCR)
 
