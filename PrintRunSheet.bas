@@ -50,7 +50,12 @@ Sub PrintRunSheet()
     Dim petition2Col As String
     petition2Col = headerFind("Petition #2")
 
-    For i = 3 To 10
+    Dim col As Long
+    Dim lastr As Long
+    col = DataSheet.Cells(3, hFind("Next Court Date")).Column
+    lastr = DataSheet.Cells.Find(What:="*", After:=DataSheet.Cells(1, col + 1), LookAt:=xlPart, LookIn:=xlFormulas, SearchOrder:=xlByRows, SearchDirection:=xlPrevious, MatchCase:=False).row
+    
+    For i = 3 To lastr
         If DataSheet.Cells(i, hFind("Next Court Date")).value = d Then
             currCount = currCount + 1
             PrintSheet.Cells(currCount, 1).value = DataSheet.Cells(i, lastNameCol).value

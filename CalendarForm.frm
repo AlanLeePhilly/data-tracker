@@ -816,8 +816,8 @@ Private Sub ClickControl(ctrl As MSForms.Control)
     SelectedYear = cmbYear.value
 
     'Get indices of date label from label name and selected day from caption
-    RowIndex = CLng(Left(Right(ctrl.Name, 2), 1))
-    ColumnIndex = CLng(Right(ctrl.Name, 1))
+    RowIndex = CLng(Left(Right(ctrl.name, 2), 1))
+    ColumnIndex = CLng(Right(ctrl.name, 1))
     SelectedDay = CLng(ctrl.Caption)
 
     'Selection is from previous month. The largest day that could exist in
@@ -880,7 +880,7 @@ Private Sub HoverControl(ctrl As MSForms.Control)
     If HoverControlName <> vbNullString Then
         Me.Controls(HoverControlName).BackColor = HoverControlColor
     End If
-    HoverControlName = ctrl.Name
+    HoverControlName = ctrl.name
     HoverControlColor = ctrl.BackColor
     ctrl.BackColor = bgDateHoverColor
 End Sub
@@ -1391,7 +1391,7 @@ Private Sub SetSelectionLabel(DateIn As Date)
         With lblSelectionDate
             .AutoSize = False
             .Width = frameCalendar.Width
-            .Caption = VBA.Format(DateIn, "mm/dd/yyyy")
+            .Caption = VBA.format(DateIn, "mm/dd/yyyy")
             .AutoSize = True
         End With
 

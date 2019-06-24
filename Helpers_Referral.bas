@@ -67,7 +67,7 @@ Sub ReferClientTo( _
     Dim toHead As String
     Dim fromHead As String
     Dim legalStatusVar As String
-    Dim Courtroom As String
+    
     '''''''''''
     'SET HEADS'
     '''''''''''

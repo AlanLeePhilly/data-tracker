@@ -915,14 +915,14 @@ Sub closeIntakeDetentions(ByVal dateOf As String, ByVal userRow As Long)
 End Sub
 
 Function getHour(time) As String
-    getHour = Left(VBA.Format(time, "hh am/pm"), 2)
+    getHour = Left(VBA.format(time, "hh am/pm"), 2)
     If getHour = "00" Then
         getHour = ""
     End If
 End Function
 Function getMinute(time) As String
-    getMinute = VBA.Format(time, "nn")
+    getMinute = VBA.format(time, "nn")
 End Function
 Function getPeriod(time) As String
-    getPeriod = UCase(VBA.Format(time, "am/pm"))
+    getPeriod = UCase(VBA.format(time, "am/pm"))
 End Function

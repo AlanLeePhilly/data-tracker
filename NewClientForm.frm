@@ -970,7 +970,7 @@ Private Sub Submit_Click()
         End Select
             
         
-        'Range(headerFind("DRAI Recommendation", tempHead) & emptyRow).value _
+        Range(headerFind("DRAI Recommendation", tempHead) & emptyRow).value _
                 = Lookup("DRAI_Recommendation_Name")(DRAI_Rec.value)
 
         Range(headerFind("DRAI Action", tempHead) & emptyRow).value _

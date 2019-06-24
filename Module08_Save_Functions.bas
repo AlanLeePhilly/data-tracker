@@ -123,7 +123,7 @@ Sub SaveAs_Countdown()
 
     'here you can set the name of the directory where you want the file to go.
     'note that the folder location must exist prior to saving it there
-    newFilePath = "H:\SJS Entry\Archives\"
+    newFilePath = "H:\SJS Archives\Archives\"
 
     'Here the new file name is composed of:
     'the filepath specified above
@@ -133,9 +133,9 @@ Sub SaveAs_Countdown()
     'file name extention .xlsm
     newFileName = _
         newFilePath _
-        & fso.GetBaseName(ThisWorkbook.Name) _
+        & fso.GetBaseName(ThisWorkbook.name) _
         & " " _
-        & VBA.Format(Now(), "yyyy-MM-dd hh.mm.ss") _
+        & VBA.format(Now(), "yyyy-MM-dd hh.mm.ss") _
         & ".xlsm"
 
 
@@ -175,9 +175,9 @@ Sub Archive()
     'file name extention .xlsm
     newFileName = _
         newFilePath _
-        & fso.GetBaseName(ThisWorkbook.Name) _
+        & fso.GetBaseName(ThisWorkbook.name) _
         & " " _
-        & VBA.Format(Now(), "yyyy-MM-dd hh.mm.ss") _
+        & VBA.format(Now(), "yyyy-MM-dd hh.mm.ss") _
         & ".xlsm"
 
 
@@ -220,9 +220,9 @@ Sub ExportDataFile()
     'file name extention .xlsm
     newFileName = _
         newFilePath _
-        & fso.GetBaseName(ThisWorkbook.Name) _
+        & fso.GetBaseName(ThisWorkbook.name) _
         & " " _
-        & VBA.Format(Now(), "yyyy-MM-dd hh.mm.ss") _
+        & VBA.format(Now(), "yyyy-MM-dd hh.mm.ss") _
         & ".xlsm"
 
 

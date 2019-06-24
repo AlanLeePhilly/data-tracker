@@ -1790,7 +1790,7 @@ Private Sub PJJSC_Submit_Click()
     Dim detentionHead As String
 
     Worksheets("Entry").Activate
-    Call addNotes(("PJJSC"), DateOfHearing.value, updateRow, PJJSC_NotesOnDetentionOutcome, "Pretrial")
+    Call addNotes("PJJSC", DateOfHearing.value, updateRow, PJJSC_NotesOnDetentionOutcome.value, "Pretrial")
 
     detentionHead = headerFind("DETENTION")
 

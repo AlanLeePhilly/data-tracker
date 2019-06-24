@@ -300,7 +300,7 @@ Sub UnloadAll()
 
     Dim i As Long
     For i = VBA.UserForms.count - 1 To 0 Step -1
-        nameOf = VBA.UserForms(i).Name
+        nameOf = VBA.UserForms(i).name
         Unload VBA.UserForms(i)
     Next i
 End Sub

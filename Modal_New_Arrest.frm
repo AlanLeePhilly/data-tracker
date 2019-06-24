@@ -555,7 +555,7 @@ End Sub
 
 
 Private Sub TimeReferredToDA_Exit(ByVal Cancel As MSForms.ReturnBoolean)
-    TimeReferredToDA.value = VBA.Format(TimeReferredToDA.value, "hh:mm AM/PM")
+    TimeReferredToDA.value = VBA.format(TimeReferredToDA.value, "hh:mm AM/PM")
 End Sub
 
 
