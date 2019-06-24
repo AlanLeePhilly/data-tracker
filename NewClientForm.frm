@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} NewClientForm 
    Caption         =   "NewClientUserForm"
-   ClientHeight    =   11580
+   ClientHeight    =   10575
    ClientLeft      =   45
    ClientTop       =   375
    ClientWidth     =   18075
@@ -684,6 +684,11 @@ Private Sub Submit_Click()
             MsgBox "Detention facility required for call-in hold"
             Exit Sub
         End If
+    End If
+    
+    If DiversionProgram.value = "No" And NoDiversionReason1.value = "N/A" Then
+        MsgBox "Reason Not Diverted Required"
+        Exit Sub
     End If
 
     'find empty row by finding first 'first name' value from bottom

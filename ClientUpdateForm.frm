@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} ClientUpdateForm 
    Caption         =   "ClientUpdateForm"
-   ClientHeight    =   11580
+   ClientHeight    =   10575
    ClientLeft      =   45
    ClientTop       =   -75
    ClientWidth     =   15975
@@ -1027,8 +1027,8 @@ Sub JTC_Submit_Click()
             Else
                 If Range(headerFind("Courtroom of Order", .List(i, 4)) & updateRow).value _
                         = Lookup("Courtroom_Name")("Intake Conf.") Then
-
-                    Call dropSupervision( _
+                    If Not IsDate(.List(i, 3)) Then
+                        Call dropSupervision( _
                             clientRow:=updateRow, _
                             head:=.List(i, 4), _
                             serviceType:=.List(i, 0), _
@@ -1040,8 +1040,50 @@ Sub JTC_Submit_Click()
                             Re3:="N/A", _
                             Notes:="Continued from intake conf.")
 
-                    If Not IsDate(.List(i, 3)) Then
+                    
                         Call addSupervision( _
+                            clientRow:=updateRow, _
+                            serviceType:=.List(i, 0), _
+                            legalStatus:="JTC", _
+                            Courtroom:="JTC", _
+                            DA:=DA.value, _
+                            agency:=.List(i, 1), _
+                            startDate:=DateOfHearing.value, _
+                            NextCourtDate:=Standard_NextCourtDate.value, _
+                            Re1:="N/A", _
+                            Re2:="N/A", _
+                            Re3:="N/A", _
+                            phase:=JTC_Return_Phase.Caption)
+                    Else
+                        Call dropSupervision( _
+                            clientRow:=updateRow, _
+                            head:=.List(i, 4), _
+                            serviceType:=.List(i, 0), _
+                            startDate:=.List(i, 2), _
+                            endDate:=.List(i, 3), _
+                            Nature:=.List(i, 5), _
+                            Re1:=.List(i, 6), _
+                            Re2:=.List(i, 7), _
+                            Re3:=.List(i, 8), _
+                            Notes:=.List(i, 9))
+                    End If
+                Else
+                    If Range(headerFind("Courtroom of Order", .List(i, 4)) & updateRow).value _
+                            = Lookup("Courtroom_Name")("PJJSC") Then
+                        If Not IsDate(.List(i, 3)) Then
+                            Call dropSupervision( _
+                                clientRow:=updateRow, _
+                                head:=.List(i, 4), _
+                                serviceType:=.List(i, 0), _
+                                startDate:=.List(i, 2), _
+                                endDate:=DateOfHearing.value, _
+                                Nature:="Neutral", _
+                                Re1:="N/A", _
+                                Re2:="N/A", _
+                                Re3:="N/A", _
+                                Notes:="Continued from PJJSC")
+
+                            Call addSupervision( _
                                 clientRow:=updateRow, _
                                 serviceType:=.List(i, 0), _
                                 legalStatus:="JTC", _
@@ -1054,51 +1096,32 @@ Sub JTC_Submit_Click()
                                 Re2:="N/A", _
                                 Re3:="N/A", _
                                 phase:=JTC_Return_Phase.Caption)
-                    End If
-                Else
-                    If Range(headerFind("Courtroom of Order", .List(i, 4)) & updateRow).value _
-                            = Lookup("Courtroom_Name")("PJJSC") Then
-
-                        Call dropSupervision( _
+                        Else
+                            Call dropSupervision( _
                                 clientRow:=updateRow, _
                                 head:=.List(i, 4), _
                                 serviceType:=.List(i, 0), _
                                 startDate:=.List(i, 2), _
-                                endDate:=DateOfHearing.value, _
-                                Nature:="Neutral", _
-                                Re1:="N/A", _
-                                Re2:="N/A", _
-                                Re3:="N/A", _
-                                Notes:="Continued from PJJSC")
-
-                        If Not IsDate(.List(i, 3)) Then
-                            Call addSupervision( _
-                                    clientRow:=updateRow, _
-                                    serviceType:=.List(i, 0), _
-                                    legalStatus:="JTC", _
-                                    Courtroom:="JTC", _
-                                    DA:=DA.value, _
-                                    agency:=.List(i, 1), _
-                                    startDate:=DateOfHearing.value, _
-                                    NextCourtDate:=Standard_NextCourtDate.value, _
-                                    Re1:="N/A", _
-                                    Re2:="N/A", _
-                                    Re3:="N/A", _
-                                    phase:=JTC_Return_Phase.Caption)
+                                endDate:=.List(i, 3), _
+                                Nature:=.List(i, 5), _
+                                Re1:=.List(i, 6), _
+                                Re2:=.List(i, 7), _
+                                Re3:=.List(i, 8), _
+                                Notes:=.List(i, 9))
                         End If
                     Else
                         If IsDate(.List(i, 3)) Then 'if has End Date
                             Call dropSupervision( _
-                                    clientRow:=updateRow, _
-                                    head:=.List(i, 4), _
-                                    serviceType:=.List(i, 0), _
-                                    startDate:=.List(i, 2), _
-                                    endDate:=.List(i, 3), _
-                                    Nature:=.List(i, 5), _
-                                    Re1:=.List(i, 6), _
-                                    Re2:=.List(i, 7), _
-                                    Re3:=.List(i, 8), _
-                                    Notes:=.List(i, 9))
+                                clientRow:=updateRow, _
+                                head:=.List(i, 4), _
+                                serviceType:=.List(i, 0), _
+                                startDate:=.List(i, 2), _
+                                endDate:=.List(i, 3), _
+                                Nature:=.List(i, 5), _
+                                Re1:=.List(i, 6), _
+                                Re2:=.List(i, 7), _
+                                Re3:=.List(i, 8), _
+                                Notes:=.List(i, 9))
                         End If
                     End If
                 End If
@@ -1558,8 +1581,8 @@ Sub Standard_Submit_Click()
             Else
                 If Range(headerFind("Courtroom of Order", .List(i, 4)) & updateRow).value _
                         = Lookup("Courtroom_Name")("Intake Conf.") Then
-
-                    Call dropSupervision( _
+                    If Not IsDate(.List(i, 3)) Then
+                        Call dropSupervision( _
                             clientRow:=updateRow, _
                             head:=.List(i, 4), _
                             serviceType:=.List(i, 0), _
@@ -1571,25 +1594,37 @@ Sub Standard_Submit_Click()
                             Re3:="N/A", _
                             Notes:="from intake conf.")
 
-                    If Not IsDate(.List(i, 3)) Then
                         Call addSupervision( _
-                                clientRow:=updateRow, _
-                                serviceType:=.List(i, 0), _
-                                legalStatus:=Standard_Return_Legal_Status.Caption, _
-                                Courtroom:=oldCourtroom, _
-                                DA:=DA.value, _
-                                agency:=.List(i, 1), _
-                                startDate:=DateOfHearing.value, _
-                                NextCourtDate:=Standard_NextCourtDate.value, _
-                                Re1:="N/A", _
-                                Re2:="N/A", _
-                                Re3:="N/A")
+                            clientRow:=updateRow, _
+                            serviceType:=.List(i, 0), _
+                            legalStatus:=Standard_Return_Legal_Status.Caption, _
+                            Courtroom:=oldCourtroom, _
+                            DA:=DA.value, _
+                            agency:=.List(i, 1), _
+                            startDate:=DateOfHearing.value, _
+                            NextCourtDate:=Standard_NextCourtDate.value, _
+                            Re1:="N/A", _
+                            Re2:="N/A", _
+                            Re3:="N/A")
+                        
+                    Else
+                        Call dropSupervision( _
+                            clientRow:=updateRow, _
+                            head:=.List(i, 4), _
+                            serviceType:=.List(i, 0), _
+                            startDate:=.List(i, 2), _
+                            endDate:=.List(i, 3), _
+                            Nature:=.List(i, 5), _
+                            Re1:=.List(i, 6), _
+                            Re2:=.List(i, 7), _
+                            Re3:=.List(i, 8), _
+                            Notes:=.List(i, 9))
                     End If
                 Else
                     If Range(headerFind("Courtroom of Order", .List(i, 4)) & updateRow).value _
                             = Lookup("Courtroom_Name")("PJJSC") Then
-
-                        Call dropSupervision( _
+                        If Not IsDate(.List(i, 3)) Then
+                            Call dropSupervision( _
                                 clientRow:=updateRow, _
                                 head:=.List(i, 4), _
                                 serviceType:=.List(i, 0), _
@@ -1601,19 +1636,31 @@ Sub Standard_Submit_Click()
                                 Re3:="N/A", _
                                 Notes:="from PJJSC")
 
-                        If Not IsDate(.List(i, 3)) Then
+                        
                             Call addSupervision( _
-                                    clientRow:=updateRow, _
-                                    serviceType:=.List(i, 0), _
-                                    legalStatus:=Standard_Return_Legal_Status.Caption, _
-                                    Courtroom:=oldCourtroom, _
-                                    DA:=DA.value, _
-                                    agency:=.List(i, 1), _
-                                    startDate:=DateOfHearing.value, _
-                                    NextCourtDate:=Standard_NextCourtDate.value, _
-                                    Re1:="N/A", _
-                                    Re2:="N/A", _
-                                    Re3:="N/A")
+                                clientRow:=updateRow, _
+                                serviceType:=.List(i, 0), _
+                                legalStatus:=Standard_Return_Legal_Status.Caption, _
+                                Courtroom:=oldCourtroom, _
+                                DA:=DA.value, _
+                                agency:=.List(i, 1), _
+                                startDate:=DateOfHearing.value, _
+                                NextCourtDate:=Standard_NextCourtDate.value, _
+                                Re1:="N/A", _
+                                Re2:="N/A", _
+                                Re3:="N/A")
+                        Else
+                            Call dropSupervision( _
+                                clientRow:=updateRow, _
+                                head:=.List(i, 4), _
+                                serviceType:=.List(i, 0), _
+                                startDate:=.List(i, 2), _
+                                endDate:=.List(i, 3), _
+                                Nature:=.List(i, 5), _
+                                Re1:=.List(i, 6), _
+                                Re2:=.List(i, 7), _
+                                Re3:=.List(i, 8), _
+                                Notes:=.List(i, 9))
                         End If
                     Else
                         If IsDate(.List(i, 3)) Then 'if has End Date

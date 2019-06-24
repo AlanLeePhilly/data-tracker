@@ -251,17 +251,22 @@ Sub JTC_Service_Box_Add(ByRef MyBox As Object, ByVal bucketHead As String)
         ' 4 bucketHead or "New"
         ' 5 Nature
 
-        .AddItem Lookup("JTC_Supervision_Status_Num")(Range(bucketHead & updateRow).value)
+        .AddItem Lookup("Supervision_Program_Num")(Range(bucketHead & updateRow).value)
         newIndex = MyBox.ListCount - 1
-
-        If isNotEmptyOrZero(Range(headerFind("Community-Based Agency", bucketHead) & updateRow)) Then
+        
+        If isResidential(Lookup("Supervision_Program_Num")(Range(bucketHead & updateRow).value)) Then
+            .List(newIndex, 1) = _
+                  Lookup("Residential_Supervision_Provider_Num")(Range(headerFind("Residential Agency", bucketHead) & updateRow).value) 'Res Agency
+        Else
             .List(newIndex, 1) = _
                   Lookup("Community_Based_Supervision_Provider_Num")(Range(headerFind("Community-Based Agency", bucketHead) & updateRow).value)
         End If
+        
+        If isNotEmptyOrZero(Range(headerFind("Community-Based Agency", bucketHead) & updateRow)) Then
+                  End If
+        
         If isNotEmptyOrZero(Range(headerFind("Residential Agency", bucketHead) & updateRow)) Then
-            .List(newIndex, 1) = _
-                  Lookup("Residential_Supervision_Provider_Num")(Range(headerFind("Residential Agency", bucketHead) & updateRow).value) 'Res Agency
-        End If
+                    End If
 
         .List(newIndex, 2) = Range(headerFind("Start Date", bucketHead) & updateRow).value
         '.List(newIndex, 3) = Range(headerFind("End Date", bucketHead) & updateRow).value

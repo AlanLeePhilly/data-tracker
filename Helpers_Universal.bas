@@ -698,10 +698,14 @@ Sub startPlacement( _
                 Next Num
 
             Case "JTC"
-                For Num = 1 To 2
+                For Num = 1 To 5
                     If isEmptyOrZero(Range(hFind("Placement #" & Num & " Phase", section) & clientRow)) Then
                         bucketHead = hFind("Placement #" & Num & " Phase", section)
-                        Num = 2
+                        Num = 5
+                    Else
+                        If Num = 5 Then
+                            err.Raise vbObjectError + 1101, "AddPlacement", "Tried to add a 6th placement to JTC"
+                        End If
                     End If
                 Next Num
 
@@ -782,10 +786,10 @@ Sub endPlacement( _
                 Next Num
 
             Case "JTC"
-                For Num = 1 To 2
+                For Num = 1 To 5
                     bucketHead = hFind("Placement #" & Num & " Phase", section)
                     If Range(headerFind("Start Date", bucketHead) & clientRow).value = startDate Then
-                        Num = 2
+                        Num = 5
                     End If
                 Next Num
         End Select
