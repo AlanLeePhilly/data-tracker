@@ -304,3 +304,41 @@ Sub UnloadAll()
         Unload VBA.UserForms(i)
     Next i
 End Sub
+
+Public Function NatureFromDetailed(detailed As String) As String
+    Select Case detailed
+        Case _
+            "Judgment of Acquittal", _
+            "Petition Closed - Positive Comp. Terms", _
+            "Admin. D/C - Reasonable Efforts"
+            
+                NatureFromDetailed = "Positive"
+                
+        Case _
+            "Rearested & Held (adult)", _
+            "Bench Warrant", _
+            "Acceptance to Room Not Granted", _
+            "Transfer to New Del. Room - Negative"
+            
+                NatureFromDetailed = "Negative"
+                
+        Case _
+            "Petition Withdrawn", _
+            "Petition Diverted and Withdrawn", _
+            "Aged Out", _
+            "Certified Adult (original petition)", _
+            "Transfer to Dependent", _
+            "Transfer to Other County", _
+            "Transfer to New Del. Room - Neutral", _
+            "Not Fit to Stand Trial", _
+            "Death", _
+            "Other"
+            
+                NatureFromDetailed = "Neutral"
+                
+        Case "N/A", "Unknown"
+        
+            NatureFromDetailed = detailed
+            
+    End Select
+End Function

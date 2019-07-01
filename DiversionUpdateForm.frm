@@ -45,6 +45,8 @@ End Sub
 ''''''''''''''''
 
 Private Sub UserForm_Initialize()
+    Call RefreshNamedRanges
+    Call Generate_Dictionaries
     HearingMP.value = 0
     FirstHearingMP.value = 0
     FollowupMP.value = 0
@@ -256,6 +258,8 @@ End Sub
 Private Sub LookupData_Click()
     'Dim courtHead As String
     Dim diversionHead As String
+    Worksheets("Entry").Activate
+    
     'courtHead = headerFind(ReferredTo.value)
     diversionHead = headerFind("DIVERSION")
 
@@ -263,16 +267,18 @@ Private Sub LookupData_Click()
         MsgBox "Date of Hearing Required for Lookup"
         Exit Sub
     End If
+    
+    FetchTerms.Clear
+    ReturnTerms.Clear
 
+    Referral_Date.Caption _
+            = Range(headerFind("Referral Date", diversionHead) & updateRow).value
+    
     Referral_Source.Caption _
         = Lookup("Diversion_Referral_Source_Num")(Range(headerFind("Referral Source", diversionHead) & updateRow).value)
 
-    Referral_Date.Caption _
-        = Range(headerFind("Referral Date", diversionHead) & updateRow).value
-
-
     Select Case True
-        Case IsEmpty(Range(headerFind("Date of First Hearing", diversionHead) & updateRow).value)
+        Case isEmptyOrZero(Range(headerFind("Date of First Hearing", diversionHead) & updateRow))
             Status.Caption = "Referred"
             HearingMP.value = 1
 
@@ -298,7 +304,7 @@ Private Sub LookupData_Click()
     FetchMonitorLast = Range(headerFind("Monitor Last Name", diversionHead) & updateRow)
     FetchVictimFirst = Range(headerFind("Victim First Name", diversionHead) & updateRow)
     FetchVictimLast = Range(headerFind("Victim Last Name", diversionHead) & updateRow)
-    FetchYAPPanel = Lookup("Police_District_Num")(Range(headerFind("YAP Panel District #", diversionHead) & updateRow))
+    FetchYAPPanel.Caption = Lookup("Police_District_Num")(Range(headerFind("YAP Panel District #", diversionHead) & updateRow).value)
 
     If Status.Caption = "Contract Granted" Then
         Dim i As Long
@@ -331,6 +337,8 @@ Private Sub LookupData_Click()
             End If
         Next i
     End If
+    
+    Worksheets("User Entry").Activate
 End Sub
 
 Private Sub FirstHearingResult_Change()

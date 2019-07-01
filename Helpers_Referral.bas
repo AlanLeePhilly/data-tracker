@@ -109,11 +109,22 @@ Sub ReferClientTo( _
             Case "4G", "4E", "6F", "6H", "3E"
                 Range(headerFind("End Date", fromHead) & clientRow).value _
                     = referralDate
+                    
                 Range(headerFind("LOS", fromHead) & clientRow).value _
                     = DateDiff("d", _
                         Range(headerFind("Start Date", fromHead) & clientRow).value, _
                         Range(headerFind("End Date", fromHead) & clientRow).value)
-                        'Range (headerFind("Total LOS in " & Courtroom, fromHead) & clientRow).value
+                        
+                Range(headerFind("Total LOS in " & fromCR, fromHead) & clientRow).value _
+                    = DateDiff("d", _
+                        Range(headerFind("Start Date", fromHead) & clientRow).value, _
+                        Range(headerFind("End Date", fromHead) & clientRow).value)
+                        
+                Range(headerFind("Total LOS From Arrest", fromHead) & clientRow).value _
+                    = DateDiff("d", _
+                        Range(headerFind("Arrest Date") & clientRow).value, _
+                        Range(headerFind("End Date", fromHead) & clientRow).value)
+                    
                 Range(headerFind("Courtroom of Transfer (if relevant)", fromHead) & clientRow).value _
                     = Lookup("Courtroom_Name")(toCR)
 
@@ -392,7 +403,7 @@ Sub ReferClientTo( _
 
     currentStatus = Lookup("Legal_Status_Num")(Range(headerFind("Legal Status") & clientRow).value)
 
-    CRofOrigin = toCR
+    CRofOrigin = fromCR
 
     If newLegalStatus = "" Then
         submitLegalStatus = currentStatus
@@ -419,8 +430,6 @@ Sub ReferClientTo( _
     And Not toCR = "WRAP" _
     And Not toCR = "Crossover" Then
 
-        CRofOrigin = fromCR
-
         Call endLegalStatus( _
             clientRow:=clientRow, _
             statusType:=currentStatus, _
@@ -429,6 +438,7 @@ Sub ReferClientTo( _
             endDate:=referralDate, _
             Nature:="Neutral", _
             withAgg:=submitWithAgg, _
+            dischargingCourtroom:=fromCR, _
             detailed:="Neutral Transfer of Status", _
             Notes:="Transferred out of courtroom")
     End If

@@ -1467,8 +1467,21 @@ Private Sub TestFillPetition_Click()
         .List(0, 5) = "AGGRAVATED ASSAULT"
         .List(0, 6) = "No"
     End With
+    
+    CallInDate.value = "02/01/2019"
+    Was_DRAI_Administered.value = "Yes"
+    DRAI_Score.value = "4"
+    DRAI_Rec.value = "Release"
+    DRAI_Action.value = "Follow - Release"
+    
+    InConfDate.value = "02/01/2019"
+    ConfOutcome.value = "Release for Court"
+    
+    NoDiversionReason1 = "Charge Ineligible"
+    
+    InitialHearingLocation.value = "3E"
 
-    NextCourtDate = "2/2/2019"
+    NextCourtDate = "2/12/2019"
 
     DA.value = "Keller"
 
@@ -1542,18 +1555,27 @@ Private Sub TestFillDiversion_Click()
         .List(0, 5) = "AGGRAVATED ASSAULT"
         .List(0, 6) = "No"
     End With
-    DiversionProgramReferralDate.value = "7/1/17"
+
+    CallInDate.value = "02/01/2019"
+    Was_DRAI_Administered.value = "Yes"
+    DRAI_Score.value = "4"
+    DRAI_Rec.value = "Release"
+    DRAI_Action.value = "Follow - Release"
+    
+    InConfDate.value = "02/01/2019"
+    ConfOutcome.value = "Release for Diversion"
+    
+    DiversionProgram.value = "Yes"
+    DiversionProgramReferralDate.value = "2/1/19"
     ReferralSource.value = "Pre-Petition DA"
     NameOfProgram.value = "YAP"
     YAPDistrict.value = 2
-    InConfRecord.value = "No"
-
+    
     GeneralNotes.value = "Gen Notes Test"
 
     InitialHearingDate.value = "02/01/2019"
-    InitialHearingLocation.value = "3E"
-
-    DiversionProgram.value = "No"
+    InitialHearingLocation.value = "Diversion"
+    ListingType.value = "Diversion"
 
 End Sub
 

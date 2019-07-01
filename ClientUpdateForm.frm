@@ -1392,7 +1392,7 @@ Sub Standard_Submit_Click()
         Call startLegalStatus( _
                 clientRow:=updateRow, _
                 statusType:=Standard_Return_Legal_Status.Caption, _
-                Courtroom:=newCourtroom, _
+                Courtroom:=oldCourtroom, _
                 DA:=DA.value, _
                 startDate:=DateOfHearing.value, _
                 Notes:="Continued from prior courtroom")
@@ -1787,6 +1787,8 @@ Sub Standard_Submit_Click()
         Range(headerFind("Legal Status of Discharge", outcomeHead) & updateRow).value = Lookup("Legal_Status_Name")(Standard_Fetch_Legal_Status.Caption)
         Range(headerFind("DA", outcomeHead) & updateRow).value = Lookup("DA_Last_Name_Name")(DA.value)
         Range(headerFind("Active or Discharged", outcomeHead) & updateRow).value = 2 'discharged
+        Range(headerFind("Nature of Courtroom Outcome", outcomeHead) & updateRow).value _
+                = Lookup("Nature_of_Discharge_Name")(NatureFromDetailed(Modal_Standard_Court_Transfer.Detailed_Outcome.value))
         Range(headerFind("Detailed Courtroom Outcome", outcomeHead) & updateRow).value _
                 = Lookup("Detailed_Courtroom_Outcome_Name")(Modal_Standard_Court_Transfer.Detailed_Outcome.value)
         Call ReferClientTo( _

@@ -44,7 +44,6 @@ Sub Standard_Fetch()
             ClientUpdateForm.Standard_Admission_Update.Enabled = False
         End If
 
-
         .Standard_Fetch_Adjudication = Lookup("Generic_YNOU_Num")(Range(headerFind("Adjudicated Delinquent?", aggHead) & updateRow).value)
         If .Standard_Fetch_Adjudication.Caption = "Yes" Then
             Call ClientUpdateForm.Standard_Adjudication_Remain_Click
