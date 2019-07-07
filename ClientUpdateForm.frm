@@ -1781,7 +1781,8 @@ Sub Standard_Submit_Click()
     If Standard_Court_Transfer.BackColor = selectedColor Then
         Dim outcomeHead As String
         outcomeHead = headerFind("OUTCOMES", oldCourtHead)
-
+        
+        Range(headerFind("Notes on Outcome", outcomeHead) & updateRow).value = "Transferred out of courtroom"
         Range(headerFind("Date of Overall Discharge", outcomeHead) & updateRow).value = DateOfHearing.value
         Range(headerFind("Courtroom of Discharge", outcomeHead) & updateRow).value = Lookup("Courtroom_Name")(oldCourtroom)
         Range(headerFind("Legal Status of Discharge", outcomeHead) & updateRow).value = Lookup("Legal_Status_Name")(Standard_Fetch_Legal_Status.Caption)

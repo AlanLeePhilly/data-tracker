@@ -26,7 +26,7 @@ Sub PrintRecent()
     r.Activate
     
     'set number of rows of data
-    NumRows = DataSheet.Range(r, ActiveCell.End(xlDown)).Rows.count
+    NumRows = DataSheet.Range(r, ActiveCell.End(xlDown)).Rows.count - 1
     
     For x = 1 To NumRows
         'Get Petition #1 for current kid

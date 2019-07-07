@@ -310,28 +310,28 @@ Public Function NatureFromDetailed(detailed As String) As String
         Case _
             "Judgment of Acquittal", _
             "Petition Closed - Positive Comp. Terms", _
-            "Admin. D/C - Reasonable Efforts"
-            
+            "Petition Withdrawn", _
+            "Petition Diverted and Withdrawn"
+
                 NatureFromDetailed = "Positive"
                 
         Case _
             "Rearested & Held (adult)", _
             "Bench Warrant", _
-            "Acceptance to Room Not Granted", _
-            "Transfer to New Del. Room - Negative"
+            "Transfer to New Del. Room - Negative", _
+            "Aged Out", _
+            "Certified Adult (original petition)", _
+            "Death", _
+            "Admin. D/C - Reasonable Efforts"
             
                 NatureFromDetailed = "Negative"
                 
         Case _
-            "Petition Withdrawn", _
-            "Petition Diverted and Withdrawn", _
-            "Aged Out", _
-            "Certified Adult (original petition)", _
             "Transfer to Dependent", _
+            "Acceptance to Room Not Granted", _
             "Transfer to Other County", _
             "Transfer to New Del. Room - Neutral", _
             "Not Fit to Stand Trial", _
-            "Death", _
             "Other"
             
                 NatureFromDetailed = "Neutral"
