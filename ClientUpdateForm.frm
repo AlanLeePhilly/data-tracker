@@ -1366,7 +1366,8 @@ Sub Standard_Submit_Click()
     ''''''''''''''
     'LEGAL STATUS'
     ''''''''''''''
-    If Standard_Legal_Status_Update.BackColor = selectedColor Then
+    If Standard_Legal_Status_Update.BackColor = selectedColor _
+       And Standard_Court_Transfer.BackColor = unselectedColor Then
         With Modal_Standard_Legal_Status
             Call endLegalStatus( _
                      clientRow:=updateRow, _
@@ -1792,11 +1793,22 @@ Sub Standard_Submit_Click()
                 = Lookup("Nature_of_Discharge_Name")(NatureFromDetailed(Modal_Standard_Court_Transfer.Detailed_Outcome.value))
         Range(headerFind("Detailed Courtroom Outcome", outcomeHead) & updateRow).value _
                 = Lookup("Detailed_Courtroom_Outcome_Name")(Modal_Standard_Court_Transfer.Detailed_Outcome.value)
-        Call ReferClientTo( _
+        
+        If Standard_Legal_Status_Update.BackColor = selectedColor Then
+            Call ReferClientTo( _
+                referralDate:=DateOfHearing.value, _
+                clientRow:=updateRow, _
+                newLegalStatus:=Standard_Return_Legal_Status.Caption, _
+                toCR:=Modal_Standard_Court_Transfer.Courtroom.value, _
+                fromCR:=oldCourtroom)
+        
+        Else
+            Call ReferClientTo( _
                 referralDate:=DateOfHearing.value, _
                 clientRow:=updateRow, _
                 toCR:=Modal_Standard_Court_Transfer.Courtroom.value, _
                 fromCR:=oldCourtroom)
+        End If
     End If
 
     Call closeCallIn(DateOfHearing.value, updateRow)

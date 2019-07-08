@@ -63,7 +63,7 @@ Sub ReferClientTo( _
     Optional newLegalStatus As String = "")
 
     Worksheets("Entry").Activate
-
+    
     Dim toHead As String
     Dim fromHead As String
     Dim legalStatusVar As String
@@ -71,6 +71,9 @@ Sub ReferClientTo( _
     '''''''''''
     'SET HEADS'
     '''''''''''
+    
+    
+    
     Select Case fromCR
         Case "4G", "4E", "6F", "6H", "3E", "JTC", "WRAP", "Adult"
             fromHead = headerFind(fromCR)
@@ -450,14 +453,22 @@ Sub ReferClientTo( _
 
             'we don't submit new statuses for these courts because they require acceptance
         Else
-            Call startLegalStatus( _
-                clientRow:=clientRow, _
-                statusType:=submitLegalStatus, _
-                Courtroom:=toCR, _
-                courtroomOfOrigin:=CRofOrigin, _
-                DA:="Unknown", _
-                startDate:=referralDate, _
-                Notes:="Transferred into courtroom")
+        
+        If statusHasAgg(submitLegalStatus) Then
+            If isNotEmptyOrZero(Range(hFind("Courtroom of Origin", submitLegalStatus, "AGGREGATES") & clientRow)) Then
+                CRofOrigin = Lookup("Courtroom_Num")(Range(hFind("Courtroom of Origin", submitLegalStatus, "AGGREGATES") & clientRow).value)
+            End If
+        End If
+        
+
+        Call startLegalStatus( _
+            clientRow:=clientRow, _
+            statusType:=submitLegalStatus, _
+            Courtroom:=toCR, _
+            courtroomOfOrigin:=CRofOrigin, _
+            DA:="Unknown", _
+            startDate:=referralDate, _
+            Notes:="Transferred into courtroom")
         End If
     End If
 

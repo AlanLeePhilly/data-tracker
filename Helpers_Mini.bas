@@ -342,3 +342,12 @@ Public Function NatureFromDetailed(detailed As String) As String
             
     End Select
 End Function
+
+Public Function statusHasAgg(legalStatus As String) As Boolean
+    Select Case legalStatus
+        Case "Pretrial", "Consent Decree", "Probation", "Interim Probation", "Aftercare Probation"
+            statusHasAgg = True
+        Case Else
+            statusHasAgg = False
+    End Select
+End Function
