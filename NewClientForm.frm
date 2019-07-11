@@ -1481,7 +1481,7 @@ Private Sub TestFillPetition_Click()
     
     InitialHearingLocation.value = "3E"
 
-    NextCourtDate = "2/12/2019"
+    InitialHearingDate = "2/12/2019"
 
     DA.value = "Keller"
 

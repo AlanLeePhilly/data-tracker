@@ -81,9 +81,9 @@ Sub FaceSheetPrint0()
     'Most recent listing
     PrintSheet.Range("C39").Select
     Selection.ClearContents
-    PrintSheet.Range("G39").Select
+    PrintSheet.Range("I39").Select
     Selection.ClearContents
-    PrintSheet.Range("J39").Select
+    PrintSheet.Range("I40").Select
     Selection.ClearContents
     PrintSheet.Range("B41").Select
     Selection.ClearContents
@@ -107,6 +107,8 @@ Sub FaceSheetPrint0()
     Selection.ClearContents
     PrintSheet.Range("B61").Select
     Selection.ClearContents
+    PrintSheet.Range("H59").Select
+    Selection.ClearContents
     
     'Most recent condition
     PrintSheet.Range("C67").Select
@@ -124,6 +126,8 @@ Sub FaceSheetPrint0()
     PrintSheet.Range("I71").Select
     Selection.ClearContents
     PrintSheet.Range("B75").Select
+    Selection.ClearContents
+    PrintSheet.Range("I73").Select
     Selection.ClearContents
     
     'Demographics
@@ -173,6 +177,39 @@ Sub FaceSheetPrint0()
     Selection.ClearContents
     PrintSheet.Range("X76").Select
     Selection.ClearContents
+    
+    'Recent Supervision History
+    PrintSheet.Range("N79").Select
+    Selection.ClearContents
+    Dim i As Integer
+    Dim j As Integer
+    j = 81
+    Do Until j > 172
+        i = 1
+        Do Until i > 7
+            PrintSheet.Range("C" & j + i).Select
+            Selection.ClearContents
+            PrintSheet.Range("I" & j + i).Select
+            Selection.ClearContents
+            
+            PrintSheet.Range("N" & j + i).Select
+            Selection.ClearContents
+            PrintSheet.Range("U" & j + i).Select
+            Selection.ClearContents
+            
+            i = i + 2
+        Loop
+        PrintSheet.Range("K" & j + 1).Select
+        Selection.ClearContents
+        PrintSheet.Range("X" & j + 1).Select
+        Selection.ClearContents
+        PrintSheet.Range("B" & j + 9).Select
+        Selection.ClearContents
+        PrintSheet.Range("M" & j + 9).Select
+        Selection.ClearContents
+        
+        j = j + 13
+    Loop
     
     PrintSheet.Range("G5").Select
     
@@ -400,8 +437,8 @@ Sub FaceSheetPrint()
         lastListing = lastListing - 1
         
         PrintSheet.Range("C39").value = DataSheet.Range(hFind("Court Date #" & lastListing, "LISTINGS") & userRow).value
-        PrintSheet.Range("G39").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #" & lastListing, "LISTINGS") & userRow).value)
-        PrintSheet.Range("J39").value = Lookup("Legal_Status_Num")(DataSheet.Range(hFind("Legal Status", "Court Date #" & lastListing, "LISTINGS") & userRow).value)
+        PrintSheet.Range("I39").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #" & lastListing, "LISTINGS") & userRow).value)
+        PrintSheet.Range("I40").value = Lookup("Legal_Status_Num")(DataSheet.Range(hFind("Legal Status", "Court Date #" & lastListing, "LISTINGS") & userRow).value)
         PrintSheet.Range("B41").value = DataSheet.Range(hFind("Notes", "Court Date #" & lastListing, "LISTINGS") & userRow).value
     End If
     
@@ -412,6 +449,9 @@ Sub FaceSheetPrint()
         lastSup = 1
         Do Until IsEmpty(DataSheet.Range(hFind("Supervision Ordered #" & lastSup, "Supervision Programs", "AGGREGATES") & userRow).value)
             lastSup = lastSup + 1
+            If lastSup = 31 Then
+                Exit Do
+            End If
         Loop
         
         lastSup = lastSup - 1
@@ -425,6 +465,7 @@ Sub FaceSheetPrint()
         PrintSheet.Range("J53").value = Lookup("Residential_Supervision_Provider_Num")(DataSheet.Range(hFind("Residential Agency", "Supervision Ordered #" & lastSup, "Supervision Programs", "AGGREGATES") & userRow).value)
         PrintSheet.Range("H55").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom of Order", "Supervision Ordered #" & lastSup, "Supervision Programs", "AGGREGATES") & userRow).value)
         PrintSheet.Range("H57").value = Lookup("Legal_Status_Num")(DataSheet.Range(hFind("Legal Status of Order", "Supervision Ordered #" & lastSup, "Supervision Programs", "AGGREGATES") & userRow).value)
+        PrintSheet.Range("H59").value = Lookup("DA_Last_Name_Num")(DataSheet.Range(hFind("DA", "Supervision Ordered #" & lastSup, "Supervision Programs", "AGGREGATES") & userRow).value)
     End If
     
     'Most recent condition
@@ -434,6 +475,9 @@ Sub FaceSheetPrint()
         lastCon = 1
         Do Until IsEmpty(DataSheet.Range(hFind("Condition Ordered #" & lastCon, "Conditions", "AGGREGATES") & userRow).value)
             lastCon = lastCon + 1
+            If lastCon = 21 Then
+                Exit Do
+            End If
         Loop
         
         lastCon = lastCon - 1
@@ -446,6 +490,7 @@ Sub FaceSheetPrint()
         PrintSheet.Range("I67").value = Lookup("Condition_Provider_Num")(DataSheet.Range(hFind("Condition Agency", "Condition Ordered #" & lastCon, "Conditions", "AGGREGATES") & userRow).value)
         PrintSheet.Range("I69").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom of Order", "Condition Ordered #" & lastCon, "Conditions", "AGGREGATES") & userRow).value)
         PrintSheet.Range("I71").value = Lookup("Legal_Status_Num")(DataSheet.Range(hFind("Legal Status of Order", "Condition Ordered #" & lastCon, "Conditions", "AGGREGATES") & userRow).value)
+        PrintSheet.Range("I73").value = Lookup("DA_Last_Name_Num")(DataSheet.Range(hFind("DA", "Condition Ordered #" & lastCon, "Conditions", "AGGREGATES") & userRow).value)
     End If
     
     'Demographics
@@ -473,6 +518,52 @@ Sub FaceSheetPrint()
     PrintSheet.Range("S75").value = DataSheet.Range(hFind("Lead Charge Name", "Petition #2") & userRow).value
     PrintSheet.Range("X75").value = Lookup("Charge_Grade_Specific_Num")(DataSheet.Range(hFind("Charge Grade (specific) #1", "Petition #2") & userRow).value)
     PrintSheet.Range("L77").value = DataSheet.Range(hFind("Date Filed", "Petition #2") & userRow).value
+    
+    'Recent Supervision History
+    If Not IsEmpty(DataSheet.Range(hFind("Supervision Ordered #1", "Supervision Programs", "AGGREGATES") & userRow).value) Then
+        PrintSheet.Range("N79").value = lastSup
+        
+        Dim sheetRow As Integer
+        sheetRow = 82
+        
+        lastSup = lastSup - 1
+        
+        Do Until lastSup = 0 Or sheetRow > 279
+            If sheetRow < 174 Then
+                PrintSheet.Cells(sheetRow, 3).value = Lookup("Supervision_Program_Num")(DataSheet.Range(hFind("Supervision Ordered #" & lastSup, "Supervision Programs", "AGGREGATES") & userRow).value)
+                PrintSheet.Cells(sheetRow + 2, 3).value = DataSheet.Range(hFind("Start Date", "Supervision Ordered #" & lastSup, "Supervision Programs", "AGGREGATES") & userRow).value
+                PrintSheet.Cells(sheetRow + 4, 3).value = DataSheet.Range(hFind("End Date", "Supervision Ordered #" & lastSup, "Supervision Programs", "AGGREGATES") & userRow).value
+                PrintSheet.Cells(sheetRow + 6, 3).value = DataSheet.Range(hFind("LOS", "Supervision Ordered #" & lastSup, "Supervision Programs", "AGGREGATES") & userRow).value
+                PrintSheet.Cells(sheetRow + 8, 2).value = DataSheet.Range(hFind("Supervision Description", "Supervision Ordered #" & lastSup, "Supervision Programs", "AGGREGATES") & userRow).value & "; DISCHARGE - " & DataSheet.Range(hFind("Discharge Description", "Supervision Ordered #20", "Supervision Programs", "AGGREGATES") & userRow).value
+                PrintSheet.Cells(sheetRow, 9).value = Lookup("Community_Based_Supervision_Provider_Num")(DataSheet.Range(hFind("Community-Based Agency", "Supervision Ordered #" & lastSup, "Supervision Programs", "AGGREGATES") & userRow).value)
+                PrintSheet.Cells(sheetRow, 11).value = Lookup("Residential_Supervision_Provider_Num")(DataSheet.Range(hFind("Residential Agency", "Supervision Ordered #" & lastSup, "Supervision Programs", "AGGREGATES") & userRow).value)
+                PrintSheet.Cells(sheetRow + 2, 9).value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom of Order", "Supervision Ordered #" & lastSup, "Supervision Programs", "AGGREGATES") & userRow).value)
+                PrintSheet.Cells(sheetRow + 4, 9).value = Lookup("Legal_Status_Num")(DataSheet.Range(hFind("Legal Status of Order", "Supervision Ordered #" & lastSup, "Supervision Programs", "AGGREGATES") & userRow).value)
+                PrintSheet.Cells(sheetRow + 6, 9).value = Lookup("DA_Last_Name_Num")(DataSheet.Range(hFind("DA", "Supervision Ordered #" & lastSup, "Supervision Programs", "AGGREGATES") & userRow).value)
+            Else
+                PrintSheet.Cells(sheetRow - 104, 14).value = Lookup("Supervision_Program_Num")(DataSheet.Range(hFind("Supervision Ordered #" & lastSup, "Supervision Programs", "AGGREGATES") & userRow).value)
+                PrintSheet.Cells(sheetRow - 102, 14).value = DataSheet.Range(hFind("Start Date", "Supervision Ordered #" & lastSup, "Supervision Programs", "AGGREGATES") & userRow).value
+                PrintSheet.Cells(sheetRow - 100, 14).value = DataSheet.Range(hFind("End Date", "Supervision Ordered #" & lastSup, "Supervision Programs", "AGGREGATES") & userRow).value
+                PrintSheet.Cells(sheetRow - 98, 14).value = DataSheet.Range(hFind("LOS", "Supervision Ordered #" & lastSup, "Supervision Programs", "AGGREGATES") & userRow).value
+                PrintSheet.Cells(sheetRow - 96, 13).value = DataSheet.Range(hFind("Supervision Description", "Supervision Ordered #" & lastSup, "Supervision Programs", "AGGREGATES") & userRow).value & "; DISCHARGE - " & DataSheet.Range(hFind("Discharge Description", "Supervision Ordered #20", "Supervision Programs", "AGGREGATES") & userRow).value
+                PrintSheet.Cells(sheetRow - 104, 21).value = Lookup("Community_Based_Supervision_Provider_Num")(DataSheet.Range(hFind("Community-Based Agency", "Supervision Ordered #" & lastSup, "Supervision Programs", "AGGREGATES") & userRow).value)
+                PrintSheet.Cells(sheetRow - 104, 24).value = Lookup("Residential_Supervision_Provider_Num")(DataSheet.Range(hFind("Residential Agency", "Supervision Ordered #" & lastSup, "Supervision Programs", "AGGREGATES") & userRow).value)
+                PrintSheet.Cells(sheetRow - 102, 21).value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom of Order", "Supervision Ordered #" & lastSup, "Supervision Programs", "AGGREGATES") & userRow).value)
+                PrintSheet.Cells(sheetRow - 100, 21).value = Lookup("Legal_Status_Num")(DataSheet.Range(hFind("Legal Status of Order", "Supervision Ordered #" & lastSup, "Supervision Programs", "AGGREGATES") & userRow).value)
+                PrintSheet.Cells(sheetRow - 98, 21).value = Lookup("DA_Last_Name_Num")(DataSheet.Range(hFind("DA", "Supervision Ordered #" & lastSup, "Supervision Programs", "AGGREGATES") & userRow).value)
+            End If
+            
+            sheetRow = sheetRow + 13
+            
+            lastSup = lastSup - 1
+            If lastSup = 0 Then
+                Exit Do
+            End If
+        Loop
+    
+    Else
+        PrintSheet.Range("N79").value = "0"
+    End If
 
 End Sub
 
@@ -520,3 +611,4 @@ Sub PrintFaceSheet()
     Application.ScreenUpdating = True
 
 End Sub
+
