@@ -1038,7 +1038,7 @@ Sub JTC_Submit_Click()
                             Re1:="N/A", _
                             Re2:="N/A", _
                             Re3:="N/A", _
-                            Notes:="Continued from intake conf.")
+                            Notes:="Continued from Intake Conference.")
 
                     
                         Call addSupervision( _
@@ -1081,7 +1081,7 @@ Sub JTC_Submit_Click()
                                 Re1:="N/A", _
                                 Re2:="N/A", _
                                 Re3:="N/A", _
-                                Notes:="Continued from PJJSC")
+                                Notes:="Continued from PJJSC.")
 
                             Call addSupervision( _
                                 clientRow:=updateRow, _
@@ -1162,7 +1162,7 @@ Sub JTC_Submit_Click()
                                 Re1:="N/A", _
                                 Re2:="N/A", _
                                 Re3:="N/A", _
-                                Notes:="Continued from intake conf.")
+                                Notes:="Continued from Intake Conference.")
 
                     If Not IsDate(.List(i, 3)) Then
                         Call addCondition( _
@@ -1191,7 +1191,7 @@ Sub JTC_Submit_Click()
                                 Re1:="N/A", _
                                 Re2:="N/A", _
                                 Re3:="N/A", _
-                                Notes:="Continued from PJJSC")
+                                Notes:="Continued from PJJSC.")
 
                         If Not IsDate(.List(i, 3)) Then
                             Call addCondition( _
@@ -1210,16 +1210,16 @@ Sub JTC_Submit_Click()
                     Else
                         If IsDate(.List(i, 3)) Then 'if has End Date
                             Call dropCondition( _
-                                    clientRow:=updateRow, _
-                                    head:=.List(i, 4), _
-                                    condition:=.List(i, 0), _
-                                    startDate:=.List(i, 2), _
-                                    endDate:=.List(i, 3), _
-                                    Nature:=.List(i, 5), _
-                                    Re1:=.List(i, 6), _
-                                    Re2:=.List(i, 7), _
-                                    Re3:=.List(i, 8), _
-                                    Notes:=.List(i, 9))
+                                clientRow:=updateRow, _
+                                head:=.List(i, 4), _
+                                condition:=.List(i, 0), _
+                                startDate:=.List(i, 2), _
+                                endDate:=.List(i, 3), _
+                                Nature:=.List(i, 5), _
+                                Re1:=.List(i, 6), _
+                                Re2:=.List(i, 7), _
+                                Re3:=.List(i, 8), _
+                                Notes:=.List(i, 9))
                         End If
                     End If
                 End If
@@ -1245,7 +1245,13 @@ Sub JTC_Submit_Click()
     End If
     Call closeCallIn(DateOfHearing.value, updateRow)
     Call closeIntakeConference(DateOfHearing.value, updateRow)
-    Call addNotes("JTC", DateOfHearing.value, updateRow, JTC_Notes.value, "JTC")
+    Call addNotes( _
+        Courtroom:="JTC", _
+        dateOf:=DateOfHearing.value, _
+        userRow:=updateRow, _
+        Notes:=JTC_Notes.value, _
+        DA:=DA.value _
+    )
     Call Save_Countdown
     Call UnloadAll
 
@@ -1593,7 +1599,7 @@ Sub Standard_Submit_Click()
                             Re1:="N/A", _
                             Re2:="N/A", _
                             Re3:="N/A", _
-                            Notes:="from intake conf.")
+                            Notes:="Continued from Intake Conference.")
 
                         Call addSupervision( _
                             clientRow:=updateRow, _
@@ -1606,7 +1612,8 @@ Sub Standard_Submit_Click()
                             NextCourtDate:=Standard_NextCourtDate.value, _
                             Re1:="N/A", _
                             Re2:="N/A", _
-                            Re3:="N/A")
+                            Re3:="N/A", _
+                            Notes:="Continued from Intake Conference.")
                         
                     Else
                         Call dropSupervision( _
@@ -1635,7 +1642,7 @@ Sub Standard_Submit_Click()
                                 Re1:="N/A", _
                                 Re2:="N/A", _
                                 Re3:="N/A", _
-                                Notes:="from PJJSC")
+                                Notes:="Continued from PJJSC.")
 
                         
                             Call addSupervision( _
@@ -1649,7 +1656,8 @@ Sub Standard_Submit_Click()
                                 NextCourtDate:=Standard_NextCourtDate.value, _
                                 Re1:="N/A", _
                                 Re2:="N/A", _
-                                Re3:="N/A")
+                                Re3:="N/A", _
+                                Notes:="Continued from PJJSC.")
                         Else
                             Call dropSupervision( _
                                 clientRow:=updateRow, _
@@ -1716,20 +1724,21 @@ Sub Standard_Submit_Click()
                             Re1:="N/A", _
                             Re2:="N/A", _
                             Re3:="N/A", _
-                            Notes:="Continued from intake conf.")
+                            Notes:="Continued from Intake Conference.")
 
                     If Not IsDate(.List(i, 3)) Then
                         Call addCondition( _
-                                clientRow:=updateRow, _
-                                condition:=.List(i, 0), _
-                                legalStatus:=Standard_Return_Legal_Status.Caption, _
-                                Courtroom:=oldCourtroom, _
-                                DA:=DA.value, _
-                                agency:=.List(i, 1), _
-                                startDate:=DateOfHearing.value, _
-                                Re1:="N/A", _
-                                Re2:="N/A", _
-                                Re3:="N/A")
+                            clientRow:=updateRow, _
+                            condition:=.List(i, 0), _
+                            legalStatus:=Standard_Return_Legal_Status.Caption, _
+                            Courtroom:=oldCourtroom, _
+                            DA:=DA.value, _
+                            agency:=.List(i, 1), _
+                            startDate:=DateOfHearing.value, _
+                            Re1:="N/A", _
+                            Re2:="N/A", _
+                            Re3:="N/A", _
+                            Notes:="Continued from Intake Conference.")
                     End If
                 Else
                     If Range(headerFind("Courtroom of Order", .List(i, 4)) & updateRow).value _
@@ -1815,7 +1824,14 @@ Sub Standard_Submit_Click()
     Call closeIntakeConference(DateOfHearing.value, updateRow)
     Call UnloadAll
 
-    Call addNotes(oldCourtroom, DateOfHearing.value, updateRow, Standard_Notes, Standard_Fetch_Legal_Status.Caption)
+    Call addNotes( _
+        Courtroom:=oldCourtroom, _
+        dateOf:=DateOfHearing.value, _
+        userRow:=updateRow, _
+        Notes:=Standard_Notes, _
+        DA:=DA.value _
+    )
+    
     Call Save_Countdown
 
     Call CheckForConcurrency(updateRow, DateOfHearing.value)
@@ -1852,8 +1868,14 @@ Private Sub PJJSC_Submit_Click()
     Dim detentionHead As String
 
     Worksheets("Entry").Activate
-    Call addNotes("PJJSC", DateOfHearing.value, updateRow, PJJSC_NotesOnDetentionOutcome.value, "Pretrial")
-
+    Call addNotes( _
+        Courtroom:="PJJSC", _
+        dateOf:=DateOfHearing.value, _
+        userRow:=updateRow, _
+        Notes:=PJJSC_NotesOnDetentionOutcome.value, _
+        DA:=DA.value _
+    )
+    
     detentionHead = headerFind("DETENTION")
 
     'find empty review hearing bucket to enter data

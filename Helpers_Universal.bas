@@ -548,7 +548,7 @@ Sub continuanceStart( _
         Range(headerFind("Reason for Continuance Category", tmpHead) & clientRow) = commonwealthCat(Re3)
 
         Range(headerFind("LOS Continuance", bucketHead) & clientRow) _
-            = calcLOS(Range(hFind("Date Filed", "PETITION") & clientRow).value, startDate)
+            = calcLOS(startDate, nextDate)
 
         section = "AGGREGATES"
     Next Num
@@ -910,7 +910,7 @@ Sub closeIntakeDetentions(ByVal dateOf As String, ByVal userRow As Long)
                             Re1:="N/A", _
                             Re2:="N/A", _
                             Re3:="N/A", _
-                            Notes:="Continued from intake conf.")
+                            Notes:="Continued from Intake Conference.")
                     End If
                 End If
             End If

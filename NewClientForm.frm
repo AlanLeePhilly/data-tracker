@@ -988,19 +988,19 @@ Private Sub Submit_Click()
                 Range(headerFind("LOS in Detention", tempHead) & emptyRow).value _
                         = calcLOS(CallInDate.value, InConfDate.value)
                 Call addSupervision( _
-                            clientRow:=emptyRow, _
-                            serviceType:="Detention (not respite)", _
-                            legalStatus:="Pretrial", _
-                            Courtroom:="Call-In", _
-                            CourtroomOfOrder:="Call-In", _
-                            DA:=DA.value, _
-                            agency:="PJJSC", _
-                            startDate:=CallInDate.value, _
-                            endDate:=InConfDate.value, _
-                            Re1:="", _
-                            Re2:="", _
-                            Re3:="", _
-                            Notes:="Held at call-in")
+                    clientRow:=emptyRow, _
+                    serviceType:="Detention (not respite)", _
+                    legalStatus:="Pretrial", _
+                    Courtroom:="Call-In", _
+                    CourtroomOfOrder:="Call-In", _
+                    DA:=DA.value, _
+                    agency:="PJJSC", _
+                    startDate:=CallInDate.value, _
+                    endDate:=InConfDate.value, _
+                    Re1:="", _
+                    Re2:="", _
+                    Re3:="", _
+                    Notes:="Held at call-in")
 
         End Select
         Range(headerFind("LOS Until Next Hearing", tempHead) & emptyRow).value _
@@ -1108,25 +1108,25 @@ Private Sub Submit_Click()
                 Range(hFind("Detention Facility", "DETENTION") & emptyRow).value _
                          = Lookup("Detention_Facility_Name")(DetentionFacility.value)
                 Call addSupervision( _
-                            clientRow:=emptyRow, _
-                            serviceType:="Detention (not respite)", _
-                            legalStatus:="Pretrial", _
-                            Courtroom:="Intake Conf.", _
-                            DA:=DA.value, _
-                            agency:="", _
-                            startDate:=InConfDate.value, _
-                            Re1:="", _
-                            Re2:="", _
-                            Re3:="", _
-                            Notes:="Held at intake conference")
+                    clientRow:=emptyRow, _
+                    serviceType:="Detention (not respite)", _
+                    legalStatus:="Pretrial", _
+                    Courtroom:="Intake Conf.", _
+                    DA:=DA.value, _
+                    agency:="", _
+                    startDate:=InConfDate.value, _
+                    Re1:="", _
+                    Re2:="", _
+                    Re3:="", _
+                    Notes:="Held at intake conference")
 
             Case "Release for Court"
                 Call ReferClientTo( _
-                        referralDate:=InConfDate.value, _
-                        clientRow:=emptyRow, _
-                        fromCR:="Intake Conf.", _
-                        toCR:=InitialHearingLocation.value _
-                        )
+                    referralDate:=InConfDate.value, _
+                    clientRow:=emptyRow, _
+                    fromCR:="Intake Conf.", _
+                    toCR:=InitialHearingLocation.value _
+                    )
                 If InitialHearingLocation.value = "5E" Then
                     Range(hFind("Courtroom of Origin", "Crossover") & emptyRow).value _
                             = Lookup("Courtroom_Name")("Intake Conf.")
@@ -1138,84 +1138,84 @@ Private Sub Submit_Click()
                 'add supervisions and conditions if assigned
                 If Not Supv1.value = "None" Then
                     Call addSupervision( _
-                            clientRow:=emptyRow, _
-                            serviceType:=Supv1.value, _
-                            legalStatus:="Pretrial", _
-                            Courtroom:="Intake Conf.", _
-                            CourtroomOfOrder:="Intake Conf.", _
-                            DA:=DA.value, _
-                            agency:=Supv1Pro.value, _
-                            startDate:=InConfDate.value, _
-                            NextCourtDate:=InitialHearingDate.value, _
-                            Re1:=Supv1Re1.value, _
-                            Re2:=Supv1Re2.value, _
-                            Re3:=Supv1Re3.value, _
-                            Notes:="Referred at intake conference")
+                        clientRow:=emptyRow, _
+                        serviceType:=Supv1.value, _
+                        legalStatus:="Pretrial", _
+                        Courtroom:="Intake Conf.", _
+                        CourtroomOfOrder:="Intake Conf.", _
+                        DA:=DA.value, _
+                        agency:=Supv1Pro.value, _
+                        startDate:=InConfDate.value, _
+                        NextCourtDate:=InitialHearingDate.value, _
+                        Re1:=Supv1Re1.value, _
+                        Re2:=Supv1Re2.value, _
+                        Re3:=Supv1Re3.value, _
+                        Notes:="Referred at intake conference")
                 End If
 
                 If Not Supv2.value = "None" Then
                     Call addSupervision( _
-                            clientRow:=emptyRow, _
-                            serviceType:=Supv2.value, _
-                            legalStatus:="Pretrial", _
-                            Courtroom:="Intake Conf.", _
-                            CourtroomOfOrder:="Intake Conf.", _
-                            DA:=DA.value, _
-                            agency:=Supv2Pro.value, _
-                            startDate:=InConfDate.value, _
-                            NextCourtDate:=InitialHearingDate.value, _
-                            Re1:=Supv2Re1.value, _
-                            Re2:=Supv2Re2.value, _
-                            Re3:=Supv2Re3.value, _
-                            Notes:="Referred at intake conference")
+                        clientRow:=emptyRow, _
+                        serviceType:=Supv2.value, _
+                        legalStatus:="Pretrial", _
+                        Courtroom:="Intake Conf.", _
+                        CourtroomOfOrder:="Intake Conf.", _
+                        DA:=DA.value, _
+                        agency:=Supv2Pro.value, _
+                        startDate:=InConfDate.value, _
+                        NextCourtDate:=InitialHearingDate.value, _
+                        Re1:=Supv2Re1.value, _
+                        Re2:=Supv2Re2.value, _
+                        Re3:=Supv2Re3.value, _
+                        Notes:="Referred at intake conference")
                 End If
 
                 If Not Cond1.value = "None" Then
                     Call addCondition( _
-                            clientRow:=emptyRow, _
-                            condition:=Cond1.value, _
-                            legalStatus:="Pretrial", _
-                            Courtroom:="Intake Conf.", _
-                            CourtroomOfOrder:="Intake Conf.", _
-                            DA:=DA.value, _
-                            agency:=Cond1Pro.value, _
-                            startDate:=InConfDate.value, _
-                            Re1:="N/A", _
-                            Re2:="N/A", _
-                            Re3:="N/A", _
-                            Notes:="Referred at intake conference")
+                        clientRow:=emptyRow, _
+                        condition:=Cond1.value, _
+                        legalStatus:="Pretrial", _
+                        Courtroom:="Intake Conf.", _
+                        CourtroomOfOrder:="Intake Conf.", _
+                        DA:=DA.value, _
+                        agency:=Cond1Pro.value, _
+                        startDate:=InConfDate.value, _
+                        Re1:="N/A", _
+                        Re2:="N/A", _
+                        Re3:="N/A", _
+                        Notes:="Referred at intake conference")
                 End If
 
                 If Not Cond2.value = "None" Then
                     Call addCondition( _
-                            clientRow:=emptyRow, _
-                            condition:=Cond2.value, _
-                            legalStatus:="Pretrial", _
-                            Courtroom:="Intake Conf.", _
-                            CourtroomOfOrder:="Intake Conf.", _
-                            DA:=DA.value, _
-                            agency:=Cond2Pro.value, _
-                            startDate:=InConfDate.value, _
-                            Re1:="N/A", _
-                            Re2:="N/A", _
-                            Re3:="N/A", _
-                            Notes:="Referred at intake conference")
+                        clientRow:=emptyRow, _
+                        condition:=Cond2.value, _
+                        legalStatus:="Pretrial", _
+                        Courtroom:="Intake Conf.", _
+                        CourtroomOfOrder:="Intake Conf.", _
+                        DA:=DA.value, _
+                        agency:=Cond2Pro.value, _
+                        startDate:=InConfDate.value, _
+                        Re1:="N/A", _
+                        Re2:="N/A", _
+                        Re3:="N/A", _
+                        Notes:="Referred at intake conference")
                 End If
 
                 If Not Cond3.value = "None" Then
                     Call addCondition( _
-                            clientRow:=emptyRow, _
-                            condition:=Cond3.value, _
-                            legalStatus:="Pretrial", _
-                            Courtroom:="Intake Conf.", _
-                            CourtroomOfOrder:="Intake Conf.", _
-                            DA:=DA.value, _
-                            agency:=Cond3Pro.value, _
-                            startDate:=InConfDate.value, _
-                            Re1:="N/A", _
-                            Re2:="N/A", _
-                            Re3:="N/A", _
-                            Notes:="Referred at intake conference")
+                        clientRow:=emptyRow, _
+                        condition:=Cond3.value, _
+                        legalStatus:="Pretrial", _
+                        Courtroom:="Intake Conf.", _
+                        CourtroomOfOrder:="Intake Conf.", _
+                        DA:=DA.value, _
+                        agency:=Cond3Pro.value, _
+                        startDate:=InConfDate.value, _
+                        Re1:="N/A", _
+                        Re2:="N/A", _
+                        Re3:="N/A", _
+                        Notes:="Referred at intake conference")
                 End If
 
             Case "Release for Diversion"
@@ -1228,10 +1228,10 @@ Private Sub Submit_Click()
         Select Case InitialHearingLocation.value
             Case "4G", "4E", "6F", "6H", "3E", "JTC", "5E", "WRAP", "Adult"
                 Call ReferClientTo( _
-                        referralDate:=PetitionBox.List(0, 0), _
-                        clientRow:=emptyRow, _
-                        toCR:=InitialHearingLocation.value _
-                        )
+                    referralDate:=PetitionBox.List(0, 0), _
+                    clientRow:=emptyRow, _
+                    toCR:=InitialHearingLocation.value _
+                    )
         End Select
     End If
 
@@ -1347,8 +1347,13 @@ Private Sub Submit_Click()
 
 
 
-    Call addNotes(InitialHearingLocation.value, InConfDate.value, emptyRow, GeneralNotes, "Pretrial")
-
+    Call addNotes( _
+        Courtroom:=InitialHearingLocation.value, _
+        dateOf:=InConfDate.value, _
+        userRow:=emptyRow, _
+        Notes:=GeneralNotes, _
+        DA:=DA.value _
+    )
 
     'ZERO FILL
 

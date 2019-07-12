@@ -244,7 +244,14 @@ Sub flagYes(ByRef rng As Range)
     rng.value = Lookup("Generic_YN_Name")("Yes")
 End Sub
 
-Sub addNotes(Courtroom As String, dateOf As String, userRow As Long, Notes As String, Optional legalStatus As String = "")
+Sub addNotes( _
+    Courtroom As String, _
+    dateOf As String, _
+    userRow As Long, _
+    Notes As String, _
+    DA As String, _
+    Optional legalStatus As String = "" _
+)
     Dim bucketHead As String
     For i = 1 To 100
         If IsEmpty(Range(hFind("Court Date #" & i, "LISTINGS") & userRow)) Then
@@ -252,7 +259,7 @@ Sub addNotes(Courtroom As String, dateOf As String, userRow As Long, Notes As St
 
             Range(bucketHead & userRow).value = dateOf
             Range(headerFind("Courtroom", bucketHead) & userRow).value = Lookup("Courtroom_Name")(Courtroom)
-            Range(headerFind("Legal Status", bucketHead) & userRow).value = Lookup("Legal_Status_Name")(legalStatus)
+            Range(headerFind("Legal Status", bucketHead) & userRow).value = Lookup("Legal_Status_Name")(Range(headerFind("Legal Status") & userRow).value)
             Range(headerFind("DA", bucketHead) & userRow).value = Lookup("DA_Last_Name_Name")(DA)
             Range(headerFind("Notes", bucketHead) & userRow).value = Notes
 
