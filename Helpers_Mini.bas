@@ -259,7 +259,7 @@ Sub addNotes( _
 
             Range(bucketHead & userRow).value = dateOf
             Range(headerFind("Courtroom", bucketHead) & userRow).value = Lookup("Courtroom_Name")(Courtroom)
-            Range(headerFind("Legal Status", bucketHead) & userRow).value = Lookup("Legal_Status_Name")(Range(headerFind("Legal Status") & userRow).value)
+            Range(headerFind("Legal Status", bucketHead) & userRow).value = Range(headerFind("Legal Status") & userRow).value
             Range(headerFind("DA", bucketHead) & userRow).value = Lookup("DA_Last_Name_Name")(DA)
             Range(headerFind("Notes", bucketHead) & userRow).value = Notes
 
