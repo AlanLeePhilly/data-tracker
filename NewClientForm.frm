@@ -1376,6 +1376,7 @@ Private Sub Submit_Click()
     '    End If
     'Next counter
     Call aggFlag(emptyRow)
+    Call courtsFlag(emptyRow)
 done:
     'Call SaveAs_Countdown
     Call Save_Countdown

@@ -608,14 +608,14 @@ Private Sub FollowupSubmit_Click()
                     = DateDiff("d", Range(headerFind("Arrest Date") & updateRow).value, DateOfHearing.value) / 365
             Range(headerFind("Detailed YAP Outcome", diversionHead) & updateRow).value = 6 ' positive completion
             Call totalOutcome( _
-                    updateRow, _
-                    DateOfHearing.value, _
-                    Lookup("Courtroom_Num")(Range(hFind("Active Courtroom") & updateRow).value), _
-                    FollowupDA.value, _
-                    "Diversion", _
-                    "Positive", _
-                    "Petition Diverted & Withdrawn", _
-                    FollowupNotes.value)
+                    clientRow:=updateRow, _
+                    dateOf:=DateOfHearing.value, _
+                    Courtroom:=Lookup("Courtroom_Num")(Range(hFind("Active Courtroom") & updateRow).value), _
+                    DA:=FollowupDA.value, _
+                    legalStatus:="Diversion", _
+                    Nature:="Positive", _
+                    detailed:="Petition Diverted & Withdrawn", _
+                    Notes:=FollowupNotes.value)
 
 
     End Select

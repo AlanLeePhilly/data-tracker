@@ -662,7 +662,7 @@ Sub startPlacement( _
     ByVal NextCourtDate As String, _
     ByVal agency As String, _
     ByVal startDate As String, _
-    Optional Notes As String, _
+    Optional Notes As String = "", _
     Optional Re1 As String, Optional Re2 As String, Optional Re3 As String _
 )
     Dim bucketHead As String
@@ -733,6 +733,7 @@ Sub startPlacement( _
         Range(headerFind("Reason #1 for Placement", bucketHead) & clientRow).value = Lookup("Supervision_Referral_Reason_Name")(Re1)
         Range(headerFind("Reason #2 for Placement", bucketHead) & clientRow).value = Lookup("Supervision_Referral_Reason_Name")(Re2)
         Range(headerFind("Reason #3 for Placement", bucketHead) & clientRow).value = Lookup("Supervision_Referral_Reason_Name")(Re3)
+        Range(headerFind("Placement Description", bucketHead) & clientRow).value = Notes
     Next i
 
     Range(headerFind("Active Supervision") & clientRow).value = Lookup("Supervision_Program_Name")("Placement")

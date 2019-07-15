@@ -222,7 +222,12 @@ Function ageAtTime(eventDate As String, rowNum As Long) As Double
 End Function
 
 Function calcLOS(ByVal event1 As String, ByVal event2 As String) As Long
-    calcLOS = DateDiff("d", event1, event2)
+    If IsDate(event1) And IsDate(event2) Then
+        calcLOS = DateDiff("d", event1, event2)
+    Else
+        calcLOS = 9999
+        MsgBox "Warning: a length of stay calculation failed and instead returned 9999"
+    End If
 End Function
 
 Function timeDiff(time1 As Double, time2 As Double) As Double

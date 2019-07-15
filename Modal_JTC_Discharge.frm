@@ -60,7 +60,7 @@ End Sub
 
 Private Sub DetailedOutcome_Change()
     Select Case DetailedOutcome.value
-        Case "Rearrested & Held (adult)", "Positive Completion", "Aged Out", "Transfer to Dependent", "Transfer to Other County"
+        Case "Rearrested & Held (adult)", "Positive Completion", "Aged Out", "Transfer to Dependent", "Transfer to Other County", "Admin. D/C - Reasonable Efforts"
             New_CR_Label.Enabled = False
             New_CR.Enabled = False
             New_CR.value = "N/A"

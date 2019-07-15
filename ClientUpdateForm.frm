@@ -739,72 +739,76 @@ Sub JTC_Submit_Click()
         Select Case Modal_JTC_Discharge.DetailedOutcome.value
             Case "Rearrested & Held (adult)"
                 Call totalOutcome( _
-                            clientRow:=updateRow, _
-                            dateOf:=DateOfHearing.value, _
-                            Courtroom:="JTC", _
-                            DA:=DA.value, _
-                            legalStatus:="JTC", _
-                            Nature:="Negative", _
-                            detailed:="Rearrested & Held")
+                    clientRow:=updateRow, _
+                    dateOf:=DateOfHearing.value, _
+                    Courtroom:="JTC", _
+                    DA:=DA.value, _
+                    legalStatus:="JTC", _
+                    Nature:="Negative", _
+                    detailed:="Rearrested & Held", _
+                    Notes:=JTC_Notes.value)
 
                 ''''''''''''''''''''''
             Case "Positive Completion"
                 Call totalOutcome( _
-                            clientRow:=updateRow, _
-                            dateOf:=DateOfHearing.value, _
-                            Courtroom:="JTC", _
-                            DA:=DA.value, _
-                            legalStatus:="JTC", _
-                            Nature:="Positive", _
-                            detailed:="Petition Closed - Positive Comp. Terms")
+                    clientRow:=updateRow, _
+                    dateOf:=DateOfHearing.value, _
+                    Courtroom:="JTC", _
+                    DA:=DA.value, _
+                    legalStatus:="JTC", _
+                    Nature:="Positive", _
+                    detailed:="Petition Closed - Positive Comp. Terms", _
+                    Notes:=JTC_Notes.value)
 
                 If JTC_Fetch_Phase = 3 Then
                     Range(headerFind("Phase", courtHead) & updateRow) = Lookup("JTC_Phase_Name")("Graduated, Awaiting Expungment")
                     Range(headerFind("Record Expunged?", newPhaseHead) & updateRow) = Lookup("Generic_YN_Name")("No")
                     Range(headerFind("LOS", oldPhaseHead) & updateRow).value _
-                                = DateDiff("d", Range(headerFind("Start Date", oldPhaseHead) & updateRow).value, DateOfHearing.value)
+                        = DateDiff("d", Range(headerFind("Start Date", oldPhaseHead) & updateRow).value, DateOfHearing.value)
                 End If
                 Range(headerFind("LOS (discharged)") & updateRow).value _
-                            = DateDiff("d", Range(headerFind("Arrest Date") & updateRow).value, DateOfHearing.value)
+                    = DateDiff("d", Range(headerFind("Arrest Date") & updateRow).value, DateOfHearing.value)
 
                 '''''''''''''''''''''
             Case "Aged Out"
                 Call totalOutcome( _
-                            clientRow:=updateRow, _
-                            dateOf:=DateOfHearing.value, _
-                            Courtroom:="JTC", _
-                            DA:=DA.value, _
-                            legalStatus:="JTC", _
-                            Nature:="Negative", _
-                            detailed:="Aged Out")
+                    clientRow:=updateRow, _
+                    dateOf:=DateOfHearing.value, _
+                    Courtroom:="JTC", _
+                    DA:=DA.value, _
+                    legalStatus:="JTC", _
+                    Nature:="Negative", _
+                    detailed:="Aged Out", _
+                    Notes:=JTC_Notes.value)
 
                 '''''''''''''''''''''
             Case "Acceptance Not Granted", "Show Cause", "Hosp. (Mental Health)", "Hosp. (Physical Health)", "Other", "Unknown"
                 Call ReferClientTo( _
-                            referralDate:=DateOfHearing.value, _
-                            clientRow:=updateRow, _
-                            toCR:=Modal_JTC_Discharge.New_CR.value, _
-                            fromCR:="JTC", _
-                            newLegalStatus:="Probation")
+                    referralDate:=DateOfHearing.value, _
+                    clientRow:=updateRow, _
+                    toCR:=Modal_JTC_Discharge.New_CR.value, _
+                    fromCR:="JTC", _
+                    newLegalStatus:="Probation")
 
                 '''''''''''''''''''''
             Case "Transfer to Dependent"
                 Call ReferClientTo( _
-                            referralDate:=DateOfHearing.value, _
-                            clientRow:=updateRow, _
-                            toCR:="5E", _
-                            fromCR:="JTC")
+                    referralDate:=DateOfHearing.value, _
+                    clientRow:=updateRow, _
+                    toCR:="5E", _
+                    fromCR:="JTC")
 
                 '''''''''''''''''''''
             Case "Transfer to Other County"
                 Call totalOutcome( _
-                            clientRow:=updateRow, _
-                            dateOf:=DateOfHearing.value, _
-                            Courtroom:="JTC", _
-                            DA:=DA.value, _
-                            legalStatus:="JTC", _
-                            Nature:="Neutral", _
-                            detailed:="Transfer to Other County")
+                    clientRow:=updateRow, _
+                    dateOf:=DateOfHearing.value, _
+                    Courtroom:="JTC", _
+                    DA:=DA.value, _
+                    legalStatus:="JTC", _
+                    Nature:="Neutral", _
+                    detailed:="Transfer to Other County", _
+                    Notes:=JTC_Notes.value)
 
         End Select
 
