@@ -851,7 +851,6 @@ Private Sub Submit_Click()
     End If
 
     Range(headerFind("DA") & emptyRow).value = Lookup("DA_Last_Name_Name")(DA.value)
-
     Range(headerFind("General Notes from Intake") & emptyRow).value = GeneralNotes.value
 
     Dim Num As Long
