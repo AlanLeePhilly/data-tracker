@@ -6,7 +6,7 @@ Public Function headerFindTwo(ByVal Query As String, Optional ByVal Start As Str
         Start = "A"
     End If
 
-    Set Result = Range(Start & "2:TSX2").Find(Query, LookAt:=xlWhole)
+    Set Result = Range(Start & "2:UCR2").Find(Query, LookAt:=xlWhole)
 
 
     If Result Is Nothing Then
@@ -86,7 +86,7 @@ Public Function headerFindNumTwo(ByVal Query As String, Optional ByVal Start As 
         Start = "A"
     End If
 
-    Set Result = Range(Start & "1:TSX1").Find(Query, LookAt:=xlWhole)
+    Set Result = Range(Start & "1:UCR1").Find(Query, LookAt:=xlWhole)
 
 
     If Result Is Nothing Then
@@ -504,6 +504,32 @@ Sub ExportDataFile()
     ActiveWorkbook.SaveAs Filename:="H:\SJS Analysis\Madeline\Aggregate Data Set\Aggregate Data Set.xlsm", Password:="DeathStar_911"
     OverwriteExisting = True
     ActiveWorkbook.Close
+
+
+ 'Wes EXPORT
+
+    Dim newFilePath9 As String
+    Dim newFileName9 As String
+
+
+    newFilePath9 = "H:\SJS Analysis\Wes\Aggregate Data Set\"
+    newFileName9 = _
+        newFilePath9 _
+        & "Aggregate Data Set.xlsm"
+    If Len(Dir(newFileName9)) Then Kill newFileName9 'identifies if file name already exists and deletes as SaveCopyAs doesn't allow overwrite
+
+    ThisWorkbook.SaveCopyAs _
+            Filename:=newFileName9
+    OverwriteExisting = True
+
+    Workbooks.Open Filename:="H:\SJS Analysis\Wes\Aggregate Data Set\Aggregate Data Set.xlsm", Password:="DeathStar_911"
+    Application.ScreenUpdating = False
+    Application.Calculation = xlCalculationManual
+    Application.DisplayAlerts = False
+    ActiveWorkbook.SaveAs Filename:="H:\SJS Analysis\Wes\Aggregate Data Set\Aggregate Data Set.xlsm", Password:="DeathStar_911"
+    OverwriteExisting = True
+    ActiveWorkbook.Close
+
 
 
 
