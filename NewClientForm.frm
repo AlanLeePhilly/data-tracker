@@ -851,6 +851,19 @@ Private Sub Submit_Click()
     End If
 
     Range(headerFind("DA") & emptyRow).value = Lookup("DA_Last_Name_Name")(DA.value)
+    
+    If GunCase.value Then
+        Range(headerFind("Gun Case?") & emptyRow).value = 1 'Yes
+    Else
+        Range(headerFind("Gun Case?") & emptyRow).value = 2 'No
+    End If
+    
+    If GunInvolved.value Then
+        Range(headerFind("Gun Involved Arrest?") & emptyRow).value = 1 'Yes
+    Else
+        Range(headerFind("Gun Involved Arrest?") & emptyRow).value = 2 'No
+    End If
+    
     Range(headerFind("General Notes from Intake") & emptyRow).value = GeneralNotes.value
 
     Dim Num As Long
@@ -859,9 +872,14 @@ Private Sub Submit_Click()
 
     For Num = 1 To PetitionBox.ListCount
         tempHead = headerFind("Petition #" & Num, petitionHead)
-
-        Range(headerFind("Petition Filed?", tempHead) & emptyRow).value _
-                = Lookup("Generic_YNOU_Name")("Yes")
+        
+        If DiversionProgram.value = "Yes" Or InitialHearingLocation.value = "Adult" Then
+            Range(headerFind("Petition Filed?", tempHead) & emptyRow).value _
+                    = Lookup("Generic_YNOU_Name")("No")
+        Else
+            Range(headerFind("Petition Filed?", tempHead) & emptyRow).value _
+                    = Lookup("Generic_YNOU_Name")("Yes")
+        End If
         Range(headerFind("Was Petition Transferred from Other County?", tempHead) & emptyRow).value _
                 = Lookup("Generic_YNOU_Name")(PetitionBox.List(Num - 1, 6))
         Range(tempHead & emptyRow).value _
@@ -927,12 +945,21 @@ Private Sub Submit_Click()
                 DA:=DA.value, _
                 startDate:=PetitionBox.List(0, 0))
         Else
-            Call startLegalStatus( _
-                clientRow:=emptyRow, _
-                statusType:="Pretrial", _
-                Courtroom:="Intake Conf.", _
-                DA:=DA.value, _
-                startDate:=PetitionBox.List(0, 0))
+            If InitialHearingLocation.value = "Adult" Then
+                Call startLegalStatus( _
+                    clientRow:=emptyRow, _
+                    statusType:="Adult", _
+                    Courtroom:="Adult", _
+                    DA:=DA.value, _
+                    startDate:=ArrestDate.value)
+            Else
+                Call startLegalStatus( _
+                    clientRow:=emptyRow, _
+                    statusType:="Pretrial", _
+                    Courtroom:="Intake Conf.", _
+                    DA:=DA.value, _
+                    startDate:=PetitionBox.List(0, 0))
+            End If
         End If
     End If
 
