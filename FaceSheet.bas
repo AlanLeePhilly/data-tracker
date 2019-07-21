@@ -29,53 +29,53 @@ Sub FaceSheetPrint0()
     'Current supervisions
     PrintSheet.Range("N17").Select
     Selection.ClearContents
-    PrintSheet.Range("T17").Select
+    PrintSheet.Range("U17").Select
     Selection.ClearContents
-    PrintSheet.Range("W17").Select
+    PrintSheet.Range("X17").Select
     Selection.ClearContents
     PrintSheet.Range("N19").Select
     Selection.ClearContents
-    PrintSheet.Range("T19").Select
+    PrintSheet.Range("U19").Select
     Selection.ClearContents
-    PrintSheet.Range("W19").Select
+    PrintSheet.Range("X19").Select
     Selection.ClearContents
     PrintSheet.Range("N21").Select
     Selection.ClearContents
-    PrintSheet.Range("T21").Select
+    PrintSheet.Range("U21").Select
     Selection.ClearContents
-    PrintSheet.Range("W21").Select
+    PrintSheet.Range("X21").Select
     Selection.ClearContents
     
     'Current conditions
     PrintSheet.Range("N32").Select
     Selection.ClearContents
-    PrintSheet.Range("T32").Select
+    PrintSheet.Range("U32").Select
     Selection.ClearContents
-    PrintSheet.Range("W32").Select
+    PrintSheet.Range("X32").Select
     Selection.ClearContents
     PrintSheet.Range("N34").Select
     Selection.ClearContents
-    PrintSheet.Range("T34").Select
+    PrintSheet.Range("U34").Select
     Selection.ClearContents
-    PrintSheet.Range("W34").Select
+    PrintSheet.Range("X34").Select
     Selection.ClearContents
     PrintSheet.Range("N36").Select
     Selection.ClearContents
-    PrintSheet.Range("T36").Select
+    PrintSheet.Range("U36").Select
     Selection.ClearContents
-    PrintSheet.Range("W36").Select
+    PrintSheet.Range("X36").Select
     Selection.ClearContents
     PrintSheet.Range("N38").Select
     Selection.ClearContents
-    PrintSheet.Range("T38").Select
+    PrintSheet.Range("U38").Select
     Selection.ClearContents
-    PrintSheet.Range("W38").Select
+    PrintSheet.Range("X38").Select
     Selection.ClearContents
     PrintSheet.Range("N40").Select
     Selection.ClearContents
-    PrintSheet.Range("T40").Select
+    PrintSheet.Range("U40").Select
     Selection.ClearContents
-    PrintSheet.Range("W40").Select
+    PrintSheet.Range("X40").Select
     Selection.ClearContents
     
     'Most recent listing
@@ -87,6 +87,7 @@ Sub FaceSheetPrint0()
     Selection.ClearContents
     PrintSheet.Range("B41").Select
     Selection.ClearContents
+    'Update placeholder for DA once available
     
     'Most recent supervision
     PrintSheet.Range("C53").Select
@@ -369,8 +370,8 @@ Sub FaceSheetPrint()
                 End If
 
                 PrintSheet.Range("N" & printRow) = programType
-                PrintSheet.Range("T" & printRow) = providerName
-                PrintSheet.Range("W" & printRow) = DateDiff("d", DataSheet.Range(headerFind("Start Date", bucketHead) & userRow).value, Date) & " days"
+                PrintSheet.Range("U" & printRow) = providerName
+                PrintSheet.Range("X" & printRow) = DateDiff("d", DataSheet.Range(headerFind("Start Date", bucketHead) & userRow).value, Date) & " days"
 
                 printRow = printRow + 2
                 
@@ -383,8 +384,8 @@ Sub FaceSheetPrint()
         Do Until j > 21
             If IsEmpty(PrintSheet.Range("N" & j)) Then
                 PrintSheet.Range("N" & j).value = "None"
-                PrintSheet.Range("T" & j).value = "N/A"
-                PrintSheet.Range("W" & j).value = "N/A"
+                PrintSheet.Range("U" & j).value = "N/A"
+                PrintSheet.Range("X" & j).value = "N/A"
             End If
     
             j = j + 2
@@ -405,10 +406,10 @@ Sub FaceSheetPrint()
 
         For conditionI = 1 To conditionArrLength
             PrintSheet.Range("N" & 30 + 2 * conditionI) = Lookup("Condition_Num")(DataSheet.Range(hFind(conditionsColumns(conditionI - 1), "Aggregates") & userRow).value)
-            PrintSheet.Range("T" & 30 + 2 * conditionI) = DataSheet.Range(hFind("Condition Agency", conditionsColumns(conditionI - 1), "Aggregates") & userRow).value
+            PrintSheet.Range("U" & 30 + 2 * conditionI) = DataSheet.Range(hFind("Condition Agency", conditionsColumns(conditionI - 1), "Aggregates") & userRow).value
             
             conditionStart = DataSheet.Range(hFind("Start Date", conditionsColumns(conditionI - 1), "Aggregates") & userRow).value
-            PrintSheet.Range("W" & 30 + 2 * conditionI) = DateDiff("d", conditionStart, VBA.format(Now(), "mm/dd/yyyy")) & " days"
+            PrintSheet.Range("X" & 30 + 2 * conditionI) = DateDiff("d", conditionStart, VBA.format(Now(), "mm/dd/yyyy")) & " days"
             If conditionI = 6 Then Exit For
         Next conditionI
         
@@ -417,8 +418,8 @@ Sub FaceSheetPrint()
         Do Until k > 40
             If IsEmpty(PrintSheet.Range("N" & k)) Then
                 PrintSheet.Range("N" & k).value = "None"
-                PrintSheet.Range("T" & k).value = "N/A"
-                PrintSheet.Range("W" & k).value = "N/A"
+                PrintSheet.Range("U" & k).value = "N/A"
+                PrintSheet.Range("X" & k).value = "N/A"
             End If
             
             k = k + 2
@@ -441,6 +442,7 @@ Sub FaceSheetPrint()
         PrintSheet.Range("I40").value = Lookup("Legal_Status_Num")(DataSheet.Range(hFind("Legal Status", "Court Date #" & lastListing, "LISTINGS") & userRow).value)
         PrintSheet.Range("B41").value = DataSheet.Range(hFind("Notes", "Court Date #" & lastListing, "LISTINGS") & userRow).value
     End If
+    'Update placeholder for DA once available
     
     'Most recent supervision
     If Not IsEmpty(DataSheet.Range(hFind("Supervision Ordered #1", "Supervision Programs", "AGGREGATES") & userRow).value) Then
