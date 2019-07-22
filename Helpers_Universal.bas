@@ -170,7 +170,13 @@ Sub endLegalStatus( _
     Next i
 End Sub
 
-Sub closeOpenLegalStatuses(clientRow As Long, dateOf As String, Courtroom As String, DA As String)
+Sub closeOpenLegalStatuses( _
+    clientRow As Long, _
+    dateOf As String, _
+    Courtroom As String, _
+    DA As String, _
+    legalStatus As String)
+    
     Dim i As Integer, j As Integer
     Dim section As String, statusType As String
     Dim bucketHead As String
@@ -204,11 +210,18 @@ Sub closeOpenLegalStatuses(clientRow As Long, dateOf As String, Courtroom As Str
                 Case 5
                     statusType = "Aftercare Probation"
             End Select
-
+            
+            If statusType = legalStatus Then
+                If section = Courtroom Or section = "AGGREGATES" Then
+                    GoTo NextJ
+                End If
+            End If
+            
             bucketHead = hFind(statusType, section)
 
             If isNotEmptyOrZero(Range(headerFind("Start Date", bucketHead) & clientRow)) And _
-               isEmptyOrZero(Range(headerFind("End Date", bucketHead) & clientRow)) Then
+               isEmptyOrZero(Range(headerFind("End Date", bucketHead) & clientRow)) And _
+               Not section = Courtroom Then
 
                 MsgBox "Closing bucket for " & statusType & " in " & section & " (automated)"
 
@@ -239,7 +252,7 @@ Sub closeOpenLegalStatuses(clientRow As Long, dateOf As String, Courtroom As Str
                     Range(headerFind("Notes on " & statusType, bucketHead) & clientRow), "This bucket was closed on a sweep by closeOpenLegalStatuses")
 
             End If
-
+NextJ:
         Next j
     Next i
 End Sub

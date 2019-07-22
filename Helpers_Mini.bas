@@ -92,6 +92,102 @@ Function isResidential(ByVal supType As String) As Boolean
     End If
 End Function
 
+Function isTerminal(ByVal subset As String, ByVal discharge As String) As Boolean
+    Select Case subset
+        Case "Legal Status"
+        
+            Select Case discharge
+                Case _
+                    "Pos. Completion - Petition D/C", _
+                    "Neg. Completion - Petition D/C", _
+                    "Death"
+                    
+                    isTerminal = True
+            
+            Case Else
+                isTerminal = False
+            End Select
+            
+        Case "Courtroom"
+        
+            Select Case discharge
+                Case _
+                    "Rearrested & Held (adult)", _
+                    "Petition Withdrawn", _
+                    "Petition Diverted and Withdrawn", _
+                    "Judgment of Acquittal", _
+                    "Petition Closed - Positive Comp. Terms", _
+                    "Aged Out", _
+                    "Certified Adult (original petition)", _
+                    "Transfer to Dependent", _
+                    "Transfer to Other County", _
+                    "Admin. D/C - Reasonable Efforts", _
+                    "Death"
+                    
+                    isTerminal = True
+                    
+            Case Else
+                isTerminal = False
+            End Select
+            
+         Case "JTC"
+        
+            Select Case discharge
+                Case _
+                    "Rearrested & Held (adult)", _
+                    "Positive Completion", _
+                    "Aged Out", _
+                    "Transfer to Dependent", _
+                    "Transfer to Other County", _
+                    "Admin. D/C - Reasonable Efforts"
+                    
+                    isTerminal = True
+                    
+            Case Else
+                isTerminal = False
+            End Select
+        
+        Case "Diversion"
+        
+            Select Case discharge
+                Case _
+                    "Rearrested & Held (adult)", _
+                    "Positive Completion", _
+                    "Aged Out", _
+                    "Certified Adult", _
+                    "Transfer to Dependent", _
+                    "Transfer to Other County", _
+                    "Death"
+                    
+                    isTerminal = True
+                    
+            Case Else
+                isTerminal = False
+            End Select
+            
+        Case "YAP"
+        
+            Select Case discharge
+                Case _
+                    "Positive Completion", _
+                    "Aged Out", _
+                    "Certified Adult", _
+                    "Transfer to Dependent", _
+                    "Transfer to Other County", _
+                    "Death"
+                    
+                    isTerminal = True
+                    
+            Case Else
+                isTerminal = False
+            End Select
+        Case Else
+            MsgBox "IsTerminal was sent unknown subset " + subset
+    End Select
+    
+End Function
+
+
 
 Sub toggleSelect( _
     ByRef btn As Control, _

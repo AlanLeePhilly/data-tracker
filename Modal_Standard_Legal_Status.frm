@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} Modal_Standard_Legal_Status 
    Caption         =   "Update Legal Status"
-   ClientHeight    =   10335
+   ClientHeight    =   8010
    ClientLeft      =   45
    ClientTop       =   375
-   ClientWidth     =   11625
+   ClientWidth     =   14655
    OleObjectBlob   =   "Modal_Standard_Legal_Status.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -22,6 +22,28 @@ Attribute VB_Exposed = False
 
 
 
+
+Private Sub Current_Detailed_Outcome_Change()
+    If isTerminal("Legal Status", Current_Detailed_Outcome.value) Then
+        New_Legal_Status.Enabled = False
+        New_Legal_Status.value = ""
+        New_Start_Date.Enabled = False
+        New_Start_Date.value = ""
+        New_Notes.Enabled = False
+        New_Notes.value = ""
+        New_Legal_Status_Label.Enabled = False
+        New_Start_Date_Label.Enabled = False
+        New_Notes_Label.Enabled = False
+    Else
+        New_Legal_Status.Enabled = True
+        New_Start_Date.Enabled = True
+        New_Notes.Enabled = True
+        New_Legal_Status_Label.Enabled = True
+        New_Start_Date_Label.Enabled = True
+        New_Notes_Label.Enabled = True
+        
+    End If
+End Sub
 
 ''''''''''''''''
 'INITIALIZATION'
@@ -102,13 +124,16 @@ Private Sub Continue_Click()
         MsgBox "Date of Discharge Required"
         Exit Sub
     End If
-    If Not HasContent(New_Start_Date) Then
-        MsgBox "Start Date Required"
-        Exit Sub
-    End If
-    If New_Legal_Status.value = "N/A" Then
-        MsgBox "New Legal Status Required"
-        Exit Sub
+    
+    If Not isTerminal("Legal Status", Current_Detailed_Outcome.value) Then
+        If Not HasContent(New_Start_Date) Then
+            MsgBox "Start Date Required"
+            Exit Sub
+        End If
+        If New_Legal_Status.value = "N/A" Then
+            MsgBox "New Legal Status Required"
+            Exit Sub
+        End If
     End If
 
     ClientUpdateForm.Standard_Legal_Status_Update.BackColor = selectedColor

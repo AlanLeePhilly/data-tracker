@@ -151,7 +151,7 @@ Private Sub Submit_Click()
 
 
     Call prepend(Range(headerFind("Previous Court Dates") & updateRow), DateOfNextHearing.value)
-    'Call ReferClientFrom(
+
     Call ReferClientTo( _
             referralDate:=DateOfReferral.value, _
             clientRow:=updateRow, _

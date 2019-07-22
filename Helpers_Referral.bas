@@ -1,66 +1,13 @@
 Attribute VB_Name = "Helpers_Referral"
 Option Explicit
-Sub ReferClientFrom( _
-    fromCR As String, _
-    referralDate As String, _
-    clientRow As Long, _
-    Optional toCR As String = "N/A", _
-    Optional Notes As String = "")
-    Dim toHead As String
-    Dim fromHead As String
-
-    Select Case fromCR
-        Case "4G", "4E", "6F", "6H", "3E", "JTC", "WRAP", "Adult"
-            fromHead = headerFind(fromCR)
-        Case Else
-            fromHead = "A"
-    End Select
-
-    Select Case toCR
-        Case "4G", "4E", "6F", "6H", "3E", "JTC", "WRAP", "Adult"
-            toHead = headerFind(toCR)
-        Case Else
-            toHead = "A"
-    End Select
-
-    Select Case fromCR
-        Case "4G", "4E", "6F", "6H", "3E", "WRAP", "5E"
-            Range(headerFind("End Date", fromHead) & clientRow).value _
-                = referralDate
-            Range(headerFind("LOS", fromHead) & clientRow).value _
-                = DateDiff("d", _
-                    Range(headerFind("Start Date", fromHead) & clientRow).value, _
-                    Range(headerFind("End Date", fromHead) & clientRow).value)
-            Range(headerFind("Courtroom of Transfer (if relevant)", fromHead) & clientRow).value _
-                = Lookup("Courtroom_Name")(toCR)
-        Case "JTC"
-            'check phase and pull out
-
-        Case "Adult"
-            Range(headerFind("End Date", fromHead) & clientRow).value _
-                = referralDate
-            Range(headerFind("LOS", fromHead) & clientRow).value _
-                = DateDiff("d", _
-                    Range(headerFind("Start Date", fromHead) & clientRow).value, _
-                    Range(headerFind("End Date", fromHead) & clientRow).value)
-
-
-        Case Else
-            MsgBox "Referring Courtroom not recognized. Contact your admin."
-            Exit Sub
-    End Select
-
-End Sub
-
-
-
 Sub ReferClientTo( _
     referralDate As String, _
     clientRow As Long, _
     Optional toCR As String = "N/A", _
     Optional fromCR As String = "N/A", _
     Optional Notes As String = "", _
-    Optional newLegalStatus As String = "")
+    Optional newLegalStatus As String = "", _
+    Optional oldLegalStatus As String = "")
 
     Worksheets("Entry").Activate
     
@@ -397,14 +344,19 @@ Sub ReferClientTo( _
                 Next i
         End Select
     End If
+    
     'Update Legal Status
 
     Dim submitLegalStatus As String
     Dim submitWithAgg As Boolean
     Dim currentStatus As String
     Dim CRofOrigin As String
-
-    currentStatus = Lookup("Legal_Status_Num")(Range(headerFind("Legal Status") & clientRow).value)
+    
+    If oldLegalStatus = "" Then
+        currentStatus = Lookup("Legal_Status_Num")(Range(headerFind("Legal Status") & clientRow).value)
+    Else
+        currentStatus = oldLegalStatus
+    End If
 
     CRofOrigin = fromCR
 
@@ -471,6 +423,12 @@ Sub ReferClientTo( _
             Notes:="Transferred into courtroom")
         End If
     End If
-
+    
+    Call closeOpenLegalStatuses( _
+        clientRow:=clientRow, _
+        dateOf:=referralDate, _
+        Courtroom:=toCR, _
+        legalStatus:=submitLegalStatus, _
+        DA:="Unknown")
 End Sub
 

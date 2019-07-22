@@ -624,13 +624,13 @@ Sub JTC_Submit_Click()
         Range(headerFind("Accepted (Y/N)", courtHead) & updateRow).value = 2
         Range(headerFind("Rejected Date", courtHead) & updateRow).value = DateOfHearing.value
         Range(headerFind("Next Hearing Location (if rejected)", courtHead) & updateRow).value = _
-                Lookup("Courtroom_Name")(Modal_JTC_Reject.ReferredTo.value)
+            Lookup("Courtroom_Name")(Modal_JTC_Reject.ReferredTo.value)
         Call ReferClientTo( _
-                    referralDate:=DateOfHearing.value, _
-                    clientRow:=updateRow, _
-                    toCR:=Modal_JTC_Reject.ReferredTo.value, _
-                    fromCR:="JTC", _
-                    Notes:="Rejected from JTC")
+            referralDate:=DateOfHearing.value, _
+            clientRow:=updateRow, _
+            toCR:=Modal_JTC_Reject.ReferredTo.value, _
+            fromCR:="JTC", _
+            Notes:="Rejected from JTC")
         Call Cancel_Click
         Worksheets("User Entry").Activate
         Exit Sub
@@ -667,6 +667,7 @@ Sub JTC_Submit_Click()
             clientRow:=updateRow, _
             dateOf:=DateOfHearing.value, _
             Courtroom:="JTC", _
+            legalStatus:="JTC", _
             DA:=DA.value)
     End If
 
@@ -1380,33 +1381,45 @@ Sub Standard_Submit_Click()
        And Standard_Court_Transfer.BackColor = unselectedColor Then
         With Modal_Standard_Legal_Status
             Call endLegalStatus( _
-                     clientRow:=updateRow, _
-                     statusType:=.Current_Legal_Status, _
-                     Courtroom:=oldCourtroom, _
-                     DA:=DA.value, _
-                     endDate:=.Current_Discharge_Date, _
-                     Nature:=.Current_Discharge_Nature, _
-                     withAgg:=True, _
-                     detailed:=.Current_Detailed_Outcome, _
-                     Reason1:=.Reason1, Reason2:=.Reason2, Reason3:=.Reason3, Reason4:=.Reason4, Reason5:=.Reason5, _
-                     Notes:=.Current_Notes)
-
-            Call startLegalStatus( _
+                clientRow:=updateRow, _
+                statusType:=.Current_Legal_Status, _
+                Courtroom:=oldCourtroom, _
+                DA:=DA.value, _
+                endDate:=.Current_Discharge_Date, _
+                Nature:=.Current_Discharge_Nature, _
+                withAgg:=True, _
+                detailed:=.Current_Detailed_Outcome, _
+                Reason1:=.Reason1, Reason2:=.Reason2, Reason3:=.Reason3, Reason4:=.Reason4, Reason5:=.Reason5, _
+                Notes:=.Current_Notes)
+            
+            If isTerminal("Legal Status", .Current_Detailed_Outcome) Then
+                Call totalOutcome( _
+                    clientRow:=updateRow, _
+                    dateOf:=.Current_Discharge_Date, _
+                    Courtroom:=oldCourtroom, _
+                    DA:=DA.value, _
+                    legalStatus:=.Current_Legal_Status.Caption, _
+                    Nature:=.Current_Discharge_Nature, _
+                    detailed:=.Current_Detailed_Outcome, _
+                    Notes:=Standard_Notes.value)
+            Else
+                Call startLegalStatus( _
                     clientRow:=updateRow, _
                     statusType:=.New_Legal_Status, _
                     Courtroom:=newCourtroom, _
                     DA:=DA.value, _
                     startDate:=.New_Start_Date, _
                     Notes:=.New_Notes)
+            End If
         End With
     Else
         Call startLegalStatus( _
-                clientRow:=updateRow, _
-                statusType:=Standard_Return_Legal_Status.Caption, _
-                Courtroom:=oldCourtroom, _
-                DA:=DA.value, _
-                startDate:=DateOfHearing.value, _
-                Notes:="Continued from prior courtroom")
+            clientRow:=updateRow, _
+            statusType:=Standard_Return_Legal_Status.Caption, _
+            Courtroom:=oldCourtroom, _
+            DA:=DA.value, _
+            startDate:=DateOfHearing.value, _
+            Notes:="Continued from prior courtroom")
     End If
 
 
@@ -1484,34 +1497,34 @@ Sub Standard_Submit_Click()
     If Standard_Certification_Update.BackColor = selectedColor Then
         If Standard_Fetch_Certification.Caption = "Filed" Then
             Call certificationUpdate( _
-                    updateRow, _
-                    headerFind("Certification", oldCourtHead), _
-                    Modal_Standard_Certification.Motion_Result, _
-                    DateOfHearing.value _
-                )
+                updateRow, _
+                headerFind("Certification", oldCourtHead), _
+                Modal_Standard_Certification.Motion_Result, _
+                DateOfHearing.value _
+            )
             Call certificationUpdate( _
-                    updateRow, _
-                    hFind("Certification", "COURT PROCEEDINGS", "AGGREGATES"), _
-                    Modal_Standard_Certification.Motion_Result, _
-                    DateOfHearing.value _
-                )
+                updateRow, _
+                hFind("Certification", "COURT PROCEEDINGS", "AGGREGATES"), _
+                Modal_Standard_Certification.Motion_Result, _
+                DateOfHearing.value _
+            )
         Else
             Call certificationStart( _
-                    updateRow, _
-                    headerFind("Certification", newCourtHead), _
-                    Lookup("Legal_Status_Num")(Range(headerFind("Legal Status") & updateRow).value), _
-                    newCourtroom, _
-                    DA.value, _
-                    Modal_Standard_Certification.Motion_Date.value _
-                )
+                updateRow, _
+                headerFind("Certification", newCourtHead), _
+                Lookup("Legal_Status_Num")(Range(headerFind("Legal Status") & updateRow).value), _
+                newCourtroom, _
+                DA.value, _
+                Modal_Standard_Certification.Motion_Date.value _
+            )
             Call certificationStart( _
-                    updateRow, _
-                    hFind("Certification", "COURT PROCEEDINGS", "AGGREGATES"), _
-                    Lookup("Legal_Status_Num")(Range(headerFind("Legal Status") & updateRow).value), _
-                    newCourtroom, _
-                    DA.value, _
-                    Modal_Standard_Certification.Motion_Date.value _
-                )
+                updateRow, _
+                hFind("Certification", "COURT PROCEEDINGS", "AGGREGATES"), _
+                Lookup("Legal_Status_Num")(Range(headerFind("Legal Status") & updateRow).value), _
+                newCourtroom, _
+                DA.value, _
+                Modal_Standard_Certification.Motion_Date.value _
+            )
         End If
     End If
 
@@ -1520,15 +1533,15 @@ Sub Standard_Submit_Click()
     '''''''''''
     If Standard_Admission_Update.BackColor = selectedColor Then
         Call admissionStart( _
-                clientRow:=updateRow, _
-                petitionNum:=Modal_Standard_Admission.PetitionBox.value, _
-                statusType:=Lookup("Legal_Status_Num")(Range(headerFind("Legal Status") & updateRow).value), _
-                Courtroom:=newCourtroom, _
-                DA:=DA.value, _
-                startDate:=Modal_Standard_Admission.Admission_Date.value, _
-                Result:=Modal_Standard_Admission.Result.value, _
-                detailed:=Modal_Standard_Admission.Detailed_Result.value _
-            )
+            clientRow:=updateRow, _
+            petitionNum:=Modal_Standard_Admission.PetitionBox.value, _
+            statusType:=Lookup("Legal_Status_Num")(Range(headerFind("Legal Status") & updateRow).value), _
+            Courtroom:=newCourtroom, _
+            DA:=DA.value, _
+            startDate:=Modal_Standard_Admission.Admission_Date.value, _
+            Result:=Modal_Standard_Admission.Result.value, _
+            detailed:=Modal_Standard_Admission.Detailed_Result.value _
+        )
     End If
 
     ''''''''''''''
@@ -1536,18 +1549,18 @@ Sub Standard_Submit_Click()
     ''''''''''''''
     If Standard_Adjudication_Update.BackColor = selectedColor Then
         Call adjudicationStart( _
-                clientRow:=updateRow, _
-                petitionNum:=Modal_Standard_Adjudication.PetitionBox.value, _
-                Courtroom:=newCourtroom, _
-                DA:=DA.value, _
-                startDate:=Modal_Standard_Adjudication.Adjudication_Date.value, _
-                Type_of:=Modal_Standard_Adjudication.Type_of.value, _
-                Re1:=Modal_Standard_Adjudication.Reason1.value, _
-                Re2:=Modal_Standard_Adjudication.Reason2.value, _
-                Re3:=Modal_Standard_Adjudication.Reason3.value, _
-                Re4:=Modal_Standard_Adjudication.Reason4.value, _
-                Re5:=Modal_Standard_Adjudication.Reason5.value _
-            )
+            clientRow:=updateRow, _
+            petitionNum:=Modal_Standard_Adjudication.PetitionBox.value, _
+            Courtroom:=newCourtroom, _
+            DA:=DA.value, _
+            startDate:=Modal_Standard_Adjudication.Adjudication_Date.value, _
+            Type_of:=Modal_Standard_Adjudication.Type_of.value, _
+            Re1:=Modal_Standard_Adjudication.Reason1.value, _
+            Re2:=Modal_Standard_Adjudication.Reason2.value, _
+            Re3:=Modal_Standard_Adjudication.Reason3.value, _
+            Re4:=Modal_Standard_Adjudication.Reason4.value, _
+            Re5:=Modal_Standard_Adjudication.Reason5.value _
+        )
     End If
 
     '''''''''''''
@@ -1555,15 +1568,15 @@ Sub Standard_Submit_Click()
     '''''''''''''
     If Standard_Continuance_Update.BackColor = selectedColor Then
         Call continuanceStart( _
-                updateRow, _
-                Modal_Standard_Continuance.Status, _
-                newCourtroom, _
-                DA.value, _
-                DateOfHearing.value, _
-                Standard_NextCourtDate.value, _
-                Modal_Standard_Continuance.Continuance_Type.value, _
-                Modal_Standard_Continuance.Reason1.value, Modal_Standard_Continuance.Reason2.value, Modal_Standard_Continuance.Reason3.value _
-            )
+            updateRow, _
+            Modal_Standard_Continuance.Status, _
+            newCourtroom, _
+            DA.value, _
+            DateOfHearing.value, _
+            Standard_NextCourtDate.value, _
+            Modal_Standard_Continuance.Continuance_Type.value, _
+            Modal_Standard_Continuance.Reason1.value, Modal_Standard_Continuance.Reason2.value, Modal_Standard_Continuance.Reason3.value _
+        )
     End If
 
 
@@ -1577,18 +1590,18 @@ Sub Standard_Submit_Click()
         For i = 0 To .ListCount - 1
             If .List(i, 4) = "New" Then 'if new service
                 Call addSupervision( _
-                        clientRow:=updateRow, _
-                        serviceType:=.List(i, 0), _
-                        legalStatus:=Standard_Return_Legal_Status.Caption, _
-                        Courtroom:=oldCourtroom, _
-                        DA:=DA.value, _
-                        agency:=.List(i, 1), _
-                        startDate:=.List(i, 2), _
-                        NextCourtDate:=Standard_NextCourtDate.value, _
-                        Re1:=.List(i, 6), _
-                        Re2:=.List(i, 7), _
-                        Re3:=.List(i, 8), _
-                        Notes:=.List(i, 9))
+                    clientRow:=updateRow, _
+                    serviceType:=.List(i, 0), _
+                    legalStatus:=Standard_Return_Legal_Status.Caption, _
+                    Courtroom:=oldCourtroom, _
+                    DA:=DA.value, _
+                    agency:=.List(i, 1), _
+                    startDate:=.List(i, 2), _
+                    NextCourtDate:=Standard_NextCourtDate.value, _
+                    Re1:=.List(i, 6), _
+                    Re2:=.List(i, 7), _
+                    Re3:=.List(i, 8), _
+                    Notes:=.List(i, 9))
             Else
                 If Range(headerFind("Courtroom of Order", .List(i, 4)) & updateRow).value _
                         = Lookup("Courtroom_Name")("Intake Conf.") Then
@@ -1678,16 +1691,16 @@ Sub Standard_Submit_Click()
                     Else
                         If IsDate(.List(i, 3)) Then 'if has End Date
                             Call dropSupervision( _
-                                    clientRow:=updateRow, _
-                                    head:=.List(i, 4), _
-                                    serviceType:=.List(i, 0), _
-                                    startDate:=.List(i, 2), _
-                                    endDate:=.List(i, 3), _
-                                    Nature:=.List(i, 5), _
-                                    Re1:=.List(i, 6), _
-                                    Re2:=.List(i, 7), _
-                                    Re3:=.List(i, 8), _
-                                    Notes:=.List(i, 9))
+                                clientRow:=updateRow, _
+                                head:=.List(i, 4), _
+                                serviceType:=.List(i, 0), _
+                                startDate:=.List(i, 2), _
+                                endDate:=.List(i, 3), _
+                                Nature:=.List(i, 5), _
+                                Re1:=.List(i, 6), _
+                                Re2:=.List(i, 7), _
+                                Re3:=.List(i, 8), _
+                                Notes:=.List(i, 9))
                         End If
                     End If
                 End If
@@ -1812,6 +1825,7 @@ Sub Standard_Submit_Click()
                 referralDate:=DateOfHearing.value, _
                 clientRow:=updateRow, _
                 newLegalStatus:=Standard_Return_Legal_Status.Caption, _
+                oldLegalStatus:=Standard_Fetch_Legal_Status.Caption, _
                 toCR:=Modal_Standard_Court_Transfer.Courtroom.value, _
                 fromCR:=oldCourtroom)
         

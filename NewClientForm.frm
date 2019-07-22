@@ -678,6 +678,17 @@ Private Sub Submit_Click()
         MsgBox "Petition required"
         Exit Sub
     End If
+    
+    If GunCase.value = "" Then
+        MsgBox "'Gun Case?' required"
+        Exit Sub
+    End If
+    
+    If GunInvolved.value = "" Then
+        MsgBox "'Gun Involved?' required"
+        Exit Sub
+    End If
+    
 
     If DRAI_Action.value = "Follow - Hold" Or DRAI_Action.value = "Override - Hold" Then
         If DetentionFacility.value = "N/A" Then
@@ -852,17 +863,9 @@ Private Sub Submit_Click()
 
     Range(headerFind("DA") & emptyRow).value = Lookup("DA_Last_Name_Name")(DA.value)
     
-    If GunCase.value Then
-        Range(headerFind("Gun Case?") & emptyRow).value = 1 'Yes
-    Else
-        Range(headerFind("Gun Case?") & emptyRow).value = 2 'No
-    End If
-    
-    If GunInvolved.value Then
-        Range(headerFind("Gun Involved Arrest?") & emptyRow).value = 1 'Yes
-    Else
-        Range(headerFind("Gun Involved Arrest?") & emptyRow).value = 2 'No
-    End If
+
+    Range(headerFind("Gun Case?") & emptyRow).value = Lookup("Generic_YNOU_Name")(GunCase.value)
+    Range(headerFind("Gun Involved Arrest?") & emptyRow).value = Lookup("Generic_YNOU_Name")(GunInvolved.value)
     
     Range(headerFind("General Notes from Intake") & emptyRow).value = GeneralNotes.value
 
