@@ -18,6 +18,24 @@ Public dataStore As Collection
 Option Explicit
 
 
+Private Sub CommandButton1_Click()
+
+Modal_Adult_Decertification.Show
+
+End Sub
+
+Private Sub CommandButton24_Click()
+Modal_Adult_Reslate.Show
+End Sub
+
+Private Sub CommandButton26_Click()
+Adult_Reslate_Juvenile_Petition.Show
+End Sub
+
+Private Sub CommandButton8_Click()
+Modal_Adult_Admissions.Show
+End Sub
+
 Private Sub JTC_FTA_Yes_Click()
     If Worksheets("Entry").Range(hFind("Active B/W?") & updateRow).value = Lookup("Generic_YNOU_Name")("Yes") Then
         JTC_FTA_Yes.BackColor = selectedColor
