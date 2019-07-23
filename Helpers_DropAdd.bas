@@ -121,6 +121,9 @@ Sub addSupervision( _
 
         End If
     Next i
+    
+    'front active
+    Range(headerFind("Active Supervision") & clientRow).value = Lookup("Supervision_Program_Name")(serviceType)
 End Sub
 
 

@@ -423,12 +423,5 @@ Sub ReferClientTo( _
             Notes:="Transferred into courtroom")
         End If
     End If
-    
-    Call closeOpenLegalStatuses( _
-        clientRow:=clientRow, _
-        dateOf:=referralDate, _
-        Courtroom:=toCR, _
-        legalStatus:=submitLegalStatus, _
-        DA:="Unknown")
 End Sub
 

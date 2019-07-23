@@ -689,6 +689,11 @@ Private Sub Submit_Click()
         Exit Sub
     End If
     
+    If DirectFiled.value = "" Then
+        MsgBox "'Direct Filed?' required"
+        Exit Sub
+    End If
+    
 
     If DRAI_Action.value = "Follow - Hold" Or DRAI_Action.value = "Override - Hold" Then
         If DetentionFacility.value = "N/A" Then
@@ -780,149 +785,164 @@ Private Sub Submit_Click()
     If Not StrComp(Zipcode.value, coords(3)) = 0 Then
         MsgBox ("ALERT: The zipcode entered and zipcode found by geolocating services are different. Please check the new zipcode entered to make sure it is correct.")
     End If
+    
+    
     ''''''''''''
     ''PETITION''
     ''''''''''''
 
     Dim petitionHead As String
-    petitionHead = hFind("PETITION")
-
-    Range(headerFind("Initial Court Date", petitionHead) & emptyRow).value _
-            = InitialHearingDate.value
-    Range(headerFind("Initial Hearing Location", petitionHead) & emptyRow).value _
-            = Lookup("Courtroom_Name")(InitialHearingLocation.value)
-
-    If IsNumeric(NumOfPriorArrests.value) And Not NumOfPriorArrests.value = "10+" Then
-        Range(headerFind("# of Prior Arrests") & emptyRow).value _
-            = Lookup("Num_Prior_Arrests_Name")(CInt(NumOfPriorArrests.value))
-    Else
-        Range(headerFind("# of Prior Arrests") & emptyRow).value _
-            = Lookup("Num_Prior_Arrests_Name")(NumOfPriorArrests.value)
-    End If
-
-    Range(headerFind("Active in System at Time of Arrest?") & emptyRow) = _
-            Lookup("Generic_YNOU_Name")(ActiveAtArrest.value)
-
-    Range(headerFind("Arrest Date", petitionHead) & emptyRow).value _
-            = ArrestDate.value
-    Range(headerFind("Day of Arrest", petitionHead) & emptyRow).value _
-            = Weekday(ArrestDate.value, vbMonday) * 2 - 1
-    Range(headerFind("Time of Arrest", petitionHead) & emptyRow).value _
-            = TimeOfArrest_H.value & ":" & TimeOfArrest_M.value & " " & TimeOfArrest_P.value
-    Range(headerFind("Time Category of Arrest", petitionHead) & emptyRow).value _
-            = calcTimeGroup(TimeOfArrest_H.value, TimeOfArrest_P.value)
-    Range(headerFind("Arresting District", petitionHead) & emptyRow).value _
-            = ArrestingDistrict.value
-    Range(headerFind("Time of Referral to DA") & emptyRow).value _
-            = TimeReferredToDA_H.value & ":" & TimeReferredToDA_M.value & " " & TimeReferredToDA_P.value
-
-
-    Range(headerFind("DC #", petitionHead) & emptyRow).value = DCNum.value
-    Range(headerFind("PID #") & emptyRow).value = PIDNum.value
-    Range(headerFind("DC-PID #") & emptyRow).value = DCNum.value & "-" & PIDNum.value
-    Range(headerFind("SID #") & emptyRow).value = SIDNum.value
-
-    Range(headerFind("Officer #1") & emptyRow).value = Officer1.value
-    Range(headerFind("Officer #2") & emptyRow).value = Officer2.value
-    Range(headerFind("Officer #3") & emptyRow).value = Officer3.value
-    Range(headerFind("Officer #4") & emptyRow).value = Officer4.value
-    Range(headerFind("Officer #5") & emptyRow).value = Officer5.value
-
-    'confirm if needs to happen twice
-    Range(headerFind("Victim First Name") & emptyRow) _
-            = VictimFirstName.value
-    Range(headerFind("Victim Last Name") & emptyRow) _
-            = VictimLastName.value
-
-    Range(headerFind("Incident Date", petitionHead) & emptyRow).value _
-            = IncidentDate.value
-    Range(headerFind("Day of Incident", petitionHead) & emptyRow).value _
-            = Weekday(IncidentDate.value, vbMonday) * 2 - 1
-    Range(headerFind("Time of Incident", petitionHead) & emptyRow).value _
-            = TimeOfIncident_H.value & ":" & TimeOfIncident_M.value & " " & TimeOfIncident_P.value
-    Range(headerFind("Time Category of Incident", petitionHead) & emptyRow).value _
-            = calcTimeGroup(TimeOfIncident_H.value, TimeOfIncident_P.value)
-    Range(headerFind("Incident District", petitionHead) & emptyRow).value _
-            = IncidentDistrict.value
-    Range(headerFind("Incident Address", petitionHead) & emptyRow).value _
-            = IncidentAddress.value
-    Range(headerFind("Incident Zipcode", petitionHead) & emptyRow).value _
-            = IncidentZipcode.value
-
-    'Finding address lat and lon
-    Dim incidentCoords As Variant
-    'Probably want to try-catch the whole block after this line
-    incidentCoords = FindLatLon(IncidentAddress.value, IncidentZipcode.value)
-    Range(headerFind("Latitude", petitionHead) & emptyRow).value = incidentCoords(1)
-    Range(headerFind("Longitude", petitionHead) & emptyRow).value = incidentCoords(2)
-    Range(headerFind("Incident Zipcode", petitionHead) & emptyRow).value = incidentCoords(3)
-
-    If Not StrComp(IncidentZipcode.value, incidentCoords(3)) = 0 Then
-        MsgBox ("ALERT: The zipcode entered and zipcode found by geolocating services are different. Please check the new zipcode entered to make sure it is correct.")
-    End If
-
-    Range(headerFind("DA") & emptyRow).value = Lookup("DA_Last_Name_Name")(DA.value)
+    Dim count As Integer
     
-
-    Range(headerFind("Gun Case?") & emptyRow).value = Lookup("Generic_YNOU_Name")(GunCase.value)
-    Range(headerFind("Gun Involved Arrest?") & emptyRow).value = Lookup("Generic_YNOU_Name")(GunInvolved.value)
-    
-    Range(headerFind("General Notes from Intake") & emptyRow).value = GeneralNotes.value
-
-    Dim Num As Long
-    Dim i As Integer
-    Dim j As Integer
-
-    For Num = 1 To PetitionBox.ListCount
-        tempHead = headerFind("Petition #" & Num, petitionHead)
-        
-        If DiversionProgram.value = "Yes" Or InitialHearingLocation.value = "Adult" Then
-            Range(headerFind("Petition Filed?", tempHead) & emptyRow).value _
-                    = Lookup("Generic_YNOU_Name")("No")
-        Else
-            Range(headerFind("Petition Filed?", tempHead) & emptyRow).value _
-                    = Lookup("Generic_YNOU_Name")("Yes")
+    For count = 1 To 2
+        If Not DirectFiled.value = "Yes" Then
+            count = 2
         End If
-        Range(headerFind("Was Petition Transferred from Other County?", tempHead) & emptyRow).value _
-                = Lookup("Generic_YNOU_Name")(PetitionBox.List(Num - 1, 6))
-        Range(tempHead & emptyRow).value _
-                = PetitionBox.List(Num - 1, 1)
-        Range(headerFind("Date Filed", tempHead) & emptyRow).value _
-                = PetitionBox.List(Num - 1, 0)
-        Range(headerFind("Lead Charge Code", tempHead) & emptyRow).value _
-                = PetitionBox.List(Num - 1, 4)
-        Range(headerFind("Lead Charge Name", tempHead) & emptyRow).value _
-                = PetitionBox.List(Num - 1, 5)
-        Range(headerFind("Charge Category #1", tempHead) & emptyRow).value _
-                = Lookup("Charge_Name")(PetitionBox.List(Num - 1, 3))
-        Range(headerFind("Charge Grade (specific) #1", tempHead) & emptyRow).value _
-                = Lookup("Charge_Grade_Specific_Name")(PetitionBox.List(Num - 1, 2))
-        Range(headerFind("Charge Grade (broad) #1", tempHead) & emptyRow).value _
-                = calcChargeBroad(PetitionBox.List(Num - 1, 2))
+    
+        Select Case count
+            Case 1
+                petitionHead = hFind("ADULT PETITION")
+            Case 2
+                petitionHead = hFind("PETITION")
+        End Select
 
-        j = 2
-        For i = 0 To ChargeBox.ListCount - 1
-            If ChargeBox.ListCount > 0 Then
-                If ChargeBox.List(i, 0) = PetitionBox.List(Num - 1, 1) Then
-                    Range(headerFind("Charge Code #" & j, tempHead) & emptyRow).value _
-                            = ChargeBox.List(i, 3)
-                    Range(headerFind("Charge Name #" & j, tempHead) & emptyRow).value _
-                            = ChargeBox.List(i, 4)
-                    Range(headerFind("Charge Category #" & j, tempHead) & emptyRow).value _
-                            = Lookup("Charge_Name")(ChargeBox.List(i, 2))
-                    Range(headerFind("Charge Grade (specific) #" & j, tempHead) & emptyRow).value _
-                            = Lookup("Charge_Grade_Specific_Name")(ChargeBox.List(i, 1))
-                    Range(headerFind("Charge Grade (broad) #" & j, tempHead) & emptyRow).value _
-                            = calcChargeBroad(ChargeBox.List(i, 1))
-                    j = j + 1
-                End If
+        Range(headerFind("Initial Court Date", petitionHead) & emptyRow).value _
+                = InitialHearingDate.value
+        Range(headerFind("Initial Hearing Location", petitionHead) & emptyRow).value _
+                = Lookup("Courtroom_Name")(InitialHearingLocation.value)
+    
+        If IsNumeric(NumOfPriorArrests.value) And Not NumOfPriorArrests.value = "10+" Then
+            Range(headerFind("# of Prior Arrests") & emptyRow).value _
+                = Lookup("Num_Prior_Arrests_Name")(CInt(NumOfPriorArrests.value))
+        Else
+            Range(headerFind("# of Prior Arrests") & emptyRow).value _
+                = Lookup("Num_Prior_Arrests_Name")(NumOfPriorArrests.value)
+        End If
+    
+        Range(headerFind("Active in System at Time of Arrest?") & emptyRow) = _
+                Lookup("Generic_YNOU_Name")(ActiveAtArrest.value)
+    
+        Range(headerFind("Arrest Date", petitionHead) & emptyRow).value _
+                = ArrestDate.value
+        Range(headerFind("Day of Arrest", petitionHead) & emptyRow).value _
+                = Weekday(ArrestDate.value, vbMonday) * 2 - 1
+        Range(headerFind("Time of Arrest", petitionHead) & emptyRow).value _
+                = TimeOfArrest_H.value & ":" & TimeOfArrest_M.value & " " & TimeOfArrest_P.value
+        Range(headerFind("Time Category of Arrest", petitionHead) & emptyRow).value _
+                = calcTimeGroup(TimeOfArrest_H.value, TimeOfArrest_P.value)
+        Range(headerFind("Arresting District", petitionHead) & emptyRow).value _
+                = ArrestingDistrict.value
+        Range(headerFind("Time of Referral to DA") & emptyRow).value _
+                = TimeReferredToDA_H.value & ":" & TimeReferredToDA_M.value & " " & TimeReferredToDA_P.value
+    
+    
+        Range(headerFind("DC #", petitionHead) & emptyRow).value = DCNum.value
+        Range(headerFind("PID #") & emptyRow).value = PIDNum.value
+        Range(headerFind("DC-PID #") & emptyRow).value = DCNum.value & "-" & PIDNum.value
+        Range(headerFind("SID #") & emptyRow).value = SIDNum.value
+    
+        Range(headerFind("Officer #1") & emptyRow).value = Officer1.value
+        Range(headerFind("Officer #2") & emptyRow).value = Officer2.value
+        Range(headerFind("Officer #3") & emptyRow).value = Officer3.value
+        Range(headerFind("Officer #4") & emptyRow).value = Officer4.value
+        Range(headerFind("Officer #5") & emptyRow).value = Officer5.value
+    
+        'confirm if needs to happen twice
+        Range(headerFind("Victim First Name") & emptyRow) _
+                = VictimFirstName.value
+        Range(headerFind("Victim Last Name") & emptyRow) _
+                = VictimLastName.value
+    
+        Range(headerFind("Incident Date", petitionHead) & emptyRow).value _
+                = IncidentDate.value
+        Range(headerFind("Day of Incident", petitionHead) & emptyRow).value _
+                = Weekday(IncidentDate.value, vbMonday) * 2 - 1
+        Range(headerFind("Time of Incident", petitionHead) & emptyRow).value _
+                = TimeOfIncident_H.value & ":" & TimeOfIncident_M.value & " " & TimeOfIncident_P.value
+        Range(headerFind("Time Category of Incident", petitionHead) & emptyRow).value _
+                = calcTimeGroup(TimeOfIncident_H.value, TimeOfIncident_P.value)
+        Range(headerFind("Incident District", petitionHead) & emptyRow).value _
+                = IncidentDistrict.value
+        Range(headerFind("Incident Address", petitionHead) & emptyRow).value _
+                = IncidentAddress.value
+        Range(headerFind("Incident Zipcode", petitionHead) & emptyRow).value _
+                = IncidentZipcode.value
+    
+        'Finding address lat and lon
+        Dim incidentCoords As Variant
+        'Probably want to try-catch the whole block after this line
+        incidentCoords = FindLatLon(IncidentAddress.value, IncidentZipcode.value)
+        Range(headerFind("Latitude", petitionHead) & emptyRow).value = incidentCoords(1)
+        Range(headerFind("Longitude", petitionHead) & emptyRow).value = incidentCoords(2)
+        Range(headerFind("Incident Zipcode", petitionHead) & emptyRow).value = incidentCoords(3)
+    
+        If Not StrComp(IncidentZipcode.value, incidentCoords(3)) = 0 Then
+            MsgBox ("ALERT: The zipcode entered and zipcode found by geolocating services are different. Please check the new zipcode entered to make sure it is correct.")
+        End If
+    
+        Range(headerFind("DA") & emptyRow).value = Lookup("DA_Last_Name_Name")(DA.value)
+        
+    
+        Range(headerFind("Gun Case?") & emptyRow).value = Lookup("Generic_YNOU_Name")(GunCase.value)
+        Range(headerFind("Gun Involved Arrest?") & emptyRow).value = Lookup("Generic_YNOU_Name")(GunInvolved.value)
+        
+        Range(headerFind("General Notes from Intake") & emptyRow).value = GeneralNotes.value
+    
+        Dim Num As Long
+        Dim i As Integer
+        Dim j As Integer
+    
+        For Num = 1 To PetitionBox.ListCount
+            tempHead = headerFind("Petition #" & Num, petitionHead)
+            
+            If DiversionProgram.value = "Yes" Or InitialHearingLocation.value = "Adult" And count = 2 Then
+                Range(headerFind("Petition Filed?", tempHead) & emptyRow).value _
+                        = Lookup("Generic_YNOU_Name")("No")
+            Else
+                Range(headerFind("Petition Filed?", tempHead) & emptyRow).value _
+                        = Lookup("Generic_YNOU_Name")("Yes")
             End If
-        Next i
-    Next Num
-
-    Range(headerFind("LOS Until DA Referral", petitionHead) & emptyRow).value _
-                = timeDiff(Range(headerFind("Time of Arrest", petitionHead) & emptyRow).value, _
-           Range(headerFind("Time of Referral to DA") & emptyRow).value)
+            Range(headerFind("Was Petition Transferred from Other County?", tempHead) & emptyRow).value _
+                    = Lookup("Generic_YNOU_Name")(PetitionBox.List(Num - 1, 6))
+            Range(tempHead & emptyRow).value _
+                    = PetitionBox.List(Num - 1, 1)
+            Range(headerFind("Date Filed", tempHead) & emptyRow).value _
+                    = PetitionBox.List(Num - 1, 0)
+            Range(headerFind("Lead Charge Code", tempHead) & emptyRow).value _
+                    = PetitionBox.List(Num - 1, 4)
+            Range(headerFind("Lead Charge Name", tempHead) & emptyRow).value _
+                    = PetitionBox.List(Num - 1, 5)
+            Range(headerFind("Charge Category #1", tempHead) & emptyRow).value _
+                    = Lookup("Charge_Name")(PetitionBox.List(Num - 1, 3))
+            Range(headerFind("Charge Grade (specific) #1", tempHead) & emptyRow).value _
+                    = Lookup("Charge_Grade_Specific_Name")(PetitionBox.List(Num - 1, 2))
+            Range(headerFind("Charge Grade (broad) #1", tempHead) & emptyRow).value _
+                    = calcChargeBroad(PetitionBox.List(Num - 1, 2))
+    
+            j = 2
+            For i = 0 To ChargeBox.ListCount - 1
+                If ChargeBox.ListCount > 0 Then
+                    If ChargeBox.List(i, 0) = PetitionBox.List(Num - 1, 1) Then
+                        Range(headerFind("Charge Code #" & j, tempHead) & emptyRow).value _
+                                = ChargeBox.List(i, 3)
+                        Range(headerFind("Charge Name #" & j, tempHead) & emptyRow).value _
+                                = ChargeBox.List(i, 4)
+                        Range(headerFind("Charge Category #" & j, tempHead) & emptyRow).value _
+                                = Lookup("Charge_Name")(ChargeBox.List(i, 2))
+                        Range(headerFind("Charge Grade (specific) #" & j, tempHead) & emptyRow).value _
+                                = Lookup("Charge_Grade_Specific_Name")(ChargeBox.List(i, 1))
+                        Range(headerFind("Charge Grade (broad) #" & j, tempHead) & emptyRow).value _
+                                = calcChargeBroad(ChargeBox.List(i, 1))
+                        j = j + 1
+                    End If
+                End If
+            Next i
+        Next Num
+    
+        Range(headerFind("LOS Until DA Referral", petitionHead) & emptyRow).value _
+                    = timeDiff(Range(headerFind("Time of Arrest", petitionHead) & emptyRow).value, _
+               Range(headerFind("Time of Referral to DA") & emptyRow).value)
+    Next count
 
     ''''''''''''''''''
     'SET LEGAL STATUS'

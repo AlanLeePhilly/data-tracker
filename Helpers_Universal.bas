@@ -211,17 +211,16 @@ Sub closeOpenLegalStatuses( _
                     statusType = "Aftercare Probation"
             End Select
             
-            If statusType = legalStatus Then
-                If section = Courtroom Or section = "AGGREGATES" Then
-                    GoTo NextJ
-                End If
-            End If
+            'If statusType = legalStatus Then
+                'If section = Courtroom Or section = "AGGREGATES" Then
+                    'GoTo NextJ
+                'End If
+            'End If
             
             bucketHead = hFind(statusType, section)
 
             If isNotEmptyOrZero(Range(headerFind("Start Date", bucketHead) & clientRow)) And _
-               isEmptyOrZero(Range(headerFind("End Date", bucketHead) & clientRow)) And _
-               Not section = Courtroom Then
+               isEmptyOrZero(Range(headerFind("End Date", bucketHead) & clientRow)) Then
 
                 MsgBox "Closing bucket for " & statusType & " in " & section & " (automated)"
 
