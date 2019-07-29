@@ -18,49 +18,11 @@ Public dataStore As Collection
 Option Explicit
 
 
-Private Sub CommandButton1_Click()
-
-Modal_Adult_Decertification.Show
-
-End Sub
-
-Private Sub CommandButton24_Click()
-Modal_Adult_Reslate.Show
-End Sub
-
-Private Sub CommandButton26_Click()
-Adult_Reslate_Juvenile_Petition.Show
-End Sub
-
-Private Sub CommandButton8_Click()
-Modal_Adult_Admissions.Show
-End Sub
-
-Private Sub JTC_FTA_Yes_Click()
-    If Worksheets("Entry").Range(hFind("Active B/W?") & updateRow).value = Lookup("Generic_YNOU_Name")("Yes") Then
-        JTC_FTA_Yes.BackColor = selectedColor
-        JTC_FTA_No.BackColor = unselectedColor
-    Else
-        Modal_FTA.Show
-    End If
-End Sub
-
-Private Sub JTC_FTA_No_Click()
-    JTC_FTA_Yes.BackColor = unselectedColor
-    JTC_FTA_No.BackColor = selectedColor
-End Sub
-
-
-Private Sub JTC_Lift_BW_Click()
-    Modal_Lift_BW.Show
-End Sub
 
 
 
 Private Sub RearrestIntake_Click()
     Modal_Rearrest_Intake.Show
-
-
 End Sub
 
 Private Sub Standard_FTA_Yes_Click()
@@ -136,28 +98,7 @@ Private Sub DRevSup2_Change()
     DRevSup2_Agency.value = "None"
 End Sub
 
-Private Sub JTC_Remain_All_Click()
-    If Not JTC_Certification_Update.BackColor = selectedColor Then
-        Call JTC_Certification_Remain_Click
-    End If
 
-    If Not JTC_Admission_Update.BackColor = selectedColor Then
-        Call JTC_Admission_Remain_Click
-    End If
-
-    If Not JTC_Adjudication_Update.BackColor = selectedColor Then
-        Call JTC_Adjudication_Remain_Click
-    End If
-
-    If Not JTC_Continuance_Update.BackColor = selectedColor Then
-        Call JTC_Continuance_Remain_Click
-    End If
-
-    If Not JTC_Treatment_Provider_Update.BackColor = selectedColor Then
-        Call JTC_Treatment_Provider_Remain_Click
-    End If
-
-End Sub
 
 Private Sub RearrestButton_Click()
     Load Modal_New_Arrest
@@ -191,28 +132,7 @@ Private Sub PJJSC_NextCourtDate_Exit(ByVal Cancel As MSForms.ReturnBoolean)
     Call DateValidation(ctl, Cancel)
 End Sub
 
-Private Sub Standard_Remain_All_Click()
-    If Not Standard_Legal_Status_Update.BackColor = selectedColor Then
-        Call Standard_Legal_Status_Remain_Click
-    End If
 
-    If Not Standard_Certification_Update.BackColor = selectedColor Then
-        Call Standard_Certification_Remain_Click
-    End If
-
-    If Not Standard_Admission_Update.BackColor = selectedColor Then
-        Call Standard_Admission_Remain_Click
-    End If
-
-    If Not Standard_Adjudication_Update.BackColor = selectedColor Then
-        Call Standard_Adjudication_Remain_Click
-    End If
-
-    If Not Standard_Continuance_Update.BackColor = selectedColor Then
-        Call Standard_Continuance_Remain_Click
-    End If
-
-End Sub
 
 ''''''''''''''''
 'INITIALIZATION'
@@ -360,6 +280,7 @@ Sub Lookup_Button_Click()
             Call JTC_Fetch
         Case "Adult"
             MultiPage1.value = 3
+            Call Adult_Fetch
         Case Else
             MsgBox "Please select a valid courtroom to continue!"
             Exit Sub
@@ -431,7 +352,186 @@ Sub Clear_Click()
 
 End Sub
 
+Sub Adult_Submit_Click()
+    On Error GoTo err
 
+    Worksheets("Entry").Activate
+    Dim restorer As Variant
+    restorer = Sheets("Entry").Range("C" & updateRow & ":" & hFind("END") & updateRow).value
+
+    With Application
+        .ScreenUpdating = False
+        .Calculation = xlCalculationManual
+    End With
+
+    'VALIDATIONS
+    If Adult_Legal_Status_Remain.BackColor = unselectedColor And _
+            Adult_Legal_Status_Update.BackColor = unselectedColor Then
+        MsgBox "Please select a result button for Legal Status"
+        Exit Sub
+    End If
+
+    If Adult_Decertification_Remain.BackColor = unselectedColor And _
+            Adult_Decertification_Update.BackColor = unselectedColor Then
+        MsgBox "Please select a result button for Decertification"
+        Exit Sub
+    End If
+
+    If Adult_Admission_Remain.BackColor = unselectedColor And _
+            Adult_Admission_Update.BackColor = unselectedColor Then
+        MsgBox "Please select a result button for Admission"
+        Exit Sub
+    End If
+
+    If Adult_Adjudication_Remain.BackColor = unselectedColor And _
+            Adult_Adjudication_Update.BackColor = unselectedColor Then
+        MsgBox "Please select a result button for Adjudication"
+        Exit Sub
+    End If
+
+    If Adult_Continuance_Remain.BackColor = unselectedColor And _
+            Adult_Continuance_Update.BackColor = unselectedColor Then
+        MsgBox "Please select a result button for Continuance"
+        Exit Sub
+    End If
+
+
+    If Not HasContent(Adult_NextCourtDate) Then
+        MsgBox "Please enter the next court date"
+        Exit Sub
+    End If
+
+    Dim oldCourtHead As String
+    Dim oldCourtroom As String
+    Dim newCourtHead As String
+    Dim newCourtroom As String
+    oldCourtroom = "ADULT"
+    newCourtroom = "ADULT"
+    
+    If Adult_Return_Reslate.BackColor = selectedColor Then
+        newCourtroom = Adult_Reslate_Juvenile_Petition.NextHearingLocation.value
+    End If
+
+    If newCourtHead = "5E" Then
+        newCourtHead = headerFind("Crossover")
+    Else
+        newCourtHead = headerFind(newCourtroom)
+    End If
+
+
+    'append PCD
+    Call append(Range(headerFind("Previous Court Dates") & updateRow), DateOfHearing.value)
+
+    Range(headerFind("Next Court Date") & updateRow) = Adult_NextCourtDate.value
+    Range(headerFind("Listing Type") & updateRow) = Lookup("Listing_Type_Name")(Adult_Next_Hearing_Type.value)
+
+
+    Dim oldLegalHead As String
+    Dim newLegalHead As String
+    Dim bucketHead As String
+    Dim i As Long
+
+    '''''''''''''''
+    ''''RESLATE''''
+    '''''''''''''''
+    
+
+
+
+    '''''''''''''''
+    'CERTIFICATION'
+    '''''''''''''''
+
+    If Adult_Decertification_Update.BackColor = selectedColor Then
+        If Adult_Fetch_Decertification.Caption = "Filed" Then
+            Call certificationUpdate( _
+                updateRow, _
+                headerFind("Decertification", oldCourtHead), _
+                Modal_Adult_Decertification.Motion_Result, _
+                DateOfHearing.value _
+            )
+            Call certificationUpdate( _
+                updateRow, _
+                hFind("Certification", "COURT PROCEEDINGS", "AGGREGATES"), _
+                Modal_Adult_Decertification.Motion_Result, _
+                DateOfHearing.value _
+            )
+        Else
+            Call certificationStart( _
+                updateRow, _
+                headerFind("Decertification", newCourtHead), _
+                Lookup("Legal_Status_Num")(Range(headerFind("Legal Status") & updateRow).value), _
+                newCourtroom, _
+                DA.value, _
+                Modal_Adult_Decertification.Motion_Date.value _
+            )
+            Call certificationStart( _
+                updateRow, _
+                hFind("Certification", "COURT PROCEEDINGS", "AGGREGATES"), _
+                Lookup("Legal_Status_Num")(Range(headerFind("Legal Status") & updateRow).value), _
+                newCourtroom, _
+                DA.value, _
+                Modal_Adult_Decertification.Motion_Date.value _
+            )
+        End If
+    End If
+
+    '''''''''''
+    'ADMISSION'
+    '''''''''''
+    If Adult_Admission_Update.BackColor = selectedColor Then
+        Call admissionStart( _
+            clientRow:=updateRow, _
+            petitionNum:=Modal_Adult_Admission.PetitionBox.value, _
+            statusType:=Lookup("Legal_Status_Num")(Range(headerFind("Legal Status") & updateRow).value), _
+            Courtroom:=newCourtroom, _
+            DA:=DA.value, _
+            startDate:=Modal_Adult_Admission.Admission_Date.value, _
+            Result:=Modal_Adult_Admission.Result.value, _
+            detailed:=Modal_Adult_Admission.Detailed_Result.value _
+        )
+    End If
+
+
+    
+
+    'Call closeCallIn(DateOfHearing.value, updateRow)
+    'Call closeIntakeConference(DateOfHearing.value, updateRow)
+    Call UnloadAll
+
+    Call addNotes( _
+        Courtroom:=oldCourtroom, _
+        dateOf:=DateOfHearing.value, _
+        userRow:=updateRow, _
+        Notes:=Adult_Notes, _
+        DA:=DA.value _
+    )
+    
+    Call Save_Countdown
+
+    With Application
+        .ScreenUpdating = True
+        .Calculation = xlCalculationAutomatic
+    End With
+    Worksheets("User Entry").Activate
+
+
+done:
+
+
+    Exit Sub
+err:
+    Sheets("Entry").Range("C" & updateRow & ":" & hFind("END") & updateRow).value = restorer
+
+
+    MsgBox "Something went wrong. Database has been restored to state prior to submission. " _
+      & vbNewLine & vbNewLine & "Message: " & vbNewLine & err.Description _
+      & vbNewLine & vbNewLine & "Source: " & vbNewLine & err.Source
+    Call UnloadAll
+
+    Stop   'press F8 twice to see the error point
+    Resume
+End Sub
 
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -598,7 +698,7 @@ Sub JTC_Submit_Click()
     End If
 
 
-    If Standard_Lift_BW.BackColor = selectedColor Then
+    If JTC_Lift_BW.BackColor = selectedColor Then
         Range(hFind("Active B/W?") & updateRow).value = Lookup("Generic_YNOU_Name")("No")
 
         For i = 15 To 1 Step -1
@@ -1072,7 +1172,7 @@ Sub JTC_Submit_Click()
                             DA:=DA.value, _
                             agency:=.List(i, 1), _
                             startDate:=DateOfHearing.value, _
-                            NextCourtDate:=Standard_NextCourtDate.value, _
+                            NextCourtDate:=NextCourtDate.value, _
                             Re1:="N/A", _
                             Re2:="N/A", _
                             Re3:="N/A", _
@@ -1114,7 +1214,7 @@ Sub JTC_Submit_Click()
                                 DA:=DA.value, _
                                 agency:=.List(i, 1), _
                                 startDate:=DateOfHearing.value, _
-                                NextCourtDate:=Standard_NextCourtDate.value, _
+                                NextCourtDate:=NextCourtDate.value, _
                                 Re1:="N/A", _
                                 Re2:="N/A", _
                                 Re3:="N/A", _
@@ -2146,6 +2246,109 @@ End Sub
 ''''''''''''''''''''''''''''
 
 '''''''''''''''''''
+'''ADULT_UPDATES'''
+'''''''''''''''''''
+
+Sub Adult_Legal_Status_Remain_Click()
+    Call toggleSelect(Adult_Legal_Status_Remain, Adult_Return_Legal_Status, Adult_Fetch_Legal_Status)
+    Adult_Legal_Status_Update.BackColor = unselectedColor
+End Sub
+Sub Adult_Legal_Status_Update_Click()
+    'Modal_Adult_Legal_Status.Show
+End Sub
+
+
+Sub Adult_Reslate_Remain_Click()
+    Call toggleSelect(Adult_Reslate_Remain, Adult_Return_Reslate, Adult_Fetch_Reslate)
+    Adult_Reslate_Update.BackColor = unselectedColor
+End Sub
+Sub Adult_Reslate_Update_Click()
+    Modal_Adult_Reslate.Show
+End Sub
+
+
+Sub Adult_Decertification_Remain_Click()
+    Call toggleSelect(Adult_Decertification_Remain, Adult_Return_Decertification, Adult_Fetch_Decertification)
+    Adult_Decertification_Update.BackColor = unselectedColor
+End Sub
+Sub Adult_Decertification_Update_Click()
+    Modal_Adult_Decertification.Show
+End Sub
+
+
+Sub Adult_Admission_Remain_Click()
+    Call toggleSelect(Adult_Admission_Remain, Adult_Return_Admission, Adult_Fetch_Admission)
+    Adult_Admission_Update.BackColor = unselectedColor
+End Sub
+Sub Adult_Admission_Update_Click()
+    Modal_Adult_Admission.Show
+End Sub
+
+
+Sub Adult_Adjudication_Remain_Click()
+    Call toggleSelect(Adult_Adjudication_Remain, Adult_Return_Adjudication, Adult_Fetch_Adjudication)
+    Adult_Adjudication_Update.BackColor = unselectedColor
+End Sub
+Sub Adult_Adjudication_Update_Click()
+    'Modal_Adult_Adjudication.Show
+End Sub
+
+Sub Adult_Continuance_Remain_Click()
+    Call toggleSelect(Adult_Continuance_Remain, Adult_Return_Continuance, "No")
+    Adult_Continuance_Update.BackColor = unselectedColor
+End Sub
+Sub Adult_Continuance_Update_Click()
+    'Modal_Adult_Continuance.Show
+End Sub
+
+Sub Adult_Supervision_Add_Click()
+    'Modal_Adult_Add_Supervision.Show
+End Sub
+Sub Adult_Supervision_Discharge_Click()
+    'Modal_Adult_Drop_Supervision.Show
+End Sub
+Sub Adult_Supervision_Remain_Click()
+    Call toggleSelect(Adult_Supervision_Remain)
+End Sub
+
+Sub Adult_Condition_Add_Click()
+    'Modal_Adult_Add_Condition.Show
+End Sub
+Sub Adult_Condition_Discharge_Click()
+    'Modal_Adult_Drop_Condition.Show
+End Sub
+Sub Adult_Condition_Remain_Click()
+    Call toggleSelect(Adult_Condition_Remain)
+End Sub
+
+Sub Adult_Remain_All_Click()
+    If Not Adult_Legal_Status_Update.BackColor = selectedColor Then
+        Call Adult_Legal_Status_Remain_Click
+    End If
+    
+    If Not Adult_Reslate_Update.BackColor = selectedColor Then
+        Call Adult_Reslate_Remain_Click
+    End If
+
+    If Not Adult_Decertification_Update.BackColor = selectedColor Then
+        Call Adult_Decertification_Remain_Click
+    End If
+
+    If Not Adult_Admission_Update.BackColor = selectedColor Then
+        Call Adult_Admission_Remain_Click
+    End If
+
+    If Not Adult_Adjudication_Update.BackColor = selectedColor Then
+        Call Adult_Adjudication_Remain_Click
+    End If
+
+    If Not Adult_Continuance_Update.BackColor = selectedColor Then
+        Call Adult_Continuance_Remain_Click
+    End If
+
+End Sub
+
+'''''''''''''''''''
 'STANDARD_UPDATES''
 '''''''''''''''''''
 Sub Standard_Legal_Status_Remain_Click()
@@ -2210,7 +2413,28 @@ End Sub
 Sub Standard_Condition_Remain_Click()
     Call toggleSelect(Standard_Condition_Remain)
 End Sub
+Private Sub Standard_Remain_All_Click()
+    If Not Standard_Legal_Status_Update.BackColor = selectedColor Then
+        Call Standard_Legal_Status_Remain_Click
+    End If
 
+    If Not Standard_Certification_Update.BackColor = selectedColor Then
+        Call Standard_Certification_Remain_Click
+    End If
+
+    If Not Standard_Admission_Update.BackColor = selectedColor Then
+        Call Standard_Admission_Remain_Click
+    End If
+
+    If Not Standard_Adjudication_Update.BackColor = selectedColor Then
+        Call Standard_Adjudication_Remain_Click
+    End If
+
+    If Not Standard_Continuance_Update.BackColor = selectedColor Then
+        Call Standard_Continuance_Remain_Click
+    End If
+
+End Sub
 
 '''''''''''''''''''
 'JTC_PHASE_UPDATES'
@@ -2344,3 +2568,44 @@ Sub JTC_Service_Remain_Click()
     End If
 End Sub
 
+Private Sub JTC_FTA_Yes_Click()
+    If Worksheets("Entry").Range(hFind("Active B/W?") & updateRow).value = Lookup("Generic_YNOU_Name")("Yes") Then
+        JTC_FTA_Yes.BackColor = selectedColor
+        JTC_FTA_No.BackColor = unselectedColor
+    Else
+        Modal_FTA.Show
+    End If
+End Sub
+
+Private Sub JTC_FTA_No_Click()
+    JTC_FTA_Yes.BackColor = unselectedColor
+    JTC_FTA_No.BackColor = selectedColor
+End Sub
+
+
+Private Sub JTC_Lift_BW_Click()
+    Modal_Lift_BW.Show
+End Sub
+
+Private Sub JTC_Remain_All_Click()
+    If Not JTC_Certification_Update.BackColor = selectedColor Then
+        Call JTC_Certification_Remain_Click
+    End If
+
+    If Not JTC_Admission_Update.BackColor = selectedColor Then
+        Call JTC_Admission_Remain_Click
+    End If
+
+    If Not JTC_Adjudication_Update.BackColor = selectedColor Then
+        Call JTC_Adjudication_Remain_Click
+    End If
+
+    If Not JTC_Continuance_Update.BackColor = selectedColor Then
+        Call JTC_Continuance_Remain_Click
+    End If
+
+    If Not JTC_Treatment_Provider_Update.BackColor = selectedColor Then
+        Call JTC_Treatment_Provider_Remain_Click
+    End If
+
+End Sub

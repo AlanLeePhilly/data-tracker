@@ -6,7 +6,7 @@ Public Function headerFindTwo(ByVal Query As String, Optional ByVal Start As Str
         Start = "A"
     End If
 
-    Set Result = Range(Start & "2:UCR2").Find(Query, LookAt:=xlWhole)
+    Set Result = Range(Start & "2:UTA2").Find(Query, LookAt:=xlWhole)
 
 
     If Result Is Nothing Then
@@ -86,7 +86,7 @@ Public Function headerFindNumTwo(ByVal Query As String, Optional ByVal Start As 
         Start = "A"
     End If
 
-    Set Result = Range(Start & "1:UCR1").Find(Query, LookAt:=xlWhole)
+    Set Result = Range(Start & "1:UTA1").Find(Query, LookAt:=xlWhole)
 
 
     If Result Is Nothing Then

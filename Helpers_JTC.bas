@@ -262,11 +262,6 @@ Sub JTC_Service_Box_Add(ByRef MyBox As Object, ByVal bucketHead As String)
                   Lookup("Community_Based_Supervision_Provider_Num")(Range(headerFind("Community-Based Agency", bucketHead) & updateRow).value)
         End If
         
-        If isNotEmptyOrZero(Range(headerFind("Community-Based Agency", bucketHead) & updateRow)) Then
-                  End If
-        
-        If isNotEmptyOrZero(Range(headerFind("Residential Agency", bucketHead) & updateRow)) Then
-                    End If
 
         .List(newIndex, 2) = Range(headerFind("Start Date", bucketHead) & updateRow).value
         '.List(newIndex, 3) = Range(headerFind("End Date", bucketHead) & updateRow).value

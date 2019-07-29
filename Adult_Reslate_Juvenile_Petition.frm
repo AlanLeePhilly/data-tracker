@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} Adult_Reslate_Juvenile_Petition 
    Caption         =   "UserForm1"
-   ClientHeight    =   15630
+   ClientHeight    =   7575
    ClientLeft      =   120
    ClientTop       =   450
    ClientWidth     =   18990
@@ -89,13 +89,6 @@ Private Sub DRAI_Action_Change()
 End Sub
 
 
-Private Sub Label85_Click()
-
-End Sub
-
-Private Sub SameDate_2_Click()
-    CallInDate.value = ArrestDate.value
-End Sub
 
 Private Sub InConfDate_Enter()
     InConfDate.value = CalendarForm.GetDate(RangeOfYears:=5)
@@ -123,189 +116,6 @@ Private Sub InitialHearingLocation_Change()
 End Sub
 
 
-
-Private Sub Rearrest_Click()
-    If isNotEmptyOrZero(Range(hFind("Arrest Date #" & Rearrest_Num.value, "REARRESTS", "AGGREGATES") & Rearrest_Row.value)) Then
-        Call RearrestIntake(Rearrest_Row.value, Rearrest_Num.value)
-    Else
-        MsgBox "Arrest not found. Sorry!"
-    End If
-
-End Sub
-
-Private Sub Reload_Click()
-    Worksheets("Entry").Activate
-    Call Generate_Dictionaries
-    '''Demographics
-    Dim emptyRow
-
-    emptyRow = CLng(Reload_Row.value)
-    FirstName.value = Range(headerFind("First Name") & emptyRow).value
-    LastName.value = Range(headerFind("Last Name") & emptyRow).value
-    DateOfBirth.value = Range(headerFind("DOB") & emptyRow).value
-    Race.value = Lookup("Race_Num")(Range(headerFind("Race") & emptyRow).value)
-    Sex.value = Lookup("Sex_Num")(Range(headerFind("Sex") & emptyRow).value)
-    Latino.value = Lookup("Latino_Num")(Range(headerFind("Latino/Not Latino") & emptyRow).value)
-
-    '''Community
-
-    GuardianFirstName.value = Range(headerFind("Guardian First") & emptyRow).value
-    GuardianLastName.value = Range(headerFind("Guardian Last") & emptyRow).value
-
-    Address.value = Range(headerFind("Address") & emptyRow).value
-    Zipcode.value = Range(headerFind("Zipcode") & emptyRow).value
-
-
-    PhoneNumber.value = Range(headerFind("Phone #") & emptyRow).value
-    School.value = Range(headerFind("School") & emptyRow).value
-    Grade.value = Range(headerFind("Grade") & emptyRow).value
-
-    '''Incident and Arrest
-    petitionHead = headerFind("PETITION")
-
-    IncidentDate.value = Range(headerFind("Incident Date") & emptyRow).value
-    TimeOfIncident_H.value = getHour(Range(headerFind("Time of Incident") & emptyRow).value)
-    TimeOfIncident_M.value = getMinute(Range(headerFind("Time of Incident") & emptyRow).value)
-    TimeOfIncident_P.value = getPeriod(Range(headerFind("Time of Incident") & emptyRow).value)
-    IncidentDistrict.value = Lookup("Police_District_Name")(Range(headerFind("Incident District") & emptyRow).value)
-    IncidentAddress.value = Range(headerFind("Incident Address") & emptyRow).value
-    IncidentZipcode.value = Range(headerFind("Incident Zipcode") & emptyRow).value
-
-    ArrestDate.value = Range(headerFind("Arrest Date", petitionHead) & emptyRow).value
-
-    TimeOfArrest_H.value = getHour(Range(headerFind("Time of Arrest") & emptyRow).value)
-    TimeOfArrest_M.value = getMinute(Range(headerFind("Time of Arrest") & emptyRow).value)
-    TimeOfArrest_P.value = getPeriod(Range(headerFind("Time of Arrest") & emptyRow).value)
-
-    TimeReferredToDA_H.value = getHour(Range(headerFind("Time of Referral to DA") & emptyRow).value)
-    TimeReferredToDA_M.value = getMinute(Range(headerFind("Time of Referral to DA") & emptyRow).value)
-    TimeReferredToDA_P.value = getPeriod(Range(headerFind("Time of Referral to DA") & emptyRow).value)
-    ArrestingDistrict.value = Range(headerFind("Arresting District", petitionHead) & emptyRow).value
-
-    ActiveAtArrest.value = Lookup("Generic_YNOU_Num")(Range(headerFind("Active in System at Time of Arrest?") & emptyRow).value)
-    NumOfPriorArrests.value = Lookup("Num_Prior_Arrests_Num")(Range(headerFind("# of Prior Arrests") & emptyRow).value)
-    DCNum.value = Range(headerFind("DC #", petitionHead) & emptyRow).value
-    PIDNum.value = Range(headerFind("PID #") & emptyRow).value
-    SIDNum.value = Range(headerFind("SID #") & emptyRow).value
-
-    Officer1.value = Range(headerFind("Officer #1") & emptyRow).value
-    Officer2.value = Range(headerFind("Officer #2") & emptyRow).value
-    Officer3.value = Range(headerFind("Officer #3") & emptyRow).value
-    Officer4.value = Range(headerFind("Officer #4") & emptyRow).value
-    Officer4.value = Range(headerFind("Officer #5") & emptyRow).value
-
-    VictimFirstName = Range(headerFind("Victim First Name") & emptyRow)
-    VictimLastName = Range(headerFind("Victim Last Name") & emptyRow)
-
-    Dim i As Integer
-    Dim j As Integer
-    Dim sectionHead As String
-    Dim bucketHead As String
-
-    sectionHead = headerFind("PETITION")
-    For i = 1 To 5
-        If isNotEmptyOrZero(Range(headerFind("Petition #" & i, sectionHead) & emptyRow)) Then
-            bucketHead = headerFind("Petition #" & i, sectionHead)
-
-            With NewClientForm.PetitionBox
-                .ColumnCount = 7
-                .ColumnWidths = "50;50;30;50;65;50;0"
-                ' 0 Date Filed
-                ' 1 Petition Number
-                ' 2 Charge Grade
-                ' 3 Charge Group
-                ' 4 Charge Code
-                ' 5 Charge Name
-                ' 6 Was Petition from other county?
-                .AddItem Range(headerFind("Date Filed", bucketHead) & emptyRow).value
-                .List(.ListCount - 1, 0) = Range(headerFind("Date Filed", bucketHead) & emptyRow).value
-                .List(.ListCount - 1, 1) = Range(bucketHead & emptyRow).value
-                .List(.ListCount - 1, 2) = Lookup("Charge_Grade_Specific_Num")(Range(headerFind("Charge Grade (specific) #1", bucketHead) & emptyRow).value)
-                .List(.ListCount - 1, 3) = Lookup("Charge_Num")(Range(headerFind("Charge Category #1", bucketHead) & emptyRow).value)
-                .List(.ListCount - 1, 4) = Range(headerFind("Lead Charge Code", bucketHead) & emptyRow).value
-                .List(.ListCount - 1, 5) = Range(headerFind("Lead Charge Name", bucketHead) & emptyRow).value
-                .List(.ListCount - 1, 6) = Lookup("Generic_YNOU_Num")(Range(headerFind("Was Petition Transferred from Other County?", bucketHead) & emptyRow).value)
-            End With
-
-            For j = 2 To 5
-                If isNotEmptyOrZero(Range(headerFind("Charge Code #" & j, bucketHead) & emptyRow)) Then
-                    With NewClientForm.ChargeBox
-                        .ColumnCount = 5
-                        .ColumnWidths = "50;50;30;50;65;"
-                        ' 0 Petition Number
-                        ' 1 Charge Grade
-                        ' 2 Charge Group (specific)
-                        ' 3 Charge Code
-                        ' 4 Charge Name
-                        .AddItem Range(bucketHead & emptyRow).value
-                        .List(.ListCount - 1, 0) = Range(bucketHead & emptyRow).value
-                        .List(.ListCount - 1, 1) = Lookup("Charge_Grade_Specific_Num")(Range(headerFind("Charge Grade (specific) #" & j, bucketHead) & emptyRow).value)
-                        .List(.ListCount - 1, 2) = Lookup("Charge_Num")(Range(headerFind("Charge Category #" & j, bucketHead) & emptyRow).value)
-                        .List(.ListCount - 1, 3) = Range(headerFind("Charge Code #" & j, bucketHead) & emptyRow).value
-                        .List(.ListCount - 1, 4) = Range(headerFind("Charge Name #" & j, bucketHead) & emptyRow).value
-                    End With
-                End If
-            Next j
-        End If
-    Next i
-
-    tempHead = headerFind("INTAKE CONFERENCE", petitionHead)
-    'thing = Lookup("Generic_NYNOU_Num")(Range(headerFind("Did Youth Have an Intake Conference?", tempHead) & emptyRow).value)
-    'IntakeConference.value = Lookup("Generic_NYNOU_Num")(Range(headerFind("Did Youth Have an Intake Conference?", tempHead) & emptyRow).value)
-    InConfDate.value = Range(headerFind("Date of Intake Conference", tempHead) & emptyRow).value
-    InConfType.value = Lookup("Intake_Conference_Type_Num")(Range(headerFind("Intake Conference Type", tempHead) & emptyRow).value)
-
-    tempHead = headerFind("CALL-IN")
-    CallInDate.value = Range(headerFind("Date of Call-In", tempHead) & emptyRow).value
-    Was_DRAI_Administered = Lookup("Generic_NYNOU_Num")(Range(headerFind("Was DRAI Administered?", tempHead) & emptyRow).value)
-    DRAI_Score.value = Range(headerFind("DRAI Score", tempHead) & emptyRow).value
-    DRAI_Rec.value = Lookup("DRAI_Recommendation_Num")(Range(headerFind("DRAI Recommendation", tempHead) & emptyRow).value)
-    DRAI_Action = Lookup("DRAI_Action_Num")(Range(headerFind("DRAI Action", tempHead) & emptyRow).value)
-    OverrideHoldRe1.value = Lookup("DRAI_Override_Reason_Num")(Range(headerFind("Reason #1 for Override Hold", tempHead) & emptyRow).value)
-    OverrideHoldRe2.value = Lookup("DRAI_Override_Reason_Num")(Range(headerFind("Reason #2 for Override Hold", tempHead) & emptyRow).value)
-    OverrideHoldRe3.value = Lookup("DRAI_Override_Reason_Num")(Range(headerFind("Reason #3 for Override Hold", tempHead) & emptyRow).value)
-
-    ConfOutcome.value = Lookup("Intake_Conference_Outcome_Num")(Range(headerFind("Intake Conference Outcome", tempHead) & emptyRow).value)
-
-    Supv1 = Lookup("Supervision_Program_Num")(Range(headerFind("Supervision Ordered #1", tempHead) & emptyRow).value)
-    Supv1Pro = Lookup("Community_Based_Supervision_Provider_Num")(Range(headerFind("Community-Based Agency #1", tempHead) & emptyRow).value)
-    Supv2 = Lookup("Supervision_Program_Num")(Range(headerFind("Supervision Ordered #2", tempHead) & emptyRow).value)
-    Supv2Pro = Lookup("Community_Based_Supervision_Provider_Num")(Range(headerFind("Community-Based Agency #2", tempHead) & emptyRow).value)
-    DetentionFacility = Lookup("Detention_Facility_Num")(Range(hFind("Detention Facility", "DETENTION") & emptyRow).value)
-
-    Cond1 = Lookup("Condition_Num")(Range(headerFind("Other Condition #1", tempHead) & emptyRow).value)
-    Cond1Pro = Lookup("Condition_Provider_Num")(Range(headerFind("Other Condition #1 Provider", tempHead) & emptyRow).value)
-    Cond2 = Lookup("Condition_Num")(Range(headerFind("Other Condition #2", tempHead) & emptyRow).value)
-    Cond2Pro = Lookup("Condition_Provider_Num")(Range(headerFind("Other Condition #2 Provider", tempHead) & emptyRow).value)
-    Cond3 = Lookup("Condition_Num")(Range(headerFind("Other Condition #3", tempHead) & emptyRow).value)
-    Cond3Pro = Lookup("Condition_Provider_Num")(Range(headerFind("Other Condition #3 Provider", tempHead) & emptyRow).value)
-
-
-    DiversionProgram.value = Lookup("Generic_YNOU_Num")(Range(headerFind("Referred to Diversion?", petitionHead) & emptyRow).value)
-    DiversionProgramReferralDate.value = Range(headerFind("Diversion Referral Date", petitionHead) & emptyRow).value
-    ReferralSource.value = Lookup("Diversion_Referral_Source_Num")(Range(headerFind("Referral Source", diversionHead) & emptyRow).value)
-    NameOfProgram.value = Lookup("Diversion_Program_Num")(Range(headerFind("Diversion Program Ordered", diversionHead) & emptyRow).value)
-    YAPDistrict.value = Lookup("Police_District_Num")(Range(headerFind("YAP Panel District #", diversionHead) & emptyRow).value)
-
-
-    InitialHearingDate.value = Range(headerFind("Initial Hearing Date") & emptyRow).value
-    InitialHearingLocation.value = Lookup("Courtroom_Num")(Range(headerFind("Initial Hearing Location") & emptyRow).value)
-    ListingType.value = Lookup("Listing_Type_Num")(Range(headerFind("Listing Type") & emptyRow).value)
-    DA.value = Lookup("DA_Last_Name_Num")(Range(headerFind("DA") & emptyRow).value)
-
-    GeneralNotes.value = Range(headerFind("General Notes from Intake") & emptyRow).value
-
-
-
-End Sub
-
-
-Private Sub Supv2_Change()
-    If Supv2.value = "None " Then
-        MsgBox "wow wtf"
-    End If
-End Sub
-
 Private Sub UserForm_Initialize()
     Me.ScrollTop = 0
     DetentionFacilityLabel.Enabled = False
@@ -315,48 +125,12 @@ End Sub
 Private Sub AddPetition_Click()
     If PetitionBox.ListCount < 5 Then
         Load Modal_NewClient_Add_Petition
-        Modal_NewClient_Add_Petition.headline.Caption = "New Client"
+        Modal_NewClient_Add_Petition.headline.Caption = "Reslate"
         Modal_NewClient_Add_Petition.Show
     Else
-        MsgBox "Maximum of five petitions for new client"
+        MsgBox "Maximum of five petitions for reslate"
     End If
 End Sub
-
-
-'Private Sub ConfOutcome_Change()
-'    Select Case ConfOutcome.value
-'        Case "Hold for Detention"
-'            DetentionFacilityLabel.Enabled = True
-'            DetentionFacility.Enabled = True
-'            InitialHearingLocation = "PJJSC"
-'        Case "Roll to Detention Hearing"
-'            DetentionFacilityLabel.Enabled = False
-'            DetentionFacility.Enabled = False
-'           InitialHearingLocation = "PJJSC"
-'       Case "Release for Diversion"
-'           DetentionFacilityLabel.Enabled = False
-'           DetentionFacility.Enabled = False
-'           DetentionFacility.value = ""
-'       Case Else
-'           DetentionFacilityLabel.Enabled = False
-'           DetentionFacility.Enabled = False
-'          DetentionFacility.value = ""
-'  End Select
-'End Sub
-
-Private Sub DateOfBirth_Enter()
-    DateOfBirth.value = CalendarForm.GetDate(RangeOfYears:=30)
-End Sub
-
-
-'for a date texbox called "ArrestDate"
-Private Sub ArrestDate_Enter() 'when a user "Enters" (clicks) the text box...
-    'this boxe's value is defined as a result of the picker being called and completed
-    ArrestDate.value = CalendarForm.GetDate(RangeOfYears:=5) '(set range from today)
-End Sub
-
-
-
 
 
 Private Sub DeletePetition_Click()
@@ -380,79 +154,6 @@ Private Sub DeletePetition_Click()
     PetitionBox.RemoveItem (PetitionBox.listIndex)
 End Sub
 
-Private Sub EditPetition_Click()
-    Dim petitionNum As String
-    Dim i As Integer, j As Integer
-    Dim listIndex As Integer
-    Dim pBox, cBox
-
-    Set pBox = PetitionBox
-
-    If pBox.listIndex = -1 Then
-        Exit Sub
-    End If
-
-    petitionNum = pBox.List(pBox.listIndex, 1)
-    MsgBox "Editing Petition #" & petitionNum
-
-    With Modal_NewClient_Add_Petition
-        .headline.Caption = "Edit Petition"
-        .DateFiled.value = pBox.List(pBox.listIndex, 0)
-        .Num.value = pBox.List(pBox.listIndex, 1)
-        .ChargeGrade1.value = pBox.List(pBox.listIndex, 2)
-        .ChargeGroup1.value = pBox.List(pBox.listIndex, 3)
-        With .ChargeList1
-            .ColumnCount = 2
-            .ColumnWidths = "85;400;"
-            .AddItem pBox.List(pBox.listIndex, 4)
-            .List(.ListCount - 1, 1) = pBox.List(pBox.listIndex, 5)
-            .listIndex = 0
-        End With
-
-        .isTransferred.value = pBox.List(pBox.listIndex, 6)
-
-        listIndex = ChargeBox.ListCount - 1
-        j = 2
-        For i = 0 To listIndex
-            If ChargeBox.List(i, 0) = petitionNum Then
-                Select Case j
-                    Case 2
-                        Call .LoadBox(.ChargeList2, ChargeBox.List(i, 3), ChargeBox.List(i, 4))
-                        .ChargeGrade2 = ChargeBox.List(i, 1)
-                        .ChargeGroup2 = ChargeBox.List(i, 2)
-                        j = j + 1
-                    Case 3
-                        Call .LoadBox(.ChargeList3, ChargeBox.List(i, 3), ChargeBox.List(i, 4))
-                        .ChargeGrade3 = ChargeBox.List(i, 1)
-                        .ChargeGroup3 = ChargeBox.List(i, 2)
-                        j = j + 1
-                    Case 4
-                        Call .LoadBox(.ChargeList4, ChargeBox.List(i, 3), ChargeBox.List(i, 4))
-                        .ChargeGrade4 = ChargeBox.List(i, 1)
-                        .ChargeGroup4 = ChargeBox.List(i, 2)
-                        j = j + 1
-                    Case 5
-                        Call .LoadBox(.ChargeList5, ChargeBox.List(i, 3), ChargeBox.List(i, 4))
-                        .ChargeGrade5 = ChargeBox.List(i, 1)
-                        .ChargeGroup5 = ChargeBox.List(i, 2)
-                        j = j + 1
-                End Select
-            End If
-        Next i
-        Call DeletePetition_Click
-        .Show
-    End With
-End Sub
-
-
-Private Sub InitialHearingDate_Enter()
-    InitialHearingDate.value = CalendarForm.GetDate(RangeOfYears:=5)
-End Sub
-Private Sub InitialHearingDate_Exit(ByVal Cancel As MSForms.ReturnBoolean)
-    Set ctl = Me.InitialHearingDate
-    Call DateValidation(ctl, Cancel)
-End Sub
-
 
 Private Sub DiversionProgramReferralDate_Enter()
     DiversionProgramReferralDate.value = CalendarForm.GetDate(RangeOfYears:=5)
@@ -464,7 +165,7 @@ End Sub
 
 Private Sub Cancel_Click()
     Call Clear_Click
-    NewClientUserForm.Hide
+    Adult_Reslate_Juvenile_Petition.Hide
 End Sub
 
 Private Sub Clear_Click()
@@ -547,109 +248,11 @@ Private Sub NameOfProgram_Change()
     End If
 End Sub
 
-Private Sub SameDate_Click()
-    ArrestDate.value = IncidentDate.value
-End Sub
-Private Sub SameTime_Click()
-    TimeOfArrest_H.value = TimeOfIncident_H.value
-    TimeOfArrest_M.value = TimeOfIncident_M.value
-    TimeOfArrest_P.value = TimeOfIncident_P.value
-End Sub
-Private Sub SameDistrict_Click()
-    ArrestingDistrict.value = IncidentDistrict.value
-End Sub
-
-'Here is the updated FindLatLon function that should be used in BigCahuna, complete with message boxes for incorrect input and error catching. After the function is the updated code to be used in the Submit_Click Sub (or what we should use in ClientEdit or ClientUpdate).
-
-
-Private Function FindLatLon(Address As String, Zipcode As String)
-    Dim hReq As Object
-    Dim Json As Object
-    Dim try As Object
-    Dim strUrl As String
-    Dim addressStr As String
-    Dim cityStr As String
-
-    On Error GoTo LatLonErr
-
-    cityStr = ""
-
-    'Check to see if address is "Homeless" or if zipcode is "19100"
-    If StrComp(UCase(Address), "HOMELESS") = 0 Then
-        MsgBox ("ALERT: Address of 'homeless' entered was not mappable; no latitude or longitude coordinates added")
-        Dim responseArr() As Variant
-        responseArr = Array("", "", "", Zipcode)
-        FindLatLon = responseArr
-        Exit Function
-    End If
-
-    If StrComp(Zipcode, "19100") = 0 Then
-        MsgBox ("ALERT: Address entered with zipcode '19100'; city 'Philadelphia' used with no zipcode to attempt mapping instead")
-        cityStr = "Philadelphia"
-        Zipcode = ""
-    End If
-
-    'Probably want try-catch here
-    strUrl = "https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=1&q=" & WorksheetFunction.EncodeURL(Address) & "%20" & WorksheetFunction.EncodeURL(cityStr) & "%20" & WorksheetFunction.EncodeURL(Zipcode)
-
-    Set hReq = CreateObject("MSXML2.XMLHTTP")
-    With hReq
-        .Open "GET", strUrl, False
-        .Send
-    End With
-
-    addressStr = "[{" & Mid(hReq.ResponseText, 107, Len(hReq.ResponseText))
-
-    Set Json = JsonConverter.ParseJson(addressStr)
-
-    Dim a(1 To 3) As Double
-    a(1) = Json(1)("lat")
-    a(2) = Json(1)("lon")
-    a(3) = Json(1)("address")("postcode")
-    FindLatLon = a
-    Exit Function
-
-LatLonErr:
-    MsgBox ("ALERT: Error occurred in finding location coordinates: " & err.Description & "; Setting coordinates to null. Please check address and zipcode and edit if location coordinates desired.")
-    Dim errorArr() As Variant
-    errorArr = Array("", "", "", Zipcode)
-    FindLatLon = errorArr
-    Exit Function
-
-End Function
-
-
 Private Sub Submit_Click()
-    Dim restorer As Variant
-
-    Call Generate_Dictionaries
-    'define variable Long(a big integer) named emptyRow
-    Dim emptyRow As Long
-
-    'activate the spreadsheet as default selector
-    Worksheets("Entry").Activate
-
-    With Application
-        .ScreenUpdating = False
-        .Calculation = xlCalculationManual
-    End With
 
     '''''''''''''
     'Validations'
     '''''''''''''
-
-    'confirm that client first name is present in the form
-    If FirstName.value = "" Then
-        MsgBox "First Name Required"
-        Exit Sub
-    End If
-
-    'confirm that client last name is present in the form
-    If LastName.value = "" Then
-        MsgBox "Last Name Required"
-        Exit Sub
-    End If
-
 
     If InConfDate.value = "" And InConfRecord.value = "Yes" Then
         MsgBox "Intake Date Required if record available"
@@ -685,7 +288,6 @@ Private Sub Submit_Click()
         MsgBox "'Direct Filed?' required"
         Exit Sub
     End If
-    
 
     If DRAI_Action.value = "Follow - Hold" Or DRAI_Action.value = "Override - Hold" Then
         If DetentionFacility.value = "N/A" Then
@@ -698,34 +300,11 @@ Private Sub Submit_Click()
         MsgBox "Reason Not Diverted Required"
         Exit Sub
     End If
+    
+    '''''''''''''''''''''''''''''''''''''''''''
+    '''''MOVE TO CLIENTUPDATE ADULT_SUBMIT'''''
+    '''''''''''''''''''''''''''''''''''''''''''
 
-    'find empty row by finding first 'first name' value from bottom
-    emptyRow = Range("C" & Rows.count).End(xlUp).row + 1
-    restorer = Range("C" & emptyRow & ":" & hFind("END") & emptyRow).value
-
-    If Not Reload_Row = "" Then
-        If MsgBox("Warning, you are about to overwrite row " & Reload_Row.value, vbOKCancel) = vbCancel Then
-            Exit Sub
-        End If
-
-        emptyRow = Reload_Row
-        Range("C" & emptyRow & ":" & hFind("END") & emptyRow).ClearContents
-    End If
-
-
-    On Error GoTo err
-
-    ''''''''''''''
-    'DEMOGRAPHICS'
-    ''''''''''''''
-
-    Range(headerFind("First Name") & emptyRow).value = FirstName.value
-    Range(headerFind("Last Name") & emptyRow).value = LastName.value
-    Range(headerFind("Next Court Date") & emptyRow).value = InitialHearingDate.value
-    Range(headerFind("Listing Type") & emptyRow).value = Lookup("Listing_Type_Name")(ListingType.value)
-    Range(headerFind("Previous Court Dates") & emptyRow).value = InConfDate.value
-    Range(headerFind("Arrest Date (current petition)") & emptyRow).value = ArrestDate.value
-    Range(headerFind("Initial Hearing Date") & emptyRow).value = InitialHearingDate.value
     Range(headerFind("Initial Hearing Location") & emptyRow).value _
             = Lookup("Courtroom_Name")(InitialHearingLocation.value)
 
@@ -739,7 +318,7 @@ Private Sub Submit_Click()
     Range(headerFind("DOB") & emptyRow).value _
             = DateOfBirth.value
     Range(headerFind("Age @ Intake") & emptyRow).value _
-            = ageAtTime(InitialHearingDate, emptyRow)
+            = ageAtTime(InitialHearingDate.value, emptyRow)
     Select Case ageAtTime(InitialHearingDate, emptyRow)
         Case Is < 12
             Range(headerFind("Age Group") & emptyRow).value _
