@@ -228,7 +228,7 @@ Sub PrintFull()
     r.Activate
     
     'set number of rows of data
-    NumRows = DataSheet.Range(r, ActiveCell.End(xlDown)).Rows.count
+    NumRows = DataSheet.Range(r, ActiveCell.End(xlDown)).Rows.count - 1
     
     For x = 1 To NumRows
         'Get Petition #1 for current kid
@@ -396,7 +396,7 @@ Sub ExportPDF()
     Set rName = DataSheet.Cells.Find("Last Name")
     
     'set number of rows of data
-    NumRows = DataSheet.Range(r, ActiveCell.End(xlDown)).Rows.count
+    NumRows = DataSheet.Range(r, ActiveCell.End(xlDown)).Rows.count - 1
     
     For x = 1 To NumRows
         'Get Petition #1 for current kid
@@ -467,7 +467,7 @@ Sub ExportPDF()
         End If
         
         'Export current kid to pdf
-        wb.ExportAsFixedFormat Type:=xlTypePDF, Filename:="C:\Users\piggej\Desktop\" & ActiveCell.value & Mid(petnum, 9, 8) & ".pdf"
+        wb.ExportAsFixedFormat Type:=xlTypePDF, Filename:="C:\Users\serlina\Desktop\" & ActiveCell.value & Mid(petnum, 9, 8) & ".pdf"
         
         'close temp workbook memory
         wb.Close SaveChanges:=False
@@ -485,6 +485,7 @@ Sub ExportPDF()
 End Sub
 Sub format(wb As Workbook, x As Integer)
 
+    'DONT DELETE IF PLANNING TO USE CODE ABOVE. THIS IS WHAT FORMATS EVERYTHING
     Dim Origbook As Workbook
     Set Origbook = ThisWorkbook
     
@@ -945,3 +946,4 @@ Sub format(wb As Workbook, x As Integer)
     End With
     
 End Sub
+

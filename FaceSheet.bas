@@ -185,6 +185,9 @@ Sub FaceSheetPrint0()
     Dim i As Integer
     Dim j As Integer
     j = 81
+    'j=81 starts from top left corner of supervision. Do until J>172 tells loop to end after it does last supevision boxes
+    '"do until i>7" loop is going through the rows of data within the superivision boxes and deleting
+    'if format generally holds with spaces BETWEEN rows, if anything changes, we will only need to change j and i to have loop work
     Do Until j > 172
         i = 1
         Do Until i > 7
@@ -200,6 +203,7 @@ Sub FaceSheetPrint0()
             
             i = i + 2
         Loop
+        'these are the "residential provider and "comment boxes" - these are inside the "big" loop, which happens once for every "pair-of-boxes-rows"
         PrintSheet.Range("K" & j + 1).Select
         Selection.ClearContents
         PrintSheet.Range("X" & j + 1).Select
@@ -209,6 +213,7 @@ Sub FaceSheetPrint0()
         PrintSheet.Range("M" & j + 9).Select
         Selection.ClearContents
         
+       'this "j+13 moves down 13 rows to start big loop on the next set of "pair-of-boxes-rows"
         j = j + 13
     Loop
     
@@ -427,7 +432,7 @@ Sub FaceSheetPrint()
     
     End If
     
-    'Most recent listing
+    'Most recent listing (finds if there is a first listing, then loops through and finds first empty listing, then moves back one, which would be last listing, grabs and pastes)
     If Not IsEmpty(DataSheet.Range(hFind("Court Date #1", "LISTINGS") & userRow).value) Then
         Dim lastListing As Integer
         lastListing = 1
@@ -441,16 +446,17 @@ Sub FaceSheetPrint()
         PrintSheet.Range("I39").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #" & lastListing, "LISTINGS") & userRow).value)
         PrintSheet.Range("I40").value = Lookup("Legal_Status_Num")(DataSheet.Range(hFind("Legal Status", "Court Date #" & lastListing, "LISTINGS") & userRow).value)
         PrintSheet.Range("B41").value = DataSheet.Range(hFind("Notes", "Court Date #" & lastListing, "LISTINGS") & userRow).value
+        'Update placeholder for DA once available
     End If
-    'Update placeholder for DA once available
     
-    'Most recent supervision
+    'Most recent supervision (exact same logic as "most recent listing above"
     If Not IsEmpty(DataSheet.Range(hFind("Supervision Ordered #1", "Supervision Programs", "AGGREGATES") & userRow).value) Then
     
         Dim lastSup As Integer
         lastSup = 1
         Do Until IsEmpty(DataSheet.Range(hFind("Supervision Ordered #" & lastSup, "Supervision Programs", "AGGREGATES") & userRow).value)
             lastSup = lastSup + 1
+            'USE BIT OF CODE BELOW TO EXIT SERACH IF THERE ARE MORE THAN 30 SUPERVISIONS...CHANGE LINE OF CODE BELOW TO +1 OF WHATEVER MAX SUPERVISIONS TRACKED
             If lastSup = 31 Then
                 Exit Do
             End If
@@ -458,6 +464,7 @@ Sub FaceSheetPrint()
         
         lastSup = lastSup - 1
         
+        'Pastes in the actual data fields
         PrintSheet.Range("C53").value = Lookup("Supervision_Program_Num")(DataSheet.Range(hFind("Supervision Ordered #" & lastSup, "Supervision Programs", "AGGREGATES") & userRow).value)
         PrintSheet.Range("C55").value = DataSheet.Range(hFind("Start Date", "Supervision Ordered #" & lastSup, "Supervision Programs", "AGGREGATES") & userRow).value
         PrintSheet.Range("C57").value = DataSheet.Range(hFind("End Date", "Supervision Ordered #" & lastSup, "Supervision Programs", "AGGREGATES") & userRow).value
@@ -470,7 +477,7 @@ Sub FaceSheetPrint()
         PrintSheet.Range("H59").value = Lookup("DA_Last_Name_Num")(DataSheet.Range(hFind("DA", "Supervision Ordered #" & lastSup, "Supervision Programs", "AGGREGATES") & userRow).value)
     End If
     
-    'Most recent condition
+    'Most recent condition - exact same as supervion, only max number is currently capped at 20
     If Not IsEmpty(DataSheet.Range(hFind("Condition Ordered #1", "Conditions", "AGGREGATES") & userRow).value) Then
     
         Dim lastCon As Integer
@@ -495,14 +502,14 @@ Sub FaceSheetPrint()
         PrintSheet.Range("I73").value = Lookup("DA_Last_Name_Num")(DataSheet.Range(hFind("DA", "Condition Ordered #" & lastCon, "Conditions", "AGGREGATES") & userRow).value)
     End If
     
-    'Demographics
+    'Demographics - simple copy paste
     PrintSheet.Range("M52").value = DataSheet.Range(hFind("DOB") & userRow).value
     PrintSheet.Range("M54").value = DataSheet.Range(hFind("School") & userRow).value
     PrintSheet.Range("W54").value = DataSheet.Range(hFind("Grade") & userRow).value
     PrintSheet.Range("S52").value = ageAtTime(VBA.format(Now(), "mm/dd/yyyy"), userRow)
     PrintSheet.Range("W52").value = DataSheet.Range(hFind("Age @ Intake") & userRow).value
     
-    'Arrest Info
+    'Arrest Info - simple copy paste
     PrintSheet.Range("M58").value = DataSheet.Range(hFind("DC #") & userRow).value
     PrintSheet.Range("N60").value = DataSheet.Range(hFind("Incident District") & userRow).value
     PrintSheet.Range("N62").value = DataSheet.Range(hFind("Arrest Date") & userRow).value
@@ -510,26 +517,30 @@ Sub FaceSheetPrint()
     PrintSheet.Range("N66").value = DataSheet.Range(hFind("# of Prior Arrests") & userRow).value
     PrintSheet.Range("Q58").value = DataSheet.Range(hFind("General Notes from Intake") & userRow).value
     
-    'Petition Info
+    'Petition Info - simple copy paste
     PrintSheet.Range("L70").value = DataSheet.Range(hFind("Petition #1") & userRow).value
     PrintSheet.Range("S70").value = DataSheet.Range(hFind("Lead Charge Name", "Petition #1") & userRow).value
     PrintSheet.Range("X70").value = Lookup("Charge_Grade_Specific_Num")(DataSheet.Range(hFind("Charge Grade (specific) #1", "Petition #1") & userRow).value)
     PrintSheet.Range("L72").value = DataSheet.Range(hFind("Date Filed", "Petition #1") & userRow).value
-    
+    '2nd petition
     PrintSheet.Range("L75").value = DataSheet.Range(hFind("Petition #2") & userRow).value
     PrintSheet.Range("S75").value = DataSheet.Range(hFind("Lead Charge Name", "Petition #2") & userRow).value
     PrintSheet.Range("X75").value = Lookup("Charge_Grade_Specific_Num")(DataSheet.Range(hFind("Charge Grade (specific) #1", "Petition #2") & userRow).value)
     PrintSheet.Range("L77").value = DataSheet.Range(hFind("Date Filed", "Petition #2") & userRow).value
     
     'Recent Supervision History
+    '2nd line of code fills in total # of supervisions based on logic already worked out in "most recent supervision section" above
     If Not IsEmpty(DataSheet.Range(hFind("Supervision Ordered #1", "Supervision Programs", "AGGREGATES") & userRow).value) Then
         PrintSheet.Range("N79").value = lastSup
         
         Dim sheetRow As Integer
         sheetRow = 82
         
+        'last sup minus 1 because we are starting with 2nd to most recent as last sup is already on front page
         lastSup = lastSup - 1
         
+        'do until last sup gets to 0 because we are taking it down minus one sup each time it loops
+        '"sheet row" is variable that is used to go "individual supervision box" by "individual supervision box" vertically by row, in intervals of 13 rows as that is how far apart each box is. We stop at 279 because that is 16 iterations of a 13 sheet row loop, which cyles through ALL 16 supervision boxes. The "else" statement kicks in at >174, as that (with +13 each time) would take you to the 9th box (ie, 82 + 13 * 8), which means we need to offset vertically and to the right to start filling out the next set of column boxes. To do so, it subtracts 104 to get the loop started back to row 82 (vertically), and then starts the loop again, but this time with (104, 14) to move to column N, which is the 14th column)
         Do Until lastSup = 0 Or sheetRow > 279
             If sheetRow < 174 Then
                 PrintSheet.Cells(sheetRow, 3).value = Lookup("Supervision_Program_Num")(DataSheet.Range(hFind("Supervision Ordered #" & lastSup, "Supervision Programs", "AGGREGATES") & userRow).value)
@@ -564,13 +575,14 @@ Sub FaceSheetPrint()
         Loop
     
     Else
+        'if no supervisions at all, print "0" in total number of supervisions box
         PrintSheet.Range("N79").value = "0"
     End If
 
 End Sub
 
 Sub PrintFaceSheet()
-    
+    'attached to "print face sheets" button on run sheet
     Dim FaceSheet As Worksheet
     Dim DataSheet As Worksheet
     Dim EntrySheet As Worksheet
@@ -589,28 +601,33 @@ Sub PrintFaceSheet()
     r.Select
     r.Activate
     
-    'set number of rows of data
+    'set number of rows of data (figures out how many rows of data, then subtracts one so you don't print a blank row)
     NumRows = DataSheet.Range(r, ActiveCell.End(xlDown)).Rows.count - 1
     
     For x = 1 To NumRows
-        'Get Petition #1 for current kid
+        'Get Petition #1 for current kid - activates run sheet, selects r which is defined above as "petition #1 - if we want to select by something else, we would change "r" declaration above)
         DataSheet.Activate
         r.Select
         r.Activate
+        'grab petiton number of row that you're on)
         ActiveCell.Offset(x, 0).Select
         
-        'Load data into Face Sheet
+        'Load data into Face Sheet (rfind gets us to petition #1 column in database, then search that column for petiton that's found in the run sheet, then get that row from the database, paste it into "row" in the facesheet, THEN run all previous code to delete and populate)
         Dim rfind As Range
         Set rfind = EntrySheet.Cells.Find("Petition #1")
         FaceSheet.Range("F5").value = EntrySheet.Cells.Find(ActiveCell.value, After:=rfind, SearchOrder:=xlColumns).row
         FaceSheet.Activate
         Run ("FaceSheetPrint0")
         
+        'prints the populated face sheet. NOTE: page setting are handled directly in the facesheet formatting in excel, NOT via any code
         FaceSheet.PrintOut
         
+    'moves us down to next kid on run sheet
     Next x
     
     Application.ScreenUpdating = True
 
 End Sub
+
+
 
