@@ -21,6 +21,7 @@ Option Explicit
 
 
 
+
 Private Sub RearrestIntake_Click()
     Modal_Rearrest_Intake.Show
 End Sub
@@ -198,7 +199,7 @@ End Sub
 Sub SearchButton_Click()
     On Error Resume Next
 
-    'define variable Long(a big integer) named emptyRow
+    'define variable Long(a big integer) named updateRow
     Dim lastRow As Long
     Dim Query As String
     Dim lookRow As Long
@@ -435,7 +436,481 @@ Sub Adult_Submit_Click()
     ''''RESLATE''''
     '''''''''''''''
     
+    If Adult_Reslate_Update.BackColor = selectedColor Then
+        If Modal_Adult_Reslate.Hearing_Outcome.value = "Granted" Then
+            
+            ''''''''''''
+            ''PETITION''
+            ''''''''''''
+        
+            Dim petitionHead As String
+            Dim count As Integer
+            With Adult_Reslate_Juvenile_Petition
 
+                petitionHead = hFind("JUVENILE PETITION")
+
+        
+                Range(headerFind("Initial Court Date", petitionHead) & updateRow).value _
+                        = Adult_NextCourtDate.value
+                Range(headerFind("Initial Hearing Location", petitionHead) & updateRow).value _
+                        = Lookup("Courtroom_Name")(.NextHearingLocation.value)
+            
+                ''''ADD arrest values from PETITION
+            
+                Range(headerFind("Gun Case?") & updateRow).value = Lookup("Generic_YNOU_Name")(.GunCase.value)
+                Range(headerFind("Gun Involved Arrest?") & updateRow).value = Lookup("Generic_YNOU_Name")(.GunInvolved.value)
+                
+                Range(headerFind("General Notes from Intake") & updateRow).value = .GeneralNotes.value
+            
+                Dim Num As Long
+                Dim j As Integer
+            
+                For Num = 1 To .PetitionBox.ListCount
+                    tempHead = headerFind("Petition #" & Num, petitionHead)
+                    
+                    If .DiversionProgram.value = "Yes" Then
+                        Range(headerFind("Petition Filed?", tempHead) & updateRow).value _
+                                = Lookup("Generic_YNOU_Name")("No")
+                    Else
+                        Range(headerFind("Petition Filed?", tempHead) & updateRow).value _
+                                = Lookup("Generic_YNOU_Name")("Yes")
+                    End If
+                    Range(headerFind("Was Petition Transferred from Other County?", tempHead) & updateRow).value _
+                            = Lookup("Generic_YNOU_Name")(.PetitionBox.List(Num - 1, 6))
+                    Range(tempHead & updateRow).value _
+                            = .PetitionBox.List(Num - 1, 1)
+                    Range(headerFind("Date Filed", tempHead) & updateRow).value _
+                            = .PetitionBox.List(Num - 1, 0)
+                    Range(headerFind("Lead Charge Code", tempHead) & updateRow).value _
+                            = .PetitionBox.List(Num - 1, 4)
+                    Range(headerFind("Lead Charge Name", tempHead) & updateRow).value _
+                            = .PetitionBox.List(Num - 1, 5)
+                    Range(headerFind("Charge Category #1", tempHead) & updateRow).value _
+                            = Lookup("Charge_Name")(.PetitionBox.List(Num - 1, 3))
+                    Range(headerFind("Charge Grade (specific) #1", tempHead) & updateRow).value _
+                            = Lookup("Charge_Grade_Specific_Name")(.PetitionBox.List(Num - 1, 2))
+                    Range(headerFind("Charge Grade (broad) #1", tempHead) & updateRow).value _
+                            = calcChargeBroad(.PetitionBox.List(Num - 1, 2))
+            
+                    j = 2
+                    For i = 0 To .ChargeBox.ListCount - 1
+                        If .ChargeBox.ListCount > 0 Then
+                            If .ChargeBox.List(i, 0) = .PetitionBox.List(Num - 1, 1) Then
+                                Range(headerFind("Charge Code #" & j, tempHead) & updateRow).value _
+                                        = .ChargeBox.List(i, 3)
+                                Range(headerFind("Charge Name #" & j, tempHead) & updateRow).value _
+                                        = .ChargeBox.List(i, 4)
+                                Range(headerFind("Charge Category #" & j, tempHead) & updateRow).value _
+                                        = Lookup("Charge_Name")(.ChargeBox.List(i, 2))
+                                Range(headerFind("Charge Grade (specific) #" & j, tempHead) & updateRow).value _
+                                        = Lookup("Charge_Grade_Specific_Name")(.ChargeBox.List(i, 1))
+                                Range(headerFind("Charge Grade (broad) #" & j, tempHead) & updateRow).value _
+                                        = calcChargeBroad(.ChargeBox.List(i, 1))
+                                j = j + 1
+                            End If
+                        End If
+                    Next i
+                Next Num
+            
+                Range(headerFind("LOS Until DA Referral", petitionHead) & updateRow).value _
+                            = timeDiff(Range(headerFind("Time of Arrest", petitionHead) & updateRow).value, _
+                       Range(headerFind("Time of Referral to DA") & updateRow).value)
+        
+            ''''''''''''''''''
+            'SET LEGAL STATUS'
+            ''''''''''''''''''
+        
+            If .DiversionProgram.value = "Yes" Then
+                Call startLegalStatus( _
+                    clientRow:=updateRow, _
+                    statusType:="Diversion", _
+                    Courtroom:="PJJSC", _
+                    DA:=DA.value, _
+                    startDate:=.DiversionProgramReferralDate.value)
+        
+            Else
+                If .ConfOutcome.value = "Hold for Detention" _
+                Or .ConfOutcome.value = "Roll to Detention Hearing" Then
+                    Call startLegalStatus( _
+                        clientRow:=updateRow, _
+                        statusType:="Pretrial", _
+                        Courtroom:="PJJSC", _
+                        DA:=DA.value, _
+                        startDate:=.PetitionBox.List(0, 0))
+                Else
+                    Call startLegalStatus( _
+                        clientRow:=updateRow, _
+                        statusType:="Pretrial", _
+                        Courtroom:="Intake Conf.", _
+                        DA:=DA.value, _
+                        startDate:=.PetitionBox.List(0, 0))
+                End If
+            End If
+        
+        
+        
+        
+            '''''''''''''''''''
+            ''''''CALL IN''''''
+            '''''''''''''''''''
+        
+            tempHead = headerFind("CALL-IN", petitionHead)
+        
+            If .CallInRecord.value = "Yes" Then
+                Range(headerFind("Did Youth Have Call-In?", tempHead) & updateRow).value _
+                        = Lookup("Generic_NYNOU_Name")("Yes")
+        
+                Range(headerFind("Date of Call-In", tempHead) & updateRow).value _
+                            = .CallInDate.value
+        
+                Range(headerFind("Was DRAI Administered?", tempHead) & updateRow).value _
+                        = Lookup("Generic_NYNOU_Name")(.Was_DRAI_Administered.value)
+        
+                Range(headerFind("DRAI Score", tempHead) & updateRow).value _
+                        = .DRAI_Score.value
+        
+                Select Case .DRAI_Score.value
+                    Case Is < 10
+                        Range(hFind("DRAI Recommendation", "CALL-IN") & updateRow).value _
+                                = Lookup("DRAI_Recommendation_Name")("Release")
+                    Case Is < 15
+                        Range(hFind("DRAI Recommendation", "CALL-IN") & updateRow).value _
+                                = Lookup("DRAI_Recommendation_Name")("Release w/ Supervision")
+                    Case Is < 30
+                        Range(hFind("DRAI Recommendation", "CALL-IN") & updateRow).value _
+                                = Lookup("DRAI_Recommendation_Name")("Release w/ Supervision")
+                    Case Else
+                        Range(hFind("DRAI Recommendation", "CALL-IN") & updateRow).value _
+                                = Lookup("DRAI_Recommendation_Name")("Unknown")
+                End Select
+                    
+                
+                Range(headerFind("DRAI Recommendation", tempHead) & updateRow).value _
+                        = Lookup("DRAI_Recommendation_Name")(.DRAI_Rec.value)
+        
+                Range(headerFind("DRAI Action", tempHead) & updateRow).value _
+                        = Lookup("DRAI_Action_Name")(.DRAI_Action.value)
+        
+                Select Case .DRAI_Action.value
+                    Case "Override - Hold", "Follow - Hold"
+                        Range(headerFind("End Date", tempHead) & updateRow).value _
+                                = .InConfDate.value
+                        Range(headerFind("LOS in Detention", tempHead) & updateRow).value _
+                                = calcLOS(.CallInDate.value, .InConfDate.value)
+                        Call addSupervision( _
+                            clientRow:=updateRow, _
+                            serviceType:="Detention (not respite)", _
+                            legalStatus:="Pretrial", _
+                            Courtroom:="Call-In", _
+                            CourtroomOfOrder:="Call-In", _
+                            DA:=DA.value, _
+                            agency:="PJJSC", _
+                            startDate:=.CallInDate.value, _
+                            endDate:=.InConfDate.value, _
+                            Re1:="", _
+                            Re2:="", _
+                            Re3:="", _
+                            Notes:="Held at call-in")
+        
+                End Select
+                Range(headerFind("LOS Until Next Hearing", tempHead) & updateRow).value _
+                                = calcLOS(.CallInDate.value, .InConfDate.value)
+        
+                Range(headerFind("Detention Facility", tempHead) & updateRow).value _
+                            = Lookup("Detention_Facility_Name")(.DetentionFacility.value)
+        
+                Range(headerFind("Reason #1 for Override Hold", tempHead) & updateRow).value _
+                        = Lookup("DRAI_Override_Reason_Name")(.OverrideHoldRe1.value)
+                Range(headerFind("Reason #2 for Override Hold", tempHead) & updateRow).value _
+                        = Lookup("DRAI_Override_Reason_Name")(.OverrideHoldRe2.value)
+                Range(headerFind("Reason #3 for Override Hold", tempHead) & updateRow).value _
+                        = Lookup("DRAI_Override_Reason_Name")(.OverrideHoldRe3.value)
+            Else
+                Range(headerFind("Did Youth Have Call-In?", tempHead) & updateRow).value _
+                        = Lookup("Generic_NYNOU_Name")("Unknown")
+            End If
+        
+        
+            '''''''''''''''''''
+            'Intake Conference'
+            '''''''''''''''''''
+        
+            tempHead = headerFind("INTAKE CONFERENCE", petitionHead)
+        
+        
+        
+            If .InConfRecord.value = "Yes" Then
+                Range(headerFind("Did Youth Have an Intake Conference?", tempHead) & updateRow).value _
+                        = Lookup("Generic_NYNOU_Name")("Yes")
+        
+                Range(headerFind("Date of Intake Conference", tempHead) & updateRow).value _
+                        = .InConfDate.value
+        
+                Range(headerFind("Intake Conference Type", tempHead) & updateRow).value _
+                        = Lookup("Intake_Conference_Type_Name")(.InConfType.value)
+        
+                Range(headerFind("DA", tempHead) & updateRow).value _
+                        = Lookup("DA_Last_Name_Name")(DA.value)
+        
+        
+                Range(headerFind("Intake Conference Outcome", tempHead) & updateRow).value _
+                        = Lookup("Intake_Conference_Outcome_Name")(.ConfOutcome.value)
+        
+        
+                Range(headerFind("Location of Next Event", tempHead) & updateRow).value _
+                        = Lookup("Courtroom_Name")(.NextHearingLocation.value)
+        
+                Range(headerFind("Next Event Date", tempHead) & updateRow).value _
+                        = Adult_NextCourtDate.value
+        
+                tempHead = headerFind("Supervision Ordered #1", tempHead)
+        
+                Range(tempHead & updateRow).value _
+                        = Lookup("Supervision_Program_Name")(.Supv1.value)
+                Range(headerFind("Community-Based Agency #1", tempHead) & updateRow).value _
+                        = Lookup("Community_Based_Supervision_Provider_Name")(.Supv1Pro.value)
+        
+                Range(headerFind("Reason #1 for Supervision Referral", tempHead) & updateRow).value _
+                        = Lookup("Supervision_Referral_Reason_Name")(.Supv1Re1.value)
+                Range(headerFind("Reason #2 for Supervision Referral", tempHead) & updateRow).value _
+                        = Lookup("Supervision_Referral_Reason_Name")(.Supv1Re2.value)
+                Range(headerFind("Reason #3 for Supervision Referral", tempHead) & updateRow).value _
+                        = Lookup("Supervision_Referral_Reason_Name")(.Supv1Re3.value)
+        
+                tempHead = headerFind("Supervision Ordered #2", tempHead)
+        
+                Range(tempHead & updateRow).value _
+                        = Lookup("Supervision_Program_Name")(.Supv2.value)
+                Range(headerFind("Community-Based Agency #2", tempHead) & updateRow).value _
+                        = Lookup("Community_Based_Supervision_Provider_Name")(.Supv2Pro.value)
+        
+        
+                Range(headerFind("Reason #1 for Supervision Referral", tempHead) & updateRow).value _
+                        = Lookup("Supervision_Referral_Reason_Name")(.Supv2Re1.value)
+                Range(headerFind("Reason #2 for Supervision Referral", tempHead) & updateRow).value _
+                        = Lookup("Supervision_Referral_Reason_Name")(.Supv2Re2.value)
+                Range(headerFind("Reason #3 for Supervision Referral", tempHead) & updateRow).value _
+                        = Lookup("Supervision_Referral_Reason_Name")(.Supv2Re3.value)
+        
+                Range(headerFind("Other Condition #1", tempHead) & updateRow).value _
+                        = Lookup("Condition_Name")(.Cond1.value)
+                Range(headerFind("Other Condition #1 Provider", tempHead) & updateRow).value _
+                        = Lookup("Condition_Provider_Name")(.Cond1Pro.value)
+        
+                Range(headerFind("Other Condition #2", tempHead) & updateRow).value _
+                        = Lookup("Condition_Name")(.Cond2.value)
+                Range(headerFind("Other Condition #2 Provider", tempHead) & updateRow).value _
+                        = Lookup("Condition_Provider_Name")(.Cond2Pro.value)
+        
+                Range(headerFind("Other Condition #3", tempHead) & updateRow).value _
+                        = Lookup("Condition_Name")(.Cond3.value)
+                Range(headerFind("Other Condition #3 Provider", tempHead) & updateRow).value _
+                        = Lookup("Condition_Provider_Name")(.Cond3Pro.value)
+        
+                Select Case .ConfOutcome.value
+                    Case "Hold for Detention"
+                        Range(headerFind("Active Courtroom") & updateRow).value _
+                                 = Lookup("Courtroom_Name")("PJJSC")
+                        Call flagNo(Range(hFind("Did Youth Have Initial Detention Hearing?", "DETENTION") & updateRow))
+                        Range(hFind("Detention Facility", "DETENTION") & updateRow).value _
+                                 = Lookup("Detention_Facility_Name")(.DetentionFacility.value)
+                        Call addSupervision( _
+                            clientRow:=updateRow, _
+                            serviceType:="Detention (not respite)", _
+                            legalStatus:="Pretrial", _
+                            Courtroom:="Intake Conf.", _
+                            DA:=DA.value, _
+                            agency:="", _
+                            startDate:=.InConfDate.value, _
+                            Re1:="", _
+                            Re2:="", _
+                            Re3:="", _
+                            Notes:="Held at intake conference")
+        
+                    Case "Release for Court"
+                        Call ReferClientTo( _
+                            referralDate:=.InConfDate.value, _
+                            clientRow:=updateRow, _
+                            fromCR:="Intake Conf.", _
+                            toCR:=.NextHearingLocation.value _
+                            )
+                        If .NextHearingLocation.value = "5E" Then
+                            Range(hFind("Courtroom of Origin", "Crossover") & updateRow).value _
+                                    = Lookup("Courtroom_Name")("Intake Conf.")
+                        Else
+                            Range(hFind("Courtroom of Origin", .NextHearingLocation.value) & updateRow).value _
+                                    = Lookup("Courtroom_Name")("Intake Conf.")
+                        End If
+        
+                        'add supervisions and conditions if assigned
+                        If Not .Supv1.value = "None" Then
+                            Call addSupervision( _
+                                clientRow:=updateRow, _
+                                serviceType:=.Supv1.value, _
+                                legalStatus:="Pretrial", _
+                                Courtroom:="Intake Conf.", _
+                                CourtroomOfOrder:="Intake Conf.", _
+                                DA:=DA.value, _
+                                agency:=.Supv1Pro.value, _
+                                startDate:=.InConfDate.value, _
+                                NextCourtDate:=Adult_NextCourtDate.value, _
+                                Re1:=.Supv1Re1.value, _
+                                Re2:=.Supv1Re2.value, _
+                                Re3:=.Supv1Re3.value, _
+                                Notes:="Referred at intake conference")
+                        End If
+        
+                        If Not .Supv2.value = "None" Then
+                            Call addSupervision( _
+                                clientRow:=updateRow, _
+                                serviceType:=.Supv2.value, _
+                                legalStatus:="Pretrial", _
+                                Courtroom:="Intake Conf.", _
+                                CourtroomOfOrder:="Intake Conf.", _
+                                DA:=DA.value, _
+                                agency:=.Supv2Pro.value, _
+                                startDate:=.InConfDate.value, _
+                                NextCourtDate:=Adult_NextCourtDate.value, _
+                                Re1:=.Supv2Re1.value, _
+                                Re2:=.Supv2Re2.value, _
+                                Re3:=.Supv2Re3.value, _
+                                Notes:="Referred at intake conference")
+                        End If
+        
+                        If Not .Cond1.value = "None" Then
+                            Call addCondition( _
+                                clientRow:=updateRow, _
+                                condition:=.Cond1.value, _
+                                legalStatus:="Pretrial", _
+                                Courtroom:="Intake Conf.", _
+                                CourtroomOfOrder:="Intake Conf.", _
+                                DA:=DA.value, _
+                                agency:=.Cond1Pro.value, _
+                                startDate:=.InConfDate.value, _
+                                Re1:="N/A", _
+                                Re2:="N/A", _
+                                Re3:="N/A", _
+                                Notes:="Referred at intake conference")
+                        End If
+        
+                        If Not .Cond2.value = "None" Then
+                            Call addCondition( _
+                                clientRow:=updateRow, _
+                                condition:=.Cond2.value, _
+                                legalStatus:="Pretrial", _
+                                Courtroom:="Intake Conf.", _
+                                CourtroomOfOrder:="Intake Conf.", _
+                                DA:=DA.value, _
+                                agency:=.Cond2Pro.value, _
+                                startDate:=.InConfDate.value, _
+                                Re1:="N/A", _
+                                Re2:="N/A", _
+                                Re3:="N/A", _
+                                Notes:="Referred at intake conference")
+                        End If
+        
+                        If Not .Cond3.value = "None" Then
+                            Call addCondition( _
+                                clientRow:=updateRow, _
+                                condition:=.Cond3.value, _
+                                legalStatus:="Pretrial", _
+                                Courtroom:="Intake Conf.", _
+                                CourtroomOfOrder:="Intake Conf.", _
+                                DA:=DA.value, _
+                                agency:=.Cond3Pro.value, _
+                                startDate:=.InConfDate.value, _
+                                Re1:="N/A", _
+                                Re2:="N/A", _
+                                Re3:="N/A", _
+                                Notes:="Referred at intake conference")
+                        End If
+        
+                    Case "Release for Diversion"
+        
+                End Select
+            Else
+                Range(headerFind("Did Youth Have an Intake Conference?", tempHead) & updateRow).value _
+                        = Lookup("Generic_NYNOU_Name")("Unknown")
+        
+                Select Case .NextHearingLocation.value
+                    Case "4G", "4E", "6F", "6H", "3E", "JTC", "5E", "WRAP"
+                        Call ReferClientTo( _
+                            referralDate:=.PetitionBox.List(0, 0), _
+                            clientRow:=updateRow, _
+                            toCR:=.NextHearingLocation.value _
+                            )
+                End Select
+            End If
+        
+            'Range(headerFind("DA") & updateRow).value = Lookup("DA_Last_Name_Name")(DA.value)
+            Range(headerFind("General Notes from Intake") & updateRow).value = .GeneralNotes.value
+            
+            '''''''''''''''''''
+            '''''DIVERSION'''''
+            '''''''''''''''''''
+            
+            Dim diversionHead As String
+        
+            diversionHead = headerFind("DIVERSION")
+        
+            Range(headerFind("Referred to Diversion?", petitionHead) & updateRow) _
+                    = Lookup("Generic_YNOU_Name")(.DiversionProgram.value)
+            Range(headerFind("Referred to Diversion?", diversionHead) & updateRow) _
+                    = Lookup("Generic_YNOU_Name")(.DiversionProgram.value)
+        
+            If .DiversionProgram.value = "Yes" Then
+        
+                Range(headerFind("Which Diversion Program Used", petitionHead) & updateRow) _
+                        = Lookup("Diversion_Program_Name")(.NameOfProgram.value)
+                Range(headerFind("Diversion Referral Date", petitionHead) & updateRow) _
+                        = .DiversionProgramReferralDate.value
+        
+                Range(headerFind("Referral Date", diversionHead) & updateRow) _
+                        = .DiversionProgramReferralDate.value
+                Range(headerFind("Referral Source", diversionHead) & updateRow) _
+                        = Lookup("Diversion_Referral_Source_Name")(.ReferralSource.value)
+                Range(headerFind("Age at Diversion Referral", diversionHead) & updateRow) _
+                        = ageAtTime(.DiversionProgramReferralDate.value, updateRow)
+                Range(headerFind("Diversion Program Ordered", diversionHead) & updateRow) _
+                        = Lookup("Diversion_Program_Name")(.NameOfProgram.value)
+        
+                If IsNumeric(.YAPDistrict.value) Then
+                    Range(headerFind("YAP Panel District #", diversionHead) & updateRow) _
+                            = Lookup("Police_District_Name")(CInt(.YAPDistrict.value))
+                Else
+                    Range(headerFind("YAP Panel District #", diversionHead) & updateRow) _
+                            = Lookup("Police_District_Name")(.YAPDistrict.value)
+                End If
+        
+                Range(headerFind("Legal Status") & updateRow).value _
+                        = Lookup("Legal_Status_Name")("Diversion")
+        
+                Range(headerFind("Did Youth Receive a Review Hearing?", diversionHead) & updateRow) _
+                        = 2
+                Range(headerFind("Did Youth Receive an Exit Hearing?", diversionHead) & updateRow) _
+                        = 2
+            End If
+        
+            If .DiversionProgram.value = "No" Then
+                Range(headerFind("Reason #1 Not Diverted", diversionHead) & updateRow) _
+                        = Lookup("Diversion_Rejection_Reason_Name")(.NoDiversionReason1.value)
+                Range(headerFind("Reason #2 Not Diverted", diversionHead) & updateRow) _
+                        = Lookup("Diversion_Rejection_Reason_Name")(.NoDiversionReason2.value)
+                Range(headerFind("Reason #3 Not Diverted", diversionHead) & updateRow) _
+                        = Lookup("Diversion_Rejection_Reason_Name")(.NoDiversionReason3.value)
+            End If
+        
+        
+            Call addNotes( _
+                Courtroom:=.NextHearingLocation.value, _
+                dateOf:=.InConfDate.value, _
+                userRow:=updateRow, _
+                Notes:=.GeneralNotes, _
+                DA:=DA.value _
+            )
+            End With
+        End If
+    End If
 
 
     '''''''''''''''

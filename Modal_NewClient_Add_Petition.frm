@@ -79,20 +79,21 @@ Private Sub Continue_Click()
     End If
 
     Dim pBox, cBox
-
-    If headline.Caption = "Re-Arrest" Then
-        Set pBox = Modal_New_Arrest.PetitionBox
-        Set cBox = Modal_New_Arrest.ChargeBox
-    Else
-        If headline.Caption = "New Client" Or headline.Caption = "Edit Petition" Then
+    
+    Select Case headline.Caption
+        Case "Re-Arrest"
+            Set pBox = Modal_New_Arrest.PetitionBox
+            Set cBox = Modal_New_Arrest.ChargeBox
+        Case "New Client", "Edit Petition"
             Set pBox = NewClientForm.PetitionBox
             Set cBox = NewClientForm.ChargeBox
-        Else
+        Case "Reslate"
+            Set pBox = Adult_Reslate_Juvenile_Petition.PetitionBox
+            Set cBox = Adult_Reslate_Juvenile_Petition.ChargeBox
+        Case Else
             MsgBox "Something went wrong. The form that called this modal did not properly identify itself"
             Exit Sub
-
-        End If
-    End If
+    End Select
 
     With pBox
         .ColumnCount = 7
