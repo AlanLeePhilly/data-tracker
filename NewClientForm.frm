@@ -694,7 +694,21 @@ Private Sub Submit_Click()
         Exit Sub
     End If
 
+    If TimeOfArrest_H.value = "" Or TimeOfArrest_M.value = "" Or TimeOfArrest_P.value = "" Then
+        MsgBox "'Time of Arrest' required"
+        Exit Sub
+    End If
+    
+    If TimeOfIncident_H.value = "" Or TimeOfIncident_M.value = "" Or TimeOfIncident_P.value = "" Then
+        MsgBox "'Time Of Incident' required"
+        Exit Sub
+    End If
 
+    If TimeReferredToDA_H.value = "" Or TimeReferredToDA_M.value = "" Or TimeReferredToDA_P.value = "" Then
+        MsgBox "'Time Referred To DA' required"
+        Exit Sub
+    End If
+    
     If DRAI_Action.value = "Follow - Hold" Or DRAI_Action.value = "Override - Hold" Then
         If DetentionFacility.value = "N/A" Then
             MsgBox "Detention facility required for call-in hold"
@@ -795,13 +809,15 @@ Private Sub Submit_Click()
     Dim count As Integer
 
     For count = 1 To 2
-        If Not DirectFiled.value = "Yes" Then
-            count = 2
-        End If
+        
 
         Select Case count
             Case 1
-                petitionHead = hFind("ADULT PETITION")
+                If DirectFiled.value = "Yes" Then
+                    petitionHead = hFind("ADULT PETITION")
+                Else
+                    petitionHead = hFind("JUVENILE PETITION")
+                End If
             Case 2
                 petitionHead = hFind("PETITION")
         End Select
@@ -812,14 +828,14 @@ Private Sub Submit_Click()
                 = Lookup("Courtroom_Name")(InitialHearingLocation.value)
 
         If IsNumeric(NumOfPriorArrests.value) And Not NumOfPriorArrests.value = "10+" Then
-            Range(headerFind("# of Prior Arrests") & emptyRow).value _
+            Range(headerFind("# of Prior Arrests", petitionHead) & emptyRow).value _
                 = Lookup("Num_Prior_Arrests_Name")(CInt(NumOfPriorArrests.value))
         Else
-            Range(headerFind("# of Prior Arrests") & emptyRow).value _
+            Range(headerFind("# of Prior Arrests", petitionHead) & emptyRow).value _
                 = Lookup("Num_Prior_Arrests_Name")(NumOfPriorArrests.value)
         End If
 
-        Range(headerFind("Active in System at Time of Arrest?") & emptyRow) = _
+        Range(headerFind("Active in System at Time of Arrest?", petitionHead) & emptyRow) = _
                 Lookup("Generic_YNOU_Name")(ActiveAtArrest.value)
 
         Range(headerFind("Arrest Date", petitionHead) & emptyRow).value _
@@ -832,25 +848,25 @@ Private Sub Submit_Click()
                 = calcTimeGroup(TimeOfArrest_H.value, TimeOfArrest_P.value)
         Range(headerFind("Arresting District", petitionHead) & emptyRow).value _
                 = ArrestingDistrict.value
-        Range(headerFind("Time of Referral to DA") & emptyRow).value _
+        Range(headerFind("Time of Referral to DA", petitionHead) & emptyRow).value _
                 = TimeReferredToDA_H.value & ":" & TimeReferredToDA_M.value & " " & TimeReferredToDA_P.value
 
 
         Range(headerFind("DC #", petitionHead) & emptyRow).value = DCNum.value
-        Range(headerFind("PID #") & emptyRow).value = PIDNum.value
-        Range(headerFind("DC-PID #") & emptyRow).value = DCNum.value & "-" & PIDNum.value
-        Range(headerFind("SID #") & emptyRow).value = SIDNum.value
+        Range(headerFind("PID #", petitionHead) & emptyRow).value = PIDNum.value
+        Range(headerFind("DC-PID #", petitionHead) & emptyRow).value = DCNum.value & "-" & PIDNum.value
+        Range(headerFind("SID #", petitionHead) & emptyRow).value = SIDNum.value
 
-        Range(headerFind("Officer #1") & emptyRow).value = Officer1.value
-        Range(headerFind("Officer #2") & emptyRow).value = Officer2.value
-        Range(headerFind("Officer #3") & emptyRow).value = Officer3.value
-        Range(headerFind("Officer #4") & emptyRow).value = Officer4.value
-        Range(headerFind("Officer #5") & emptyRow).value = Officer5.value
+        Range(headerFind("Officer #1", petitionHead) & emptyRow).value = Officer1.value
+        Range(headerFind("Officer #2", petitionHead) & emptyRow).value = Officer2.value
+        Range(headerFind("Officer #3", petitionHead) & emptyRow).value = Officer3.value
+        Range(headerFind("Officer #4", petitionHead) & emptyRow).value = Officer4.value
+        Range(headerFind("Officer #5", petitionHead) & emptyRow).value = Officer5.value
 
         'confirm if needs to happen twice
-        Range(headerFind("Victim First Name") & emptyRow) _
+        Range(headerFind("Victim First Name", petitionHead) & emptyRow) _
                 = VictimFirstName.value
-        Range(headerFind("Victim Last Name") & emptyRow) _
+        Range(headerFind("Victim Last Name", petitionHead) & emptyRow) _
                 = VictimLastName.value
 
         Range(headerFind("Incident Date", petitionHead) & emptyRow).value _
@@ -880,13 +896,15 @@ Private Sub Submit_Click()
             MsgBox ("ALERT: The zipcode entered and zipcode found by geolocating services are different. Please check the new zipcode entered to make sure it is correct.")
         End If
 
-        Range(headerFind("DA") & emptyRow).value = Lookup("DA_Last_Name_Name")(DA.value)
+        Range(headerFind("DA", petitionHead) & emptyRow).value = Lookup("DA_Last_Name_Name")(DA.value)
 
 
-        Range(headerFind("Gun Case?") & emptyRow).value = Lookup("Generic_YNOU_Name")(GunCase.value)
-        Range(headerFind("Gun Involved Arrest?") & emptyRow).value = Lookup("Generic_YNOU_Name")(GunInvolved.value)
-
-        Range(headerFind("General Notes from Intake") & emptyRow).value = GeneralNotes.value
+        Range(headerFind("Gun Case?", petitionHead) & emptyRow).value = Lookup("Generic_YNOU_Name")(GunCase.value)
+        Range(headerFind("Gun Involved Arrest?", petitionHead) & emptyRow).value = Lookup("Generic_YNOU_Name")(GunInvolved.value)
+        
+        Range(headerFind("Direct Filed?", petitionHead) & emptyRow).value = Lookup("Generic_YNOU_Name")(DirectFiled.value)
+        
+        Range(headerFind("General Notes from Intake", petitionHead) & emptyRow).value = GeneralNotes.value
 
         Dim Num As Long
         Dim i As Integer
@@ -895,19 +913,22 @@ Private Sub Submit_Click()
         For Num = 1 To PetitionBox.ListCount
             tempHead = headerFind("Petition #" & Num, petitionHead)
 
-            If DiversionProgram.value = "Yes" Or InitialHearingLocation.value = "Adult" And count = 2 Then
+            If DiversionProgram.value = "Yes" Or DirectFiled.value = "Yes" And count = 2 Then
                 Range(headerFind("Petition Filed?", tempHead) & emptyRow).value _
                         = Lookup("Generic_YNOU_Name")("No")
+                Range(headerFind("Date Filed", tempHead) & emptyRow).value _
+                    = "N/A"
             Else
                 Range(headerFind("Petition Filed?", tempHead) & emptyRow).value _
                         = Lookup("Generic_YNOU_Name")("Yes")
+                Range(headerFind("Date Filed", tempHead) & emptyRow).value _
+                    = PetitionBox.List(Num - 1, 0)
             End If
             Range(headerFind("Was Petition Transferred from Other County?", tempHead) & emptyRow).value _
                     = Lookup("Generic_YNOU_Name")(PetitionBox.List(Num - 1, 6))
             Range(tempHead & emptyRow).value _
                     = PetitionBox.List(Num - 1, 1)
-            Range(headerFind("Date Filed", tempHead) & emptyRow).value _
-                    = PetitionBox.List(Num - 1, 0)
+            
             Range(headerFind("Lead Charge Code", tempHead) & emptyRow).value _
                     = PetitionBox.List(Num - 1, 4)
             Range(headerFind("Lead Charge Name", tempHead) & emptyRow).value _

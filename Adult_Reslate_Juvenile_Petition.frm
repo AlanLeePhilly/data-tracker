@@ -42,7 +42,7 @@ End Sub
 Private Sub DRAI_Action_Change()
     Select Case DRAI_Action.value
         Case "Follow - Hold", "Override - Hold"
-            InitialHearingLocation.value = "PJJSC"
+            NextHearingLocation = "PJJSC"
             DetentionFacility.Enabled = True
             DetentionFacilityLabel.Enabled = True
 
@@ -105,12 +105,10 @@ Private Sub CallInDate_Exit(ByVal Cancel As MSForms.ReturnBoolean)
     Call DateValidation(ctl, Cancel)
 End Sub
 
-
-
-Private Sub InitialHearingLocation_Change()
-    If InitialHearingLocation.value = "Intake Conf." Then
+Private Sub NextHearingLocation_Change()
+    If NextHearingLocation.value = "Intake Conf." Then
         MsgBox "Not a valid value for this prompt"
-        InitialHearingLocation.value = "N/A"
+        NextHearingLocation.value = "N/A"
         Exit Sub
     End If
 End Sub
@@ -338,7 +336,7 @@ Private Sub TestFillPetition_Click()
 
     NoDiversionReason1 = "Charge Ineligible"
 
-    InitialHearingLocation.value = "3E"
+    NextHearingLocation.value = "3E"
 
     InitialHearingDate = "2/12/2019"
 
@@ -381,7 +379,7 @@ Private Sub TestFillDiversion_Click()
     GeneralNotes.value = "Gen Notes Test"
 
     InitialHearingDate.value = "02/01/2019"
-    InitialHearingLocation.value = "Diversion"
+    NextHearingLocation.value = "Diversion"
     ListingType.value = "Diversion"
 
 End Sub
@@ -413,7 +411,7 @@ Private Sub TestFillIntake_Click()
     GeneralNotes.value = "Gen Notes Test"
 
     InitialHearingDate.value = "02/01/2019"
-    InitialHearingLocation.value = "3E"
+    NextHearingLocation.value = "3E"
 
     DiversionProgram.value = "No"
 
