@@ -678,22 +678,22 @@ Private Sub Submit_Click()
         MsgBox "Petition required"
         Exit Sub
     End If
-    
+
     If GunCase.value = "" Then
         MsgBox "'Gun Case?' required"
         Exit Sub
     End If
-    
+
     If GunInvolved.value = "" Then
         MsgBox "'Gun Involved?' required"
         Exit Sub
     End If
-    
+
     If DirectFiled.value = "" Then
         MsgBox "'Direct Filed?' required"
         Exit Sub
     End If
-    
+
 
     If DRAI_Action.value = "Follow - Hold" Or DRAI_Action.value = "Override - Hold" Then
         If DetentionFacility.value = "N/A" Then
@@ -701,7 +701,7 @@ Private Sub Submit_Click()
             Exit Sub
         End If
     End If
-    
+
     If DiversionProgram.value = "No" And NoDiversionReason1.value = "N/A" Then
         MsgBox "Reason Not Diverted Required"
         Exit Sub
@@ -785,20 +785,20 @@ Private Sub Submit_Click()
     If Not StrComp(Zipcode.value, coords(3)) = 0 Then
         MsgBox ("ALERT: The zipcode entered and zipcode found by geolocating services are different. Please check the new zipcode entered to make sure it is correct.")
     End If
-    
-    
+
+
     ''''''''''''
     ''PETITION''
     ''''''''''''
 
     Dim petitionHead As String
     Dim count As Integer
-    
+
     For count = 1 To 2
         If Not DirectFiled.value = "Yes" Then
             count = 2
         End If
-    
+
         Select Case count
             Case 1
                 petitionHead = hFind("ADULT PETITION")
@@ -810,7 +810,7 @@ Private Sub Submit_Click()
                 = InitialHearingDate.value
         Range(headerFind("Initial Hearing Location", petitionHead) & emptyRow).value _
                 = Lookup("Courtroom_Name")(InitialHearingLocation.value)
-    
+
         If IsNumeric(NumOfPriorArrests.value) And Not NumOfPriorArrests.value = "10+" Then
             Range(headerFind("# of Prior Arrests") & emptyRow).value _
                 = Lookup("Num_Prior_Arrests_Name")(CInt(NumOfPriorArrests.value))
@@ -818,10 +818,10 @@ Private Sub Submit_Click()
             Range(headerFind("# of Prior Arrests") & emptyRow).value _
                 = Lookup("Num_Prior_Arrests_Name")(NumOfPriorArrests.value)
         End If
-    
+
         Range(headerFind("Active in System at Time of Arrest?") & emptyRow) = _
                 Lookup("Generic_YNOU_Name")(ActiveAtArrest.value)
-    
+
         Range(headerFind("Arrest Date", petitionHead) & emptyRow).value _
                 = ArrestDate.value
         Range(headerFind("Day of Arrest", petitionHead) & emptyRow).value _
@@ -834,25 +834,25 @@ Private Sub Submit_Click()
                 = ArrestingDistrict.value
         Range(headerFind("Time of Referral to DA") & emptyRow).value _
                 = TimeReferredToDA_H.value & ":" & TimeReferredToDA_M.value & " " & TimeReferredToDA_P.value
-    
-    
+
+
         Range(headerFind("DC #", petitionHead) & emptyRow).value = DCNum.value
         Range(headerFind("PID #") & emptyRow).value = PIDNum.value
         Range(headerFind("DC-PID #") & emptyRow).value = DCNum.value & "-" & PIDNum.value
         Range(headerFind("SID #") & emptyRow).value = SIDNum.value
-    
+
         Range(headerFind("Officer #1") & emptyRow).value = Officer1.value
         Range(headerFind("Officer #2") & emptyRow).value = Officer2.value
         Range(headerFind("Officer #3") & emptyRow).value = Officer3.value
         Range(headerFind("Officer #4") & emptyRow).value = Officer4.value
         Range(headerFind("Officer #5") & emptyRow).value = Officer5.value
-    
+
         'confirm if needs to happen twice
         Range(headerFind("Victim First Name") & emptyRow) _
                 = VictimFirstName.value
         Range(headerFind("Victim Last Name") & emptyRow) _
                 = VictimLastName.value
-    
+
         Range(headerFind("Incident Date", petitionHead) & emptyRow).value _
                 = IncidentDate.value
         Range(headerFind("Day of Incident", petitionHead) & emptyRow).value _
@@ -867,7 +867,7 @@ Private Sub Submit_Click()
                 = IncidentAddress.value
         Range(headerFind("Incident Zipcode", petitionHead) & emptyRow).value _
                 = IncidentZipcode.value
-    
+
         'Finding address lat and lon
         Dim incidentCoords As Variant
         'Probably want to try-catch the whole block after this line
@@ -875,26 +875,26 @@ Private Sub Submit_Click()
         Range(headerFind("Latitude", petitionHead) & emptyRow).value = incidentCoords(1)
         Range(headerFind("Longitude", petitionHead) & emptyRow).value = incidentCoords(2)
         Range(headerFind("Incident Zipcode", petitionHead) & emptyRow).value = incidentCoords(3)
-    
+
         If Not StrComp(IncidentZipcode.value, incidentCoords(3)) = 0 Then
             MsgBox ("ALERT: The zipcode entered and zipcode found by geolocating services are different. Please check the new zipcode entered to make sure it is correct.")
         End If
-    
+
         Range(headerFind("DA") & emptyRow).value = Lookup("DA_Last_Name_Name")(DA.value)
-        
-    
+
+
         Range(headerFind("Gun Case?") & emptyRow).value = Lookup("Generic_YNOU_Name")(GunCase.value)
         Range(headerFind("Gun Involved Arrest?") & emptyRow).value = Lookup("Generic_YNOU_Name")(GunInvolved.value)
-        
+
         Range(headerFind("General Notes from Intake") & emptyRow).value = GeneralNotes.value
-    
+
         Dim Num As Long
         Dim i As Integer
         Dim j As Integer
-    
+
         For Num = 1 To PetitionBox.ListCount
             tempHead = headerFind("Petition #" & Num, petitionHead)
-            
+
             If DiversionProgram.value = "Yes" Or InitialHearingLocation.value = "Adult" And count = 2 Then
                 Range(headerFind("Petition Filed?", tempHead) & emptyRow).value _
                         = Lookup("Generic_YNOU_Name")("No")
@@ -918,7 +918,7 @@ Private Sub Submit_Click()
                     = Lookup("Charge_Grade_Specific_Name")(PetitionBox.List(Num - 1, 2))
             Range(headerFind("Charge Grade (broad) #1", tempHead) & emptyRow).value _
                     = calcChargeBroad(PetitionBox.List(Num - 1, 2))
-    
+
             j = 2
             For i = 0 To ChargeBox.ListCount - 1
                 If ChargeBox.ListCount > 0 Then
@@ -938,7 +938,7 @@ Private Sub Submit_Click()
                 End If
             Next i
         Next Num
-    
+
         Range(headerFind("LOS Until DA Referral", petitionHead) & emptyRow).value _
                     = timeDiff(Range(headerFind("Time of Arrest", petitionHead) & emptyRow).value, _
                Range(headerFind("Time of Referral to DA") & emptyRow).value)
@@ -1022,8 +1022,8 @@ Private Sub Submit_Click()
                 Range(hFind("DRAI Recommendation", "CALL-IN") & emptyRow).value _
                         = Lookup("DRAI_Recommendation_Name")("Unknown")
         End Select
-            
-        
+
+
         Range(headerFind("DRAI Recommendation", tempHead) & emptyRow).value _
                 = Lookup("DRAI_Recommendation_Name")(DRAI_Rec.value)
 
@@ -1522,18 +1522,18 @@ Private Sub TestFillPetition_Click()
         .List(0, 5) = "AGGRAVATED ASSAULT"
         .List(0, 6) = "No"
     End With
-    
+
     CallInDate.value = "02/01/2019"
     Was_DRAI_Administered.value = "Yes"
     DRAI_Score.value = "4"
     DRAI_Rec.value = "Release"
     DRAI_Action.value = "Follow - Release"
-    
+
     InConfDate.value = "02/01/2019"
     ConfOutcome.value = "Release for Court"
-    
+
     NoDiversionReason1 = "Charge Ineligible"
-    
+
     InitialHearingLocation.value = "3E"
 
     InitialHearingDate = "2/12/2019"
@@ -1616,16 +1616,16 @@ Private Sub TestFillDiversion_Click()
     DRAI_Score.value = "4"
     DRAI_Rec.value = "Release"
     DRAI_Action.value = "Follow - Release"
-    
+
     InConfDate.value = "02/01/2019"
     ConfOutcome.value = "Release for Diversion"
-    
+
     DiversionProgram.value = "Yes"
     DiversionProgramReferralDate.value = "2/1/19"
     ReferralSource.value = "Pre-Petition DA"
     NameOfProgram.value = "YAP"
     YAPDistrict.value = 2
-    
+
     GeneralNotes.value = "Gen Notes Test"
 
     InitialHearingDate.value = "02/01/2019"

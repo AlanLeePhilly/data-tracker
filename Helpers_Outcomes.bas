@@ -20,14 +20,14 @@ Sub totalOutcome( _
         = Lookup("Legal_Status_Name")(legalStatus)
     Range(headerFind("Active or Discharged", outcomeHead) & clientRow).value _
         = Lookup("Active_Name")("Discharged")
-    
+
     Range(headerFind("Nature of Petition Outcome", outcomeHead) & clientRow).value _
         = Lookup("Nature_of_Discharge_Name")(Nature)
     Range(headerFind("Detailed Petition Outcome", outcomeHead) & clientRow).value _
         = Lookup("Detailed_Petition_Outcome_Name")(detailed)
     Range(headerFind("Acquittal or Supervision Discharge?", outcomeHead) & clientRow).value _
         = Lookup("Acquittal_or_Supervision_Discharge_Name")("Completion of Terms")
-    
+
     Range(headerFind("Total LOS in System (from petition)", outcomeHead) & clientRow).value _
         = calcLOS(Range(hFind("Date Filed", "Petition #1") & clientRow).value, dateOf)
     Range(headerFind("Total LOS From Arrest", outcomeHead) & clientRow).value _

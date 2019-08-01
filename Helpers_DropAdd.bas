@@ -82,7 +82,7 @@ Sub addSupervision( _
         Else
             Range(bucketHead & clientRow).value = Lookup("Supervision_Program_Name")(serviceType)
         End If
-            
+
         If section = "JTC" Then
             Select Case phase
                 Case "1"
@@ -92,7 +92,7 @@ Sub addSupervision( _
                 Case "3"
                     Range(headerFind("Phase of Order", bucketHead) & clientRow).value = Lookup("JTC_Phase_Name")(3)
                 Case Else
-                     Range(headerFind("Phase of Order", bucketHead) & clientRow).value = Lookup("JTC_Phase_Name")(phase)
+                    Range(headerFind("Phase of Order", bucketHead) & clientRow).value = Lookup("JTC_Phase_Name")(phase)
             End Select
         Else
             Range(headerFind("Legal Status of Order", bucketHead) & clientRow).value = Lookup("Legal_Status_Name")(legalStatus)
@@ -121,7 +121,7 @@ Sub addSupervision( _
 
         End If
     Next i
-    
+
     'front active
     Range(headerFind("Active Supervision") & clientRow).value = Lookup("Supervision_Program_Name")(serviceType)
 End Sub

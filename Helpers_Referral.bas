@@ -10,17 +10,17 @@ Sub ReferClientTo( _
     Optional oldLegalStatus As String = "")
 
     Worksheets("Entry").Activate
-    
+
     Dim toHead As String
     Dim fromHead As String
     Dim legalStatusVar As String
-    
+
     '''''''''''
     'SET HEADS'
     '''''''''''
-    
-    
-    
+
+
+
     Select Case fromCR
         Case "4G", "4E", "6F", "6H", "3E", "JTC", "WRAP", "Adult"
             fromHead = headerFind(fromCR)
@@ -59,22 +59,22 @@ Sub ReferClientTo( _
             Case "4G", "4E", "6F", "6H", "3E"
                 Range(headerFind("End Date", fromHead) & clientRow).value _
                     = referralDate
-                    
+
                 Range(headerFind("LOS", fromHead) & clientRow).value _
                     = DateDiff("d", _
                         Range(headerFind("Start Date", fromHead) & clientRow).value, _
                         Range(headerFind("End Date", fromHead) & clientRow).value)
-                        
+
                 Range(headerFind("Total LOS in " & fromCR, fromHead) & clientRow).value _
                     = DateDiff("d", _
                         Range(headerFind("Start Date", fromHead) & clientRow).value, _
                         Range(headerFind("End Date", fromHead) & clientRow).value)
-                        
+
                 Range(headerFind("Total LOS From Arrest", fromHead) & clientRow).value _
                     = DateDiff("d", _
                         Range(headerFind("Arrest Date") & clientRow).value, _
                         Range(headerFind("End Date", fromHead) & clientRow).value)
-                    
+
                 Range(headerFind("Courtroom of Transfer (if relevant)", fromHead) & clientRow).value _
                     = Lookup("Courtroom_Name")(toCR)
 
@@ -344,14 +344,14 @@ Sub ReferClientTo( _
                 Next i
         End Select
     End If
-    
+
     'Update Legal Status
 
     Dim submitLegalStatus As String
     Dim submitWithAgg As Boolean
     Dim currentStatus As String
     Dim CRofOrigin As String
-    
+
     If oldLegalStatus = "" Then
         currentStatus = Lookup("Legal_Status_Num")(Range(headerFind("Legal Status") & clientRow).value)
     Else
@@ -405,15 +405,15 @@ Sub ReferClientTo( _
 
             'we don't submit new statuses for these courts because they require acceptance
         Else
-        
-        If statusHasAgg(submitLegalStatus) Then
-            If isNotEmptyOrZero(Range(hFind("Courtroom of Origin", submitLegalStatus, "AGGREGATES") & clientRow)) Then
-                CRofOrigin = Lookup("Courtroom_Num")(Range(hFind("Courtroom of Origin", submitLegalStatus, "AGGREGATES") & clientRow).value)
-            End If
-        End If
-        
 
-        Call startLegalStatus( _
+            If statusHasAgg(submitLegalStatus) Then
+                If isNotEmptyOrZero(Range(hFind("Courtroom of Origin", submitLegalStatus, "AGGREGATES") & clientRow)) Then
+                    CRofOrigin = Lookup("Courtroom_Num")(Range(hFind("Courtroom of Origin", submitLegalStatus, "AGGREGATES") & clientRow).value)
+                End If
+            End If
+
+
+            Call startLegalStatus( _
             clientRow:=clientRow, _
             statusType:=submitLegalStatus, _
             Courtroom:=toCR, _

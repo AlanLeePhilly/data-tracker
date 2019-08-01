@@ -134,7 +134,7 @@ Sub Standard_Supervision_Box_Add(ByRef MyBox As Object, ByVal bucketHead As Stri
 
         .AddItem Lookup("Supervision_Program_Num")(Range(bucketHead & updateRow).value)
         newIndex = MyBox.ListCount - 1
-        
+
         If isResidential(Lookup("Supervision_Program_Num")(Range(bucketHead & updateRow).value)) Then
             .List(newIndex, 1) = _
                 Lookup("Residential_Supervision_Provider_Num")(Range(headerFind("Residential Agency", bucketHead) & updateRow).value) 'Res Agency

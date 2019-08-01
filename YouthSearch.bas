@@ -2805,61 +2805,61 @@ Sub YouthSearchPrint4()
     PrintSheet.Range("K721").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #30", "LISTINGS") & userRow).value)
     PrintSheet.Range("K723").value = Lookup("Legal_Status_Num")(DataSheet.Range(hFind("Legal Status", "Court Date #30", "LISTINGS") & userRow).value)
     PrintSheet.Range("P719").value = DataSheet.Range(hFind("Notes", "Court Date #30", "LISTINGS") & userRow).value
-    
+
     '#31
     PrintSheet.Range("K727").value = DataSheet.Range(hFind("Court Date #31", "LISTINGS") & userRow).value
     PrintSheet.Range("K729").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #31", "LISTINGS") & userRow).value)
     PrintSheet.Range("K731").value = Lookup("Legal_Status_Num")(DataSheet.Range(hFind("Legal Status", "Court Date #31", "LISTINGS") & userRow).value)
     PrintSheet.Range("P727").value = DataSheet.Range(hFind("Notes", "Court Date #31", "LISTINGS") & userRow).value
-    
+
     '#32
     PrintSheet.Range("K735").value = DataSheet.Range(hFind("Court Date #32", "LISTINGS") & userRow).value
     PrintSheet.Range("K737").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #32", "LISTINGS") & userRow).value)
     PrintSheet.Range("K739").value = Lookup("Legal_Status_Num")(DataSheet.Range(hFind("Legal Status", "Court Date #32", "LISTINGS") & userRow).value)
     PrintSheet.Range("P735").value = DataSheet.Range(hFind("Notes", "Court Date #32", "LISTINGS") & userRow).value
-    
+
     '#33
     PrintSheet.Range("K743").value = DataSheet.Range(hFind("Court Date #33", "LISTINGS") & userRow).value
     PrintSheet.Range("K745").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #33", "LISTINGS") & userRow).value)
     PrintSheet.Range("K747").value = Lookup("Legal_Status_Num")(DataSheet.Range(hFind("Legal Status", "Court Date #33", "LISTINGS") & userRow).value)
     PrintSheet.Range("P743").value = DataSheet.Range(hFind("Notes", "Court Date #33", "LISTINGS") & userRow).value
-    
+
     '#34
     PrintSheet.Range("K751").value = DataSheet.Range(hFind("Court Date #34", "LISTINGS") & userRow).value
     PrintSheet.Range("K753").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #34", "LISTINGS") & userRow).value)
     PrintSheet.Range("K755").value = Lookup("Legal_Status_Num")(DataSheet.Range(hFind("Legal Status", "Court Date #34", "LISTINGS") & userRow).value)
     PrintSheet.Range("P751").value = DataSheet.Range(hFind("Notes", "Court Date #34", "LISTINGS") & userRow).value
-    
+
     '#35
     PrintSheet.Range("K759").value = DataSheet.Range(hFind("Court Date #35", "LISTINGS") & userRow).value
     PrintSheet.Range("K761").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #35", "LISTINGS") & userRow).value)
     PrintSheet.Range("K763").value = Lookup("Legal_Status_Num")(DataSheet.Range(hFind("Legal Status", "Court Date #35", "LISTINGS") & userRow).value)
     PrintSheet.Range("P759").value = DataSheet.Range(hFind("Notes", "Court Date #35", "LISTINGS") & userRow).value
-    
+
     '#36
     PrintSheet.Range("K767").value = DataSheet.Range(hFind("Court Date #36", "LISTINGS") & userRow).value
     PrintSheet.Range("K769").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #36", "LISTINGS") & userRow).value)
     PrintSheet.Range("K771").value = Lookup("Legal_Status_Num")(DataSheet.Range(hFind("Legal Status", "Court Date #36", "LISTINGS") & userRow).value)
     PrintSheet.Range("P767").value = DataSheet.Range(hFind("Notes", "Court Date #36", "LISTINGS") & userRow).value
-    
+
     '#37
     PrintSheet.Range("K775").value = DataSheet.Range(hFind("Court Date #37", "LISTINGS") & userRow).value
     PrintSheet.Range("K777").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #37", "LISTINGS") & userRow).value)
     PrintSheet.Range("K779").value = Lookup("Legal_Status_Num")(DataSheet.Range(hFind("Legal Status", "Court Date #37", "LISTINGS") & userRow).value)
     PrintSheet.Range("P775").value = DataSheet.Range(hFind("Notes", "Court Date #37", "LISTINGS") & userRow).value
-    
+
     '#38
     PrintSheet.Range("K783").value = DataSheet.Range(hFind("Court Date #38", "LISTINGS") & userRow).value
     PrintSheet.Range("K785").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #38", "LISTINGS") & userRow).value)
     PrintSheet.Range("K787").value = Lookup("Legal_Status_Num")(DataSheet.Range(hFind("Legal Status", "Court Date #38", "LISTINGS") & userRow).value)
     PrintSheet.Range("P783").value = DataSheet.Range(hFind("Notes", "Court Date #38", "LISTINGS") & userRow).value
-    
+
     '#39
     PrintSheet.Range("K791").value = DataSheet.Range(hFind("Court Date #39", "LISTINGS") & userRow).value
     PrintSheet.Range("K793").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #39", "LISTINGS") & userRow).value)
     PrintSheet.Range("K795").value = Lookup("Legal_Status_Num")(DataSheet.Range(hFind("Legal Status", "Court Date #39", "LISTINGS") & userRow).value)
     PrintSheet.Range("P791").value = DataSheet.Range(hFind("Notes", "Court Date #39", "LISTINGS") & userRow).value
-    
+
     '#40
     PrintSheet.Range("K799").value = DataSheet.Range(hFind("Court Date #40", "LISTINGS") & userRow).value
     PrintSheet.Range("K801").value = Lookup("Courtroom_Num")(DataSheet.Range(hFind("Courtroom", "Court Date #40", "LISTINGS") & userRow).value)

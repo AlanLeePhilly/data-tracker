@@ -506,7 +506,7 @@ Sub ExportDataFile()
     ActiveWorkbook.Close
 
 
- 'Wes EXPORT
+    'Wes EXPORT
 
     Dim newFilePath9 As String
     Dim newFileName9 As String

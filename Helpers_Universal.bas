@@ -176,7 +176,7 @@ Sub closeOpenLegalStatuses( _
     Courtroom As String, _
     DA As String, _
     legalStatus As String)
-    
+
     Dim i As Integer, j As Integer
     Dim section As String, statusType As String
     Dim bucketHead As String
@@ -210,13 +210,13 @@ Sub closeOpenLegalStatuses( _
                 Case 5
                     statusType = "Aftercare Probation"
             End Select
-            
+
             'If statusType = legalStatus Then
-                'If section = Courtroom Or section = "AGGREGATES" Then
-                    'GoTo NextJ
-                'End If
+            'If section = Courtroom Or section = "AGGREGATES" Then
+            'GoTo NextJ
             'End If
-            
+            'End If
+
             bucketHead = hFind(statusType, section)
 
             If isNotEmptyOrZero(Range(headerFind("Start Date", bucketHead) & clientRow)) And _

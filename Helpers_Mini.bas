@@ -95,21 +95,21 @@ End Function
 Function isTerminal(ByVal subset As String, ByVal discharge As String) As Boolean
     Select Case subset
         Case "Legal Status"
-        
+
             Select Case discharge
                 Case _
                     "Pos. Completion - Petition D/C", _
                     "Neg. Completion - Petition D/C", _
                     "Death"
-                    
+
                     isTerminal = True
-            
-            Case Else
-                isTerminal = False
+
+                Case Else
+                    isTerminal = False
             End Select
-            
+
         Case "Courtroom"
-        
+
             Select Case discharge
                 Case _
                     "Rearrested & Held (adult)", _
@@ -123,15 +123,15 @@ Function isTerminal(ByVal subset As String, ByVal discharge As String) As Boolea
                     "Transfer to Other County", _
                     "Admin. D/C - Reasonable Efforts", _
                     "Death"
-                    
+
                     isTerminal = True
-                    
-            Case Else
-                isTerminal = False
+
+                Case Else
+                    isTerminal = False
             End Select
-            
-         Case "JTC"
-        
+
+        Case "JTC"
+
             Select Case discharge
                 Case _
                     "Rearrested & Held (adult)", _
@@ -140,15 +140,15 @@ Function isTerminal(ByVal subset As String, ByVal discharge As String) As Boolea
                     "Transfer to Dependent", _
                     "Transfer to Other County", _
                     "Admin. D/C - Reasonable Efforts"
-                    
+
                     isTerminal = True
-                    
-            Case Else
-                isTerminal = False
+
+                Case Else
+                    isTerminal = False
             End Select
-        
+
         Case "Diversion"
-        
+
             Select Case discharge
                 Case _
                     "Rearrested & Held (adult)", _
@@ -158,15 +158,15 @@ Function isTerminal(ByVal subset As String, ByVal discharge As String) As Boolea
                     "Transfer to Dependent", _
                     "Transfer to Other County", _
                     "Death"
-                    
+
                     isTerminal = True
-                    
-            Case Else
-                isTerminal = False
+
+                Case Else
+                    isTerminal = False
             End Select
-            
+
         Case "YAP"
-        
+
             Select Case discharge
                 Case _
                     "Positive Completion", _
@@ -175,16 +175,16 @@ Function isTerminal(ByVal subset As String, ByVal discharge As String) As Boolea
                     "Transfer to Dependent", _
                     "Transfer to Other County", _
                     "Death"
-                    
+
                     isTerminal = True
-                    
-            Case Else
-                isTerminal = False
+
+                Case Else
+                    isTerminal = False
             End Select
         Case Else
             MsgBox "IsTerminal was sent unknown subset " + subset
     End Select
-    
+
 End Function
 
 
@@ -422,8 +422,8 @@ Public Function NatureFromDetailed(detailed As String) As String
             "Petition Withdrawn", _
             "Petition Diverted and Withdrawn"
 
-                NatureFromDetailed = "Positive"
-                
+            NatureFromDetailed = "Positive"
+
         Case _
             "Rearested & Held (adult)", _
             "Bench Warrant", _
@@ -432,9 +432,9 @@ Public Function NatureFromDetailed(detailed As String) As String
             "Certified Adult (original petition)", _
             "Death", _
             "Admin. D/C - Reasonable Efforts"
-            
-                NatureFromDetailed = "Negative"
-                
+
+            NatureFromDetailed = "Negative"
+
         Case _
             "Transfer to Dependent", _
             "Acceptance to Room Not Granted", _
@@ -442,13 +442,13 @@ Public Function NatureFromDetailed(detailed As String) As String
             "Transfer to New Del. Room - Neutral", _
             "Not Fit to Stand Trial", _
             "Other"
-            
-                NatureFromDetailed = "Neutral"
-                
+
+            NatureFromDetailed = "Neutral"
+
         Case "N/A", "Unknown"
-        
+
             NatureFromDetailed = detailed
-            
+
     End Select
 End Function
 

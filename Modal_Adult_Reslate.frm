@@ -16,14 +16,14 @@ Attribute VB_Exposed = False
 Private Sub Continue_Click()
     Select Case Hearing_Outcome.value
         Case "Granted"
-            
+
             Adult_Reslate_Juvenile_Petition.Show
         Case Else
             ClientUpdateForm.Adult_Return_Reslate.Caption _
                 = Hearing_Outcome.value
     End Select
-    
-    Me.Hide
+
+    Modal_Adult_Reslate.Hide
 End Sub
 
 Private Sub InsertDoH_Click()

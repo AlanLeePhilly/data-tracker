@@ -259,7 +259,7 @@ Private Sub LookupData_Click()
     'Dim courtHead As String
     Dim diversionHead As String
     Worksheets("Entry").Activate
-    
+
     'courtHead = headerFind(ReferredTo.value)
     diversionHead = headerFind("DIVERSION")
 
@@ -267,13 +267,13 @@ Private Sub LookupData_Click()
         MsgBox "Date of Hearing Required for Lookup"
         Exit Sub
     End If
-    
+
     FetchTerms.Clear
     ReturnTerms.Clear
 
     Referral_Date.Caption _
             = Range(headerFind("Referral Date", diversionHead) & updateRow).value
-    
+
     Referral_Source.Caption _
         = Lookup("Diversion_Referral_Source_Num")(Range(headerFind("Referral Source", diversionHead) & updateRow).value)
 
@@ -337,7 +337,7 @@ Private Sub LookupData_Click()
             End If
         Next i
     End If
-    
+
     Worksheets("User Entry").Activate
 End Sub
 

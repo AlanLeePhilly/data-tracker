@@ -273,19 +273,14 @@ Private Sub Submit_Click()
         MsgBox "Petition required"
         Exit Sub
     End If
-    
+
     If GunCase.value = "" Then
         MsgBox "'Gun Case?' required"
         Exit Sub
     End If
-    
+
     If GunInvolved.value = "" Then
         MsgBox "'Gun Involved?' required"
-        Exit Sub
-    End If
-    
-    If DirectFiled.value = "" Then
-        MsgBox "'Direct Filed?' required"
         Exit Sub
     End If
 
@@ -295,33 +290,16 @@ Private Sub Submit_Click()
             Exit Sub
         End If
     End If
-    
+
     If DiversionProgram.value = "No" And NoDiversionReason1.value = "N/A" Then
         MsgBox "Reason Not Diverted Required"
         Exit Sub
     End If
-    
-    '''''''''''''''''''''''''''''''''''''''''''
-    '''''MOVE TO CLIENTUPDATE ADULT_SUBMIT'''''
-    '''''''''''''''''''''''''''''''''''''''''''
-
-    
-
-    
 
 
-
-
-done:
-    'Call SaveAs_Countdown
-    Call Save_Countdown
-    Call UnloadAll
-
-    Worksheets("User Entry").Activate
-    With Application
-        .ScreenUpdating = True
-        .Calculation = xlCalculationAutomatic
-    End With
+    Adult_Reslate_Juvenile_Petition.Hide
+    ClientUpdateForm.Adult_Reslate_Update.BackColor = selectedColor
+    ClientUpdateForm.Adult_Reslate_Remain.BackColor = unselectedColor
     Exit Sub
 err:
 
@@ -348,18 +326,18 @@ Private Sub TestFillPetition_Click()
         .List(0, 5) = "AGGRAVATED ASSAULT"
         .List(0, 6) = "No"
     End With
-    
+
     CallInDate.value = "02/01/2019"
     Was_DRAI_Administered.value = "Yes"
     DRAI_Score.value = "4"
     DRAI_Rec.value = "Release"
     DRAI_Action.value = "Follow - Release"
-    
+
     InConfDate.value = "02/01/2019"
     ConfOutcome.value = "Release for Court"
-    
+
     NoDiversionReason1 = "Charge Ineligible"
-    
+
     InitialHearingLocation.value = "3E"
 
     InitialHearingDate = "2/12/2019"
@@ -390,16 +368,16 @@ Private Sub TestFillDiversion_Click()
     DRAI_Score.value = "4"
     DRAI_Rec.value = "Release"
     DRAI_Action.value = "Follow - Release"
-    
+
     InConfDate.value = "02/01/2019"
     ConfOutcome.value = "Release for Diversion"
-    
+
     DiversionProgram.value = "Yes"
     DiversionProgramReferralDate.value = "2/1/19"
     ReferralSource.value = "Pre-Petition DA"
     NameOfProgram.value = "YAP"
     YAPDistrict.value = 2
-    
+
     GeneralNotes.value = "Gen Notes Test"
 
     InitialHearingDate.value = "02/01/2019"

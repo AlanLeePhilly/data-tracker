@@ -41,7 +41,7 @@ Private Sub Current_Detailed_Outcome_Change()
         New_Legal_Status_Label.Enabled = True
         New_Start_Date_Label.Enabled = True
         New_Notes_Label.Enabled = True
-        
+
     End If
 End Sub
 
@@ -124,7 +124,7 @@ Private Sub Continue_Click()
         MsgBox "Date of Discharge Required"
         Exit Sub
     End If
-    
+
     If Not isTerminal("Legal Status", Current_Detailed_Outcome.value) Then
         If Not HasContent(New_Start_Date) Then
             MsgBox "Start Date Required"

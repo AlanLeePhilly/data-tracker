@@ -79,7 +79,7 @@ Private Sub Continue_Click()
     End If
 
     Dim pBox, cBox
-    
+
     Select Case headline.Caption
         Case "Re-Arrest"
             Set pBox = Modal_New_Arrest.PetitionBox
