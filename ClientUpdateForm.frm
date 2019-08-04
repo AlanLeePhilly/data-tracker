@@ -1416,6 +1416,8 @@ Sub JTC_Submit_Click()
         tempHead = headerFind("JTC OUTCOMES")
         'set current phase end date
         Range(headerFind("End Date", oldPhaseHead) & updateRow) = DateOfHearing.value
+        'outcome notes
+        Range(headerFind("Notes on Outcome", tempHead) & updateRow) = JTC_Notes.value
         'set "Date of Overall Discharge"
         Range(headerFind("Date of Overall Discharge", tempHead) & updateRow) = DateOfHearing.value
         'set "Active or Discharged" to discharged
@@ -2084,8 +2086,8 @@ Sub Standard_Submit_Click()
                     Courtroom:=oldCourtroom, _
                     DA:=DA.value, _
                     legalStatus:=.Current_Legal_Status.Caption, _
-                    Nature:=.Current_Discharge_Nature, _
-                    detailed:=.Current_Detailed_Outcome, _
+                    Nature:=.Courtroom_Outcome_Nature, _
+                    detailed:=.Courtroom_Detailed_Outcome, _
                     Notes:=Standard_Notes.value)
             Else
                 Call startLegalStatus( _

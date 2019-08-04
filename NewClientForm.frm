@@ -900,9 +900,10 @@ Private Sub Submit_Click()
         If Not StrComp(IncidentZipcode.value, incidentCoords(3)) = 0 Then
             MsgBox ("ALERT: The zipcode entered and zipcode found by geolocating services are different. Please check the new zipcode entered to make sure it is correct.")
         End If
-
+        
+        Range(headerFind("Referred to Diversion?", petitionHead) & emptyRow).value = Lookup("Generic_YNOU_Name")(DiversionProgram.value)
+        
         Range(headerFind("DA", petitionHead) & emptyRow).value = Lookup("DA_Last_Name_Name")(DA.value)
-
 
         Range(headerFind("Gun Case?", petitionHead) & emptyRow).value = Lookup("Generic_YNOU_Name")(GunCase.value)
         Range(headerFind("Gun Involved Arrest?", petitionHead) & emptyRow).value = Lookup("Generic_YNOU_Name")(GunInvolved.value)

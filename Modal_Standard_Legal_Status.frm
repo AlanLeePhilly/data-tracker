@@ -15,36 +15,6 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
 
-
-
-
-
-
-
-
-
-Private Sub Current_Detailed_Outcome_Change()
-    If isTerminal("Legal Status", Current_Detailed_Outcome.value) Then
-        New_Legal_Status.Enabled = False
-        New_Legal_Status.value = ""
-        New_Start_Date.Enabled = False
-        New_Start_Date.value = ""
-        New_Notes.Enabled = False
-        New_Notes.value = ""
-        New_Legal_Status_Label.Enabled = False
-        New_Start_Date_Label.Enabled = False
-        New_Notes_Label.Enabled = False
-    Else
-        New_Legal_Status.Enabled = True
-        New_Start_Date.Enabled = True
-        New_Notes.Enabled = True
-        New_Legal_Status_Label.Enabled = True
-        New_Start_Date_Label.Enabled = True
-        New_Notes_Label.Enabled = True
-
-    End If
-End Sub
-
 ''''''''''''''''
 'INITIALIZATION'
 ''''''''''''''''
@@ -114,6 +84,43 @@ Private Sub Current_Discharge_Nature_Change()
     End If
 End Sub
 
+Private Sub Current_Detailed_Outcome_Change()
+    If isTerminal("Legal Status", Current_Detailed_Outcome.value) Then
+        New_Legal_Status.Enabled = False
+        New_Legal_Status.value = ""
+        New_Start_Date.Enabled = False
+        New_Start_Date.value = ""
+        New_Notes.Enabled = False
+        New_Notes.value = ""
+        New_Legal_Status_Label.Enabled = False
+        New_Start_Date_Label.Enabled = False
+        New_Notes_Label.Enabled = False
+        
+        Courtroom_Outcome.Enabled = True
+        Courtroom_Outcome_Nature.Enabled = True
+        Courtroom_Outcome_Nature_Label.Enabled = True
+        Courtroom_Detailed_Outcome.Enabled = True
+        Courtroom_Detailed_Outcome_Label.Enabled = True
+        
+    Else
+        New_Legal_Status.Enabled = True
+        New_Start_Date.Enabled = True
+        New_Notes.Enabled = True
+        New_Legal_Status_Label.Enabled = True
+        New_Start_Date_Label.Enabled = True
+        New_Notes_Label.Enabled = True
+    
+        Courtroom_Outcome.Enabled = False
+        Courtroom_Outcome_Nature.Enabled = False
+        Courtroom_Outcome_Nature.value = "N/A"
+        Courtroom_Outcome_Nature_Label.Enabled = False
+        Courtroom_Detailed_Outcome.Enabled = False
+        Courtroom_Detailed_Outcome.value = "N/A"
+        Courtroom_Detailed_Outcome_Label.Enabled = False
+
+    End If
+End Sub
+
 '''''''''''''''''''''''
 '''''SUBMIT LOGIC''''''
 '''''''''''''''''''''''
@@ -125,7 +132,16 @@ Private Sub Continue_Click()
         Exit Sub
     End If
 
-    If Not isTerminal("Legal Status", Current_Detailed_Outcome.value) Then
+    If isTerminal("Legal Status", Current_Detailed_Outcome.value) Then
+        If Courtroom_Detailed_Outcome.value = "N/A" Then
+            MsgBox "Detailed Courtroom Outcome Required"
+            Exit Sub
+        End If
+        If Courtroom_Outcome_Nature.value = "N/A" Then
+            MsgBox "Courtroom Outcome Nature Required"
+            Exit Sub
+        End If
+    Else
         If Not HasContent(New_Start_Date) Then
             MsgBox "Start Date Required"
             Exit Sub

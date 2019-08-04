@@ -114,7 +114,7 @@ Function isTerminal(ByVal subset As String, ByVal discharge As String) As Boolea
                 Case _
                     "Rearrested & Held (adult)", _
                     "Petition Withdrawn", _
-                    "Petition Diverted and Withdrawn", _
+                    "Petition Diverted & Withdrawn", _
                     "Judgment of Acquittal", _
                     "Petition Closed - Positive Comp. Terms", _
                     "Aged Out", _
@@ -321,8 +321,8 @@ Function calcLOS(ByVal event1 As String, ByVal event2 As String) As Long
     If IsDate(event1) And IsDate(event2) Then
         calcLOS = DateDiff("d", event1, event2)
     Else
-        calcLOS = 9999
-        MsgBox "Warning: a length of stay calculation failed and instead returned 9999"
+        calcLOS = -1
+        MsgBox "Warning: a length of stay calculation failed and instead returned -1"
     End If
 End Function
 
@@ -420,7 +420,7 @@ Public Function NatureFromDetailed(detailed As String) As String
             "Judgment of Acquittal", _
             "Petition Closed - Positive Comp. Terms", _
             "Petition Withdrawn", _
-            "Petition Diverted and Withdrawn"
+            "Petition Diverted & Withdrawn"
 
             NatureFromDetailed = "Positive"
 

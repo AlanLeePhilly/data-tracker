@@ -11,6 +11,7 @@ Sub totalOutcome( _
 )
     Dim outcomeHead As String
     outcomeHead = hFind("Petition Outcomes", "AGGREGATES")
+    
     Range(headerFind("Notes on Outcome", outcomeHead) & clientRow).value = Notes
     Range(headerFind("Date of Overall Discharge", outcomeHead) & clientRow).value = dateOf
     Range(headerFind("Courtroom of Discharge", outcomeHead) & clientRow).value = Lookup("Courtroom_Name")(Courtroom)
@@ -32,6 +33,39 @@ Sub totalOutcome( _
         = calcLOS(Range(hFind("Date Filed", "Petition #1") & clientRow).value, dateOf)
     Range(headerFind("Total LOS From Arrest", outcomeHead) & clientRow).value _
         = calcLOS(Range(hFind("Arrest Date") & clientRow).value, dateOf)
+        
+    Select Case Courtroom
+        Case "4G", "4E", "6F", "6H", "3E"
+            outcomeHead = hFind("OUTCOMES", Courtroom)
+            
+            Range(headerFind("Notes on Outcome", outcomeHead) & clientRow).value = Notes
+            Range(headerFind("Date of Overall Discharge", outcomeHead) & clientRow).value = dateOf
+            Range(headerFind("Courtroom of Discharge", outcomeHead) & clientRow).value = Lookup("Courtroom_Name")(Courtroom)
+            Range(headerFind("Legal Status of Discharge", outcomeHead) & clientRow).value _
+                = Lookup("Legal_Status_Name")(legalStatus)
+                
+            Range(headerFind("DA", outcomeHead) & clientRow).value = Lookup("DA_Last_Name_Name")(DA)
+            Range(headerFind("Active or Discharged", outcomeHead) & clientRow).value _
+                = Lookup("Active_Name")("Discharged")
+        
+            Range(headerFind("Nature of Courtroom Outcome", outcomeHead) & clientRow).value _
+                = Lookup("Nature_of_Discharge_Name")(Nature)
+            Range(headerFind("Detailed Courtroom Outcome", outcomeHead) & clientRow).value _
+                = Lookup("Detailed_Petition_Outcome_Name")(detailed)
+            Range(headerFind("Acquittal or Supervision Discharge?", outcomeHead) & clientRow).value _
+                = Lookup("Acquittal_or_Supervision_Discharge_Name")("Completion of Terms")
+        
+            Range(headerFind("Total LOS in " & Courtroom, outcomeHead) & clientRow).value _
+                = calcLOS(Range(hFind("Start Date", Courtroom) & clientRow).value, dateOf)
+            Range(headerFind("Total LOS From Arrest", outcomeHead) & clientRow).value _
+                = calcLOS(Range(hFind("Arrest Date") & clientRow).value, dateOf)
+                
+            Range(hFind("End Date", Courtroom) & clientRow).value = dateOf
+            Range(hFind("LOS", Courtroom) & clientRow).value _
+                = calcLOS(Range(hFind("Start Date", Courtroom) & clientRow).value, dateOf)
+        
+    End Select
+    
 
     'TODO Confirm FoH values
     Range(headerFind("Next Court Date") & clientRow).Clear
