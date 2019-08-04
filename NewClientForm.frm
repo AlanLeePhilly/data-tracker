@@ -192,6 +192,10 @@ Private Sub Reload_Click()
     VictimFirstName = Range(headerFind("Victim First Name") & emptyRow)
     VictimLastName = Range(headerFind("Victim Last Name") & emptyRow)
 
+    GunCase.value = Lookup("Generic_YNOU_Num")(Range(headerFind("Gun Case?") & emptyRow).value)
+    GunInvolved.value = Lookup("Generic_YNOU_Num")(Range(headerFind("Gun Involved Arrest?") & emptyRow).value)
+    DirectFiled.value = Lookup("Generic_YNOU_Num")(Range(headerFind("Direct Filed?") & emptyRow).value)
+
     Dim i As Integer
     Dim j As Integer
     Dim sectionHead As String
@@ -281,8 +285,9 @@ Private Sub Reload_Click()
     ReferralSource.value = Lookup("Diversion_Referral_Source_Num")(Range(headerFind("Referral Source", diversionHead) & emptyRow).value)
     NameOfProgram.value = Lookup("Diversion_Program_Num")(Range(headerFind("Diversion Program Ordered", diversionHead) & emptyRow).value)
     YAPDistrict.value = Lookup("Police_District_Num")(Range(headerFind("YAP Panel District #", diversionHead) & emptyRow).value)
-
-
+    NoDiversionReason1 = Lookup("Diversion_Rejection_Reason_Num")(Range(headerFind("Reason #1 Not Diverted", diversionHead) & emptyRow).value)
+    NoDiversionReason2 = Lookup("Diversion_Rejection_Reason_Num")(Range(headerFind("Reason #2 Not Diverted", diversionHead) & emptyRow).value)
+    NoDiversionReason3 = Lookup("Diversion_Rejection_Reason_Num")(Range(headerFind("Reason #3 Not Diverted", diversionHead) & emptyRow).value)
     InitialHearingDate.value = Range(headerFind("Initial Hearing Date") & emptyRow).value
     InitialHearingLocation.value = Lookup("Courtroom_Num")(Range(headerFind("Initial Hearing Location") & emptyRow).value)
     ListingType.value = Lookup("Listing_Type_Num")(Range(headerFind("Listing Type") & emptyRow).value)
