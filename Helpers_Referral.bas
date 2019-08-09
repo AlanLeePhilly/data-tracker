@@ -61,17 +61,17 @@ Sub ReferClientTo( _
                     = referralDate
 
                 Range(headerFind("LOS", fromHead) & clientRow).value _
-                    = DateDiff("d", _
+                    = calcLOS( _
                         Range(headerFind("Start Date", fromHead) & clientRow).value, _
                         Range(headerFind("End Date", fromHead) & clientRow).value)
 
                 Range(headerFind("Total LOS in " & fromCR, fromHead) & clientRow).value _
-                    = DateDiff("d", _
+                    = calcLOS( _
                         Range(headerFind("Start Date", fromHead) & clientRow).value, _
                         Range(headerFind("End Date", fromHead) & clientRow).value)
 
                 Range(headerFind("Total LOS From Arrest", fromHead) & clientRow).value _
-                    = DateDiff("d", _
+                    = calcLOS( _
                         Range(headerFind("Arrest Date") & clientRow).value, _
                         Range(headerFind("End Date", fromHead) & clientRow).value)
 
@@ -84,7 +84,7 @@ Sub ReferClientTo( _
                 Range(headerFind("End Date", fromHead) & clientRow).value _
                     = referralDate
                 Range(headerFind("LOS", fromHead) & clientRow).value _
-                    = DateDiff("d", _
+                    = calcLOS( _
                         Range(headerFind("Start Date", fromHead) & clientRow).value, _
                         Range(headerFind("End Date", fromHead) & clientRow).value)
                 Range(headerFind("Courtroom of Transfer (if relevant)", fromHead) & clientRow).value _
@@ -94,7 +94,7 @@ Sub ReferClientTo( _
                 Range(headerFind("End Date", fromHead) & clientRow).value _
                     = referralDate
                 Range(headerFind("LOS", fromHead) & clientRow).value _
-                    = DateDiff("d", _
+                    = calcLOS( _
                         Range(headerFind("Start Date", fromHead) & clientRow).value, _
                         Range(headerFind("End Date", fromHead) & clientRow).value)
         End Select
@@ -171,7 +171,7 @@ Sub ReferClientTo( _
                 Range(headerFind("Courtroom of Origin", toHead) & clientRow).value _
                     = Lookup("Courtroom_Name")(fromCR)
                 Range(headerFind("Age at Courtroom Referral", toHead) & clientRow).value _
-                    = DateDiff("d", Range(headerFind("DOB") & clientRow).value, referralDate) / 365
+                    = calcLOS(Range(headerFind("DOB") & clientRow).value, referralDate) / 365
                 Range(headerFind("Referral Date", toHead) & clientRow).value _
                     = referralDate
                 Call append(Range(headerFind("Notes on " & altName, toHead) & clientRow), Notes, referralDate)
@@ -193,7 +193,7 @@ Sub ReferClientTo( _
             Case "Adult"
                 Call flagYes(Range(headerFind("Was Youth in Adult?", toHead) & clientRow))
                 Range(headerFind("Age at Start of Status", toHead) & clientRow).value _
-                    = DateDiff("d", Range(headerFind("DOB") & clientRow).value, referralDate) / 365
+                    = calcLOS(Range(headerFind("DOB") & clientRow).value, referralDate) / 365
                 Range(headerFind("Start Date", toHead) & clientRow).value _
                     = referralDate
                 Call append(Range(headerFind("Notes on " & toCR, toHead) & clientRow), Notes, referralDate)

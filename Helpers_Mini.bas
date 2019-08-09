@@ -314,15 +314,19 @@ End Function
 Function ageAtTime(eventDate As String, rowNum As Long) As Double
     Dim DOB As String
     DOB = Worksheets("Entry").Range(headerFind("DOB") & rowNum).value
-    ageAtTime = Round((DateDiff("d", DOB, eventDate) / 365), 2)
+    ageAtTime = Round((calcLOS(DOB, eventDate) / 365), 2)
 End Function
 
 Function calcLOS(ByVal event1 As String, ByVal event2 As String) As Long
     If IsDate(event1) And IsDate(event2) Then
         calcLOS = DateDiff("d", event1, event2)
     Else
-        calcLOS = -1
-        MsgBox "Warning: a length of stay calculation failed and instead returned -1"
+        If event1 = "N/A" Or event2 = "N/A" Then
+            calcLOS = ""
+        Else
+            calcLOS = -1
+            MsgBox "Warning: a length of stay calculation failed and instead returned -1"
+        End If
     End If
 End Function
 

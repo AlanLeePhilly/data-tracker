@@ -316,7 +316,7 @@ Private Sub LookupData_Click()
             k = Lookup("Condition_Num")(getContractTerm(updateRow, i))
             j = Lookup("Condition_Provider_Num")(getContractTermProvider(updateRow, i))
             m = getContractTermDate(updateRow, i)
-            l = DateDiff("d", getContractTermDate(updateRow, i), Date)
+            l = calcLOS(getContractTermDate(updateRow, i), Date)
             If Not k = "None" Then
                 With FetchTerms
                     .ColumnCount = 4
@@ -324,7 +324,7 @@ Private Sub LookupData_Click()
                     .AddItem i
                     .List(FetchTerms.ListCount - 1, 1) = Lookup("Condition_Num")(getContractTerm(updateRow, i))
                     .List(FetchTerms.ListCount - 1, 2) = Lookup("Condition_Provider_Num")(getContractTermProvider(updateRow, i))
-                    .List(FetchTerms.ListCount - 1, 3) = DateDiff("d", getContractTermDate(updateRow, i), DateOfHearing)
+                    .List(FetchTerms.ListCount - 1, 3) = calcLOS(getContractTermDate(updateRow, i), DateOfHearing)
                 End With
                 With ReturnTerms
                     .ColumnCount = 5
@@ -332,7 +332,7 @@ Private Sub LookupData_Click()
                     .AddItem i
                     .List(ReturnTerms.ListCount - 1, 1) = Lookup("Condition_Num")(getContractTerm(updateRow, i))
                     .List(ReturnTerms.ListCount - 1, 2) = Lookup("Condition_Provider_Num")(getContractTermProvider(updateRow, i))
-                    .List(ReturnTerms.ListCount - 1, 3) = DateDiff("d", getContractTermDate(updateRow, i), DateOfHearing)
+                    .List(ReturnTerms.ListCount - 1, 3) = calcLOS(getContractTermDate(updateRow, i), DateOfHearing)
                 End With
             End If
         Next i
@@ -426,7 +426,7 @@ Private Sub FirstHearingSubmit_Click()
         Range(headerFind("Nature of Discharge", diversionHead) & updateRow).value = 2 'negative
         Range(headerFind("Discharge Date", diversionHead) & updateRow).value = DateOfHearing.value
         Range(headerFind("LOS Diversion", diversionHead) & updateRow).value _
-            = DateDiff("d", Range(headerFind("Arrest Date") & updateRow).value, DateOfHearing.value)
+            = calcLOS(Range(headerFind("Arrest Date") & updateRow).value, DateOfHearing.value)
         Range(headerFind("Detailed YAP Outcome", diversionHead) & updateRow).value = 2 'FTA
         Call ReferClientTo( _
             referralDate:=DateOfHearing.value, _
@@ -465,7 +465,7 @@ Private Sub FirstHearingSubmit_Click()
         Range(headerFind("Nature of Discharge", diversionHead) & updateRow).value = 2 'negative
         Range(headerFind("Discharge Date", diversionHead) & updateRow).value = DateOfHearing.value
         Range(headerFind("LOS Diversion", diversionHead) & updateRow).value _
-            = DateDiff("d", Range(headerFind("Arrest Date") & updateRow).value, DateOfHearing.value)
+            = calcLOS(Range(headerFind("Arrest Date") & updateRow).value, DateOfHearing.value)
         Range(headerFind("Detailed YAP Outcome", diversionHead) & updateRow).value = 14 'Admittance Not Granted
         'TODO ReferTo
     End If
@@ -562,7 +562,7 @@ Private Sub FollowupSubmit_Click()
             Range(headerFind("Nature of Discharge", diversionHead) & updateRow).value = 2 'negative
             Range(headerFind("Discharge Date", diversionHead) & updateRow).value = DateOfHearing.value
             Range(headerFind("LOS Diversion", diversionHead) & updateRow).value _
-                    = DateDiff("d", Range(headerFind("Arrest Date") & updateRow).value, DateOfHearing.value)
+                    = calcLOS(Range(headerFind("Arrest Date") & updateRow).value, DateOfHearing.value)
             Range(headerFind("Detailed YAP Outcome", diversionHead) & updateRow).value = 2 'FTA
             Call ReferClientTo( _
                     referralDate:=DateOfHearing.value, _
@@ -595,7 +595,7 @@ Private Sub FollowupSubmit_Click()
             Range(headerFind("Nature of Discharge", diversionHead) & updateRow).value = 2 'negative
             Range(headerFind("Discharge Date", diversionHead) & updateRow).value = DateOfHearing.value
             Range(headerFind("LOS Diversion", diversionHead) & updateRow).value _
-                    = DateDiff("d", Range(headerFind("Arrest Date") & updateRow).value, DateOfHearing.value) / 365
+                    = calcLOS(Range(headerFind("Arrest Date") & updateRow).value, DateOfHearing.value) / 365
             Range(headerFind("Detailed YAP Outcome", diversionHead) & updateRow).value = 13 'Contract Breach
 
         Case "Pending Completion - Orginal Timeline"
@@ -605,7 +605,7 @@ Private Sub FollowupSubmit_Click()
             Range(headerFind("Nature of Discharge", diversionHead) & updateRow).value = 1 'positive
             Range(headerFind("Discharge Date", diversionHead) & updateRow).value = DateOfHearing.value
             Range(headerFind("LOS Diversion", diversionHead) & updateRow).value _
-                    = DateDiff("d", Range(headerFind("Arrest Date") & updateRow).value, DateOfHearing.value) / 365
+                    = calcLOS(Range(headerFind("Arrest Date") & updateRow).value, DateOfHearing.value) / 365
             Range(headerFind("Detailed YAP Outcome", diversionHead) & updateRow).value = 6 ' positive completion
             Call totalOutcome( _
                 clientRow:=updateRow, _

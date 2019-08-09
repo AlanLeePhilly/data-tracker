@@ -293,6 +293,11 @@ Private Sub Submit_Click()
         MsgBox "Reason Not Diverted Required"
         Exit Sub
     End If
+    
+    If NextHearingLocation = "N/A" Or NextHearingLocation = "Adult" Then
+        MsgBox "New Hearing Location Required"
+        Exit Sub
+    End If
 
 
     Adult_Reslate_Juvenile_Petition.Hide
@@ -340,7 +345,6 @@ Private Sub TestFillPetition_Click()
 
     InitialHearingDate = "2/12/2019"
 
-    DA.value = "Keller"
 
     GeneralNotes.value = "Gen Notes Test"
 

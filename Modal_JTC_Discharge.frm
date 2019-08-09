@@ -27,16 +27,7 @@ Private Sub Continue_Click()
 
     Modal_JTC_Discharge.Hide
 
-    Select Case DetailedOutcome.value
-        Case "Rearrested & Held (adult)", "Aged out", "Show Cause"
-            ClientUpdateForm.JTC_Return_Phase.Caption = "Negative Discharge"
-        Case "Acceptance Not Granted", "Transfer to Dependent", "Transfer to Other County", "Hosp. (Mental Health)", "Hosp. (Physical Health)", "Other", "Unknown"
-            ClientUpdateForm.JTC_Return_Phase.Caption = "Neutral Discharge"
-        Case "Positive Completion"
-            ClientUpdateForm.JTC_Return_Phase.Caption = "Positive Discharge"
-        Case Else
-    End Select
-
+    ClientUpdateForm.JTC_Return_Phase.Caption = DetailedOutcome.value & " Discharge"
     ClientUpdateForm.JTC_Return_Stepup_Date.Caption = "N/A"
 
     'hide reason for pushback display on the main update form
@@ -58,21 +49,9 @@ Private Sub Cancel_Click()
     Modal_JTC_Discharge.Hide
 End Sub
 
-Private Sub DetailedOutcome_Change()
-    Select Case DetailedOutcome.value
-        Case "Rearrested & Held (adult)", "Positive Completion", "Aged Out", "Transfer to Dependent", "Transfer to Other County", "Admin. D/C - Reasonable Efforts"
-            New_CR_Label.Enabled = False
-            New_CR.Enabled = False
-            New_CR.value = "N/A"
-            'Case "Acceptance Not Granted", "Show Cause", "Hosp. (Mental Health)", "Hosp. (Physical Health)", "Other", "Unknown"
-        Case Else
-            New_CR_Label.Enabled = True
-            New_CR.Enabled = True
-
-    End Select
-
-    Select Case DetailedOutcome.value
-        Case "Rearrested & Held (adult)", "Aged Out", "Show Cause"
+Private Sub NatureOfOutcome_Change()
+    Select Case NatureOfOutcome.value
+        Case "Negative"
             ReasonForDischarge1.Enabled = True
             LabelReason1.Enabled = True
             ReasonForDischarge2.Enabled = True
@@ -93,6 +72,18 @@ Private Sub DetailedOutcome_Change()
 End Sub
 
 
+Private Sub DetailedOutcome_Change()
+    Select Case DetailedOutcome.value
+        Case "Rearrested & Held (adult)", "Positive Completion", "Aged Out", "Transfer to Dependent", "Transfer to Other County", "Admin. D/C - Reasonable Efforts"
+            New_CR_Label.Enabled = False
+            New_CR.Enabled = False
+            New_CR.value = "N/A"
+            'Case "Acceptance Not Granted", "Show Cause", "Hosp. (Mental Health)", "Hosp. (Physical Health)", "Other", "Unknown"
+        Case Else
+            New_CR_Label.Enabled = True
+            New_CR.Enabled = True
+    End Select
+End Sub
 
 Private Sub Clear_Click()
 
