@@ -346,8 +346,6 @@ Private Sub TestFillPetition_Click()
     InitialHearingDate = "2/12/2019"
 
 
-    GeneralNotes.value = "Gen Notes Test"
-
 End Sub
 
 Private Sub TestFillDiversion_Click()
@@ -379,9 +377,7 @@ Private Sub TestFillDiversion_Click()
     ReferralSource.value = "Pre-Petition DA"
     NameOfProgram.value = "YAP"
     YAPDistrict.value = 2
-
-    GeneralNotes.value = "Gen Notes Test"
-
+    
     InitialHearingDate.value = "02/01/2019"
     NextHearingLocation.value = "Diversion"
     ListingType.value = "Diversion"
@@ -411,8 +407,6 @@ Private Sub TestFillIntake_Click()
     OverrideHoldRe2.value = "Drug Screens"
     OverrideHoldRe3.value = "N/A"
     ConfOutcome.value = "Release for Court"
-
-    GeneralNotes.value = "Gen Notes Test"
 
     InitialHearingDate.value = "02/01/2019"
     NextHearingLocation.value = "3E"

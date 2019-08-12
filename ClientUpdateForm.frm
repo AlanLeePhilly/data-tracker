@@ -555,8 +555,8 @@ Sub Adult_Submit_Click()
                 Range(headerFind("Gun Case?", juvePetitionHead) & updateRow).value = Lookup("Generic_YNOU_Name")(.GunCase.value)
                 Range(headerFind("Gun Involved Arrest?", juvePetitionHead) & updateRow).value = Lookup("Generic_YNOU_Name")(.GunInvolved.value)
 
-                Range(headerFind("General Notes from Intake", juvePetitionHead) & updateRow).value = .GeneralNotes.value
-
+                Range(headerFind("General Notes from Intake", juvePetitionHead) & updateRow).value = Adult_Notes.value
+                
                 Dim Num As Long
                 Dim j As Integer
 
@@ -825,7 +825,8 @@ Sub Adult_Submit_Click()
                             referralDate:=.InConfDate.value, _
                             clientRow:=updateRow, _
                             fromCR:="Intake Conf.", _
-                            toCR:=.NextHearingLocation.value _
+                            toCR:=.NextHearingLocation.value, _
+                            DA:=DA.value _
                             )
                             If .NextHearingLocation.value = "5E" Then
                                 Range(hFind("Courtroom of Origin", "Crossover") & updateRow).value _
@@ -930,13 +931,14 @@ Sub Adult_Submit_Click()
                             Call ReferClientTo( _
                             referralDate:=.PetitionBox.List(0, 0), _
                             clientRow:=updateRow, _
-                            toCR:=.NextHearingLocation.value _
+                            toCR:=.NextHearingLocation.value, _
+                            DA:=DA.value _
                             )
                     End Select
                 End If
 
                 'Range(headerFind("DA") & updateRow).value = Lookup("DA_Last_Name_Name")(DA.value)
-                Range(headerFind("General Notes from Intake") & updateRow).value = .GeneralNotes.value
+                'Range(headerFind("General Notes from Intake") & updateRow).value = .GeneralNotes.value
 
                 '''''''''''''''''''
                 '''''DIVERSION'''''
@@ -1308,7 +1310,8 @@ Sub JTC_Submit_Click()
             clientRow:=updateRow, _
             toCR:=Modal_JTC_Reject.ReferredTo.value, _
             fromCR:="JTC", _
-            Notes:="Rejected from JTC")
+            Notes:="Rejected from JTC", _
+            DA:=DA.value)
         Call Cancel_Click
         Worksheets("User Entry").Activate
         Exit Sub
@@ -1469,7 +1472,8 @@ Sub JTC_Submit_Click()
                     clientRow:=updateRow, _
                     toCR:=Modal_JTC_Discharge.New_CR.value, _
                     fromCR:="JTC", _
-                    newLegalStatus:="Probation")
+                    newLegalStatus:="Probation", _
+                    DA:=DA.value)
 
                 '''''''''''''''''''''
             Case "Transfer to Dependent"
@@ -1477,7 +1481,8 @@ Sub JTC_Submit_Click()
                     referralDate:=DateOfHearing.value, _
                     clientRow:=updateRow, _
                     toCR:="5E", _
-                    fromCR:="JTC")
+                    fromCR:="JTC", _
+                    DA:=DA.value)
 
                 '''''''''''''''''''''
             Case "Transfer to Other County"
@@ -1493,26 +1498,12 @@ Sub JTC_Submit_Click()
 
         End Select
 
-        If JTC_Return_Phase = "Positive Discharge" Then
-            Range(headerFind("Nature of Discharge", tempHead) & updateRow) _
-                            = Lookup("Nature_of_Discharge_Name")("Positive")
-        End If
-
-        If JTC_Return_Phase = "Negative Discharge" Then
-            Range(headerFind("Nature of Discharge", tempHead) & updateRow) _
-                            = Lookup("Nature_of_Discharge_Name")("Negative")
-        End If
-
-        If JTC_Return_Phase = "Neutral Discharge" Then
-            Range(headerFind("Nature of Discharge", tempHead) & updateRow) _
-                            = Lookup("Nature_of_Discharge_Name")("Neutral")
-        End If
 
         'set detailed outcome
         Range(headerFind("Detailed Courtroom Outcome", tempHead) & updateRow) = _
                         Lookup("JTC_Outcome_Name")(Modal_JTC_Discharge.DetailedOutcome.value)
         Range(headerFind("Nature of Courtroom Outcome", tempHead) & updateRow) = _
-                        Lookup("JTC_Outcome_Name")(Modal_JTC_Discharge.NatureOfOutcome.value)
+                        Lookup("Nature_of_Discharge_Name")(Modal_JTC_Discharge.NatureOfOutcome.value)
         'if negative
         'set reasons for dischrage
         Range(headerFind("Reason #1 for Negative Discharge", tempHead) & updateRow) = _
@@ -2059,41 +2050,51 @@ Sub Standard_Submit_Click()
     ''''''''''''''
     'LEGAL STATUS'
     ''''''''''''''
-    If Standard_Legal_Status_Update.BackColor = selectedColor _
-       And Standard_Court_Transfer.BackColor = unselectedColor Then
-        With Modal_Standard_Legal_Status
-            Call endLegalStatus( _
-                clientRow:=updateRow, _
-                statusType:=.Current_Legal_Status, _
-                Courtroom:=oldCourtroom, _
-                DA:=DA.value, _
-                endDate:=.Current_Discharge_Date, _
-                Nature:=.Current_Discharge_Nature, _
-                withAgg:=True, _
-                detailed:=.Current_Detailed_Outcome, _
-                Reason1:=.Reason1, Reason2:=.Reason2, Reason3:=.Reason3, Reason4:=.Reason4, Reason5:=.Reason5, _
-                Notes:=.Current_Notes)
-
-            If isTerminal("Legal Status", .Current_Detailed_Outcome) Then
-                Call totalOutcome( _
+    If Standard_Legal_Status_Update.BackColor = selectedColor Then
+        If Standard_Court_Transfer.BackColor = unselectedColor Then
+            With Modal_Standard_Legal_Status
+                Call endLegalStatus( _
                     clientRow:=updateRow, _
-                    dateOf:=.Current_Discharge_Date, _
+                    statusType:=.Current_Legal_Status, _
                     Courtroom:=oldCourtroom, _
                     DA:=DA.value, _
-                    legalStatus:=.Current_Legal_Status.Caption, _
-                    Nature:=.Courtroom_Outcome_Nature, _
-                    detailed:=.Courtroom_Detailed_Outcome, _
-                    Notes:=Standard_Notes.value)
-            Else
-                Call startLegalStatus( _
-                    clientRow:=updateRow, _
-                    statusType:=.New_Legal_Status, _
-                    Courtroom:=newCourtroom, _
-                    DA:=DA.value, _
-                    startDate:=.New_Start_Date, _
-                    Notes:=.New_Notes)
-            End If
-        End With
+                    endDate:=.Current_Discharge_Date, _
+                    Nature:=.Current_Discharge_Nature, _
+                    withAgg:=True, _
+                    detailed:=.Current_Detailed_Outcome, _
+                    Reason1:=.Reason1, Reason2:=.Reason2, Reason3:=.Reason3, Reason4:=.Reason4, Reason5:=.Reason5, _
+                    Notes:=.Current_Notes)
+    
+                If isTerminal("Legal Status", .Current_Detailed_Outcome) Then
+                    Call totalOutcome( _
+                        clientRow:=updateRow, _
+                        dateOf:=.Current_Discharge_Date, _
+                        Courtroom:=oldCourtroom, _
+                        DA:=DA.value, _
+                        legalStatus:=.Current_Legal_Status.Caption, _
+                        Nature:=.Courtroom_Outcome_Nature, _
+                        detailed:=.Courtroom_Detailed_Outcome, _
+                        Notes:=Standard_Notes.value)
+                Else
+                    Call startLegalStatus( _
+                        clientRow:=updateRow, _
+                        statusType:=.New_Legal_Status, _
+                        Courtroom:=newCourtroom, _
+                        DA:=DA.value, _
+                        startDate:=.New_Start_Date, _
+                        Notes:=.New_Notes)
+                End If
+            End With
+        Else
+            Call startLegalStatus( _
+                clientRow:=updateRow, _
+                statusType:=Standard_Return_Legal_Status.Caption, _
+                Courtroom:=oldCourtroom, _
+                DA:=DA.value, _
+                startDate:=DateOfHearing.value, _
+                Notes:=Standard_Notes.value, _
+                zeroLocal:=True)
+        End If
     Else
         Call startLegalStatus( _
             clientRow:=updateRow, _
@@ -2101,7 +2102,7 @@ Sub Standard_Submit_Click()
             Courtroom:=oldCourtroom, _
             DA:=DA.value, _
             startDate:=DateOfHearing.value, _
-            Notes:="Continued from prior courtroom")
+            Notes:="Transferred from prior CR")
     End If
 
 
@@ -2494,7 +2495,7 @@ Sub Standard_Submit_Click()
         Range(headerFind("Notes on Outcome", outcomeHead) & updateRow).value = "Transferred out of courtroom"
         Range(headerFind("Date of Overall Discharge", outcomeHead) & updateRow).value = DateOfHearing.value
         Range(headerFind("Courtroom of Discharge", outcomeHead) & updateRow).value = Lookup("Courtroom_Name")(oldCourtroom)
-        Range(headerFind("Legal Status of Discharge", outcomeHead) & updateRow).value = Lookup("Legal_Status_Name")(Standard_Fetch_Legal_Status.Caption)
+        Range(headerFind("Legal Status of Discharge", outcomeHead) & updateRow).value = Lookup("Legal_Status_Name")(Standard_Return_Legal_Status.Caption)
         Range(headerFind("DA", outcomeHead) & updateRow).value = Lookup("DA_Last_Name_Name")(DA.value)
         Range(headerFind("Active or Discharged", outcomeHead) & updateRow).value = 2 'discharged
         Range(headerFind("Nature of Courtroom Outcome", outcomeHead) & updateRow).value _
@@ -2509,7 +2510,8 @@ Sub Standard_Submit_Click()
                 newLegalStatus:=Standard_Return_Legal_Status.Caption, _
                 oldLegalStatus:=Standard_Fetch_Legal_Status.Caption, _
                 toCR:=Modal_Standard_Court_Transfer.Courtroom.value, _
-                fromCR:=oldCourtroom)
+                fromCR:=oldCourtroom, _
+                DA:=DA.value)
 
         Else
             Call ReferClientTo( _
@@ -2623,7 +2625,8 @@ Private Sub PJJSC_Submit_Click()
             referralDate:=DateOfHearing.value, _
             clientRow:=updateRow, _
             fromCR:="PJJSC", _
-            toCR:=DRev_NextHearingLocation.value)
+            toCR:=DRev_NextHearingLocation.value, _
+            DA:=DA.value)
 
         Call addSupervision( _
             clientRow:=updateRow, _
@@ -2653,7 +2656,8 @@ Private Sub PJJSC_Submit_Click()
             referralDate:=DateOfHearing.value, _
             clientRow:=updateRow, _
             fromCR:="PJJSC", _
-            toCR:=DRev_ReferredTo.value _
+            toCR:=DRev_ReferredTo.value, _
+            DA:=DA.value _
         )
 
         'ADD SUPERVISION #1 TO DETENTION SECTION

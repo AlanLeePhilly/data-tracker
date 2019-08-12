@@ -317,7 +317,7 @@ Function ageAtTime(eventDate As String, rowNum As Long) As Double
     ageAtTime = Round((calcLOS(DOB, eventDate) / 365), 2)
 End Function
 
-Function calcLOS(ByVal event1 As String, ByVal event2 As String) As Long
+Function calcLOS(ByVal event1 As String, ByVal event2 As String) As Variant
     If IsDate(event1) And IsDate(event2) Then
         calcLOS = DateDiff("d", event1, event2)
     Else

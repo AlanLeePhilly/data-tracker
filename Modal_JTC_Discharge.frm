@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} Modal_JTC_Discharge 
    Caption         =   "JTC - Discharge Client"
-   ClientHeight    =   6630
+   ClientHeight    =   9735.001
    ClientLeft      =   45
    ClientTop       =   -75
-   ClientWidth     =   6690
+   ClientWidth     =   9690.001
    OleObjectBlob   =   "Modal_JTC_Discharge.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -27,7 +27,7 @@ Private Sub Continue_Click()
 
     Modal_JTC_Discharge.Hide
 
-    ClientUpdateForm.JTC_Return_Phase.Caption = DetailedOutcome.value & " Discharge"
+    ClientUpdateForm.JTC_Return_Phase.Caption = NatureOfOutcome.value & " Discharge"
     ClientUpdateForm.JTC_Return_Stepup_Date.Caption = "N/A"
 
     'hide reason for pushback display on the main update form

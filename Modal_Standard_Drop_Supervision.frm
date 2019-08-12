@@ -34,7 +34,14 @@ Private Sub InsertDoH_Click()
 End Sub
 
 Private Sub Cancel_Click()
-    Unload Modal_Standard_Drop_Supervision
+    
+    Discharge_Date.value = ""
+    Nature.value = "N/A"
+    Reason1.value = "N/A"
+    Reason2.value = "N/A"
+    Reason3.value = "N/A"
+    Notes.value = ""
+    Modal_Standard_Drop_Supervision.Hide
 End Sub
 
 Private Sub Continue_Click()
@@ -59,12 +66,11 @@ Private Sub Continue_Click()
                     returnBox.List(i, 7) = Reason2
                     returnBox.List(i, 8) = Reason3
                     returnBox.List(i, 9) = Notes
-
                 End If
             End If
         Next
     End With
-    Unload Modal_Standard_Drop_Supervision
+    Call Cancel_Click
 End Sub
 
 

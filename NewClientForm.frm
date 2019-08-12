@@ -736,9 +736,11 @@ Private Sub Submit_Click()
         End If
 
         emptyRow = Reload_Row
+        restorer = Range("C" & emptyRow & ":" & hFind("END") & emptyRow).value
         Range("C" & emptyRow & ":" & hFind("END") & emptyRow).ClearContents
     End If
-
+    
+    
 
     On Error GoTo err
 
@@ -1201,7 +1203,8 @@ Private Sub Submit_Click()
                     referralDate:=InConfDate.value, _
                     clientRow:=emptyRow, _
                     fromCR:="Intake Conf.", _
-                    toCR:=InitialHearingLocation.value _
+                    toCR:=InitialHearingLocation.value, _
+                    DA:=DA.value _
                     )
                 If InitialHearingLocation.value = "5E" Then
                     Range(hFind("Courtroom of Origin", "Crossover") & emptyRow).value _
@@ -1306,7 +1309,8 @@ Private Sub Submit_Click()
                 Call ReferClientTo( _
                     referralDate:=PetitionBox.List(0, 0), _
                     clientRow:=emptyRow, _
-                    toCR:=InitialHearingLocation.value _
+                    toCR:=InitialHearingLocation.value, _
+                    DA:=DA.value _
                     )
         End Select
     End If
@@ -1564,7 +1568,10 @@ Private Sub TestFillPetition_Click()
     InitialHearingLocation.value = "3E"
 
     InitialHearingDate = "2/12/2019"
-
+    GunCase.value = "No"
+    GunInvolved.value = "No"
+    'DirectFiled.value = "No"
+    
     DA.value = "Keller"
 
     GeneralNotes.value = "Gen Notes Test"

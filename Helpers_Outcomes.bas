@@ -30,7 +30,7 @@ Sub totalOutcome( _
         = Lookup("Acquittal_or_Supervision_Discharge_Name")("Completion of Terms")
 
     Range(headerFind("Total LOS in System (from petition)", outcomeHead) & clientRow).value _
-        = calcLOS(Range(hFind("Date Filed", "Petition #1") & clientRow).value, dateOf)
+        = calcLOS(Range(hFind("Date Filed", "Petition #1", "JUVENILE PETITION") & clientRow).value, dateOf)
     Range(headerFind("Total LOS From Arrest", outcomeHead) & clientRow).value _
         = calcLOS(Range(hFind("Arrest Date") & clientRow).value, dateOf)
         

@@ -7,7 +7,8 @@ Sub startLegalStatus( _
     ByVal DA As String, _
     ByVal startDate As String, _
     Optional courtroomOfOrigin As String, _
-    Optional Notes As String = "" _
+    Optional Notes As String = "", _
+    Optional zeroLocal As Boolean = False _
 )
     Worksheets("Entry").Activate
     Dim bucketHead As String
@@ -78,7 +79,19 @@ Sub startLegalStatus( _
             Range(headerFind("Notes on " & statusType, bucketHead) & clientRow), Notes)
 
     Next i
-
+    
+    If canWriteLocal And zeroLocal Then
+        Call endLegalStatus( _
+            clientRow:=clientRow, _
+            statusType:=statusType, _
+            Courtroom:=Courtroom, _
+            DA:=DA, _
+            endDate:=startDate, _
+            Nature:="Neutral", _
+            withAgg:=False, _
+            detailed:="Neutral Transfer of Status", _
+            Notes:="Youth offered " & statusType & " transferred to new courtroom")
+    End If
 
 End Sub
 

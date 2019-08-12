@@ -7,7 +7,8 @@ Sub ReferClientTo( _
     Optional fromCR As String = "N/A", _
     Optional Notes As String = "", _
     Optional newLegalStatus As String = "", _
-    Optional oldLegalStatus As String = "")
+    Optional oldLegalStatus As String = "", _
+    Optional DA As String = "Unknown")
 
     Worksheets("Entry").Activate
 
@@ -146,7 +147,7 @@ Sub ReferClientTo( _
 
                 Range(headerFind("Active or Discharged", toHead) & clientRow).value _
                     = Lookup("Active_Name")("Active")
-                Range(headerFind("Nature of Discharge", toHead) & clientRow).value _
+                Range(headerFind("Nature of Courtroom Outcome", toHead) & clientRow).value _
                     = Lookup("Nature_of_Discharge_Name")("Still Active")
 
                 Call flagNo(Range(headerFind("Was Youth Placed?", toHead) & clientRow))
@@ -384,12 +385,11 @@ Sub ReferClientTo( _
     And Not toCR = "JTC" _
     And Not toCR = "WRAP" _
     And Not toCR = "Crossover" Then
-
         Call endLegalStatus( _
             clientRow:=clientRow, _
             statusType:=currentStatus, _
             Courtroom:=fromCR, _
-            DA:="Unknown", _
+            DA:=DA, _
             endDate:=referralDate, _
             Nature:="Neutral", _
             withAgg:=submitWithAgg, _
@@ -414,13 +414,13 @@ Sub ReferClientTo( _
 
 
             Call startLegalStatus( _
-            clientRow:=clientRow, _
-            statusType:=submitLegalStatus, _
-            Courtroom:=toCR, _
-            courtroomOfOrigin:=CRofOrigin, _
-            DA:="Unknown", _
-            startDate:=referralDate, _
-            Notes:="Transferred into courtroom")
+                clientRow:=clientRow, _
+                statusType:=submitLegalStatus, _
+                Courtroom:=toCR, _
+                courtroomOfOrigin:=CRofOrigin, _
+                DA:=DA, _
+                startDate:=referralDate, _
+                Notes:="Transferred into courtroom")
         End If
     End If
 End Sub

@@ -34,6 +34,12 @@ Private Sub InsertDoH_Click()
 End Sub
 
 Private Sub Cancel_Click()
+    Discharge_Date.value = ""
+    Nature.value = "N/A"
+    Reason1.value = "N/A"
+    Reason2.value = "N/A"
+    Reason3.value = "N/A"
+    Notes.value = ""
     Modal_JTC_Drop_Service.Hide
 End Sub
 
@@ -63,15 +69,7 @@ Private Sub Continue_Click()
             End If
         Next
     End With
-    Modal_JTC_Drop_Service.Hide
-
-    Service_Box.listIndex = -1
-    Discharge_Date.value = ""
-    Nature.value = "N/A"
-    Reason1.value = "N/A"
-    Reason2.value = "N/A"
-    Reason3.value = "N/A"
-    Notes.value = ""
+    Call Cancel_Click
 End Sub
 
 

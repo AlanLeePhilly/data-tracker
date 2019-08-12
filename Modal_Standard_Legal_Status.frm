@@ -154,7 +154,7 @@ Private Sub Continue_Click()
 
     ClientUpdateForm.Standard_Legal_Status_Update.BackColor = selectedColor
     ClientUpdateForm.Standard_Legal_Status_Remain.BackColor = unselectedColor
-    ClientUpdateForm.Standard_Return_Legal_Status.Caption = New_Legal_Status
+    ClientUpdateForm.Standard_Return_Legal_Status.Caption = New_Legal_Status.value
     Modal_Standard_Legal_Status.Hide
 
 End Sub
