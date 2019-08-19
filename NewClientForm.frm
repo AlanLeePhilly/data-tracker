@@ -1426,10 +1426,21 @@ Private Sub Submit_Click()
             = 2 * Weekday(IncidentDate.value, vbMonday) - 1 + Lookup("Day_Adjustment_Name")(chargeKey)
 
 
-
+    Dim noteDate As String
+    
+    If Not InConfDate.value = "" Then
+        noteDate = InConfDate.value
+    Else
+        If Not InitialHearingDate.value = "" Then
+            noteDate = InitialHearingDate.value
+        Else
+            noteDate = "Date not available"
+        End If
+    End If
+    
     Call addNotes( _
         Courtroom:=InitialHearingLocation.value, _
-        dateOf:=InConfDate.value, _
+        dateOf:=noteDate, _
         userRow:=emptyRow, _
         Notes:=GeneralNotes, _
         DA:=DA.value _

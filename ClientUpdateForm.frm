@@ -617,28 +617,28 @@ Sub Adult_Submit_Click()
 
                 If .DiversionProgram.value = "Yes" Then
                     Call startLegalStatus( _
-                    clientRow:=updateRow, _
-                    statusType:="Diversion", _
-                    Courtroom:="PJJSC", _
-                    DA:=DA.value, _
-                    startDate:=.DiversionProgramReferralDate.value)
+                        clientRow:=updateRow, _
+                        statusType:="Diversion", _
+                        Courtroom:="PJJSC", _
+                        DA:=DA.value, _
+                        startDate:=.DiversionProgramReferralDate.value)
 
                 Else
                     If .ConfOutcome.value = "Hold for Detention" _
                     Or .ConfOutcome.value = "Roll to Detention Hearing" Then
                         Call startLegalStatus( _
-                        clientRow:=updateRow, _
-                        statusType:="Pretrial", _
-                        Courtroom:="PJJSC", _
-                        DA:=DA.value, _
-                        startDate:=.PetitionBox.List(0, 0))
+                            clientRow:=updateRow, _
+                            statusType:="Pretrial", _
+                            Courtroom:="PJJSC", _
+                            DA:=DA.value, _
+                            startDate:=.PetitionBox.List(0, 0))
                     Else
                         Call startLegalStatus( _
-                        clientRow:=updateRow, _
-                        statusType:="Pretrial", _
-                        Courtroom:="Intake Conf.", _
-                        DA:=DA.value, _
-                        startDate:=.PetitionBox.List(0, 0))
+                            clientRow:=updateRow, _
+                            statusType:="Pretrial", _
+                            Courtroom:="Intake Conf.", _
+                            DA:=DA.value, _
+                            startDate:=.PetitionBox.List(0, 0))
                     End If
                 End If
 
@@ -691,19 +691,19 @@ Sub Adult_Submit_Click()
                             Range(headerFind("LOS in Detention", tempHead) & updateRow).value _
                                 = calcLOS(.CallInDate.value, .InConfDate.value)
                             Call addSupervision( _
-                            clientRow:=updateRow, _
-                            serviceType:="Detention (not respite)", _
-                            legalStatus:="Pretrial", _
-                            Courtroom:="Call-In", _
-                            CourtroomOfOrder:="Call-In", _
-                            DA:=DA.value, _
-                            agency:="PJJSC", _
-                            startDate:=.CallInDate.value, _
-                            endDate:=.InConfDate.value, _
-                            Re1:="", _
-                            Re2:="", _
-                            Re3:="", _
-                            Notes:="Held at call-in")
+                                clientRow:=updateRow, _
+                                serviceType:="Detention (not respite)", _
+                                legalStatus:="Pretrial", _
+                                Courtroom:="Call-In", _
+                                CourtroomOfOrder:="Call-In", _
+                                DA:=DA.value, _
+                                agency:="PJJSC", _
+                                startDate:=.CallInDate.value, _
+                                endDate:=.InConfDate.value, _
+                                Re1:="", _
+                                Re2:="", _
+                                Re3:="", _
+                                Notes:="Held at call-in")
 
                     End Select
                     Range(headerFind("LOS Until Next Hearing", tempHead) & updateRow).value _
@@ -822,12 +822,18 @@ Sub Adult_Submit_Click()
 
                         Case "Release for Court"
                             Call ReferClientTo( _
-                            referralDate:=.InConfDate.value, _
-                            clientRow:=updateRow, _
-                            fromCR:="Intake Conf.", _
-                            toCR:=.NextHearingLocation.value, _
-                            DA:=DA.value _
-                            )
+                                referralDate:=.InConfDate.value, _
+                                clientRow:=updateRow, _
+                                fromCR:="Intake Conf.", _
+                                toCR:=.NextHearingLocation.value, _
+                                DA:=DA.value _
+                                )
+                            Call ReferClientTo( _
+                                referralDate:=.PetitionBox.List(0, 0), _
+                                clientRow:=updateRow, _
+                                fromCR:="Adult", _
+                                DA:=DA.value _
+                                )
                             If .NextHearingLocation.value = "5E" Then
                                 Range(hFind("Courtroom of Origin", "Crossover") & updateRow).value _
                                     = Lookup("Courtroom_Name")("Intake Conf.")
@@ -931,6 +937,7 @@ Sub Adult_Submit_Click()
                             Call ReferClientTo( _
                             referralDate:=.PetitionBox.List(0, 0), _
                             clientRow:=updateRow, _
+                            fromCR:="Adult", _
                             toCR:=.NextHearingLocation.value, _
                             DA:=DA.value _
                             )

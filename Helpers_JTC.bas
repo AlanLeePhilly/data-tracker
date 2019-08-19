@@ -261,9 +261,15 @@ Sub JTC_Service_Box_Add(ByRef MyBox As Object, ByVal bucketHead As String)
             .List(newIndex, 1) = _
                   Lookup("Community_Based_Supervision_Provider_Num")(Range(headerFind("Community-Based Agency", bucketHead) & updateRow).value)
         End If
-
-
-        .List(newIndex, 2) = Range(headerFind("Start Date", bucketHead) & updateRow).value
+        
+        Dim dateCell As Range
+        Set dateCell = Range(headerFind("Start Date", bucketHead) & updateRow)
+        
+        If Not IsDate(dateCell.value) And isNotEmptyOrZero(dateCell) Then
+            dateCell.value = CDate(dateCell.value)
+        End If
+        
+        .List(newIndex, 2) = dateCell.value
         '.List(newIndex, 3) = Range(headerFind("End Date", bucketHead) & updateRow).value
         .List(newIndex, 4) = bucketHead
     End With
@@ -285,7 +291,15 @@ Sub JTC_Condition_Box_Add(ByRef MyBox As Object, ByVal bucketHead As String)
         newIndex = MyBox.ListCount - 1
         .List(newIndex, 1) = _
             Lookup("Condition_Provider_Num")(Range(headerFind("Condition Agency", bucketHead) & updateRow).value)
-        .List(newIndex, 2) = Range(headerFind("Start Date", bucketHead) & updateRow).value
+        
+        Dim dateCell As Range
+        Set dateCell = Range(headerFind("Start Date", bucketHead) & updateRow)
+        
+        If Not IsDate(dateCell.value) And isNotEmptyOrZero(dateCell) Then
+            dateCell.value = CDate(dateCell.value)
+        End If
+        
+        .List(newIndex, 2) = dateCell.value
         .List(newIndex, 3) = ""
         .List(newIndex, 4) = bucketHead
 

@@ -23,8 +23,10 @@ Sub ReferClientTo( _
 
 
     Select Case fromCR
-        Case "4G", "4E", "6F", "6H", "3E", "JTC", "WRAP", "Adult"
+        Case "4G", "4E", "6F", "6H", "3E", "JTC", "WRAP"
             fromHead = headerFind(fromCR)
+        Case "Adult"
+            fromHead = headerFind("ADULT")
         Case "PJJSC"
             fromHead = headerFind("DETENTION")
         Case "5E"
@@ -94,10 +96,42 @@ Sub ReferClientTo( _
             Case "Adult"
                 Range(headerFind("End Date", fromHead) & clientRow).value _
                     = referralDate
+                Range(headerFind("Nature of Discharge", fromHead) & clientRow).value _
+                    = 3 'Neutral
+                Range(headerFind("Detailed Status Outcome", fromHead) & clientRow).value _
+                    = 12 'Transfer to New Del. Room - Neutral
                 Range(headerFind("LOS", fromHead) & clientRow).value _
                     = calcLOS( _
                         Range(headerFind("Start Date", fromHead) & clientRow).value, _
                         Range(headerFind("End Date", fromHead) & clientRow).value)
+                        
+                Range(headerFind("Notes on Outcome", fromHead) & clientRow).value _
+                    = Notes
+                Range(headerFind("Date of Overall Discharge", fromHead) & clientRow).value _
+                    = referralDate
+                Range(headerFind("Courtroom of Discharge", fromHead) & clientRow).value _
+                    = Lookup("Courtroom_Name")(toCR)
+                Range(headerFind("DA", fromHead) & clientRow).value _
+                    = Lookup("DA_Last_Name_Name")(DA)
+                Range(headerFind("Legal Status of Discharge", fromHead) & clientRow).value _
+                    = 10 'Adult
+                Range(headerFind("Active or Discharged", fromHead) & clientRow).value _
+                    = 2 'Discharged
+                Range(headerFind("Nature of Courtroom Outcome", fromHead) & clientRow).value _
+                    = 3 'Neutral
+                Range(headerFind("Detailed Courtroom Outcome", fromHead) & clientRow).value _
+                    = 12 'Transfer to New Del. Room - Neutral
+                Range(headerFind("Acquittal or Supervision Discharge?", fromHead) & clientRow).value _
+                    = 2 'Completion of Terms
+                Range(headerFind("Total LOS in Adult", fromHead) & clientRow).value _
+                    = calcLOS( _
+                        Range(headerFind("Start Date", fromHead) & clientRow).value, _
+                        Range(headerFind("End Date", fromHead) & clientRow).value)
+                Range(headerFind("Total LOS From Arrest", fromHead) & clientRow).value _
+                    = calcLOS( _
+                        Range(headerFind("Arrest Date") & clientRow).value, _
+                        Range(headerFind("End Date", fromHead) & clientRow).value)
+            
         End Select
     End If
 
@@ -217,7 +251,8 @@ Sub ReferClientTo( _
     If Not toCR = "N/A" _
     And Not fromCR = "N/A" _
     And Not fromCR = "PJJSC" _
-    And Not fromCR = "Intake Conf." Then
+    And Not fromCR = "Intake Conf." _
+    And Not fromCR = "Adult" Then
 
         Dim i As Integer
         Dim bucketCount As Integer
@@ -382,6 +417,7 @@ Sub ReferClientTo( _
     End If
 
     If Not fromCR = "N/A" _
+    And Not toCR = "N/A" _
     And Not toCR = "JTC" _
     And Not toCR = "WRAP" _
     And Not toCR = "Crossover" Then
