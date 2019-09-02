@@ -412,7 +412,7 @@ Sub FaceSheetPrint()
 
         For conditionI = 1 To conditionArrLength
             PrintSheet.Range("N" & 30 + 2 * conditionI) = Lookup("Condition_Num")(DataSheet.Range(hFind(conditionsColumns(conditionI - 1), "Aggregates") & userRow).value)
-            PrintSheet.Range("U" & 30 + 2 * conditionI) = DataSheet.Range(hFind("Condition Agency", conditionsColumns(conditionI - 1), "Aggregates") & userRow).value
+            PrintSheet.Range("U" & 30 + 2 * conditionI) = Lookup("Condition_Provider_Num")(DataSheet.Range(hFind("Condition Agency", conditionsColumns(conditionI - 1), "Aggregates") & userRow).value)
             
             conditionStart = DataSheet.Range(hFind("Start Date", conditionsColumns(conditionI - 1), "Aggregates") & userRow).value
             PrintSheet.Range("X" & 30 + 2 * conditionI) = DateDiff("d", conditionStart, VBA.format(Now(), "mm/dd/yyyy")) & " days"

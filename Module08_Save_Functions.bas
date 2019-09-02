@@ -165,7 +165,7 @@ Sub Archive()
 
     'here you can set the name of the directory where you want the file to go.
     'note that the folder location must exist prior to saving it there
-    newFilePath = "H:\SJS Entry\Archives\"
+    newFilePath = "H:\SJS Archives\Archives\"
 
     'Here the new file name is composed of:
     'the filepath specified above
