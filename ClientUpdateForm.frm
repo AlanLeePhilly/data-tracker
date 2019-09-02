@@ -459,11 +459,12 @@ Sub Adult_Submit_Click()
 
             'COPY VALUES FROM PETITION TO JUVENILE PETITION'
             ''''''''''''''''''''''''''''''''''''''''''''''''''
+            
+            
+            Range(headerFind("Initial Hearing Location", juvePetitionHead) & updateRow).value = 10 'Adult
 
             Range(headerFind("Initial Court Date", juvePetitionHead) & updateRow).value _
           = Range(headerFind("Initial Court Date", petitionHead) & updateRow).value
-            Range(headerFind("Initial Hearing Location", juvePetitionHead) & updateRow).value _
-          = Range(headerFind("Initial Hearing Location", petitionHead) & updateRow).value
             Range(headerFind("# of Prior Arrests", juvePetitionHead) & updateRow).value _
           = Range(headerFind("# of Prior Arrests", petitionHead) & updateRow).value
             Range(headerFind("Active in System at Time of Arrest?", juvePetitionHead) & updateRow).value _
@@ -1312,6 +1313,20 @@ Sub JTC_Submit_Click()
         Range(headerFind("Rejected Date", courtHead) & updateRow).value = DateOfHearing.value
         Range(headerFind("Next Hearing Location (if rejected)", courtHead) & updateRow).value = _
             Lookup("Courtroom_Name")(Modal_JTC_Reject.ReferredTo.value)
+            
+        tempHead = headerFind("JTC OUTCOMES")
+
+        Range(headerFind("Notes on Outcome", tempHead) & updateRow) = JTC_Notes.value
+        Range(headerFind("Date of Overall Discharge", tempHead) & updateRow) = DateOfHearing.value
+        Range(headerFind("Courtroom of Discharge", tempHead) & updateRow) = 8 'JTC
+        Range(headerFind("DA", tempHead) & updateRow) = Lookup("DA_Last_Name_Name")(DA.value)
+        Range(headerFind("Legal Status of Discharge", tempHead) & updateRow) = 7 'JTC
+        Range(headerFind("Active or Discharged", tempHead) & updateRow) = Lookup("Active_Name")("Discharged")
+        Range(headerFind("Nature of Courtroom Outcome", tempHead) & updateRow) = 3 'neutral
+        Range(headerFind("Detailed Courtroom Outcome", tempHead) & updateRow) = Lookup("Active_Name")("Discharged")
+        
+        Range(headerFind("Total LOS in JTC", tempHead) & updateRow) = 0
+
         Call ReferClientTo( _
             referralDate:=DateOfHearing.value, _
             clientRow:=updateRow, _
@@ -1435,7 +1450,7 @@ Sub JTC_Submit_Click()
                     Courtroom:="JTC", _
                     DA:=DA.value, _
                     legalStatus:="JTC", _
-                    Nature:="Negative", _
+                    Nature:=Modal_JTC_Discharge.NatureOfOutcome.value, _
                     detailed:="Rearrested & Held", _
                     Notes:=JTC_Notes.value)
 
@@ -1447,7 +1462,7 @@ Sub JTC_Submit_Click()
                     Courtroom:="JTC", _
                     DA:=DA.value, _
                     legalStatus:="JTC", _
-                    Nature:="Positive", _
+                    Nature:=Modal_JTC_Discharge.NatureOfOutcome.value, _
                     detailed:="Petition Closed - Positive Comp. Terms", _
                     Notes:=JTC_Notes.value)
 
@@ -1468,7 +1483,7 @@ Sub JTC_Submit_Click()
                     Courtroom:="JTC", _
                     DA:=DA.value, _
                     legalStatus:="JTC", _
-                    Nature:="Negative", _
+                    Nature:=Modal_JTC_Discharge.NatureOfOutcome.value, _
                     detailed:="Aged Out", _
                     Notes:=JTC_Notes.value)
 
@@ -1479,7 +1494,7 @@ Sub JTC_Submit_Click()
                     clientRow:=updateRow, _
                     toCR:=Modal_JTC_Discharge.New_CR.value, _
                     fromCR:="JTC", _
-                    newLegalStatus:="Probation", _
+                    newLegalStatus:=Modal_JTC_Discharge.Legal_Status.value, _
                     DA:=DA.value)
 
                 '''''''''''''''''''''
@@ -1499,7 +1514,7 @@ Sub JTC_Submit_Click()
                     Courtroom:="JTC", _
                     DA:=DA.value, _
                     legalStatus:="JTC", _
-                    Nature:="Neutral", _
+                    Nature:=Modal_JTC_Discharge.NatureOfOutcome.value, _
                     detailed:="Transfer to Other County", _
                     Notes:=JTC_Notes.value)
 

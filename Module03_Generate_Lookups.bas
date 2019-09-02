@@ -42,6 +42,7 @@ Sub RefreshNamedRanges()
     End With
 End Sub
 
+
 Public Function RangeExists(r As String) As Boolean
     Dim Test As Range
     On Error Resume Next

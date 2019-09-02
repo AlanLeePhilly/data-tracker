@@ -78,10 +78,20 @@ Private Sub DetailedOutcome_Change()
             New_CR_Label.Enabled = False
             New_CR.Enabled = False
             New_CR.value = "N/A"
-            'Case "Acceptance Not Granted", "Show Cause", "Hosp. (Mental Health)", "Hosp. (Physical Health)", "Other", "Unknown"
+            Legal_Status_Label.Enabled = False
+            Legal_Status.Enabled = False
+            Legal_Status.value = ""
+        Case "Show Cause"
+            Legal_Status_Label.Enabled = True
+            Legal_Status.Enabled = True
+            Legal_Status.value = "Probation"
+        'Case "Acceptance Not Granted", "Hosp. (Mental Health)", "Hosp. (Physical Health)", "Other", "Unknown"
         Case Else
             New_CR_Label.Enabled = True
             New_CR.Enabled = True
+            Legal_Status_Label.Enabled = False
+            Legal_Status.Enabled = False
+            Legal_Status.value = "Probation"
     End Select
 End Sub
 
