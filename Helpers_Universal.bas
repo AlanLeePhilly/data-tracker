@@ -22,7 +22,7 @@ Sub startLegalStatus( _
 
 
     Select Case statusType
-        Case "Pretrial", "Consent Decree", "Interim Probation", "Probation", "Aftercare Probation"
+        Case "Pretrial", "Pretrial 2", "Consent Decree", "Interim Probation", "Probation", "Aftercare Probation"
             If isEmptyOrZero(Range(hFind("Start Date", statusType, "LEGAL STATUS", "AGGREGATES") & clientRow)) Then
                 canWriteAgg = True
             End If
@@ -118,7 +118,7 @@ Sub endLegalStatus( _
     canWriteAgg = False
 
     Select Case statusType
-        Case "Pretrial", "Consent Decree", "Interim Probation", "Probation", "Aftercare Probation"
+        Case "Pretrial", "Pretrial 2", "Consent Decree", "Interim Probation", "Probation", "Aftercare Probation"
             canWriteAgg = True
 
             Select Case Courtroom
@@ -928,7 +928,7 @@ Sub closeIntakeDetentions(ByVal dateOf As String, ByVal userRow As Long)
                     Or Lookup("Courtroom_Num")(Range(headerFind("Courtroom of Order", bucketHead) & userRow).value) = "Call-In." Then
                         Call dropSupervision( _
                             clientRow:=userRow, _
-                            head:=bucketHead, _
+                            Courtroom:="PJJSC", _
                             serviceType:=Lookup("Supervision_Program_Num")(Range(bucketHead & userRow).value), _
                             startDate:=Range(headerFind("Start Date", bucketHead) & userRow).value, _
                             endDate:=dateOf, _

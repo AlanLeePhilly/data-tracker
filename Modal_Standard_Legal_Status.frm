@@ -20,6 +20,10 @@ Attribute VB_Exposed = False
 ''''''''''''''''
 Private Sub UserForm_Initialize()
     Current_Legal_Status = ClientUpdateForm.Standard_Fetch_Legal_Status
+    If Current_Legal_Status = "Consent Decree" Then
+       New_Legal_Status.RowSource = "Legal_Status_Sub_3"
+       New_Legal_Status.value = "Pretrial 2"
+    End If
 End Sub
 
 '''''''''''''

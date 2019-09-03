@@ -458,7 +458,7 @@ End Function
 
 Public Function statusHasAgg(legalStatus As String) As Boolean
     Select Case legalStatus
-        Case "Pretrial", "Consent Decree", "Probation", "Interim Probation", "Aftercare Probation"
+        Case "Pretrial", "Pretrial 2", "Consent Decree", "Probation", "Interim Probation", "Aftercare Probation"
             statusHasAgg = True
         Case Else
             statusHasAgg = False

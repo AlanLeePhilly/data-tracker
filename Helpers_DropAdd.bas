@@ -129,8 +129,8 @@ End Sub
 
 Sub dropSupervision( _
     ByVal clientRow As Long, _
-    ByVal head As String, _
     ByVal serviceType As String, _
+    ByVal Courtroom As String, _
     ByVal startDate As String, _
     ByVal endDate As String, _
     ByVal Nature As String, _
@@ -159,24 +159,46 @@ Sub dropSupervision( _
     End If
 
     For i = 1 To 2
-
+        If Courtroom = "Intake Conf." _
+        Or Courtroom = "Call-In" _
+        Or Courtroom = "PJJSC" Then
+            i = 2
+            'if intake conf or PJJSC, only aggregate is needed
+        End If
 
         Select Case i
             Case 1
-                bucketHead = head
+                section = Courtroom
             Case 2
                 section = "AGGREGATES"
         End Select
-
+        
         Select Case section
-
-            Case "AGGREGATES"
+            Case "4G", "4E", "6F", "6H", "3E", "5E", "WRAP"
+                For Num = 1 To 15
+                    bucketHead = hFind("Supervision Ordered #" & Num, section)
+                    
+                    If Range(bucketHead & clientRow) = Lookup("Supervision_Program_Name")(serviceType) _
+                    And Range(headerFind("Start Date", bucketHead) & clientRow) = startDate Then
+                        Num = 15
+                    End If
+                Next Num
+            Case "JTC", "AGGREGATES"
                 For Num = 1 To 30
-                    bucketHead = hFind("Supervision Ordered #" & Num, "AGGREGATES")
-
+                    bucketHead = hFind("Supervision Ordered #" & Num, section)
+                    
                     If Range(bucketHead & clientRow) = Lookup("Supervision_Program_Name")(serviceType) _
                     And Range(headerFind("Start Date", bucketHead) & clientRow) = startDate Then
                         Num = 30
+                    End If
+                Next Num
+            Case "Adult"
+                For Num = 1 To 5
+                    bucketHead = hFind("Supervision Ordered #" & Num, section)
+                    
+                    If Range(bucketHead & clientRow) = Lookup("Supervision_Program_Name")(serviceType) _
+                    And Range(headerFind("Start Date", bucketHead) & clientRow) = startDate Then
+                        Num = 5
                     End If
                 Next Num
         End Select
@@ -192,11 +214,6 @@ Sub dropSupervision( _
 
         Call append(Range(headerFind("Discharge Description", bucketHead) & clientRow), Notes)
         Range(headerFind("LOS", bucketHead) & clientRow) = calcLOS(startDate, endDate)
-
-        If alphaToNum(head) > alphaToNum(hFind("AGGREGATES")) Then
-            i = 2
-        End If
-
 
     Next i
 End Sub
@@ -224,6 +241,7 @@ Sub addCondition( _
 
     For i = 1 To 2
         If Courtroom = "Intake Conf." _
+        Or Courtroom = "Call-In" _
         Or Courtroom = "PJJSC" Then
             i = 2
             'if intake conf or PJJSC, only aggregate is needed
@@ -287,7 +305,7 @@ End Sub
 
 Sub dropCondition( _
     ByVal clientRow As Long, _
-    ByVal head As String, _
+    ByVal Courtroom As String, _
     ByVal condition As String, _
     ByVal startDate As String, _
     ByVal endDate As String, _
@@ -304,19 +322,44 @@ Sub dropCondition( _
     Dim i As Integer
 
     For i = 1 To 2
+    
+        If Courtroom = "Intake Conf." _
+        Or Courtroom = "Call-In" _
+        Or Courtroom = "PJJSC" Then
+            i = 2
+            'if intake conf or PJJSC, only aggregate is needed
+        End If
+            
         Select Case i
             Case 1
-                bucketHead = head
+                section = Courtroom
             Case 2
                 section = "AGGREGATES"
         End Select
-
+        
         Select Case section
-
+            Case "4G", "4E", "6F", "6H", "3E", "JTC", "5E", "WRAP"
+                For Num = 1 To 15
+                    bucketHead = hFind("Condition Ordered #" & Num, section)
+                    
+                    If Range(bucketHead & clientRow) = Lookup("Condition_Name")(condition) _
+                    And Range(headerFind("Start Date", bucketHead) & clientRow) = startDate Then
+                        Num = 15
+                    End If
+                Next Num
+            Case "Adult"
+                For Num = 1 To 5
+                    bucketHead = hFind("Condition Ordered #" & Num, section)
+                    
+                    If Range(bucketHead & clientRow) = Lookup("Condition_Name")(condition) _
+                    And Range(headerFind("Start Date", bucketHead) & clientRow) = startDate Then
+                        Num = 5
+                    End If
+                Next Num
             Case "AGGREGATES"
                 For Num = 1 To 20
-                    bucketHead = hFind("Condition Ordered #" & Num, "AGGREGATES")
-
+                    bucketHead = hFind("Condition Ordered #" & Num, section)
+                    
                     If Range(bucketHead & clientRow) = Lookup("Condition_Name")(condition) _
                     And Range(headerFind("Start Date", bucketHead) & clientRow) = startDate Then
                         Num = 20
@@ -335,10 +378,6 @@ Sub dropCondition( _
 
         Call append(Range(headerFind("Discharge Description", bucketHead) & clientRow), Notes)
         Range(headerFind("LOS", bucketHead) & clientRow) = calcLOS(startDate, endDate)
-
-        If alphaToNum(head) > alphaToNum(hFind("AGGREGATES")) Then
-            i = 2
-        End If
     Next i
 End Sub
 

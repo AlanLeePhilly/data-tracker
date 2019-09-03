@@ -191,45 +191,18 @@ Sub JTC_Fetch()
         For Num = 1 To 30
             bucketHead = hFind("Supervision Ordered #" & Num, "AGGREGATES")
 
-            If Lookup("Courtroom_Num")(Range(headerFind("Courtroom of Order", bucketHead) & updateRow).value) = "Intake Conf." _
-            Or Lookup("Courtroom_Num")(Range(headerFind("Courtroom of Order", bucketHead) & updateRow).value) = "PJJSC" Then
-                If isEmptyOrZero(Range(headerFind("End Date", bucketHead) & updateRow)) Then
-                    Call JTC_Service_Box_Add(ClientUpdateForm.JTC_Fetch_Service_Box, bucketHead)
-                    Call JTC_Service_Box_Add(Modal_JTC_Drop_Service.Service_Box, bucketHead)
-                    Call JTC_Service_Box_Add(ClientUpdateForm.JTC_Return_Service_Box, bucketHead)
-                End If
+            If isNotEmptyOrZero(Range(bucketHead & updateRow)) _
+            And isEmptyOrZero(Range(headerFind("End Date", bucketHead) & updateRow)) Then
+                Call JTC_Service_Box_Add(ClientUpdateForm.JTC_Fetch_Service_Box, bucketHead)
+                Call JTC_Service_Box_Add(Modal_JTC_Drop_Service.Service_Box, bucketHead)
+                Call JTC_Service_Box_Add(ClientUpdateForm.JTC_Return_Service_Box, bucketHead)
             End If
 
             If Num <= 20 Then
                 bucketHead = hFind("Condition Ordered #" & Num, "AGGREGATES")
-                If Lookup("Courtroom_Num")(Range(headerFind("Courtroom of Order", bucketHead) & updateRow).value) = "Intake Conf." _
-                Or Lookup("Courtroom_Num")(Range(headerFind("Courtroom of Order", bucketHead) & updateRow).value) = "PJJSC" Then
-                    If isEmptyOrZero(Range(headerFind("End Date", bucketHead) & updateRow)) Then
-                        Call JTC_Condition_Box_Add(ClientUpdateForm.JTC_Fetch_Condition_Box, bucketHead)
-                        Call JTC_Condition_Box_Add(ClientUpdateForm.JTC_Return_Condition_Box, bucketHead)
-                        Call JTC_Condition_Box_Add(Modal_JTC_Drop_Condition.Condition_Box, bucketHead)
-                    End If
-                End If
-            End If
-        Next Num
 
-        'GRAB COURTROOM BUCKETS
-        For Num = 1 To 30
-            'if the Supervision Ordered bucket #num is not blank
-            If isNotEmptyOrZero(Range(hFind("Supervision Ordered #" & Num, "Supervision Programs", "JTC") & updateRow)) Then
-                If isEmptyOrZero(Range(hFind("End Date", "Supervision Ordered #" & Num, "Supervision Programs", "JTC") & updateRow)) Then
-                    bucketHead = hFind("Supervision Ordered #" & Num, "Supervision Programs", "JTC")
-                    Call JTC_Service_Box_Add(ClientUpdateForm.JTC_Fetch_Service_Box, bucketHead)
-                    Call JTC_Service_Box_Add(Modal_JTC_Drop_Service.Service_Box, bucketHead)
-                    Call JTC_Service_Box_Add(ClientUpdateForm.JTC_Return_Service_Box, bucketHead)
-                End If
-            End If
-        Next Num
-
-        For Num = 1 To 15
-            If isNotEmptyOrZero(Range(hFind("Condition Ordered #" & Num, "Conditions", "JTC") & updateRow)) Then
-                If isEmptyOrZero(Range(hFind("End Date", "Condition Ordered #" & Num, "Conditions", "JTC") & updateRow)) Then
-                    bucketHead = hFind("Condition Ordered #" & Num, "Conditions", "JTC")
+                If isNotEmptyOrZero(Range(bucketHead & updateRow)) _
+                And isEmptyOrZero(Range(headerFind("End Date", bucketHead) & updateRow)) Then
                     Call JTC_Condition_Box_Add(ClientUpdateForm.JTC_Fetch_Condition_Box, bucketHead)
                     Call JTC_Condition_Box_Add(ClientUpdateForm.JTC_Return_Condition_Box, bucketHead)
                     Call JTC_Condition_Box_Add(Modal_JTC_Drop_Condition.Condition_Box, bucketHead)
@@ -248,7 +221,7 @@ Sub JTC_Service_Box_Add(ByRef MyBox As Object, ByVal bucketHead As String)
         ' 1 Provider                 7 Re2
         ' 2 Start Date               8 Re3
         ' 3 End Date                 9 Notes
-        ' 4 bucketHead or "New"
+        ' 4 courtroom or "New"
         ' 5 Nature
 
         .AddItem Lookup("Supervision_Program_Num")(Range(bucketHead & updateRow).value)
@@ -271,7 +244,7 @@ Sub JTC_Service_Box_Add(ByRef MyBox As Object, ByVal bucketHead As String)
         
         .List(newIndex, 2) = dateCell.value
         '.List(newIndex, 3) = Range(headerFind("End Date", bucketHead) & updateRow).value
-        .List(newIndex, 4) = bucketHead
+        .List(newIndex, 4) = Lookup("Courtroom_Num")(Range(headerFind("Courtroom of Order", bucketHead) & updateRow).value)
     End With
 End Sub
 
@@ -284,7 +257,7 @@ Sub JTC_Condition_Box_Add(ByRef MyBox As Object, ByVal bucketHead As String)
         ' 1 Provider                 7 Re2
         ' 2 Start Date               8 Re3
         ' 3 End Date                 9 Notes
-        ' 4 bucketHead or "New"
+        ' 4 courtroom or "New"
         ' 5 Nature
 
         .AddItem Lookup("Condition_Num")(Range(bucketHead & updateRow).value)
@@ -301,7 +274,7 @@ Sub JTC_Condition_Box_Add(ByRef MyBox As Object, ByVal bucketHead As String)
         
         .List(newIndex, 2) = dateCell.value
         .List(newIndex, 3) = ""
-        .List(newIndex, 4) = bucketHead
+        .List(newIndex, 4) = Lookup("Courtroom_Num")(Range(headerFind("Courtroom of Order", bucketHead) & updateRow).value)
 
     End With
 End Sub

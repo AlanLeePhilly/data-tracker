@@ -62,51 +62,27 @@ Sub Standard_Fetch()
 
         'GRAB AGG-ONLY Buckets
         For Num = 1 To 30
+        
             bucketHead = hFind("Supervision Ordered #" & Num, "AGGREGATES")
-
-            If Lookup("Courtroom_Num")(Range(headerFind("Courtroom of Order", bucketHead) & updateRow).value) = "Intake Conf." _
-            Or Lookup("Courtroom_Num")(Range(headerFind("Courtroom of Order", bucketHead) & updateRow).value) = "PJJSC" Then
-                If isEmptyOrZero(Range(headerFind("End Date", bucketHead) & updateRow)) Then
-                    Call Standard_Supervision_Box_Add(ClientUpdateForm.Standard_Fetch_Supervision_Box, bucketHead)
-                    Call Standard_Supervision_Box_Add(ClientUpdateForm.Standard_Return_Supervision_Box, bucketHead)
-                    Call Standard_Supervision_Box_Add(Modal_Standard_Drop_Supervision.Supervision_Box, bucketHead)
-                End If
-            End If
-
-            If Num <= 20 Then
-                bucketHead = hFind("Condition Ordered #" & Num, "AGGREGATES")
-                If Lookup("Courtroom_Num")(Range(headerFind("Courtroom of Order", bucketHead) & updateRow).value) = "Intake Conf." _
-                Or Lookup("Courtroom_Num")(Range(headerFind("Courtroom of Order", bucketHead) & updateRow).value) = "PJJSC" Then
-                    If isEmptyOrZero(Range(headerFind("End Date", bucketHead) & updateRow)) Then
-                        Call Standard_Condition_Box_Add(ClientUpdateForm.Standard_Fetch_Condition_Box, bucketHead)
-                        Call Standard_Condition_Box_Add(ClientUpdateForm.Standard_Return_Condition_Box, bucketHead)
-                        Call Standard_Condition_Box_Add(Modal_Standard_Drop_Condition.Condition_Box, bucketHead)
-                    End If
-                End If
-            End If
-        Next Num
-
-        'GRAB COURTROOM BUCKETS
-        For Num = 1 To 15
-            If isNotEmptyOrZero(Range(headerFind("Supervision Ordered #" & Num, courtHead) & updateRow)) And _
-                isEmptyOrZero(Range(headerFind("End Date", headerFind("Supervision Ordered #" & Num, courtHead)) & updateRow)) Then
-                'push the number value to the three functions which will add the Service bucket info to the three relevant tables
-                'Fetch is list of services before hearing, Drop is the table in the "Drop Services" modal, and return is the final data about services after the hearing
-
-                bucketHead = headerFind("Supervision Ordered #" & Num, courtHead)
-
+            
+            If isNotEmptyOrZero(Range(bucketHead & updateRow)) _
+            And isEmptyOrZero(Range(headerFind("End Date", bucketHead) & updateRow)) Then
                 Call Standard_Supervision_Box_Add(ClientUpdateForm.Standard_Fetch_Supervision_Box, bucketHead)
                 Call Standard_Supervision_Box_Add(ClientUpdateForm.Standard_Return_Supervision_Box, bucketHead)
                 Call Standard_Supervision_Box_Add(Modal_Standard_Drop_Supervision.Supervision_Box, bucketHead)
             End If
-            If isNotEmptyOrZero(Range(headerFind("Condition Ordered #" & Num, courtHead) & updateRow)) And _
-                isEmptyOrZero(Range(headerFind("End Date", headerFind("Condition Ordered #" & Num, courtHead)) & updateRow)) Then
-                'push the number value to the three functions which will add the Service bucket info to the three relevant tables
-                'Fetch is list of services before hearing, Drop is the table in the "Drop Services" modal, and return is the final data about services after the hearing
-                bucketHead = headerFind("Condition Ordered #" & Num, courtHead)
-                Call Standard_Condition_Box_Add(ClientUpdateForm.Standard_Fetch_Condition_Box, bucketHead)
-                Call Standard_Condition_Box_Add(ClientUpdateForm.Standard_Return_Condition_Box, bucketHead)
-                Call Standard_Condition_Box_Add(Modal_Standard_Drop_Condition.Condition_Box, bucketHead)
+
+
+            If Num <= 20 Then
+            
+                bucketHead = hFind("Condition Ordered #" & Num, "AGGREGATES")
+                
+                If isNotEmptyOrZero(Range(bucketHead & updateRow)) _
+                And isEmptyOrZero(Range(headerFind("End Date", bucketHead) & updateRow)) Then
+                    Call Standard_Condition_Box_Add(ClientUpdateForm.Standard_Fetch_Condition_Box, bucketHead)
+                    Call Standard_Condition_Box_Add(ClientUpdateForm.Standard_Return_Condition_Box, bucketHead)
+                    Call Standard_Condition_Box_Add(Modal_Standard_Drop_Condition.Condition_Box, bucketHead)
+                End If
             End If
         Next Num
     End With
@@ -126,7 +102,7 @@ Sub Standard_Supervision_Box_Add(ByRef MyBox As Object, ByVal bucketHead As Stri
         ' 1 Provider                 7 Re2
         ' 2 Start Date               8 Re3
         ' 3 End Date                 9 Notes
-        ' 4 bucketHead or "New"
+        ' 4 Courtroom or "New"
         ' 5 Nature
         '
 
@@ -152,7 +128,7 @@ Sub Standard_Supervision_Box_Add(ByRef MyBox As Object, ByVal bucketHead As Stri
         
         .List(newIndex, 2) = dateCell.value
         '.List(newIndex, 3) = Range(headerFind("End Date", bucketHead) & updateRow).value
-        .List(newIndex, 4) = bucketHead
+        .List(newIndex, 4) = Lookup("Courtroom_Num")(Range(headerFind("Courtroom of Order", bucketHead) & updateRow).value)
     End With
 End Sub
 
@@ -167,7 +143,7 @@ Sub Standard_Condition_Box_Add(ByRef MyBox As Object, ByVal bucketHead As String
         ' 1 Provider                 7 Re2
         ' 2 Start Date               8 Re3
         ' 3 End Date                 9 Notes
-        ' 4 bucketHead or "New"
+        ' 4 Courtroom or "New"
         ' 5 Nature
 
 
@@ -186,6 +162,6 @@ Sub Standard_Condition_Box_Add(ByRef MyBox As Object, ByVal bucketHead As String
         
         .List(newIndex, 2) = dateCell.value
         '.List(newIndex, 3) = Range(headerFind("End Date", bucketHead) & updateRow).value
-        .List(newIndex, 4) = bucketHead
+        .List(newIndex, 4) = Lookup("Courtroom_Num")(Range(headerFind("Courtroom of Order", bucketHead) & updateRow).value)
     End With
 End Sub

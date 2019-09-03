@@ -310,7 +310,7 @@ Sub ReferClientTo( _
 
                         Call dropSupervision( _
                             clientRow:=clientRow, _
-                            head:=bucketHead, _
+                            Courtroom:=fromCR, _
                             serviceType:=Lookup("Supervision_Program_Num")(Range(bucketHead & clientRow).value), _
                             startDate:=Range(headerFind("Start Date", bucketHead) & clientRow).value, _
                             endDate:=referralDate, _
@@ -367,7 +367,7 @@ Sub ReferClientTo( _
 
                         Call dropCondition( _
                             clientRow:=clientRow, _
-                            head:=bucketHead, _
+                            Courtroom:=fromCR, _
                             condition:=Lookup("Condition_Num")(Range(bucketHead & clientRow).value), _
                             startDate:=Range(headerFind("Start Date", bucketHead) & clientRow).value, _
                             endDate:=referralDate, _
