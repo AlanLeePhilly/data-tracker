@@ -463,7 +463,6 @@ Sub Adult_Submit_Click()
             ''''''''''''''''''''''''''''''''''''''''''''''''''
             
             
-            Range(headerFind("Initial Hearing Location", juvePetitionHead) & updateRow).value = 10 'Adult
 
             Range(headerFind("Initial Court Date", juvePetitionHead) & updateRow).value _
           = Range(headerFind("Initial Court Date", petitionHead) & updateRow).value
@@ -548,11 +547,8 @@ Sub Adult_Submit_Click()
 
             With Adult_Reslate_Juvenile_Petition
 
-                Range(headerFind("Initial Court Date", juvePetitionHead) & updateRow).value _
-                        = Adult_NextCourtDate.value
                 Range(headerFind("Initial Hearing Location", juvePetitionHead) & updateRow).value _
-                        = Lookup("Courtroom_Name")(.NextHearingLocation.value)
-
+                        = 10 'adult
                 ''''ADD arrest values from PETITION
 
                 Range(headerFind("Gun Case?", juvePetitionHead) & updateRow).value = Lookup("Generic_YNOU_Name")(.GunCase.value)
@@ -1311,6 +1307,7 @@ Sub JTC_Submit_Click()
     ''PHASE SECTION''
     '''''''''''''''''
     If JTC_Reject.BackColor = selectedColor Then
+        Range(headerFind("Phase", courtHead) & updateRow).value = 7 'Rejected
         Range(headerFind("Accepted (Y/N)", courtHead) & updateRow).value = 2
         Range(headerFind("Rejected Date", courtHead) & updateRow).value = DateOfHearing.value
         Range(headerFind("Next Hearing Location (if rejected)", courtHead) & updateRow).value = _
@@ -1322,10 +1319,10 @@ Sub JTC_Submit_Click()
         Range(headerFind("Date of Overall Discharge", tempHead) & updateRow) = DateOfHearing.value
         Range(headerFind("Courtroom of Discharge", tempHead) & updateRow) = 8 'JTC
         Range(headerFind("DA", tempHead) & updateRow) = Lookup("DA_Last_Name_Name")(DA.value)
-        Range(headerFind("Legal Status of Discharge", tempHead) & updateRow) = 7 'JTC
+        Range(headerFind("Legal Status of Discharge", tempHead) & updateRow) = 2 'Pretrial
         Range(headerFind("Active or Discharged", tempHead) & updateRow) = Lookup("Active_Name")("Discharged")
         Range(headerFind("Nature of Courtroom Outcome", tempHead) & updateRow) = 3 'neutral
-        Range(headerFind("Detailed Courtroom Outcome", tempHead) & updateRow) = Lookup("Active_Name")("Discharged")
+        Range(headerFind("Detailed Courtroom Outcome", tempHead) & updateRow) = 9 'Acceptance Not Granted
         
         Range(headerFind("Total LOS in JTC", tempHead) & updateRow) = 0
 
@@ -1342,7 +1339,7 @@ Sub JTC_Submit_Click()
     End If
 
     If JTC_Accept.BackColor = selectedColor Then
-        Range(headerFind("Phase") & updateRow).value = "1"
+        Range(headerFind("Phase", courtHead) & updateRow).value = "1"
         Range(headerFind("Accepted (Y/N)", courtHead) & updateRow).value = 1 'Yes
         Range(headerFind("Accepted Date", courtHead) & updateRow).value = JTC_Accept_Reject_Date.Caption
         Range(headerFind("Start Date", newPhaseHead) & updateRow).value = JTC_Accept_Reject_Date.Caption
@@ -1718,11 +1715,11 @@ Sub JTC_Submit_Click()
                     Courtroom:="JTC", _
                     DA:=DA.value, _
                     agency:=.List(i, 1), _
-                    startDate:=DateOfHearing.value, _
+                    startDate:=.List(i, 2), _
                     NextCourtDate:=NextCourtDate.value, _
-                    Re1:="N/A", _
-                    Re2:="N/A", _
-                    Re3:="N/A", _
+                    Re1:=.List(i, 6), _
+                    Re2:=.List(i, 7), _
+                    Re3:=.List(i, 8), _
                     Notes:=.List(i, 9), _
                     phase:=JTC_Return_Phase.Caption)
             Else
@@ -1811,10 +1808,10 @@ Sub JTC_Submit_Click()
                     Courtroom:="JTC", _
                     DA:=DA.value, _
                     agency:=.List(i, 1), _
-                    startDate:=DateOfHearing.value, _
-                    Re1:="N/A", _
-                    Re2:="N/A", _
-                    Re3:="N/A", _
+                    startDate:=.List(i, 2), _
+                    Re1:=.List(i, 6), _
+                    Re2:=.List(i, 7), _
+                    Re3:=.List(i, 8), _
                     Notes:=.List(i, 9), _
                     phase:=JTC_Return_Phase.Caption)
             Else
@@ -2261,11 +2258,11 @@ Sub Standard_Submit_Click()
                     Courtroom:=oldCourtroom, _
                     DA:=DA.value, _
                     agency:=.List(i, 1), _
-                    startDate:=DateOfHearing.value, _
+                    startDate:=.List(i, 2), _
                     NextCourtDate:=Standard_NextCourtDate.value, _
-                    Re1:="N/A", _
-                    Re2:="N/A", _
-                    Re3:="N/A", _
+                    Re1:=.List(i, 6), _
+                    Re2:=.List(i, 7), _
+                    Re3:=.List(i, 8), _
                     Notes:=.List(i, 9))
             Else
                 If .List(i, 4) = oldCourtroom Then
@@ -2351,10 +2348,10 @@ Sub Standard_Submit_Click()
                     Courtroom:=oldCourtroom, _
                     DA:=DA.value, _
                     agency:=.List(i, 1), _
-                    startDate:=DateOfHearing.value, _
-                    Re1:="N/A", _
-                    Re2:="N/A", _
-                    Re3:="N/A", _
+                    startDate:=.List(i, 2), _
+                    Re1:=.List(i, 6), _
+                    Re2:=.List(i, 7), _
+                    Re3:=.List(i, 8), _
                     Notes:=.List(i, 9))
             Else
                 If .List(i, 4) = oldCourtroom Then

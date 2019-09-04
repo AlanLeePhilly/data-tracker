@@ -16,7 +16,7 @@ Attribute VB_Exposed = False
 
 Private Sub Continue_Click()
     'VALIDATION: cannot submit without choosing a detailed outcome
-    If DetailedOutcome.value = "N/A" Then
+    If DetailedOutcome.value = "N/A" Or DetailedOutcome.value = "" Then
         MsgBox "Detailed Outcome Required"
         Exit Sub
     End If
@@ -82,6 +82,8 @@ Private Sub DetailedOutcome_Change()
             Legal_Status.Enabled = False
             Legal_Status.value = ""
         Case "Show Cause"
+            New_CR_Label.Enabled = True
+            New_CR.Enabled = True
             Legal_Status_Label.Enabled = True
             Legal_Status.Enabled = True
             Legal_Status.value = "Probation"
