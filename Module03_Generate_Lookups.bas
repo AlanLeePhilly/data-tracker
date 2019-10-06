@@ -22,7 +22,7 @@ Sub RefreshNamedRanges()
                     Set rng = .Range(numToAlpha(i) + "2:" + numToAlpha(i) + CStr(lastRow))
                 End If
 
-                ThisWorkbook.Names.Add name:=Title, RefersTo:=rng
+                ThisWorkbook.Names.Add Name:=Title, RefersTo:=rng
             End If
         Next i
     End With
@@ -37,7 +37,7 @@ Sub RefreshNamedRanges()
 
         Set rng = .Range("A2:" + "E" + CStr(lastRow))
 
-        ThisWorkbook.Names.Add name:=Title, RefersTo:=rng
+        ThisWorkbook.Names.Add Name:=Title, RefersTo:=rng
 
     End With
 End Sub

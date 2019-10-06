@@ -559,18 +559,18 @@ Sub format(wb As Workbook, x As Integer)
         'Find start of Name columns on run sheet
         Dim LastName As Range
         Dim FirstName As Range
-        Dim name As String
+        Dim Name As String
         Set LastName = DataSheet.Cells.Find("Last Name")
         Set FirstName = DataSheet.Cells.Find("First Name")
         'Get names of current kids
         DataSheet.Activate
         LastName.Select
         LastName.Activate
-        name = ActiveCell.Offset(x, 0).value & ", "
+        Name = ActiveCell.Offset(x, 0).value & ", "
         FirstName.Select
         FirstName.Activate
-        name = name & ActiveCell.Offset(x, 0).value
-        .Range("C4").value = name
+        Name = Name & ActiveCell.Offset(x, 0).value
+        .Range("C4").value = Name
     End With
 
     With wb.Worksheets(1).PageSetup

@@ -248,38 +248,38 @@ Sub ReferClientTo( _
             = Lookup("Courtroom_Name")(toCR)
     End Select
 
-    If Not toCR = "N/A" _
+'    If Not toCR = "N/A" _
     And Not fromCR = "N/A" _
     And Not fromCR = "PJJSC" _
     And Not fromCR = "Intake Conf." _
     And Not fromCR = "Adult" Then
 
-        Dim i As Integer
-        Dim bucketCount As Integer
-        Dim sectionHead As String
-        Dim bucketHead As String
-        Dim agency As String
+'        Dim i As Integer
+'        Dim bucketCount As Integer
+'        Dim sectionHead As String
+'        Dim bucketHead As String
+'        Dim agency As String
 
 
         'Duplicate ongoing Supervision Programs
-        sectionHead = hFind("Supervision Programs", "AGGREGATES")
-        For i = 20 To 1 Step -1
-            bucketHead = headerFind("Supervision Ordered #" & i, sectionHead)
+'        sectionHead = hFind("Supervision Programs", "AGGREGATES")
+'        For i = 20 To 1 Step -1
+'            bucketHead = headerFind("Supervision Ordered #" & i, sectionHead)
 
-            If isNotEmptyOrZero(Range(bucketHead & clientRow)) _
-                And isEmptyOrZero(Range(headerFind("End Date", bucketHead) & clientRow)) Then
+'            If isNotEmptyOrZero(Range(bucketHead & clientRow)) _
+'                And isEmptyOrZero(Range(headerFind("End Date", bucketHead) & clientRow)) Then
 
-                If isResidential(Lookup("Supervision_Program_Num")(Range(bucketHead & clientRow).value)) Then
-                    agency = Lookup("Residential_Supervision_Provider_Num") _
+'                If isResidential(Lookup("Supervision_Program_Num")(Range(bucketHead & clientRow).value)) Then
+'                    agency = Lookup("Residential_Supervision_Provider_Num") _
                         (Range(headerFind("Residential Agency", bucketHead) & clientRow).value)
-                Else
-                    agency = Lookup("Community_Based_Supervision_Provider_Num") _
+'                Else
+'                    agency = Lookup("Community_Based_Supervision_Provider_Num") _
                         (Range(headerFind("Community-Based Agency", bucketHead) & clientRow).value)
-                End If
+'                End If
 
 
 
-                Call addSupervision( _
+'                Call addSupervision( _
                     clientRow:=clientRow, _
                     serviceType:=Lookup("Supervision_Program_Num")(Range(bucketHead & clientRow).value), _
                     legalStatus:=Lookup("Legal_Status_Num")(Range(hFind("Legal Status") & clientRow).value), _
@@ -292,23 +292,23 @@ Sub ReferClientTo( _
                     Re2:="N/A", _
                     Re3:="N/A", _
                     Notes:="Tranferred courtroom during program")
-            End If
-        Next i
+'            End If
+'        Next i
 
         'Drop old ongoing Supervision Programs
-        Select Case toCR
-            Case "4G", "4E", "6F", "6H", "3E", "WRAP", "5E", "JTC", "Adult"
-                sectionHead = headerFind("Supervision Programs", fromHead)
-                For i = 15 To 1 Step -1
-                    If i > 5 And fromCR = "Adult" Then
-                        i = 5
-                    End If
+'        Select Case toCR
+'            Case "4G", "4E", "6F", "6H", "3E", "WRAP", "5E", "JTC", "Adult"
+'                sectionHead = headerFind("Supervision Programs", fromHead)
+'                For i = 15 To 1 Step -1
+'                    If i > 5 And fromCR = "Adult" Then
+'                        i = 5
+'                    End If
 
-                    bucketHead = headerFind("Supervision Ordered #" & i, sectionHead)
-                    If isNotEmptyOrZero(Range(bucketHead & clientRow)) _
+'                    bucketHead = headerFind("Supervision Ordered #" & i, sectionHead)
+'                    If isNotEmptyOrZero(Range(bucketHead & clientRow)) _
                         And isEmptyOrZero(Range(headerFind("End Date", bucketHead) & clientRow)) Then
 
-                        Call dropSupervision( _
+'                        Call dropSupervision( _
                             clientRow:=clientRow, _
                             Courtroom:=fromCR, _
                             serviceType:=Lookup("Supervision_Program_Num")(Range(bucketHead & clientRow).value), _
@@ -321,24 +321,24 @@ Sub ReferClientTo( _
                             Notes:="Tranferred courtroom during program")
 
                         'short-circuit Adult court b/c it only has 5 buckets
-                        If i = 5 And fromCR = "Adult" Then
-                            i = 20
-                        End If
-                    End If
-                Next i
-        End Select
+'                        If i = 5 And fromCR = "Adult" Then
+'                            i = 20
+'                        End If
+'                    End If
+'                Next i
+'        End Select
 
 
 
         'Duplicate ongoing Conditions
-        sectionHead = hFind("Conditions", "AGGREGATES")
-        For i = 20 To 1 Step -1
-            bucketHead = headerFind("Condition Ordered #" & i, sectionHead)
+'        sectionHead = hFind("Conditions", "AGGREGATES")
+'        For i = 20 To 1 Step -1
+'            bucketHead = headerFind("Condition Ordered #" & i, sectionHead)
 
-            If isNotEmptyOrZero(Range(bucketHead & clientRow)) _
+'            If isNotEmptyOrZero(Range(bucketHead & clientRow)) _
                 And isEmptyOrZero(Range(headerFind("End Date", bucketHead) & clientRow)) Then
 
-                Call addCondition( _
+'                Call addCondition( _
                     clientRow:=clientRow, _
                     condition:=Lookup("Condition_Num")(Range(bucketHead & clientRow).value), _
                     legalStatus:=Lookup("Legal_Status_Num")(Range(hFind("Legal Status") & clientRow).value), _
@@ -350,22 +350,22 @@ Sub ReferClientTo( _
                     Re2:="N/A", _
                     Re3:="N/A", _
                     Notes:="Tranferred courtroom during program")
-            End If
-        Next i
+'            End If
+'        Next i
 
         'Drop old ongoing Conditions
-        Select Case toCR
-            Case "4G", "4E", "6F", "6H", "3E", "WRAP", "5E", "JTC", "Adult"
-                sectionHead = headerFind("Conditions", fromHead)
-                For i = 15 To 1 Step -1
-                    If i > 5 And fromCR = "Adult" Then
-                        i = 5
-                    End If
-                    bucketHead = headerFind("Condition Ordered #" & i, sectionHead)
-                    If isNotEmptyOrZero(Range(bucketHead & clientRow)) _
+'        Select Case toCR
+'            Case "4G", "4E", "6F", "6H", "3E", "WRAP", "5E", "JTC", "Adult"
+'                sectionHead = headerFind("Conditions", fromHead)
+'                For i = 15 To 1 Step -1
+'                    If i > 5 And fromCR = "Adult" Then
+'                        i = 5
+'                    End If
+'                    bucketHead = headerFind("Condition Ordered #" & i, sectionHead)
+'                    If isNotEmptyOrZero(Range(bucketHead & clientRow)) _
                         And isEmptyOrZero(Range(headerFind("End Date", bucketHead) & clientRow)) Then
 
-                        Call dropCondition( _
+'                        Call dropCondition( _
                             clientRow:=clientRow, _
                             Courtroom:=fromCR, _
                             condition:=Lookup("Condition_Num")(Range(bucketHead & clientRow).value), _
@@ -376,10 +376,10 @@ Sub ReferClientTo( _
                             Re2:="N/A", _
                             Re3:="N/A", _
                             Notes:="Tranferred courtroom during program")
-                    End If
-                Next i
-        End Select
-    End If
+'                    End If
+'                Next i
+'        End Select
+'    End If
 
     'Update Legal Status
 
@@ -418,7 +418,6 @@ Sub ReferClientTo( _
 
     If Not fromCR = "N/A" _
     And Not toCR = "N/A" _
-    And Not toCR = "JTC" _
     And Not toCR = "WRAP" _
     And Not toCR = "Crossover" Then
         Call endLegalStatus( _

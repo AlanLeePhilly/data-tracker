@@ -1,7 +1,7 @@
 Attribute VB_Name = "Helpers_Detention"
 Sub initialDetention( _
     ByVal clientRow As Long, _
-    ByVal dateOf As String, _
+    ByVal DateOf As String, _
     ByVal DA As String, _
     ByVal DA_Action As String, _
     ByVal DA_actionAccepted As String, _
@@ -18,7 +18,7 @@ Sub initialDetention( _
     bucketHead = hFind("DETENTION")
 
     Call flagYes(Range(headerFind("Did Youth Have Initial Detention Hearing?", bucketHead) & clientRow))
-    Range(headerFind("Date of Initial Detention Hearing", bucketHead) & clientRow).value = dateOf
+    Range(headerFind("Date of Initial Detention Hearing", bucketHead) & clientRow).value = DateOf
     Range(headerFind("Type of Detention Hearing", bucketHead) & clientRow).value _
         = Lookup("Type_of_Detention_Hearing_Name")("Initial")
     Range(headerFind("DA", bucketHead) & clientRow).value _

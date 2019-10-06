@@ -1440,7 +1440,7 @@ Private Sub Submit_Click()
     
     Call addNotes( _
         Courtroom:=InitialHearingLocation.value, _
-        dateOf:=noteDate, _
+        DateOf:=noteDate, _
         userRow:=emptyRow, _
         Notes:=GeneralNotes, _
         DA:=DA.value _

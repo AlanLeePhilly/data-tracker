@@ -133,7 +133,7 @@ Sub SaveAs_Countdown()
     'file name extention .xlsm
     newFileName = _
         newFilePath _
-        & fso.GetBaseName(ThisWorkbook.name) _
+        & fso.GetBaseName(ThisWorkbook.Name) _
         & " " _
         & VBA.format(Now(), "yyyy-MM-dd hh.mm.ss") _
         & ".xlsm"
@@ -175,7 +175,7 @@ Sub Archive()
     'file name extention .xlsm
     newFileName = _
         newFilePath _
-        & fso.GetBaseName(ThisWorkbook.name) _
+        & fso.GetBaseName(ThisWorkbook.Name) _
         & " " _
         & VBA.format(Now(), "yyyy-MM-dd hh.mm.ss") _
         & ".xlsm"
@@ -220,7 +220,7 @@ Sub ExportDataFile()
     'file name extention .xlsm
     newFileName = _
         newFilePath _
-        & fso.GetBaseName(ThisWorkbook.name) _
+        & fso.GetBaseName(ThisWorkbook.Name) _
         & " " _
         & VBA.format(Now(), "yyyy-MM-dd hh.mm.ss") _
         & ".xlsm"

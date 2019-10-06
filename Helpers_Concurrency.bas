@@ -1,5 +1,5 @@
 Attribute VB_Name = "Helpers_Concurrency"
-Sub CheckForConcurrency(userRow As Long, dateOf As String)
+Sub CheckForConcurrency(userRow As Long, DateOf As String)
     Worksheets("Entry").Activate
     Dim lastRow As Long
     Dim i As Long, hasAtLeastOne As Boolean
@@ -14,7 +14,7 @@ Sub CheckForConcurrency(userRow As Long, dateOf As String)
             And Range(hFind("Active or Discharged (in courtroom)?") & i).value = 1 Then
 
             hasAtLeastOne = True
-            Call addUserToBox(i, dateOf)
+            Call addUserToBox(i, DateOf)
         End If
     Next i
 
@@ -23,7 +23,7 @@ Sub CheckForConcurrency(userRow As Long, dateOf As String)
     End If
 End Sub
 
-Sub addUserToBox(userRow As Long, dateOf As String)
+Sub addUserToBox(userRow As Long, DateOf As String)
     Worksheets("Entry").Activate
 
     Dim hasUpdateForToday As Boolean
@@ -31,7 +31,7 @@ Sub addUserToBox(userRow As Long, dateOf As String)
     Dim i As Integer
 
     For i = 1 To 100
-        If Range(hFind("Court Date #" & i, "LISTINGS") & userRow).value = dateOf Then
+        If Range(hFind("Court Date #" & i, "LISTINGS") & userRow).value = DateOf Then
             hasUpdateForToday = True
         End If
     Next i
@@ -47,6 +47,6 @@ Sub addUserToBox(userRow As Long, dateOf As String)
         .List(.ListCount - 1, 2) = Range(hFind("DC #") & userRow).value
         .List(.ListCount - 1, 3) = Range(hFind("Arrest Date (current petition)") & userRow).value
         .List(.ListCount - 1, 4) = Range(hFind("Lead Charge Name") & userRow).value
-        .List(.ListCount - 1, 5) = dateOf
+        .List(.ListCount - 1, 5) = DateOf
     End With
 End Sub

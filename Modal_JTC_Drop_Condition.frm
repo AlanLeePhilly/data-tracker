@@ -56,6 +56,18 @@ Private Sub Continue_Click()
     With Condition_Box
         For i = 0 To .ListCount - 1
             If .Selected(i) = True Then
+            
+                Select Case .List(i, 0)
+                    Case "Restitution"
+                        ClientUpdateForm.JTC_Restitution.Visible = False
+                        ClientUpdateForm.JTC_Restitution_Label.Visible = False
+                        ClientUpdateForm.JTC_Restitution.Caption = ""
+                    Case "Comm. Serv"
+                        ClientUpdateForm.JTC_Comm_Service.Visible = False
+                        ClientUpdateForm.JTC_Comm_Service_Label.Visible = False
+                        ClientUpdateForm.JTC_Comm_Service.Caption = ""
+                End Select
+            
                 If returnBox.List(i, 2) = Discharge_Date Then
                     returnBox.RemoveItem (i)
                     .RemoveItem (i)
@@ -71,6 +83,8 @@ Private Sub Continue_Click()
             End If
         Next
     End With
+    
+    
     Call Cancel_Click
 End Sub
 

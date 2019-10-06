@@ -19,6 +19,14 @@ Public ctl As Control
 
 Public Lookup As Scripting.Dictionary
 
+Public Const NUM_RESTITUTION_FILED_BUCKETS = 5
+Public Const NUM_RESTITUTION_PAID_BUCKETS = 10
+Public Const NUM_COURT_COST_FILED_BUCKETS = 5
+Public Const NUM_COURT_COST_PAID_BUCKETS = 10
+Public Const NUM_COMM_SERVICE_FILED_BUCKETS = 10
+Public Const NUM_COMM_SERVICE_EARNED_BUCKETS = 20
+
+
 
 
 

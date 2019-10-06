@@ -351,7 +351,7 @@ End Sub
 
 Sub addNotes( _
     Courtroom As String, _
-    dateOf As String, _
+    DateOf As String, _
     userRow As Long, _
     Notes As String, _
     DA As String, _
@@ -362,7 +362,7 @@ Sub addNotes( _
         If IsEmpty(Range(hFind("Court Date #" & i, "LISTINGS") & userRow)) Then
             bucketHead = hFind("Court Date #" & i, "LISTINGS")
 
-            Range(bucketHead & userRow).value = dateOf
+            Range(bucketHead & userRow).value = DateOf
             Range(headerFind("Courtroom", bucketHead) & userRow).value = Lookup("Courtroom_Name")(Courtroom)
             Range(headerFind("Legal Status", bucketHead) & userRow).value = Range(headerFind("Legal Status") & userRow).value
             Range(headerFind("DA", bucketHead) & userRow).value = Lookup("DA_Last_Name_Name")(DA)
@@ -413,7 +413,7 @@ Sub UnloadAll()
 
     Dim i As Long
     For i = VBA.UserForms.count - 1 To 0 Step -1
-        nameOf = VBA.UserForms(i).name
+        nameOf = VBA.UserForms(i).Name
         Unload VBA.UserForms(i)
     Next i
 End Sub

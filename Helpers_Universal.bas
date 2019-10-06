@@ -185,7 +185,7 @@ End Sub
 
 Sub closeOpenLegalStatuses( _
     clientRow As Long, _
-    dateOf As String, _
+    DateOf As String, _
     Courtroom As String, _
     DA As String, _
     legalStatus As String)
@@ -242,7 +242,7 @@ Sub closeOpenLegalStatuses( _
                 Range(headerFind("Discharging DA", bucketHead) & clientRow) _
                     = Lookup("DA_Last_Name_Name")(DA)
                 Range(headerFind("End Date", bucketHead) & clientRow) _
-                    = dateOf
+                    = DateOf
                 Range(headerFind("Nature of Discharge", bucketHead) & clientRow) _
                     = Lookup("Nature_of_Discharge_Name")("Neutral")
                 Range(headerFind("Detailed Status Outcome", bucketHead) & clientRow) _
@@ -259,7 +259,7 @@ Sub closeOpenLegalStatuses( _
                 Range(headerFind("Reason #5 for Negative Discharge", bucketHead) & clientRow) _
                     = Lookup("Negative_Discharge_Reason_Name")("N/A")
                 Range(headerFind("LOS", bucketHead) & clientRow) _
-                    = calcLOS(Range(headerFind("Start Date", bucketHead) & clientRow).value, dateOf)
+                    = calcLOS(Range(headerFind("Start Date", bucketHead) & clientRow).value, DateOf)
                 Call append( _
                     Range(headerFind("Notes on " & statusType, bucketHead) & clientRow), "This bucket was closed on a sweep by closeOpenLegalStatuses")
 
@@ -479,6 +479,10 @@ Sub adjudicationStart( _
             If Range(hFind("Petition #" & j, "PETITION") & clientRow).value = petitionNum Then
                 petitionHead = hFind("Petition #" & j, "PETITION")
                 j = 5
+            Else
+                If j = 5 Then
+                    MsgBox "Warning: Unable to find petition #" & petitionNum & " for adjudication update"
+                End If
             End If
         Next j
 
@@ -608,7 +612,7 @@ End Sub
 
 Sub addFTA( _
     ByVal clientRow As Long, _
-    ByVal dateOf As String, _
+    ByVal DateOf As String, _
     ByVal Courtroom As String, _
     ByVal legalStatus As String _
 )
@@ -622,16 +626,16 @@ Sub addFTA( _
     For i = 1 To 15
         bucketHead = headerFind("FTA #" & i & " Date", ftaHead)
         If isEmptyOrZero(Range(bucketHead & clientRow)) Then
-            Range(bucketHead & clientRow).value = dateOf
-            Range(headerFind("Day of FTA", bucketHead) & clientRow).value = dateOf
+            Range(bucketHead & clientRow).value = DateOf
+            Range(headerFind("Day of FTA", bucketHead) & clientRow).value = DateOf
             Range(headerFind("Courtroom", bucketHead) & clientRow).value = Lookup("Courtroom_Name")(Courtroom)
             Range(headerFind("Legal Status", bucketHead) & clientRow).value = Lookup("Legal_Status_Name")(legalStatus)
             If i = 1 Then
                 Range(headerFind("LOS to FTA", bucketHead) & clientRow).value _
-                 = calcLOS(Range(headerFind("Arrest Date") & clientRow).value, dateOf)
+                 = calcLOS(Range(headerFind("Arrest Date") & clientRow).value, DateOf)
             Else
                 Range(headerFind("LOS Between FTAs", bucketHead) & clientRow).value _
-                 = calcLOS(Range(headerFind("FTA #" & (i - 1) & " Date", ftaHead) & clientRow).value, dateOf)
+                 = calcLOS(Range(headerFind("FTA #" & (i - 1) & " Date", ftaHead) & clientRow).value, DateOf)
             End If
         End If
     Next i
@@ -835,7 +839,7 @@ Sub endPlacement( _
     Next i
 End Sub
 
-Sub closeCallIn(ByVal dateOf As String, ByVal userRow As Long)
+Sub closeCallIn(ByVal DateOf As String, ByVal userRow As Long)
     tempHead = hFind("CALL-IN")
 
     If Lookup("Generic_NYNOU_Num")(Range(headerFind("Did Youth Have Call-In?", tempHead) & userRow).value) = "Yes" Then
@@ -843,7 +847,7 @@ Sub closeCallIn(ByVal dateOf As String, ByVal userRow As Long)
         If Lookup("DRAI_Action_Num")(Range(headerFind("DRAI Action", tempHead) & userRow).value) = "Follow - Hold" _
         Or Lookup("DRAI_Action_Num")(Range(headerFind("DRAI Action", tempHead) & userRow).value) = "Override - Hold" Then
             If isEmptyOrZero(Range(headerFind("End Date", tempHead) & userRow)) Then
-                Range(headerFind("End Date", tempHead) & userRow).value = dateOf
+                Range(headerFind("End Date", tempHead) & userRow).value = DateOf
             End If
             If isEmptyOrZero(Range(headerFind("LOS in Detention", tempHead) & userRow)) _
                 And isNotEmptyOrZero(Range(hFind("Date of Call-In", "CALL-IN") & userRow)) Then
@@ -854,7 +858,7 @@ Sub closeCallIn(ByVal dateOf As String, ByVal userRow As Long)
     End If
 End Sub
 
-Sub closeIntakeConference(ByVal dateOf As String, ByVal userRow As Long)
+Sub closeIntakeConference(ByVal DateOf As String, ByVal userRow As Long)
     tempHead = hFind("INTAKE CONFERENCE")
     Dim i As Integer
 
@@ -864,12 +868,12 @@ Sub closeIntakeConference(ByVal dateOf As String, ByVal userRow As Long)
             tempHead = hFind("Supervision Ordered #" & i, "INTAKE CONFERENCE")
             If isNotEmptyOrZero(Range(tempHead & userRow)) Then
                 If isEmptyOrZero(Range(headerFind("End Date", tempHead) & userRow)) Then
-                    Range(headerFind("End Date", tempHead) & userRow).value = dateOf
+                    Range(headerFind("End Date", tempHead) & userRow).value = DateOf
                 End If
                 If isEmptyOrZero(Range(headerFind("LOS", tempHead) & userRow)) _
                 And isNotEmptyOrZero(Range(hFind("Date of Intake Conference", "INTAKE CONFERENCE") & userRow)) Then
                     Range(headerFind("LOS", tempHead) & userRow).value _
-                        = calcLOS(Range(hFind("Date of Intake Conference", "INTAKE CONFERENCE") & userRow).value, dateOf)
+                        = calcLOS(Range(hFind("Date of Intake Conference", "INTAKE CONFERENCE") & userRow).value, DateOf)
                 End If
             End If
         Next i
@@ -878,12 +882,12 @@ Sub closeIntakeConference(ByVal dateOf As String, ByVal userRow As Long)
             tempHead = hFind("Other Condition #" & i, "INTAKE CONFERENCE")
             If isNotEmptyOrZero(Range(tempHead & userRow)) Then
                 If isEmptyOrZero(Range(headerFind("End Date", tempHead) & userRow)) Then
-                    Range(headerFind("End Date", tempHead) & userRow).value = dateOf
+                    Range(headerFind("End Date", tempHead) & userRow).value = DateOf
                 End If
                 If isEmptyOrZero(Range(headerFind("LOS", tempHead) & userRow)) _
                 And isNotEmptyOrZero(Range(hFind("Date of Intake Conference", "INTAKE CONFERENCE") & userRow)) Then
                     Range(headerFind("LOS", tempHead) & userRow).value _
-                        = calcLOS(Range(hFind("Date of Intake Conference", "INTAKE CONFERENCE") & userRow).value, dateOf)
+                        = calcLOS(Range(hFind("Date of Intake Conference", "INTAKE CONFERENCE") & userRow).value, DateOf)
                 End If
             End If
         Next i
@@ -891,7 +895,7 @@ Sub closeIntakeConference(ByVal dateOf As String, ByVal userRow As Long)
         If Lookup("Intake_Conference_Outcome_Num")(Range(hFind("Intake Conference Outcome", "INTAKE CONFERENCE") & userRow).value) = "Hold for Detention" Then
             If IsEmpty(Range(headerFind("LOS in Detention", tempHead) & userRow)) Then
                 Range(headerFind("LOS in Detention", tempHead) & userRow).value _
-                    = calcLOS(Range(hFind("Date of Intake Conference", "INTAKE CONFERENCE") & userRow).value, dateOf)
+                    = calcLOS(Range(hFind("Date of Intake Conference", "INTAKE CONFERENCE") & userRow).value, DateOf)
             End If
 
         Else
@@ -899,7 +903,7 @@ Sub closeIntakeConference(ByVal dateOf As String, ByVal userRow As Long)
                 If Lookup("DRAI_Action_Num")(Range(hFind("DRAI Action", "CALL-IN") & userRow).value) = "Follow - Hold" _
                 Or Lookup("DRAI_Action_Num")(Range(hFind("DRAI Action", "CALL-IN") & userRow).value) = "Override - Hold" Then
                     Range(headerFind("LOS in Detention", tempHead) & userRow).value _
-                        = calcLOS(Range(hFind("Date of Intake Conference", "INTAKE CONFERENCE") & userRow).value, dateOf)
+                        = calcLOS(Range(hFind("Date of Intake Conference", "INTAKE CONFERENCE") & userRow).value, DateOf)
                 End If
             End If
         End If
@@ -909,12 +913,12 @@ Sub closeIntakeConference(ByVal dateOf As String, ByVal userRow As Long)
 
         If IsEmpty(Range(headerFind("LOS Until Next Hearing", tempHead) & userRow)) Then
             Range(headerFind("LOS Until Next Hearing", tempHead) & userRow).value _
-                = calcLOS(Range(hFind("Date of Intake Conference", "INTAKE CONFERENCE") & userRow).value, dateOf)
+                = calcLOS(Range(hFind("Date of Intake Conference", "INTAKE CONFERENCE") & userRow).value, DateOf)
         End If
     End If
 End Sub
 
-Sub closeIntakeDetentions(ByVal dateOf As String, ByVal userRow As Long)
+Sub closeIntakeDetentions(ByVal DateOf As String, ByVal userRow As Long)
     Dim i As Integer
     Dim sectionHead As String, bucketHead As String
 
@@ -931,7 +935,7 @@ Sub closeIntakeDetentions(ByVal dateOf As String, ByVal userRow As Long)
                             Courtroom:="PJJSC", _
                             serviceType:=Lookup("Supervision_Program_Num")(Range(bucketHead & userRow).value), _
                             startDate:=Range(headerFind("Start Date", bucketHead) & userRow).value, _
-                            endDate:=dateOf, _
+                            endDate:=DateOf, _
                             Nature:="Neutral", _
                             Re1:="N/A", _
                             Re2:="N/A", _
@@ -956,3 +960,247 @@ End Function
 Function getPeriod(time) As String
     getPeriod = UCase(VBA.format(time, "am/pm"))
 End Function
+
+Sub fetchFiledRecord(ByVal userRow As Long)
+    Dim i As Integer
+    Dim sectionHead As String
+    Dim bucketHead As String
+    sectionHead = hFind("Restitution", "AGGREGATES")
+    
+    Log_Payment.History.Clear
+    
+    For i = 1 To NUM_RESTITUTION_FILED_BUCKETS
+        If isNotEmptyOrZero(Range(headerFind("Amount Filed #" & i, sectionHead) & userRow)) Then
+
+            bucketHead = headerFind("Amount Filed #" & i, sectionHead)
+            
+            With Log_Payment.History
+                .ColumnCount = 5
+                .ColumnWidths = "50;50;50;50;50;"
+                ' 0 Filing Type
+                ' 1 Date
+                ' 2 Amount Filed
+                ' 3 Amount Paid
+                ' 4 Remaining Balance
+                .AddItem "Restitution"
+                .List(.ListCount - 1, 0) = "Restitution"
+                .List(.ListCount - 1, 1) = Range(headerFind("Date", bucketHead) & userRow).value
+                .List(.ListCount - 1, 2) = Range(bucketHead & userRow).value
+            End With
+        End If
+    Next i
+    
+
+    For i = 1 To NUM_RESTITUTION_PAID_BUCKETS
+        If isNotEmptyOrZero(Range(headerFind("Amount Paid #" & i, sectionHead) & userRow)) Then
+            bucketHead = headerFind("Amount Paid #" & i, sectionHead)
+            
+            With Log_Payment.History
+                .ColumnCount = 5
+                .ColumnWidths = "50;50;50;50;50;"
+                ' 0 Filing Type
+                ' 1 Date
+                ' 2 Amount Filed
+                ' 3 Amount Paid
+                ' 4 Remaining Balance
+                .AddItem "Restitution"
+                .List(.ListCount - 1, 0) = "Restitution"
+                .List(.ListCount - 1, 1) = Range(headerFind("Date", bucketHead) & userRow).value
+                .List(.ListCount - 1, 3) = Range(bucketHead & userRow).value
+            End With
+        End If
+    Next i
+    Log_Payment.Remaining_Restitution.Caption = Range(headerFind("Total Amount Remaining", bucketHead) & userRow).value
+End Sub
+
+Sub startRestitution( _
+    ByVal Amount As String, _
+    ByVal Courtroom As String, _
+    ByVal DA As String, _
+    ByVal DateOf As String, _
+    ByVal userRow As Long _
+)
+    
+    Dim sectionHead As String
+    sectionHead = hFind("Restitution", "AGGREGATES")
+    
+    If isNotEmptyOrZero(Range(headerFind("Amount Filed #1", sectionHead) & userRow)) Then
+        MsgBox "Warning: Restitution is already started for this client. Did not update to avoid overwrtiting"
+    End If
+    
+    Range(headerFind("Did Youth Have Restitution?", sectionHead) & userRow).value = 1 'Yes
+    
+
+    Range(headerFind("Amount Filed #1", sectionHead) & userRow).value = Amount
+    Range(headerFind("Date", sectionHead) & userRow).value = DateOf
+    Range(headerFind("Courtroom", sectionHead) & userRow).value = Lookup("Courtroom_Name")(Courtroom)
+    Range(headerFind("DA", sectionHead) & userRow).value = Lookup("DA_Last_Name_Name")(DA)
+    Range(headerFind("Restitution Status", sectionHead) & userRow).value = 3 ' "Active and Unpaid"
+    
+    Call autoCalcRestitution(userRow)
+    
+End Sub
+
+Sub updateRestitution( _
+    ByVal Courtroom As String, _
+    ByVal DA As String, _
+    ByVal userRow As Long, _
+    Optional ByVal DateOf As String = "", _
+    Optional ByVal amountFiled As String = "", _
+    Optional ByVal amountPaid As String = "" _
+)
+    Dim i As Integer
+    Dim sectionHead As String
+    Dim bucketHead As String
+    sectionHead = hFind("Restitution", "AGGREGATES")
+    
+    Range(headerFind("Did Youth Have Restitution?", sectionHead) & userRow).value = 1 'Yes
+    
+    If Not amountFiled = "" Then
+        For i = 1 To NUM_RESTITUTION_FILED_BUCKETS
+            If isEmptyOrZero(Range(headerFind("Amount Filed #" & i, sectionHead) & userRow)) Then
+                bucketHead = headerFind("Amount Filed #" & i, sectionHead)
+                
+                Range(bucketHead & userRow).value = amountFiled
+                Range(headerFind("Date", bucketHead) & userRow).value = DateOf
+                Range(headerFind("Courtroom", bucketHead) & userRow).value = Lookup("Courtroom_Name")(Courtroom)
+                Range(headerFind("DA", bucketHead) & userRow).value = Lookup("DA_Last_Name_Name")(DA)
+                
+                Exit For
+                ' TODO Warning for exceeding buckets
+            End If
+        Next i
+    End If
+
+    
+    If Not amountPaid = "" Then
+        For i = 1 To NUM_RESTITUTION_PAID_BUCKETS
+            If isEmptyOrZero(Range(headerFind("Amount Paid #" & i, sectionHead) & userRow)) Then
+                bucketHead = headerFind("Amount Paid #" & i, sectionHead)
+                
+                Range(bucketHead & userRow).value = amountPaid
+                Range(headerFind("Date", bucketHead) & userRow).value = DateOf
+                Range(headerFind("Courtroom", bucketHead) & userRow).value = Lookup("Courtroom_Name")(Courtroom)
+                Range(headerFind("DA", bucketHead) & userRow).value = Lookup("DA_Last_Name_Name")(DA)
+                
+                Exit For
+                ' TODO Warning for exceeding buckets
+            End If
+        Next i
+    End If
+    
+    Call autoCalcRestitution(userRow)
+    
+End Sub
+
+Sub autoCalcRestitution(ByVal userRow As Long)
+    Dim i As Integer
+    Dim sectionHead As String
+    Dim bucketHead As String
+    Dim dateOfLastPayment As String
+    Dim dateOfFirstFiling As String
+    sectionHead = hFind("Restitution", "AGGREGATES")
+    
+    
+    'Calc Total Amount Filed
+    Dim totalAmountFiled As Double
+    totalAmountFiled = 0
+    
+    For i = 1 To NUM_RESTITUTION_FILED_BUCKETS
+        If isNotEmptyOrZero(Range(headerFind("Amount Filed #" & i, sectionHead) & userRow)) Then
+            bucketHead = headerFind("Amount Filed #" & i, sectionHead)
+            totalAmountFiled = totalAmountFiled + CDbl(Range(bucketHead & userRow).value)
+            
+            If i = 1 Then
+                dateOfFirstFiling = Range(headerFind("Date", bucketHead) & userRow).value
+            End If
+        End If
+    Next i
+    
+    Range(headerFind("Total Amount Filed", sectionHead) & userRow).value = totalAmountFiled
+    
+    
+    
+    'Calc Total Amount Remaining
+    Dim totalAmountPaid As Double
+    totalAmountPaid = 0
+    
+    For i = 1 To NUM_RESTITUTION_PAID_BUCKETS
+        If isNotEmptyOrZero(Range(headerFind("Amount Paid #" & i, sectionHead) & userRow)) Then
+            bucketHead = headerFind("Amount Paid #" & i, sectionHead)
+            totalAmountPaid = totalAmountPaid + CDbl(Range(bucketHead & userRow).value)
+            dateOfLastPayment = Range(headerFind("Date", bucketHead) & userRow).value
+        End If
+    Next i
+    
+    Range(headerFind("Total Amount Paid", sectionHead) & userRow).value = totalAmountPaid
+    
+    Range(headerFind("Total Amount Remaining", sectionHead) & userRow).value = totalAmountFiled - totalAmountPaid
+    
+    'Calc Restitution Status
+    Dim restitutionStatus As String
+    
+    If totalAmountPaid >= totalAmountFiled Then
+        restitutionStatus = 1 ' Paid in Full
+        Range(headerFind("Date Paid in Full", sectionHead) & userRow).value = dateOfLastPayment
+        Range(headerFind("LOS to Pay in Full", sectionHead) & userRow).value = calcLOS(dateOfFirstFiling, dateOfLastPayment)
+    Else
+        restitutionStatus = 3 ' Active and Unpaid
+    End If
+        
+            
+     Range(headerFind("Restitution Status", sectionHead) & userRow).value = restitutionStatus
+     
+     Call autoCalcCostsAndRest(userRow)
+
+End Sub
+
+Sub autoCalcCostsAndRest(ByVal userRow As Long)
+    Dim costHead As String
+    Dim restHead As String
+    Dim aggHead As String
+    Dim aggOwed As Double
+    Dim aggPaid As Double
+    
+    costHead = hFind("Court Costs", "AGGREGATES")
+    restHead = hFind("Restitution", "AGGREGATES")
+    aggHead = hFind("Costs & Restitution", "AGGREGATES")
+    
+    aggOwed = CDbl(Range(headerFind("Total Amount Filed", costHead) & userRow).value) _
+            + CDbl(Range(headerFind("Total Amount Filed", restHead) & userRow).value)
+            
+    aggPaid = CDbl(Range(headerFind("Total Amount Paid", costHead) & userRow).value) _
+            + CDbl(Range(headerFind("Total Amount Paid", restHead) & userRow).value)
+    
+    Range(headerFind("Aggregate Owed", aggHead) & userRow).value = aggOwed
+    Range(headerFind("Aggregate Paid", aggHead) & userRow).value = aggPaid
+    Range(headerFind("Aggregate Remaining", aggHead) & userRow).value = aggOwed - aggPaid
+    
+    
+    'Range(headerFind("LOS to File", aggHead) & userRow).value =
+    'Range(headerFind("LOS to Pay", aggHead) & userRow).value =
+    
+End Sub
+
+Sub startCommService( _
+    ByVal Amount As String, _
+    ByVal Courtroom As String, _
+    ByVal DA As String, _
+    ByVal DateOf As String, _
+    ByVal userRow As Long _
+)
+    
+    Dim sectionHead As String
+    sectionHead = hFind("COMM. SERVICE", "AGGREGATES")
+    
+    If isNotEmptyOrZero(Range(headerFind("Date Filed", sectionHead) & userRow)) Then
+        MsgBox "Warning: Community Service is already started for this client. Did not update to avoid overwrtiting"
+    End If
+    
+    Range(headerFind("Did Youth Have Comm. Service?", sectionHead) & userRow).value = 1 'Yes
+    Range(headerFind("Date Filed", sectionHead) & userRow).value = DateOf
+    Range(headerFind("Courtroom", sectionHead) & userRow).value = Lookup("Courtroom_Name")(Courtroom)
+    Range(headerFind("DA", sectionHead) & userRow).value = Lookup("DA_Last_Name_Name")(DA)
+    Range(headerFind("Amount Earned", sectionHead) & userRow).value = Amount
+
+End Sub

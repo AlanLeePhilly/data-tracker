@@ -25,8 +25,21 @@ End Sub
 
 
 
+
+
+Private Sub LogPayment_Click()
+    If DA.value = "" Then
+        MsgBox "DA Required"
+        Exit Sub
+    End If
+    
+    Log_Payment.Show
+    
+End Sub
+
 Private Sub RearrestIntake_Click()
     Modal_Rearrest_Intake.Show
+    
 End Sub
 
 Private Sub Standard_FTA_Yes_Click()
@@ -1068,7 +1081,7 @@ Sub Adult_Submit_Click()
 
     Call addNotes( _
         Courtroom:="Adult", _
-        dateOf:=DateOfHearing.value, _
+        DateOf:=DateOfHearing.value, _
         userRow:=updateRow, _
         Notes:=Adult_Notes, _
         DA:=DA.value _
@@ -1168,6 +1181,33 @@ Sub JTC_Submit_Click()
             Exit Sub
         End If
     End If
+    
+    'NOTES
+    
+    If Not JTC_Notes.value = "" Then
+        Select Case JTC_Fetch_Phase.Caption
+            Case 2
+                Range(headerFind("Notes on Phase 2") & updateRow).value _
+                        = DateOfHearing & " - " & JTC_Notes.value & "; " _
+                        & vbNewLine & Range(headerFind("Notes on Phase 2") & updateRow).value
+            Case 3
+                Range(headerFind("Notes on Phase 3") & updateRow).value _
+                        = DateOfHearing & " - " & JTC_Notes.value & "; " _
+                        & vbNewLine & Range(headerFind("Notes on Phase 3") & updateRow).value
+            Case Else
+                Range(headerFind("Notes on Phase 1") & updateRow).value _
+                        = DateOfHearing & " - " & JTC_Notes.value & "; " _
+                        & vbNewLine & Range(headerFind("Notes on Phase 1") & updateRow).value
+        End Select
+    End If
+    Call addNotes( _
+        Courtroom:="JTC", _
+        DateOf:=DateOfHearing.value, _
+        userRow:=updateRow, _
+        Notes:=JTC_Notes.value, _
+        DA:=DA.value _
+    )
+    
 
     'set tempHead at column at beginning of JTC section
     courtHead = headerFind("JTC")
@@ -1324,7 +1364,9 @@ Sub JTC_Submit_Click()
         Range(headerFind("Nature of Courtroom Outcome", tempHead) & updateRow) = 3 'neutral
         Range(headerFind("Detailed Courtroom Outcome", tempHead) & updateRow) = 9 'Acceptance Not Granted
         
-        Range(headerFind("Total LOS in JTC", tempHead) & updateRow) = 0
+        Range(headerFind("Total LOS in JTC", tempHead) & updateRow) _
+        = calcLOS(Range(headerFind("Referral Date", courtHead) & updateRow), DateOfHearing.value)
+ 
 
         Call ReferClientTo( _
             referralDate:=DateOfHearing.value, _
@@ -1367,7 +1409,7 @@ Sub JTC_Submit_Click()
 
         Call closeOpenLegalStatuses( _
             clientRow:=updateRow, _
-            dateOf:=DateOfHearing.value, _
+            DateOf:=DateOfHearing.value, _
             Courtroom:="JTC", _
             legalStatus:="JTC", _
             DA:=DA.value)
@@ -1426,122 +1468,7 @@ Sub JTC_Submit_Click()
         End Select
     End If
 
-    'if discharge
-    If JTC_Discharge.BackColor = selectedColor Then
-        Dim endHead As String
-        endHead = hFind("Petition Outcomes", "AGGREGATES")
-        tempHead = headerFind("JTC OUTCOMES")
-        'set current phase end date
-        Range(headerFind("End Date", oldPhaseHead) & updateRow) = DateOfHearing.value
-        'outcome notes
-        Range(headerFind("Notes on Outcome", tempHead) & updateRow) = JTC_Notes.value
-        'set "Date of Overall Discharge"
-        Range(headerFind("Date of Overall Discharge", tempHead) & updateRow) = DateOfHearing.value
-        'set "Active or Discharged" to discharged
-        Range(headerFind("Active or Discharged", tempHead) & updateRow) = Lookup("Active_Name")("Discharged")
-        'set "Nature of Discharge"
-
-        Select Case Modal_JTC_Discharge.DetailedOutcome.value
-            Case "Rearrested & Held (adult)"
-                Call totalOutcome( _
-                    clientRow:=updateRow, _
-                    dateOf:=DateOfHearing.value, _
-                    Courtroom:="JTC", _
-                    DA:=DA.value, _
-                    legalStatus:="JTC", _
-                    Nature:=Modal_JTC_Discharge.NatureOfOutcome.value, _
-                    detailed:="Rearrested & Held", _
-                    Notes:=JTC_Notes.value)
-
-                ''''''''''''''''''''''
-            Case "Positive Completion"
-                Call totalOutcome( _
-                    clientRow:=updateRow, _
-                    dateOf:=DateOfHearing.value, _
-                    Courtroom:="JTC", _
-                    DA:=DA.value, _
-                    legalStatus:="JTC", _
-                    Nature:=Modal_JTC_Discharge.NatureOfOutcome.value, _
-                    detailed:="Petition Closed - Positive Comp. Terms", _
-                    Notes:=JTC_Notes.value)
-
-                If JTC_Fetch_Phase = 3 Then
-                    Range(headerFind("Phase", courtHead) & updateRow) = Lookup("JTC_Phase_Name")("Graduated, Awaiting Expungment")
-                    Range(headerFind("Record Expunged?", newPhaseHead) & updateRow) = Lookup("Generic_YN_Name")("No")
-                    Range(headerFind("LOS", oldPhaseHead) & updateRow).value _
-                        = calcLOS(Range(headerFind("Start Date", oldPhaseHead) & updateRow).value, DateOfHearing.value)
-                End If
-                Range(headerFind("LOS (discharged)") & updateRow).value _
-                    = calcLOS(Range(headerFind("Arrest Date") & updateRow).value, DateOfHearing.value)
-
-                '''''''''''''''''''''
-            Case "Aged Out"
-                Call totalOutcome( _
-                    clientRow:=updateRow, _
-                    dateOf:=DateOfHearing.value, _
-                    Courtroom:="JTC", _
-                    DA:=DA.value, _
-                    legalStatus:="JTC", _
-                    Nature:=Modal_JTC_Discharge.NatureOfOutcome.value, _
-                    detailed:="Aged Out", _
-                    Notes:=JTC_Notes.value)
-
-                '''''''''''''''''''''
-            Case "Acceptance Not Granted", "Show Cause", "Hosp. (Mental Health)", "Hosp. (Physical Health)", "Other", "Unknown"
-                Call ReferClientTo( _
-                    referralDate:=DateOfHearing.value, _
-                    clientRow:=updateRow, _
-                    toCR:=Modal_JTC_Discharge.New_CR.value, _
-                    fromCR:="JTC", _
-                    newLegalStatus:=Modal_JTC_Discharge.Legal_Status.value, _
-                    DA:=DA.value)
-
-                '''''''''''''''''''''
-            Case "Transfer to Dependent"
-                Call ReferClientTo( _
-                    referralDate:=DateOfHearing.value, _
-                    clientRow:=updateRow, _
-                    toCR:="5E", _
-                    fromCR:="JTC", _
-                    DA:=DA.value)
-
-                '''''''''''''''''''''
-            Case "Transfer to Other County"
-                Call totalOutcome( _
-                    clientRow:=updateRow, _
-                    dateOf:=DateOfHearing.value, _
-                    Courtroom:="JTC", _
-                    DA:=DA.value, _
-                    legalStatus:="JTC", _
-                    Nature:=Modal_JTC_Discharge.NatureOfOutcome.value, _
-                    detailed:="Transfer to Other County", _
-                    Notes:=JTC_Notes.value)
-
-        End Select
-
-
-        'set detailed outcome
-        Range(headerFind("Detailed Courtroom Outcome", tempHead) & updateRow) = _
-                        Lookup("JTC_Outcome_Name")(Modal_JTC_Discharge.DetailedOutcome.value)
-        Range(headerFind("Nature of Courtroom Outcome", tempHead) & updateRow) = _
-                        Lookup("Nature_of_Discharge_Name")(Modal_JTC_Discharge.NatureOfOutcome.value)
-        'if negative
-        'set reasons for dischrage
-        Range(headerFind("Reason #1 for Negative Discharge", tempHead) & updateRow) = _
-                            Lookup("Negative_Discharge_Reason_Name")(Modal_JTC_Discharge.ReasonForDischarge1.value)
-        Range(headerFind("Reason #2 for Negative Discharge", tempHead) & updateRow) = _
-                            Lookup("Negative_Discharge_Reason_Name")(Modal_JTC_Discharge.ReasonForDischarge2.value)
-        Range(headerFind("Reason #3 for Negative Discharge", tempHead) & updateRow) = _
-                            Lookup("Negative_Discharge_Reason_Name")(Modal_JTC_Discharge.ReasonForDischarge3.value)
-        'calc LOS in JTC
-        Range(headerFind("Total LOS in JTC", tempHead) & updateRow) = _
-                        calcLOS(Range(headerFind("Accepted Date", courtHead) & updateRow), DateOfHearing)
-        'calc LOS from Arrest
-        Range(headerFind("Total LOS from Arrest", tempHead) & updateRow) = _
-                        calcLOS(Range(headerFind("Arrest Date") & updateRow), DateOfHearing)
-        '######set T/F discharge reasons
-    End If
-
+    
     ''''''''''''''''
     ''IOP PROVIDER''
     ''''''''''''''''
@@ -1670,17 +1597,17 @@ Sub JTC_Submit_Click()
 
     If JTC_Adjudication_Update.BackColor = selectedColor Then
         Call adjudicationStart( _
-                clientRow:=updateRow, _
-                petitionNum:=Modal_JTC_Adjudication.PetitionBox.value, _
-                Courtroom:="JTC", _
-                DA:=DA.value, _
-                startDate:=Modal_JTC_Adjudication.Adjudication_Date.value, _
-                Type_of:=Modal_JTC_Adjudication.Type_of.value, _
-                Re1:=Modal_JTC_Adjudication.Reason1.value, _
-                Re2:=Modal_JTC_Adjudication.Reason2.value, _
-                Re3:=Modal_JTC_Adjudication.Reason3.value, _
-                Re4:=Modal_JTC_Adjudication.Reason4.value, _
-                Re5:=Modal_JTC_Adjudication.Reason5.value _
+            clientRow:=updateRow, _
+            petitionNum:=Modal_JTC_Adjudication.PetitionBox.value, _
+            Courtroom:="JTC", _
+            DA:=DA.value, _
+            startDate:=Modal_JTC_Adjudication.Adjudication_Date.value, _
+            Type_of:=Modal_JTC_Adjudication.Type_of.value, _
+            Re1:=Modal_JTC_Adjudication.Reason1.value, _
+            Re2:=Modal_JTC_Adjudication.Reason2.value, _
+            Re3:=Modal_JTC_Adjudication.Reason3.value, _
+            Re4:=Modal_JTC_Adjudication.Reason4.value, _
+            Re5:=Modal_JTC_Adjudication.Reason5.value _
             )
     End If
 
@@ -1814,6 +1741,25 @@ Sub JTC_Submit_Click()
                     Re3:=.List(i, 8), _
                     Notes:=.List(i, 9), _
                     phase:=JTC_Return_Phase.Caption)
+                    
+            Select Case .List(i, 0)
+                    Case "Restitution"
+                        Call startRestitution( _
+                            Amount:=ClientUpdateForm.JTC_Restitution.Caption, _
+                            Courtroom:="JTC", _
+                            DA:=DA.value, _
+                            DateOf:=.List(i, 2), _
+                            userRow:=updateRow)
+                    
+                    Case "Comm. Serv"
+                        Call startCommService( _
+                            Amount:=ClientUpdateForm.JTC_Comm_Service.Caption, _
+                            Courtroom:="JTC", _
+                            DA:=DA.value, _
+                            DateOf:=.List(i, 2), _
+                            userRow:=updateRow)
+                End Select
+                
             Else
                 If .List(i, 4) = "JTC" Then
                 'if service ordered from this courtroom
@@ -1883,32 +1829,152 @@ Sub JTC_Submit_Click()
             End If
         Next i
     End With
+    
+    
+    'if discharge
+    If JTC_Discharge.BackColor = selectedColor Then
+        Dim endHead As String
+        endHead = hFind("Petition Outcomes", "AGGREGATES")
+        tempHead = headerFind("JTC OUTCOMES")
+        'set current phase end date
+        Range(headerFind("End Date", oldPhaseHead) & updateRow) = DateOfHearing.value
+        Range(headerFind("LOS", oldPhaseHead) & updateRow) _
+                = calcLOS(Range(headerFind("Start Date", oldPhaseHead) & updateRow), DateOfHearing.value)
+        'outcome notes
+        Range(headerFind("Notes on Outcome", tempHead) & updateRow) = JTC_Notes.value
+        'set "Date of Overall Discharge"
+        Range(headerFind("Date of Overall Discharge", tempHead) & updateRow) = DateOfHearing.value
+        'set "Active or Discharged" to discharged
+        
+        Range(headerFind("Courtroom of Discharge", tempHead) & updateRow) = Lookup("Courtroom_Name")("JTC")
+        Range(headerFind("DA", tempHead) & updateRow) = Lookup("DA_Last_Name_Name")(DA.value)
+        
+        If Modal_JTC_Discharge.Legal_Status.value = "" Then
+            Range(headerFind("Legal Status of Discharge", tempHead) & updateRow) = Lookup("Legal_Status_Name")("JTC")
+        Else
+            Range(headerFind("Legal Status of Discharge", tempHead) & updateRow) = Lookup("Legal_Status_Name")(Modal_JTC_Discharge.Legal_Status.value)
+        End If
+        
+        Range(headerFind("Active or Discharged", tempHead) & updateRow) = Lookup("Active_Name")("Discharged")
+        'set "Nature of Discharge"
 
-    If Not JTC_Notes.value = "" Then
-        Select Case JTC_Fetch_Phase.Caption
-            Case 2
-                Range(headerFind("Notes on Phase 2") & updateRow).value _
-                        = DateOfHearing & " - " & JTC_Notes.value & "; " _
-                        & vbNewLine & Range(headerFind("Notes on Phase 2") & updateRow).value
-            Case 3
-                Range(headerFind("Notes on Phase 3") & updateRow).value _
-                        = DateOfHearing & " - " & JTC_Notes.value & "; " _
-                        & vbNewLine & Range(headerFind("Notes on Phase 3") & updateRow).value
-            Case Else
-                Range(headerFind("Notes on Phase 1") & updateRow).value _
-                        = DateOfHearing & " - " & JTC_Notes.value & "; " _
-                        & vbNewLine & Range(headerFind("Notes on Phase 1") & updateRow).value
+        Select Case Modal_JTC_Discharge.DetailedOutcome.value
+            Case "Rearrested & Held (adult)"
+                Call totalOutcome( _
+                    clientRow:=updateRow, _
+                    DateOf:=DateOfHearing.value, _
+                    Courtroom:="JTC", _
+                    DA:=DA.value, _
+                    legalStatus:="JTC", _
+                    Nature:=Modal_JTC_Discharge.NatureOfOutcome.value, _
+                    detailed:="Rearrested & Held", _
+                    Notes:=JTC_Notes.value)
+
+                ''''''''''''''''''''''
+            Case "Positive Completion"
+                Call totalOutcome( _
+                    clientRow:=updateRow, _
+                    DateOf:=DateOfHearing.value, _
+                    Courtroom:="JTC", _
+                    DA:=DA.value, _
+                    legalStatus:="JTC", _
+                    Nature:=Modal_JTC_Discharge.NatureOfOutcome.value, _
+                    detailed:="Petition Closed - Positive Comp. Terms", _
+                    Notes:=JTC_Notes.value)
+
+                If JTC_Fetch_Phase = 3 Then
+                    Range(headerFind("Phase", courtHead) & updateRow) = Lookup("JTC_Phase_Name")("Graduated, Awaiting Expungment")
+                    Range(headerFind("Record Expunged?", newPhaseHead) & updateRow) = Lookup("Generic_YN_Name")("No")
+                    Range(headerFind("LOS", oldPhaseHead) & updateRow).value _
+                        = calcLOS(Range(headerFind("Start Date", oldPhaseHead) & updateRow).value, DateOfHearing.value)
+                End If
+                Range(headerFind("LOS (discharged)") & updateRow).value _
+                    = calcLOS(Range(headerFind("Arrest Date") & updateRow).value, DateOfHearing.value)
+
+                '''''''''''''''''''''
+            Case "Aged Out"
+                Call totalOutcome( _
+                    clientRow:=updateRow, _
+                    DateOf:=DateOfHearing.value, _
+                    Courtroom:="JTC", _
+                    DA:=DA.value, _
+                    legalStatus:="JTC", _
+                    Nature:=Modal_JTC_Discharge.NatureOfOutcome.value, _
+                    detailed:="Aged Out", _
+                    Notes:=JTC_Notes.value)
+                    
+             Case "Admin. D/C - Reasonable Efforts"
+                Call totalOutcome( _
+                    clientRow:=updateRow, _
+                    DateOf:=DateOfHearing.value, _
+                    Courtroom:="JTC", _
+                    DA:=DA.value, _
+                    legalStatus:="JTC", _
+                    Nature:=Modal_JTC_Discharge.NatureOfOutcome.value, _
+                    detailed:="Admin. D/C - Reasonable Efforts", _
+                    Notes:=JTC_Notes.value)
+
+                '''''''''''''''''''''
+            Case "Acceptance Not Granted", "Show Cause", "Hosp. (Mental Health)", "Hosp. (Physical Health)", "Other", "Unknown", "Not Fit to Stand Trial"
+                Call ReferClientTo( _
+                    referralDate:=DateOfHearing.value, _
+                    clientRow:=updateRow, _
+                    toCR:=Modal_JTC_Discharge.New_CR.value, _
+                    fromCR:="JTC", _
+                    newLegalStatus:=Modal_JTC_Discharge.Legal_Status.value, _
+                    DA:=DA.value)
+
+                '''''''''''''''''''''
+            Case "Transfer to Dependent"
+                Call ReferClientTo( _
+                    referralDate:=DateOfHearing.value, _
+                    clientRow:=updateRow, _
+                    toCR:="5E", _
+                    fromCR:="JTC", _
+                    DA:=DA.value)
+
+                '''''''''''''''''''''
+            Case "Transfer to Other County"
+                Call totalOutcome( _
+                    clientRow:=updateRow, _
+                    DateOf:=DateOfHearing.value, _
+                    Courtroom:="JTC", _
+                    DA:=DA.value, _
+                    legalStatus:="JTC", _
+                    Nature:=Modal_JTC_Discharge.NatureOfOutcome.value, _
+                    detailed:="Transfer to Other County", _
+                    Notes:=JTC_Notes.value)
+
         End Select
+
+
+        'set detailed outcome
+        Range(headerFind("Detailed Courtroom Outcome", tempHead) & updateRow) = _
+                        Lookup("JTC_Outcome_Name")(Modal_JTC_Discharge.DetailedOutcome.value)
+        Range(headerFind("Nature of Courtroom Outcome", tempHead) & updateRow) = _
+                        Lookup("Nature_of_Discharge_Name")(Modal_JTC_Discharge.NatureOfOutcome.value)
+        'if negative
+        'set reasons for dischrage
+        Range(headerFind("Reason #1 for Negative Discharge", tempHead) & updateRow) = _
+                            Lookup("Negative_Discharge_Reason_Name")(Modal_JTC_Discharge.ReasonForDischarge1.value)
+        Range(headerFind("Reason #2 for Negative Discharge", tempHead) & updateRow) = _
+                            Lookup("Negative_Discharge_Reason_Name")(Modal_JTC_Discharge.ReasonForDischarge2.value)
+        Range(headerFind("Reason #3 for Negative Discharge", tempHead) & updateRow) = _
+                            Lookup("Negative_Discharge_Reason_Name")(Modal_JTC_Discharge.ReasonForDischarge3.value)
+        'calc LOS in JTC
+        Range(headerFind("Total LOS in JTC", tempHead) & updateRow) = _
+                        calcLOS(Range(headerFind("Referral Date", courtHead) & updateRow), DateOfHearing)
+        'calc LOS from Arrest
+        Range(headerFind("Total LOS from Arrest", tempHead) & updateRow) = _
+                        calcLOS(Range(headerFind("Arrest Date") & updateRow), DateOfHearing)
+        '######set T/F discharge reasons
     End If
+
+
+
     Call closeCallIn(DateOfHearing.value, updateRow)
     Call closeIntakeConference(DateOfHearing.value, updateRow)
-    Call addNotes( _
-        Courtroom:="JTC", _
-        dateOf:=DateOfHearing.value, _
-        userRow:=updateRow, _
-        Notes:=JTC_Notes.value, _
-        DA:=DA.value _
-    )
+    
     Call Save_Countdown
     Call UnloadAll
 
@@ -2047,7 +2113,7 @@ Sub Standard_Submit_Click()
                 If isTerminal("Legal Status", .Current_Detailed_Outcome) Then
                     Call totalOutcome( _
                         clientRow:=updateRow, _
-                        dateOf:=.Current_Discharge_Date, _
+                        DateOf:=.Current_Discharge_Date, _
                         Courtroom:=oldCourtroom, _
                         DA:=DA.value, _
                         legalStatus:=.Current_Legal_Status.Caption, _
@@ -2353,6 +2419,24 @@ Sub Standard_Submit_Click()
                     Re2:=.List(i, 7), _
                     Re3:=.List(i, 8), _
                     Notes:=.List(i, 9))
+                    
+                Select Case .List(i, 0)
+                    Case "Restitution"
+                        Call startRestitution( _
+                            Amount:=ClientUpdateForm.Standard_Restitution.Caption, _
+                            Courtroom:=oldCourtroom, _
+                            DA:=DA.value, _
+                            DateOf:=.List(i, 2), _
+                            userRow:=updateRow)
+                    
+                    Case "Comm. Serv"
+                        Call startCommService( _
+                            Amount:=ClientUpdateForm.Standard_Comm_Service.Caption, _
+                            Courtroom:=oldCourtroom, _
+                            DA:=DA.value, _
+                            DateOf:=.List(i, 2), _
+                            userRow:=updateRow)
+                End Select
             Else
                 If .List(i, 4) = oldCourtroom Then
                 'if service ordered from this courtroom
@@ -2462,7 +2546,7 @@ Sub Standard_Submit_Click()
 
     Call addNotes( _
         Courtroom:=oldCourtroom, _
-        dateOf:=DateOfHearing.value, _
+        DateOf:=DateOfHearing.value, _
         userRow:=updateRow, _
         Notes:=Standard_Notes, _
         DA:=DA.value _
@@ -2506,7 +2590,7 @@ Private Sub PJJSC_Submit_Click()
     Worksheets("Entry").Activate
     Call addNotes( _
         Courtroom:="PJJSC", _
-        dateOf:=DateOfHearing.value, _
+        DateOf:=DateOfHearing.value, _
         userRow:=updateRow, _
         Notes:=PJJSC_NotesOnDetentionOutcome.value, _
         DA:=DA.value _

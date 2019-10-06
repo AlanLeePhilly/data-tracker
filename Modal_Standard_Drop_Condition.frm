@@ -67,6 +67,19 @@ Private Sub Continue_Click()
     With Condition_Box
         For i = 0 To .ListCount - 1
             If .Selected(i) = True Then
+                
+                Select Case .List(i, 0)
+                    Case "Restitution"
+                        ClientUpdateForm.Standard_Restitution.Visible = False
+                        ClientUpdateForm.Standard_Restitution_Label.Visible = False
+                        ClientUpdateForm.Standard_Restitution.Caption = ""
+                    Case "Comm. Serv"
+                        ClientUpdateForm.Standard_Comm_Service.Visible = False
+                        ClientUpdateForm.Standard_Comm_Service_Label.Visible = False
+                        ClientUpdateForm.Standard_Comm_Service.Caption = ""
+                End Select
+            
+            
                 If returnBox.List(i, 2) = Discharge_Date Then
                     returnBox.RemoveItem (i)
                     .RemoveItem (i)
