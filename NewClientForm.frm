@@ -980,7 +980,7 @@ Private Sub Submit_Click()
     Dim bucketHead As String
 
     If DiversionProgram.value = "Yes" Then
-        Call startLegalStatus( _
+        Call legalStatusStart( _
             clientRow:=emptyRow, _
             statusType:="Diversion", _
             Courtroom:="PJJSC", _
@@ -990,7 +990,7 @@ Private Sub Submit_Click()
     Else
         If ConfOutcome.value = "Hold for Detention" _
         Or ConfOutcome.value = "Roll to Detention Hearing" Then
-            Call startLegalStatus( _
+            Call legalStatusStart( _
                 clientRow:=emptyRow, _
                 statusType:="Pretrial", _
                 Courtroom:="PJJSC", _
@@ -998,14 +998,14 @@ Private Sub Submit_Click()
                 startDate:=PetitionBox.List(0, 0))
         Else
             If InitialHearingLocation.value = "Adult" Then
-                Call startLegalStatus( _
+                Call legalStatusStart( _
                     clientRow:=emptyRow, _
                     statusType:="Adult", _
                     Courtroom:="Adult", _
                     DA:=DA.value, _
                     startDate:=ArrestDate.value)
             Else
-                Call startLegalStatus( _
+                Call legalStatusStart( _
                     clientRow:=emptyRow, _
                     statusType:="Pretrial", _
                     Courtroom:="Intake Conf.", _

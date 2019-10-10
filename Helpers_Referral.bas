@@ -420,7 +420,7 @@ Sub ReferClientTo( _
     And Not toCR = "N/A" _
     And Not toCR = "WRAP" _
     And Not toCR = "Crossover" Then
-        Call endLegalStatus( _
+        Call legalStatusEnd( _
             clientRow:=clientRow, _
             statusType:=currentStatus, _
             Courtroom:=fromCR, _
@@ -448,7 +448,7 @@ Sub ReferClientTo( _
             End If
 
 
-            Call startLegalStatus( _
+            Call legalStatusStart( _
                 clientRow:=clientRow, _
                 statusType:=submitLegalStatus, _
                 Courtroom:=toCR, _

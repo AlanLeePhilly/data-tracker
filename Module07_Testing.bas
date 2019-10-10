@@ -1,6 +1,13 @@
 Attribute VB_Name = "Module07_Testing"
 Sub Test_Print()
 
+    With Application
+        .ScreenUpdating = False
+        .Calculation = xlCalculationManual
+    End With
+
+    Worksheets("Entry").Activate
+    
     Worksheets("TestOutput").Range("A2:X2000").ClearContents
     Dim userRow As Long
     Dim i As Long
@@ -18,7 +25,7 @@ Sub Test_Print()
 
     'Grab the row number that was written in G1 of the "TestOutput" sheet
     userRow = Worksheets("TestOutput").Range("G1").value
-
+    Call AggAggSupervisionsAndConditions(userRow)
 
     With Worksheets("Entry")
 
@@ -108,6 +115,12 @@ Sub Test_Print()
             'move on to next column on datasheet
         Next i
     End With
+    
+     With Application
+        .ScreenUpdating = True
+        .Calculation = xlCalculationAutomatic
+    End With
+    Worksheets("TestOutput").Activate
 End Sub
 
 Sub Test_Write_Client_1()

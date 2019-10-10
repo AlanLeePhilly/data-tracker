@@ -42,23 +42,36 @@ Private Sub Submit_Click()
         Exit Sub
     End If
     
-    If Filing.value = True Then
-        Call updateRestitution( _
-            Courtroom:=ClientUpdateForm.Courtroom.value, _
-            DA:=ClientUpdateForm.DA.value, _
-            userRow:=updateRow, _
-            DateOf:=DateOf.value, _
-            amountFiled:=Amount.value)
-    End If
-    
-    If Payment.value = True Then
-        Call updateRestitution( _
-            Courtroom:=ClientUpdateForm.Courtroom.value, _
-            DA:=ClientUpdateForm.DA.value, _
-            userRow:=updateRow, _
-            DateOf:=DateOf.value, _
-            amountPaid:=Amount.value)
-    End If
+    Select Case True
+        Case Filing_Type.value = "Restitution" And Filing.value = True
+            Call updateRestitution( _
+                Courtroom:=ClientUpdateForm.Courtroom.value, _
+                DA:=ClientUpdateForm.DA.value, _
+                userRow:=updateRow, _
+                DateOf:=DateOf.value, _
+                amountFiled:=Amount.value)
+        Case Filing_Type.value = "Restitution" And Payment.value = True
+            Call updateRestitution( _
+                Courtroom:=ClientUpdateForm.Courtroom.value, _
+                DA:=ClientUpdateForm.DA.value, _
+                userRow:=updateRow, _
+                DateOf:=DateOf.value, _
+                amountPaid:=Amount.value)
+        Case Filing_Type.value = "Court Cost" And Filing.value = True
+            Call updateCourtCost( _
+                Courtroom:=ClientUpdateForm.Courtroom.value, _
+                DA:=ClientUpdateForm.DA.value, _
+                userRow:=updateRow, _
+                DateOf:=DateOf.value, _
+                amountFiled:=Amount.value)
+        Case Filing_Type.value = "Court Cost" And Payment.value = True
+            Call updateCourtCost( _
+                Courtroom:=ClientUpdateForm.Courtroom.value, _
+                DA:=ClientUpdateForm.DA.value, _
+                userRow:=updateRow, _
+                DateOf:=DateOf.value, _
+                amountPaid:=Amount.value)
+    End Select
     
     Unload Me
     

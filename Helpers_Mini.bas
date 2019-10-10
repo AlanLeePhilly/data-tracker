@@ -464,3 +464,18 @@ Public Function statusHasAgg(legalStatus As String) As Boolean
             statusHasAgg = False
     End Select
 End Function
+
+
+Function getHour(time) As String
+    getHour = Left(VBA.format(time, "hh am/pm"), 2)
+    If getHour = "00" Then
+        getHour = ""
+    End If
+End Function
+Function getMinute(time) As String
+    getMinute = VBA.format(time, "nn")
+End Function
+Function getPeriod(time) As String
+    getPeriod = UCase(VBA.format(time, "am/pm"))
+End Function
+

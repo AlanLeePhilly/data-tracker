@@ -628,7 +628,7 @@ Sub Adult_Submit_Click()
                 ''''''''''''''''''
 
                 If .DiversionProgram.value = "Yes" Then
-                    Call startLegalStatus( _
+                    Call legalStatusStart( _
                         clientRow:=updateRow, _
                         statusType:="Diversion", _
                         Courtroom:="PJJSC", _
@@ -638,14 +638,14 @@ Sub Adult_Submit_Click()
                 Else
                     If .ConfOutcome.value = "Hold for Detention" _
                     Or .ConfOutcome.value = "Roll to Detention Hearing" Then
-                        Call startLegalStatus( _
+                        Call legalStatusStart( _
                             clientRow:=updateRow, _
                             statusType:="Pretrial", _
                             Courtroom:="PJJSC", _
                             DA:=DA.value, _
                             startDate:=.PetitionBox.List(0, 0))
                     Else
-                        Call startLegalStatus( _
+                        Call legalStatusStart( _
                             clientRow:=updateRow, _
                             statusType:="Pretrial", _
                             Courtroom:="Intake Conf.", _
@@ -1387,7 +1387,7 @@ Sub JTC_Submit_Click()
         Range(headerFind("Start Date", newPhaseHead) & updateRow).value = JTC_Accept_Reject_Date.Caption
         Range(headerFind("Scheduled Step-Up Date", newPhaseHead) & updateRow) = JTC_Return_Stepup_Date.Caption
 
-        Call endLegalStatus( _
+        Call legalStatusEnd( _
             clientRow:=updateRow, _
             statusType:=Lookup("Legal_Status_Num")(Range(hFind("Legal Status") & updateRow).value), _
             Courtroom:=Lookup("Courtroom_Num")(Range(hFind("Courtroom of Origin", "JTC") & updateRow).value), _
@@ -1399,7 +1399,7 @@ Sub JTC_Submit_Click()
             withAgg:=True, _
             dischargingCourtroom:="JTC")
 
-        Call startLegalStatus( _
+        Call legalStatusStart( _
             clientRow:=updateRow, _
             statusType:="JTC", _
             Courtroom:="JTC", _
@@ -2098,7 +2098,7 @@ Sub Standard_Submit_Click()
     If Standard_Legal_Status_Update.BackColor = selectedColor Then
         If Standard_Court_Transfer.BackColor = unselectedColor Then
             With Modal_Standard_Legal_Status
-                Call endLegalStatus( _
+                Call legalStatusEnd( _
                     clientRow:=updateRow, _
                     statusType:=.Current_Legal_Status, _
                     Courtroom:=oldCourtroom, _
@@ -2121,7 +2121,7 @@ Sub Standard_Submit_Click()
                         detailed:=.Courtroom_Detailed_Outcome, _
                         Notes:=Standard_Notes.value)
                 Else
-                    Call startLegalStatus( _
+                    Call legalStatusStart( _
                         clientRow:=updateRow, _
                         statusType:=.New_Legal_Status, _
                         Courtroom:=newCourtroom, _
@@ -2131,7 +2131,7 @@ Sub Standard_Submit_Click()
                 End If
             End With
         Else
-            Call startLegalStatus( _
+            Call legalStatusStart( _
                 clientRow:=updateRow, _
                 statusType:=Standard_Return_Legal_Status.Caption, _
                 Courtroom:=oldCourtroom, _
@@ -2141,7 +2141,7 @@ Sub Standard_Submit_Click()
                 zeroLocal:=True)
         End If
     Else
-        Call startLegalStatus( _
+        Call legalStatusStart( _
             clientRow:=updateRow, _
             statusType:=Standard_Return_Legal_Status.Caption, _
             Courtroom:=oldCourtroom, _
