@@ -324,8 +324,10 @@ Function calcLOS(ByVal event1 As String, ByVal event2 As String) As Variant
         If event1 = "N/A" Or event2 = "N/A" Then
             calcLOS = ""
         Else
-            calcLOS = -1
-            MsgBox "Warning: a length of stay calculation failed and instead returned -1"
+            calcLOS = ""
+            'MsgBox "Warning: a length of stay calculation failed and instead returned -1" _
+            & vbNewLine & "Date 1: " & event1 _
+            & vbNewLine & "Date 2: " & event2
         End If
     End If
 End Function

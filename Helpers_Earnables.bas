@@ -1,17 +1,22 @@
 Attribute VB_Name = "Helpers_Earnables"
+
 Sub fetchFiledRecord(ByVal userRow As Long)
     Dim i As Integer
     Dim sectionHead As String
+    Dim restHead As String
+    Dim costHead As String
+    Dim commHead As String
     Dim bucketHead As String
-    sectionHead = hFind("Restitution", "AGGREGATES")
+    
     
     Log_Payment.History.Clear
     
     'FETCH RESTITUTION
+    restHead = hFind("Restitution", "AGGREGATES")
     For i = 1 To NUM_RESTITUTION_FILED_BUCKETS
-        If isNotEmptyOrZero(Range(headerFind("Amount Filed #" & i, sectionHead) & userRow)) Then
+        If isNotEmptyOrZero(Range(headerFind("Amount Filed #" & i, restHead) & userRow)) Then
 
-            bucketHead = headerFind("Amount Filed #" & i, sectionHead)
+            bucketHead = headerFind("Amount Filed #" & i, restHead)
             
             With Log_Payment.History
                 .ColumnCount = 5
@@ -31,8 +36,8 @@ Sub fetchFiledRecord(ByVal userRow As Long)
     
 
     For i = 1 To NUM_RESTITUTION_PAID_BUCKETS
-        If isNotEmptyOrZero(Range(headerFind("Amount Paid #" & i, sectionHead) & userRow)) Then
-            bucketHead = headerFind("Amount Paid #" & i, sectionHead)
+        If isNotEmptyOrZero(Range(headerFind("Amount Paid #" & i, restHead) & userRow)) Then
+            bucketHead = headerFind("Amount Paid #" & i, restHead)
             
             With Log_Payment.History
                 .ColumnCount = 5
@@ -49,16 +54,16 @@ Sub fetchFiledRecord(ByVal userRow As Long)
             End With
         End If
     Next i
-    Log_Payment.Remaining_Restitution.Caption = Range(headerFind("Total Amount Remaining", bucketHead) & userRow).value
+    Log_Payment.Remaining_Restitution.Caption = Range(headerFind("Total Amount Remaining", restHead) & userRow).value
 
 
     'FETCH COURT COSTS
-    sectionHead = hFind("Court Costs", "AGGREGATES")
+    costHead = hFind("Court Costs", "AGGREGATES")
     
     For i = 1 To NUM_COURT_COST_FILED_BUCKETS
-        If isNotEmptyOrZero(Range(headerFind("Amount Filed #" & i, sectionHead) & userRow)) Then
+        If isNotEmptyOrZero(Range(headerFind("Amount Filed #" & i, costHead) & userRow)) Then
 
-            bucketHead = headerFind("Amount Filed #" & i, sectionHead)
+            bucketHead = headerFind("Amount Filed #" & i, costHead)
             
             With Log_Payment.History
                 .ColumnCount = 5
@@ -78,8 +83,8 @@ Sub fetchFiledRecord(ByVal userRow As Long)
     
 
     For i = 1 To NUM_COURT_COST_PAID_BUCKETS
-        If isNotEmptyOrZero(Range(headerFind("Amount Paid #" & i, sectionHead) & userRow)) Then
-            bucketHead = headerFind("Amount Paid #" & i, sectionHead)
+        If isNotEmptyOrZero(Range(headerFind("Amount Paid #" & i, costHead) & userRow)) Then
+            bucketHead = headerFind("Amount Paid #" & i, costHead)
             
             With Log_Payment.History
                 .ColumnCount = 5
@@ -96,16 +101,16 @@ Sub fetchFiledRecord(ByVal userRow As Long)
             End With
         End If
     Next i
-    Log_Payment.Remaining_Court_Cost.Caption = Range(headerFind("Total Amount Remaining", bucketHead) & userRow).value
+    Log_Payment.Remaining_Court_Cost.Caption = Range(headerFind("Total Amount Remaining", costHead) & userRow).value
 
 
     'FETCH COMM SERV
-    sectionHead = hFind("Comm. Service", "AGGREGATES")
+    commHead = hFind("Comm. Service", "AGGREGATES")
     
     For i = 1 To NUM_COMM_SERVICE_FILED_BUCKETS
-        If isNotEmptyOrZero(Range(headerFind("Amount Filed #" & i, sectionHead) & userRow)) Then
+        If isNotEmptyOrZero(Range(headerFind("Amount Filed #" & i, commHead) & userRow)) Then
 
-            bucketHead = headerFind("Amount Filed #" & i, sectionHead)
+            bucketHead = headerFind("Amount Filed #" & i, commHead)
             
             With Log_Payment.History
                 .ColumnCount = 5
@@ -124,8 +129,8 @@ Sub fetchFiledRecord(ByVal userRow As Long)
     Next i
     
     For i = 1 To NUM_COMM_SERVICE_EARNED_BUCKETS
-        If isNotEmptyOrZero(Range(headerFind("Amount Earned #" & i, sectionHead) & userRow)) Then
-            bucketHead = headerFind("Amount Earned #" & i, sectionHead)
+        If isNotEmptyOrZero(Range(headerFind("Amount Earned #" & i, commHead) & userRow)) Then
+            bucketHead = headerFind("Amount Earned #" & i, commHead)
             
             With Log_Payment.History
                 .ColumnCount = 5
@@ -142,7 +147,7 @@ Sub fetchFiledRecord(ByVal userRow As Long)
             End With
         End If
     Next i
-    Log_Payment.Remaining_Comm_Serv.Caption = Range(headerFind("Total Amount Remaining", bucketHead) & userRow).value
+    Log_Payment.Remaining_Comm_Serv.Caption = Range(headerFind("Total Amount Remaining", commHead) & userRow).value
 
 End Sub
 
@@ -455,6 +460,7 @@ Sub autoCalcCostsAndRest(ByVal userRow As Long)
         Dim dateOfLastRest As String
         Dim dateOfLastCost As String
         Dim dateOfLastPayment As String
+        Dim dateOfLastFiling As String
         
         dateOfFirstRest = CDate(Range(headerFind("Date", restHead) & userRow).value)
         dateOfFirstCost = CDate(Range(headerFind("Date", costHead) & userRow).value)
@@ -473,15 +479,39 @@ Sub autoCalcCostsAndRest(ByVal userRow As Long)
         Else
             dateOfLastPayment = dateOfLastCost
         End If
+
+        Dim i As Integer
+        Dim k As Integer
+        Dim bucketHead1 As String
+        Dim bucketHead2 As String
+
+        For i = NUM_COURT_COST_FILED_BUCKETS To 1 Step -1
+            If isNotEmptyOrZero(Range(headerFind("Amount Filed #" & i, costHead) & userRow)) Then
+                bucketHead1 = headerFind("Amount Filed #" & i, costHead)
+                For k = NUM_RESTITUTION_FILED_BUCKETS To 1 Step -1
+                    If isNotEmptyOrZero(Range(headerFind("Amount Filed #" & k, restHead) & userRow)) Then
+                        bucketHead2 = headerFind("Amount Filed #" & k, restHead)
+                        If CDate(Range(headerFind("Date", bucketHead1) & userRow).value) < CDate(Range(headerFind("Date", bucketHead2) & userRow).value) Then
+                            dateOfLastFiling = CDate(Range(headerFind("Date", bucketHead2) & userRow).value)
+                        Else
+                            dateOfLastFiling = CDate(Range(headerFind("Date", bucketHead1) & userRow).value)
+                        End If
+                    End If
+                Next k
+            End If
+        Next i
         
         Range(headerFind("Total Cost Status", aggHead) & userRow).value = 1 ' Paid in Full
-        'Range(headerFind("LOS to File", aggHead) & userRow).value =
+        Range(headerFind("LOS to File", aggHead) & userRow).value _
+            = calcLOS(Range(headerFind("Arrest Date") & userRow).value, dateOfLastFiling)
         Range(headerFind("LOS to Pay in Full", aggHead) & userRow).value _
             = calcLOS(dateOfFirstFiling, dateOfLastPayment)
         Range(headerFind("LOS to Pay in Full (from arrest)", aggHead) & userRow).value _
             = calcLOS(Range(headerFind("Arrest Date") & userRow).value, dateOfLastPayment)
     Else
         Range(headerFind("Total Cost Status", aggHead) & userRow).value = 3 ' Active and Unpaid
+        Range(headerFind("LOS to File", aggHead) & userRow).value _
+            = calcLOS(Range(headerFind("Arrest Date") & userRow).value, dateOfLastFiling)
         Range(headerFind("LOS to Pay in Full", aggHead) & userRow).value = ""
         Range(headerFind("LOS to Pay in Full (from arrest)", aggHead) & userRow).value = ""
     End If
