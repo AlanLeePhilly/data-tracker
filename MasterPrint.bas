@@ -47,141 +47,141 @@ Sub PrintRecent()
 
         Call format(wb, x)
 
-        wb.PrintOut From:=1, to:=2
+        wb.PrintOut From:=1, To:=2
 
         'Print Supervision, Condition, and Court Listing History
         If YouthSheet.Cells(270, 4).value = "None" And YouthSheet.Cells(270, 19).value = "None" Then
             wb.Worksheets(2).PageSetup.PrintArea = "A1:Z100"
             If IsEmpty(YouthSheet.Cells(543, 11).value) Then
-                wb.PrintOut From:=3, to:=3
+                wb.PrintOut From:=3, To:=3
             ElseIf IsEmpty(YouthSheet.Cells(615, 11).value) Then
                 If IsEmpty(YouthSheet.Cells(551, 11).value) Or IsEmpty(YouthSheet.Cells(559, 11).value) Then
-                    wb.PrintOut From:=3, to:=3
-                    wb.PrintOut From:=4, to:=4
+                    wb.PrintOut From:=3, To:=3
+                    wb.PrintOut From:=4, To:=4
                 Else
-                    wb.PrintOut From:=3, to:=4
+                    wb.PrintOut From:=3, To:=4
                 End If
             ElseIf IsEmpty(YouthSheet.Cells(687, 11).value) Then
                 If IsEmpty(YouthSheet.Cells(623, 11).value) Or IsEmpty(YouthSheet.Cells(631, 11).value) Then
-                    wb.PrintOut From:=3, to:=5
+                    wb.PrintOut From:=3, To:=5
                 Else
                     wb.Worksheets(3).PageSetup.PrintArea = "A76:M322"
-                    wb.PrintOut From:=3, to:=4
+                    wb.PrintOut From:=3, To:=4
                 End If
             ElseIf IsEmpty(YouthSheet.Cells(759, 11).value) Then
                 If IsEmpty(YouthSheet.Cells(695, 11).value) Or IsEmpty(YouthSheet.Cells(703, 11).value) Then
                     wb.Worksheets(3).PageSetup.PrintArea = "A76:M322"
-                    wb.PrintOut From:=3, to:=5
+                    wb.PrintOut From:=3, To:=5
                 Else
                     wb.Worksheets(3).PageSetup.PrintArea = "A148:M322"
-                    wb.PrintOut From:=3, to:=4
+                    wb.PrintOut From:=3, To:=4
                 End If
             Else
                 If IsEmpty(YouthSheet.Cells(767, 11).value) Or IsEmpty(YouthSheet.Cells(775, 11).value) Then
                     wb.Worksheets(3).PageSetup.PrintArea = "A148:M322"
-                    wb.PrintOut From:=3, to:=5
+                    wb.PrintOut From:=3, To:=5
                 Else
                     wb.Worksheets(3).PageSetup.PrintArea = "A220:M322"
-                    wb.PrintOut From:=3, to:=4
+                    wb.PrintOut From:=3, To:=4
                 End If
             End If
 
         ElseIf YouthSheet.Cells(368, 4).value = "None" And YouthSheet.Cells(368, 19).value = "None" Then
             wb.Worksheets(2).PageSetup.PrintArea = "A1:Z198"
             If IsEmpty(YouthSheet.Cells(543, 11).value) Then
-                wb.PrintOut From:=3, to:=4
+                wb.PrintOut From:=3, To:=4
             ElseIf IsEmpty(YouthSheet.Cells(615, 11).value) Then
-                wb.PrintOut From:=3, to:=5
+                wb.PrintOut From:=3, To:=5
             ElseIf IsEmpty(YouthSheet.Cells(687, 11).value) Then
                 If IsEmpty(YouthSheet.Cells(623, 11).value) Or IsEmpty(YouthSheet.Cells(631, 11).value) Then
-                    wb.PrintOut From:=3, to:=5
-                    wb.PrintOut From:=6, to:=6
+                    wb.PrintOut From:=3, To:=5
+                    wb.PrintOut From:=6, To:=6
                 Else
                     wb.Worksheets(3).PageSetup.PrintArea = "A76:M322"
-                    wb.PrintOut From:=3, to:=5
+                    wb.PrintOut From:=3, To:=5
                 End If
             ElseIf IsEmpty(YouthSheet.Cells(759, 11).value) Then
                 If IsEmpty(YouthSheet.Cells(695, 11).value) Or IsEmpty(YouthSheet.Cells(703, 11).value) Then
                     wb.Worksheets(3).PageSetup.PrintArea = "A76:M322"
-                    wb.PrintOut From:=3, to:=5
-                    wb.PrintOut From:=6, to:=6
+                    wb.PrintOut From:=3, To:=5
+                    wb.PrintOut From:=6, To:=6
                 Else
                     wb.Worksheets(3).PageSetup.PrintArea = "A148:M322"
-                    wb.PrintOut From:=3, to:=5
+                    wb.PrintOut From:=3, To:=5
                 End If
             Else
                 If IsEmpty(YouthSheet.Cells(767, 11).value) Or IsEmpty(YouthSheet.Cells(775, 11).value) Then
                     wb.Worksheets(3).PageSetup.PrintArea = "A148:M322"
-                    wb.PrintOut From:=3, to:=5
-                    wb.PrintOut From:=6, to:=6
+                    wb.PrintOut From:=3, To:=5
+                    wb.PrintOut From:=6, To:=6
                 Else
                     wb.Worksheets(3).PageSetup.PrintArea = "A220:M322"
-                    wb.PrintOut From:=3, to:=5
+                    wb.PrintOut From:=3, To:=5
                 End If
             End If
 
         Else
             If YouthSheet.Cells(382, 4).value = "None" And YouthSheet.Cells(382, 19).value = "None" Then
-                wb.PrintOut From:=3, to:=3
+                wb.PrintOut From:=3, To:=3
                 If IsEmpty(YouthSheet.Cells(543, 11).value) Then
-                    wb.PrintOut From:=4, to:=5
+                    wb.PrintOut From:=4, To:=5
                 ElseIf IsEmpty(YouthSheet.Cells(615, 11).value) Then
-                    wb.PrintOut From:=4, to:=6
+                    wb.PrintOut From:=4, To:=6
                 ElseIf IsEmpty(YouthSheet.Cells(687, 11).value) Then
                     If IsEmpty(YouthSheet.Cells(623, 11).value) Or IsEmpty(YouthSheet.Cells(631, 11).value) Then
-                        wb.PrintOut From:=4, to:=6
-                        wb.PrintOut From:=7, to:=7
+                        wb.PrintOut From:=4, To:=6
+                        wb.PrintOut From:=7, To:=7
                     Else
                         wb.Worksheets(3).PageSetup.PrintArea = "A76:M322"
-                        wb.PrintOut From:=4, to:=6
+                        wb.PrintOut From:=4, To:=6
                     End If
                 ElseIf IsEmpty(YouthSheet.Cells(759, 11).value) Then
                     If IsEmpty(YouthSheet.Cells(695, 11).value) Or IsEmpty(YouthSheet.Cells(703, 11).value) Then
                         wb.Worksheets(3).PageSetup.PrintArea = "A76:M322"
-                        wb.PrintOut From:=4, to:=6
-                        wb.PrintOut From:=7, to:=7
+                        wb.PrintOut From:=4, To:=6
+                        wb.PrintOut From:=7, To:=7
                     Else
                         wb.Worksheets(3).PageSetup.PrintArea = "A148:M322"
-                        wb.PrintOut From:=4, to:=6
+                        wb.PrintOut From:=4, To:=6
                     End If
                 Else
                     If IsEmpty(YouthSheet.Cells(767, 11).value) Or IsEmpty(YouthSheet.Cells(775, 11).value) Then
                         wb.Worksheets(3).PageSetup.PrintArea = "A148:M322"
-                        wb.PrintOut From:=4, to:=6
-                        wb.PrintOut From:=7, to:=7
+                        wb.PrintOut From:=4, To:=6
+                        wb.PrintOut From:=7, To:=7
                     Else
                         wb.Worksheets(3).PageSetup.PrintArea = "A220:M322"
-                        wb.PrintOut From:=4, to:=6
+                        wb.PrintOut From:=4, To:=6
                     End If
                 End If
             Else
-                wb.PrintOut From:=3, to:=4
+                wb.PrintOut From:=3, To:=4
                 If IsEmpty(YouthSheet.Cells(543, 11).value) Then
-                    wb.PrintOut From:=5, to:=5
+                    wb.PrintOut From:=5, To:=5
                 ElseIf IsEmpty(YouthSheet.Cells(615, 11).value) Then
-                    wb.PrintOut From:=5, to:=6
+                    wb.PrintOut From:=5, To:=6
                 ElseIf IsEmpty(YouthSheet.Cells(687, 11).value) Then
                     If IsEmpty(YouthSheet.Cells(623, 11).value) Or IsEmpty(YouthSheet.Cells(631, 11).value) Then
-                        wb.PrintOut From:=5, to:=7
+                        wb.PrintOut From:=5, To:=7
                     Else
                         wb.Worksheets(3).PageSetup.PrintArea = "A76:M322"
-                        wb.PrintOut From:=5, to:=6
+                        wb.PrintOut From:=5, To:=6
                     End If
                 ElseIf IsEmpty(YouthSheet.Cells(759, 11).value) Then
                     If IsEmpty(YouthSheet.Cells(695, 11).value) Or IsEmpty(YouthSheet.Cells(703, 11).value) Then
                         wb.Worksheets(3).PageSetup.PrintArea = "A76:M322"
-                        wb.PrintOut From:=5, to:=7
+                        wb.PrintOut From:=5, To:=7
                     Else
                         wb.Worksheets(3).PageSetup.PrintArea = "A148:M322"
-                        wb.PrintOut From:=5, to:=6
+                        wb.PrintOut From:=5, To:=6
                     End If
                 Else
                     If IsEmpty(YouthSheet.Cells(767, 11).value) Or IsEmpty(YouthSheet.Cells(775, 11).value) Then
                         wb.Worksheets(3).PageSetup.PrintArea = "A148:M322"
-                        wb.PrintOut From:=5, to:=7
+                        wb.PrintOut From:=5, To:=7
                     Else
                         wb.Worksheets(3).PageSetup.PrintArea = "A220:M322"
-                        wb.PrintOut From:=5, to:=6
+                        wb.PrintOut From:=5, To:=6
                     End If
                 End If
             End If
@@ -250,102 +250,102 @@ Sub PrintFull()
         Call format(wb, x)
 
         'Print Full History
-        wb.PrintOut From:=1, to:=2
+        wb.PrintOut From:=1, To:=2
 
         If YouthSheet.Cells(270, 4).value = "None" And YouthSheet.Cells(270, 19).value = "None" Then
             wb.Worksheets(2).PageSetup.PrintArea = "A1:Z100"
             If IsEmpty(YouthSheet.Cells(543, 11).value) Then
-                wb.PrintOut From:=3, to:=3
+                wb.PrintOut From:=3, To:=3
             ElseIf IsEmpty(YouthSheet.Cells(615, 11).value) Then
                 If IsEmpty(YouthSheet.Cells(551, 11).value) Or IsEmpty(YouthSheet.Cells(559, 11).value) Then
-                    wb.PrintOut From:=3, to:=3
-                    wb.PrintOut From:=4, to:=4
+                    wb.PrintOut From:=3, To:=3
+                    wb.PrintOut From:=4, To:=4
                 Else
-                    wb.PrintOut From:=3, to:=4
+                    wb.PrintOut From:=3, To:=4
                 End If
             ElseIf IsEmpty(YouthSheet.Cells(687, 11).value) Then
-                wb.PrintOut From:=3, to:=5
+                wb.PrintOut From:=3, To:=5
             ElseIf IsEmpty(YouthSheet.Cells(759, 11).value) Then
                 If IsEmpty(YouthSheet.Cells(695, 11).value) Or IsEmpty(YouthSheet.Cells(703, 11).value) Then
-                    wb.PrintOut From:=3, to:=5
-                    wb.PrintOut From:=6, to:=6
+                    wb.PrintOut From:=3, To:=5
+                    wb.PrintOut From:=6, To:=6
                 Else
-                    wb.PrintOut From:=3, to:=6
+                    wb.PrintOut From:=3, To:=6
                 End If
             Else
-                wb.PrintOut From:=3, to:=7
+                wb.PrintOut From:=3, To:=7
             End If
 
         ElseIf YouthSheet.Cells(368, 4).value = "None" And YouthSheet.Cells(368, 19).value = "None" Then
             wb.Worksheets(2).PageSetup.PrintArea = "A1:Z198"
             If IsEmpty(YouthSheet.Cells(543, 11).value) Then
-                wb.PrintOut From:=3, to:=4
+                wb.PrintOut From:=3, To:=4
             ElseIf IsEmpty(YouthSheet.Cells(615, 11).value) Then
-                wb.PrintOut From:=3, to:=5
+                wb.PrintOut From:=3, To:=5
             ElseIf IsEmpty(YouthSheet.Cells(687, 11).value) Then
                 If IsEmpty(YouthSheet.Cells(623, 11).value) Or IsEmpty(YouthSheet.Cells(631, 11).value) Then
-                    wb.PrintOut From:=3, to:=5
-                    wb.PrintOut From:=6, to:=6
+                    wb.PrintOut From:=3, To:=5
+                    wb.PrintOut From:=6, To:=6
                 Else
-                    wb.PrintOut From:=3, to:=6
+                    wb.PrintOut From:=3, To:=6
                 End If
             ElseIf IsEmpty(YouthSheet.Cells(759, 11).value) Then
-                wb.PrintOut From:=3, to:=7
+                wb.PrintOut From:=3, To:=7
             Else
                 If IsEmpty(YouthSheet.Cells(767, 11).value) Or IsEmpty(YouthSheet.Cells(775, 11).value) Then
-                    wb.PrintOut From:=3, to:=7
-                    wb.PrintOut From:=8, to:=8
+                    wb.PrintOut From:=3, To:=7
+                    wb.PrintOut From:=8, To:=8
                 Else
-                    wb.PrintOut From:=3, to:=8
+                    wb.PrintOut From:=3, To:=8
                 End If
             End If
 
         Else
             If YouthSheet.Cells(382, 4).value = "None" And YouthSheet.Cells(382, 19).value = "None" Then
-                wb.PrintOut From:=3, to:=3
+                wb.PrintOut From:=3, To:=3
                 If IsEmpty(YouthSheet.Cells(543, 11).value) Then
-                    wb.PrintOut From:=4, to:=5
+                    wb.PrintOut From:=4, To:=5
                 ElseIf IsEmpty(YouthSheet.Cells(615, 11).value) Then
-                    wb.PrintOut From:=4, to:=6
+                    wb.PrintOut From:=4, To:=6
                 ElseIf IsEmpty(YouthSheet.Cells(687, 11).value) Then
                     If IsEmpty(YouthSheet.Cells(623, 11).value) Or IsEmpty(YouthSheet.Cells(631, 11).value) Then
-                        wb.PrintOut From:=4, to:=6
-                        wb.PrintOut From:=7, to:=7
+                        wb.PrintOut From:=4, To:=6
+                        wb.PrintOut From:=7, To:=7
                     Else
-                        wb.PrintOut From:=4, to:=7
+                        wb.PrintOut From:=4, To:=7
                     End If
                 ElseIf IsEmpty(YouthSheet.Cells(759, 11).value) Then
-                    wb.PrintOut From:=4, to:=8
+                    wb.PrintOut From:=4, To:=8
                 Else
                     If IsEmpty(YouthSheet.Cells(767, 11).value) Or IsEmpty(YouthSheet.Cells(775, 11).value) Then
-                        wb.PrintOut From:=4, to:=8
-                        wb.PrintOut From:=9, to:=9
+                        wb.PrintOut From:=4, To:=8
+                        wb.PrintOut From:=9, To:=9
                     Else
-                        wb.PrintOut From:=4, to:=9
+                        wb.PrintOut From:=4, To:=9
                     End If
                 End If
             Else
-                wb.PrintOut From:=3, to:=4
+                wb.PrintOut From:=3, To:=4
                 If IsEmpty(YouthSheet.Cells(543, 11).value) Then
-                    wb.PrintOut From:=5, to:=5
+                    wb.PrintOut From:=5, To:=5
                 ElseIf IsEmpty(YouthSheet.Cells(615, 11).value) Then
                     If IsEmpty(YouthSheet.Cells(551, 11).value) Or IsEmpty(YouthSheet.Cells(559, 11).value) Then
-                        wb.PrintOut From:=5, to:=5
-                        wb.PrintOut From:=6, to:=6
+                        wb.PrintOut From:=5, To:=5
+                        wb.PrintOut From:=6, To:=6
                     Else
-                        wb.PrintOut From:=5, to:=6
+                        wb.PrintOut From:=5, To:=6
                     End If
                 ElseIf IsEmpty(YouthSheet.Cells(687, 11).value) Then
-                    wb.PrintOut From:=5, to:=7
+                    wb.PrintOut From:=5, To:=7
                 ElseIf IsEmpty(YouthSheet.Cells(759, 11).value) Then
                     If IsEmpty(YouthSheet.Cells(695, 11).value) Or IsEmpty(YouthSheet.Cells(703, 11).value) Then
-                        wb.PrintOut From:=5, to:=7
-                        wb.PrintOut From:=8, to:=8
+                        wb.PrintOut From:=5, To:=7
+                        wb.PrintOut From:=8, To:=8
                     Else
-                        wb.PrintOut From:=5, to:=8
+                        wb.PrintOut From:=5, To:=8
                     End If
                 Else
-                    wb.PrintOut From:=5, to:=9
+                    wb.PrintOut From:=5, To:=9
                 End If
             End If
         End If

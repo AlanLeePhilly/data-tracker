@@ -14,7 +14,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Sub ConditionType_Change()
-    Select Case ConditionType.value
+    Select Case conditionType.value
         Case "Restitution"
             Restitution_Label.Visible = True
             Restitution.Visible = True
@@ -72,7 +72,7 @@ End Sub
 
 Private Sub Continue_Click()
     'VALIDATIONS
-    If ConditionType.value = "None" Then
+    If conditionType.value = "None" Then
         MsgBox "'Condition Ordered' Required"
         Exit Sub
     End If
@@ -86,7 +86,7 @@ Private Sub Continue_Click()
         .ColumnCount = 10
         .ColumnWidths = "50;50;50;50;0;0;0;0;0;0;"
         .AddItem
-        .List(ClientUpdateForm.Standard_Return_Condition_Box.ListCount - 1, 0) = ConditionType
+        .List(ClientUpdateForm.Standard_Return_Condition_Box.ListCount - 1, 0) = conditionType
         .List(ClientUpdateForm.Standard_Return_Condition_Box.ListCount - 1, 1) = Provider
         .List(ClientUpdateForm.Standard_Return_Condition_Box.ListCount - 1, 2) = Start_Date
         'end date
@@ -102,14 +102,14 @@ Private Sub Continue_Click()
         .ColumnCount = 10
         .ColumnWidths = "50;50;50;50;0;0;0;0;0;0;"
         .AddItem
-        .List(Modal_Standard_Drop_Condition.Condition_Box.ListCount - 1, 0) = ConditionType
+        .List(Modal_Standard_Drop_Condition.Condition_Box.ListCount - 1, 0) = conditionType
         .List(Modal_Standard_Drop_Condition.Condition_Box.ListCount - 1, 1) = Provider
         .List(Modal_Standard_Drop_Condition.Condition_Box.ListCount - 1, 2) = Start_Date
         'end date
         .List(Modal_Standard_Drop_Condition.Condition_Box.ListCount - 1, 4) = "New"
     End With
     
-    Select Case ConditionType.value
+    Select Case conditionType.value
         Case "Restitution"
             ClientUpdateForm.Standard_Restitution.Visible = True
             ClientUpdateForm.Standard_Restitution_Label.Visible = True
