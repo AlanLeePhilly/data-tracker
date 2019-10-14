@@ -401,7 +401,7 @@ Sub FaceSheetPrint()
         Dim k As Integer
         Dim bucketHead1 As String
         'Dim printRow As Long
-        Dim conditionType As String
+        Dim ConditionType As String
         Dim conditionproviderName As String
         'Dim thing2 As String, thing2 As String
 
@@ -416,17 +416,17 @@ Sub FaceSheetPrint()
             If isNotEmptyOrZero(DataSheet.Range(headerFind("Start Date", bucketHead1) & userRow)) _
               And isEmptyOrZero(DataSheet.Range(headerFind("End Date", bucketHead1) & userRow)) Then
 
-                conditionType = Lookup("Condition_Num")(DataSheet.Range(bucketHead1 & userRow).value)
+                ConditionType = Lookup("Condition_Num")(DataSheet.Range(bucketHead1 & userRow).value)
                 conditionproviderName = Lookup("Condition_Provider_Num")(DataSheet.Range(headerFind("Condition Agency", bucketHead1) & userRow).value)
             
             If printRow > 40 Then
                     MsgBox "The following Active Condition will not be printed due to space constraints: " _
-                        & vbNewLine & "Program: " & conditionType _
+                        & vbNewLine & "Program: " & ConditionType _
                         & vbNewLine & "Provider: " & conditionproviderName _
                         & vbNewLine & "Start Date: " & DataSheet.Range(headerFind("Start Date", bucketHead1) & userRow).value
                
                 Else
-                    PrintSheet.Range("N" & printRow) = conditionType
+                    PrintSheet.Range("N" & printRow) = ConditionType
                     PrintSheet.Range("U" & printRow) = conditionproviderName
                     PrintSheet.Range("X" & printRow) = DateDiff("d", DataSheet.Range(headerFind("Start Date", bucketHead1) & userRow).value, Date) & " days"
                 End If

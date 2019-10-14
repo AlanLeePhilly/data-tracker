@@ -1619,7 +1619,7 @@ Sub YouthSearchPrint()
     PrintSheet.Range("I19").value = ageAtTime(VBA.format(Now(), "mm/dd/yyyy"), userRow)
 
     PrintSheet.Range("I21").value = DataSheet.Range(hFind("Age @ Intake") & userRow).value
-    PrintSheet.Range("I23").value = DataSheet.Range(hFind("Guardian First") & userRow).value & " " & DataSheet.Range(hFind("Guardian Last") & userRow).value
+    PrintSheet.Range("I23").value = DataSheet.Range(hFind("Guardian #1 First") & userRow).value & " " & DataSheet.Range(hFind("Guardian #1 Last") & userRow).value
 
     PrintSheet.Range("E28").value = DataSheet.Range(hFind("School") & userRow).value
     PrintSheet.Range("E30").value = DataSheet.Range(hFind("Grade") & userRow).value

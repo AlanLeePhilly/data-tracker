@@ -144,8 +144,13 @@ Private Sub Reload_Click()
 
     '''Community
 
-    GuardianFirstName.value = Range(headerFind("Guardian First") & emptyRow).value
-    GuardianLastName.value = Range(headerFind("Guardian Last") & emptyRow).value
+    GuardianFirstName1.value = Range(headerFind("Guardian #1 First") & emptyRow).value
+    GuardianLastName1.value = Range(headerFind("Guardian #1 Last") & emptyRow).value
+    GuardianRelation1.value = Lookup("Relation_Num")(Range(headerFind("Guardian #1 First") & emptyRow).value)
+    
+    GuardianFirstName2.value = Range(headerFind("Guardian #2 First") & emptyRow).value
+    GuardianLastName2.value = Range(headerFind("Guardian #2 Last") & emptyRow).value
+    GuardianRelation2.value = Lookup("Relation_Num")(Range(headerFind("Guardian #1 Last") & emptyRow).value)
 
     Address.value = Range(headerFind("Address") & emptyRow).value
     Zipcode.value = Range(headerFind("Zipcode") & emptyRow).value
@@ -195,6 +200,10 @@ Private Sub Reload_Click()
     GunCase.value = Lookup("Generic_YNOU_Num")(Range(headerFind("Gun Case?") & emptyRow).value)
     GunInvolved.value = Lookup("Generic_YNOU_Num")(Range(headerFind("Gun Involved Arrest?") & emptyRow).value)
     DirectFiled.value = Lookup("Generic_YNOU_Num")(Range(headerFind("Direct Filed?") & emptyRow).value)
+    HomeBased.value = Lookup("Generic_YNOU_Num")(Range(headerFind("Home-Based Incident?") & emptyRow).value)
+    HomeIncidentType.value = Lookup("Home_Incident_Type_Num")(Range(headerFind("Home-Based Incident Type") & emptyRow).value)
+    SchoolBased.value = Lookup("Generic_YNOU_Num")(Range(headerFind("School-Based Incident?") & emptyRow).value)
+    SchoolIncidentType.value = Lookup("School_Incident_Type_Num")(Range(headerFind("School-Based Incident Type") & emptyRow).value)
 
     Dim i As Integer
     Dim j As Integer
@@ -787,8 +796,14 @@ Private Sub Submit_Click()
     Range(headerFind("Sex") & emptyRow) = Lookup("Sex_Name")(Sex.value)
     Range(headerFind("Race") & emptyRow) = Lookup("Race_Name")(Race.value)
     Range(headerFind("Latino/Not Latino") & emptyRow) = Lookup("Latino_Name")(Latino.value)
-    Range(headerFind("Guardian First") & emptyRow).value = GuardianFirstName.value
-    Range(headerFind("Guardian Last") & emptyRow).value = GuardianLastName.value
+    Range(headerFind("Guardian #1 First") & emptyRow).value = GuardianFirstName1.value
+    Range(headerFind("Guardian #1 Last") & emptyRow).value = GuardianLastName1.value
+    Range(headerFind("Guardian #1 Relation") & emptyRow).value = Lookup("Relation_Name")(GuardianRelation1.value)
+    
+    Range(headerFind("Guardian #2 First") & emptyRow).value = GuardianFirstName2.value
+    Range(headerFind("Guardian #2 Last") & emptyRow).value = GuardianLastName2.value
+    Range(headerFind("Guardian #2 Relation") & emptyRow).value = Lookup("Relation_Name")(GuardianRelation2.value)
+    
     Range(headerFind("Address") & emptyRow).value = Address.value
     Range(headerFind("Zipcode") & emptyRow).value = Zipcode.value
     Range(headerFind("Phone #") & emptyRow).value = PhoneNumber.value
@@ -911,6 +926,12 @@ Private Sub Submit_Click()
         Range(headerFind("Gun Involved Arrest?", petitionHead) & emptyRow).value = Lookup("Generic_YNOU_Name")(GunInvolved.value)
         
         Range(headerFind("Direct Filed?", petitionHead) & emptyRow).value = Lookup("Generic_YNOU_Name")(DirectFiled.value)
+        
+        Range(headerFind("School-Based Incident?", petitionHead) & emptyRow).value = Lookup("Generic_YNOU_Name")(SchoolBased.value)
+        Range(headerFind("School-Based Incident Type", petitionHead) & emptyRow).value = Lookup("School_Incident_Type_Name")(SchoolIncidentType.value)
+        
+        Range(headerFind("Home-Based Incident?", petitionHead) & emptyRow).value = Lookup("Generic_YNOU_Name")(HomeBased.value)
+        Range(headerFind("Home-Based Incident Type", petitionHead) & emptyRow).value = Lookup("Home_Incident_Type_Name")(HomeIncidentType.value)
         
         Range(headerFind("General Notes from Intake", petitionHead) & emptyRow).value = GeneralNotes.value
 
@@ -1123,7 +1144,15 @@ Private Sub Submit_Click()
 
         Range(headerFind("Intake Conference Outcome", tempHead) & emptyRow).value _
                 = Lookup("Intake_Conference_Outcome_Name")(ConfOutcome.value)
-
+        
+        Range(hFind("Status at Arrest", "DHS") & emptyRow).value _
+                = Lookup("DHS_Status_at_Arrest_Name")(DHS_Status.value)
+        
+        If DHS_Status.value = "N/A" Then
+            Range(hFind("Did youth have any DHS contact?", "DHS") & emptyRow).value = 2 'no
+        Else
+            Range(hFind("Did youth have any DHS contact?", "DHS") & emptyRow).value = 1 'yes
+        End If
 
         Range(headerFind("Location of Next Event", tempHead) & emptyRow).value _
                 = Lookup("Courtroom_Name")(InitialHearingLocation.value)
@@ -1506,8 +1535,13 @@ Private Sub TestFillPetition_Click()
 
     '''Community
 
-    GuardianFirstName.value = "Mother Serlin"
-    GuardianLastName.value = "Serlin"
+    GuardianFirstName1.value = "Ma"
+    GuardianLastName1.value = "Serlin"
+    GuardianRelation1.value = "Mother"
+    
+    GuardianFirstName2.value = "Pa"
+    GuardianLastName2.value = "Serlin"
+    GuardianRelation2.value = "Father"
 
     Address.value = "817 N. 2nd St."
     Zipcode.value = "19123"
@@ -1581,7 +1615,12 @@ Private Sub TestFillPetition_Click()
     InitialHearingDate = "2/12/2019"
     GunCase.value = "No"
     GunInvolved.value = "No"
-    'DirectFiled.value = "No"
+    DirectFiled.value = "No"
+    
+    HomeBased.value = "No"
+    HomeIncidentType.value = "N/A"
+    SchoolBased.value = "No"
+    SchoolIncidentType.value = "N/A"
     
     DA.value = "Keller"
 
@@ -1598,8 +1637,13 @@ Private Sub TestFillDiversion_Click()
     Sex.value = "Male"
     Latino = "Not Latino"
 
-    GuardianFirstName.value = "Mother Serlin"
-    GuardianLastName.value = "Serlin"
+    GuardianFirstName1.value = "Ma"
+    GuardianLastName1.value = "Serlin"
+    GuardianRelation1.value = "Mother"
+    
+    GuardianFirstName2.value = "Pa"
+    GuardianLastName2.value = "Serlin"
+    GuardianRelation2.value = "Father"
 
     Address.value = "817 N. 2nd St."
     Zipcode.value = "19123"
@@ -1693,8 +1737,13 @@ Private Sub TestFillIntake_Click()
 
     '''Community
 
-    GuardianFirstName.value = "Jane"
-    GuardianLastName.value = "Merlin"
+    GuardianFirstName1.value = "Ma"
+    GuardianLastName1.value = "Serlin"
+    GuardianRelation1.value = "Mother"
+    
+    GuardianFirstName2.value = "Pa"
+    GuardianLastName2.value = "Serlin"
+    GuardianRelation2.value = "Father"
 
     Address.value = "716 S. 12th St."
     Zipcode.value = "19148"

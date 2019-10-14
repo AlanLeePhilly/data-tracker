@@ -237,6 +237,7 @@ Sub autoCalcRestitution(ByVal userRow As Long)
     Dim bucketHead As String
     Dim dateOfLastPayment As String
     Dim dateOfFirstFiling As String
+    Dim dateOfLastFiling As String
     sectionHead = hFind("Restitution", "AGGREGATES")
     
     
@@ -248,7 +249,7 @@ Sub autoCalcRestitution(ByVal userRow As Long)
         If isNotEmptyOrZero(Range(headerFind("Amount Filed #" & i, sectionHead) & userRow)) Then
             bucketHead = headerFind("Amount Filed #" & i, sectionHead)
             totalAmountFiled = totalAmountFiled + CDbl(Range(bucketHead & userRow).value)
-            
+            dateOfLastFiling = Range(headerFind("Date", bucketHead) & userRow).value
             If i = 1 Then
                 dateOfFirstFiling = Range(headerFind("Date", bucketHead) & userRow).value
             End If
@@ -281,6 +282,8 @@ Sub autoCalcRestitution(ByVal userRow As Long)
     If totalAmountPaid >= totalAmountFiled Then
         restitutionStatus = 1 ' Paid in Full
         Range(headerFind("Date Paid in Full", sectionHead) & userRow).value = dateOfLastPayment
+        Range(headerFind("LOS to File", sectionHead) & userRow).value _
+            = calcLOS(Range(headerFind("Arrest Date") & userRow).value, dateOfLastFiling)
         Range(headerFind("LOS to Pay in Full", sectionHead) & userRow).value = calcLOS(dateOfFirstFiling, dateOfLastPayment)
         Range(headerFind("LOS to Pay in Full (from arrest)", sectionHead) & userRow).value = calcLOS(Range(headerFind("Arrest Date") & userRow).value, dateOfLastPayment)
     Else
@@ -380,6 +383,7 @@ Sub autoCalcCourtCost(ByVal userRow As Long)
     Dim bucketHead As String
     Dim dateOfLastPayment As String
     Dim dateOfFirstFiling As String
+    Dim dateOfLastFiling As String
     sectionHead = hFind("Court Costs", "AGGREGATES")
     
     
@@ -391,7 +395,7 @@ Sub autoCalcCourtCost(ByVal userRow As Long)
         If isNotEmptyOrZero(Range(headerFind("Amount Filed #" & i, sectionHead) & userRow)) Then
             bucketHead = headerFind("Amount Filed #" & i, sectionHead)
             totalAmountFiled = totalAmountFiled + CDbl(Range(bucketHead & userRow).value)
-            
+            dateOfLastFiling = Range(headerFind("Date", bucketHead) & userRow).value
             If i = 1 Then
                 dateOfFirstFiling = Range(headerFind("Date", bucketHead) & userRow).value
             End If
@@ -422,6 +426,8 @@ Sub autoCalcCourtCost(ByVal userRow As Long)
     If totalAmountPaid >= totalAmountFiled Then
         Range(headerFind("Court Cost Status", sectionHead) & userRow).value = 1 ' Paid in Full
         Range(headerFind("Date Paid in Full", sectionHead) & userRow).value = dateOfLastPayment
+        Range(headerFind("LOS to File", sectionHead) & userRow).value _
+            = calcLOS(Range(headerFind("Arrest Date") & userRow).value, dateOfLastFiling)
         Range(headerFind("LOS to Pay in Full", sectionHead) & userRow).value = calcLOS(dateOfFirstFiling, dateOfLastPayment)
         Range(headerFind("LOS to Pay in Full (from arrest)", sectionHead) & userRow).value = calcLOS(Range(headerFind("Arrest Date") & userRow).value, dateOfLastPayment)
     Else
@@ -465,39 +471,58 @@ Sub autoCalcCostsAndRest(ByVal userRow As Long)
         dateOfFirstRest = CDate(Range(headerFind("Date", restHead) & userRow).value)
         dateOfFirstCost = CDate(Range(headerFind("Date", costHead) & userRow).value)
         
-        If dateOfFirstCost > dateOfFirstRest Then
-            dateOfFirstFiling = dateOfFirstRest
-        Else
-            dateOfFirstFiling = dateOfFirstCost
-        End If
+        Select Case True
+            Case dateOfFirstRest = "12:00:00 AM"
+                dateOfFirstFiling = dateOfFirstCost
+            Case dateOfFirstCost = "12:00:00 AM"
+                dateOfFirstFiling = dateOfFirstRest
+            Case dateOfFirstRest > dateOfFirstCost
+                dateOfFirstFiling = dateOfFirstCost
+            Case dateOfFirstRest < dateOfFirstCost
+                dateOfFirstFiling = dateOfFirstRest
+        End Select
 
         dateOfLastRest = CDate(Range(headerFind("Date Paid in Full", restHead) & userRow).value)
         dateOfLastCost = CDate(Range(headerFind("Date Paid in Full", costHead) & userRow).value)
-
-        If dateOfLastRest > dateOfLastCost Then
-            dateOfLastPayment = dateOfLastRest
-        Else
-            dateOfLastPayment = dateOfLastCost
-        End If
+        
+        Select Case True
+            Case dateOfLastRest = "12:00:00 AM"
+                dateOfLastPayment = dateOfLastCost
+            Case dateOfLastCost = "12:00:00 AM"
+                dateOfLastPayment = dateOfLastRest
+            Case dateOfLastRest > dateOfLastCost
+                dateOfLastPayment = dateOfLastRest
+            Case dateOfLastRest < dateOfLastCost
+                dateOfLastPayment = dateOfLastCost
+        End Select
 
         Dim i As Integer
-        Dim k As Integer
-        Dim bucketHead1 As String
-        Dim bucketHead2 As String
-
+        Dim bucketHead As String
+        Dim dateOfLastRestitutionFiling As String
+        
         For i = NUM_COURT_COST_FILED_BUCKETS To 1 Step -1
             If isNotEmptyOrZero(Range(headerFind("Amount Filed #" & i, costHead) & userRow)) Then
-                bucketHead1 = headerFind("Amount Filed #" & i, costHead)
-                For k = NUM_RESTITUTION_FILED_BUCKETS To 1 Step -1
-                    If isNotEmptyOrZero(Range(headerFind("Amount Filed #" & k, restHead) & userRow)) Then
-                        bucketHead2 = headerFind("Amount Filed #" & k, restHead)
-                        If CDate(Range(headerFind("Date", bucketHead1) & userRow).value) < CDate(Range(headerFind("Date", bucketHead2) & userRow).value) Then
-                            dateOfLastFiling = CDate(Range(headerFind("Date", bucketHead2) & userRow).value)
-                        Else
-                            dateOfLastFiling = CDate(Range(headerFind("Date", bucketHead1) & userRow).value)
-                        End If
-                    End If
-                Next k
+                bucketHead = headerFind("Amount Filed #" & i, costHead)
+                dateOfLastFiling = CDate(Range(headerFind("Date", bucketHead) & userRow).value)
+                Exit For
+            End If
+        Next i
+        
+        For i = NUM_RESTITUTION_FILED_BUCKETS To 1 Step -1
+            If isNotEmptyOrZero(Range(headerFind("Amount Filed #" & i, restHead) & userRow)) Then
+                bucketHead = headerFind("Amount Filed #" & i, restHead)
+                dateOfLastRestitutionFiling = CDate(Range(headerFind("Date", bucketHead) & userRow).value)
+                    Select Case True
+                        Case dateOfLastFiling = "12:00:00 AM"
+                            dateOfLastFiling = dateOfLastRestitutionFiling
+                        Case dateOfLastRestitutionFiling = "12:00:00 AM"
+                            dateOfLastFiling = dateOfLastFiling
+                        Case dateOfLastFiling > dateOfLastRestitutionFiling
+                            dateOfLastFiling = dateOfLastFiling
+                        Case dateOfLastFiling < dateOfLastRestitutionFiling
+                            dateOfLastFiling = dateOfLastRestitutionFiling
+                    End Select
+                Exit For
             End If
         Next i
         

@@ -15,7 +15,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
 Private Sub ConditionType_Change()
-    Select Case conditionType.value
+    Select Case ConditionType.value
         Case "Restitution"
             Restitution_Label.Visible = True
             Restitution.Visible = True
@@ -73,7 +73,7 @@ End Sub
 
 Private Sub Continue_Click()
     'VALIDATIONS
-    If conditionType.value = "None" Then
+    If ConditionType.value = "None" Then
         MsgBox "'Condition Ordered' Required"
         Exit Sub
     End If
@@ -87,7 +87,7 @@ Private Sub Continue_Click()
         .ColumnCount = 10
         .ColumnWidths = "90;75;75;75;0;0;0;0;0;0;"
         .AddItem
-        .List(ClientUpdateForm.JTC_Return_Condition_Box.ListCount - 1, 0) = conditionType
+        .List(ClientUpdateForm.JTC_Return_Condition_Box.ListCount - 1, 0) = ConditionType
         .List(ClientUpdateForm.JTC_Return_Condition_Box.ListCount - 1, 1) = Provider
         .List(ClientUpdateForm.JTC_Return_Condition_Box.ListCount - 1, 2) = Start_Date
         'end date
@@ -103,14 +103,14 @@ Private Sub Continue_Click()
         .ColumnCount = 10
         .ColumnWidths = "90;75;75;75;0;0;0;0;0;0;"
         .AddItem
-        .List(Modal_JTC_Drop_Condition.Condition_Box.ListCount - 1, 0) = conditionType
+        .List(Modal_JTC_Drop_Condition.Condition_Box.ListCount - 1, 0) = ConditionType
         .List(Modal_JTC_Drop_Condition.Condition_Box.ListCount - 1, 1) = Provider
         .List(Modal_JTC_Drop_Condition.Condition_Box.ListCount - 1, 2) = Start_Date
 
         .List(Modal_JTC_Drop_Condition.Condition_Box.ListCount - 1, 4) = "New"
     End With
     
-    Select Case conditionType.value
+    Select Case ConditionType.value
         Case "Restitution"
             ClientUpdateForm.JTC_Restitution.Visible = True
             ClientUpdateForm.JTC_Restitution_Label.Visible = True

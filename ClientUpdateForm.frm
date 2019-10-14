@@ -557,6 +557,15 @@ Sub Adult_Submit_Click()
 
             Range(headerFind("Direct Filed?", juvePetitionHead) & updateRow).value _
           = Range(headerFind("Direct Filed?", petitionHead) & updateRow).value
+          
+            Range(headerFind("School-Based Incident?", juvePetitionHead) & updateRow).value _
+          = Range(headerFind("School-Based Incident?", petitionHead) & updateRow).value
+            Range(headerFind("School-Based Incident Type", juvePetitionHead) & updateRow).value _
+          = Range(headerFind("School-Based Incident Type", petitionHead) & updateRow).value
+            Range(headerFind("Home-Based Incident?", juvePetitionHead) & updateRow).value _
+          = Range(headerFind("Home-Based Incident?", petitionHead) & updateRow).value
+            Range(headerFind("Home-Based Incident Type", juvePetitionHead) & updateRow).value _
+          = Range(headerFind("Home-Based Incident Type", petitionHead) & updateRow).value
 
             With Adult_Reslate_Juvenile_Petition
 
