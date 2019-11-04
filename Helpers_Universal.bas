@@ -123,8 +123,9 @@ Sub legalStatusEnd( _
 
             Select Case Courtroom
                 Case "4G", "4E", "6F", "6H", "3E"
-                    canWriteLocal = True
-
+                    If isEmptyOrZero(Range(headerFind("End Date", hFind(statusType, "Legal Status", Courtroom)) & clientRow)) Then
+                        canWriteLocal = True
+                    End If
             End Select
     End Select
 

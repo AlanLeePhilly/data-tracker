@@ -1218,7 +1218,7 @@ Private Sub Submit_Click()
         Range(hFind("Status at Arrest", "DHS") & emptyRow).value _
                 = Lookup("DHS_Status_at_Arrest_Name")(DHS_Status.value)
         
-        If DHS_Status.value = "N/A" Then
+        If DHS_Status.value = "N/A" Or DHS_Status.value = "No" Or DHS_Status.value = "Unknown" Then
             Range(hFind("Did youth have any DHS contact?", "DHS") & emptyRow).value = 2 'no
         Else
             Range(hFind("Did youth have any DHS contact?", "DHS") & emptyRow).value = 1 'yes

@@ -410,7 +410,7 @@ Sub ReferClientTo( _
             submitLegalStatus = "Crossover"
     End Select
 
-    If submitLegalStatus = currentStatus Then
+    If submitLegalStatus = currentStatus Or submitLegalStatus = "JTC" Then
         submitWithAgg = False
     Else
         submitWithAgg = True
