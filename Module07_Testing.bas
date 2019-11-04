@@ -84,7 +84,10 @@ Sub Test_Print()
                 Select Case Worksheets("Entry").Range(numToAlpha(i) & 2).value
 
                         'if it's the name of one of our big section headers
-                    Case "DEMOGRAPHICS", "PETITION", "DRAI", "INTAKE CONFERENCE", "DETENTION", "DETENTION (VOP)", "DIVERSION", "4G", "4E", "6F", "6H", "3E", "Crossover", "WRAP", "JTC", "ADULT", "AGGREGATES", "LISTINGS", "JUVENILE PETITION", "ADULT PETITION"
+                    Case "DEMOGRAPHICS", "PETITION", "DRAI", "INTAKE CONFERENCE", "DETENTION", _
+                    "DETENTION (VOP)", "DIVERSION", "4G", "4E", "6F", "6H", "3E", "Crossover", _
+                    "WRAP", "JTC", "ADULT", "AGGREGATES", "LISTINGS", "JUVENILE PETITION", _
+                    "ADULT PETITION", "Restitution", "Costs & Restitution", "Court Costs", "Comm. Service"
 
                         'if the prior row was also one of the big section headers
                         If Worksheets("TestOutput").Cells(j - 1, 2).Interior.Color = RGB(200, 200, 200) Then

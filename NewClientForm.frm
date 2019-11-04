@@ -146,15 +146,28 @@ Private Sub Reload_Click()
 
     GuardianFirstName1.value = Range(headerFind("Guardian #1 First") & emptyRow).value
     GuardianLastName1.value = Range(headerFind("Guardian #1 Last") & emptyRow).value
-    GuardianRelation1.value = Lookup("Relation_Num")(Range(headerFind("Guardian #1 First") & emptyRow).value)
+    GuardianRelation1 = Lookup("Relation_Num")(Range(headerFind("Guardian #1 Relation") & emptyRow).value)
     
     GuardianFirstName2.value = Range(headerFind("Guardian #2 First") & emptyRow).value
     GuardianLastName2.value = Range(headerFind("Guardian #2 Last") & emptyRow).value
-    GuardianRelation2.value = Lookup("Relation_Num")(Range(headerFind("Guardian #1 Last") & emptyRow).value)
+    GuardianRelation2 = Lookup("Relation_Num")(Range(headerFind("Guardian #2 Relation") & emptyRow).value)
 
     Address.value = Range(headerFind("Address") & emptyRow).value
     Zipcode.value = Range(headerFind("Zipcode") & emptyRow).value
 
+    
+    DHS_Status = Lookup("DHS_Status_at_Arrest_Num")(Range(hFind("Status at Arrest", "DHS") & emptyRow).value)
+    
+    Diagnosis1.value = Lookup("Diagnosis_Num")(Range(headerFind("Diagnosis #1") & emptyRow).value)
+    Diagnosis2.value = Lookup("Diagnosis_Num")(Range(headerFind("Diagnosis #2") & emptyRow).value)
+    Diagnosis3.value = Lookup("Diagnosis_Num")(Range(headerFind("Diagnosis #3") & emptyRow).value)
+    TraumaType1.value = Lookup("Trauma_Type_Num")(Range(headerFind("Trauma Type #1") & emptyRow).value)
+    TraumaType2.value = Lookup("Trauma_Type_Num")(Range(headerFind("Trauma Type #2") & emptyRow).value)
+    TraumaType3.value = Lookup("Trauma_Type_Num")(Range(headerFind("Trauma Type #3") & emptyRow).value)
+    Treatment1.value = Lookup("Treatment_Num")(Range(headerFind("Treatment #1") & emptyRow).value)
+    Treatment2.value = Lookup("Treatment_Num")(Range(headerFind("Treatment #2") & emptyRow).value)
+    Treatment3.value = Lookup("Treatment_Num")(Range(headerFind("Treatment #3") & emptyRow).value)
+    
 
     PhoneNumber.value = Range(headerFind("Phone #") & emptyRow).value
     School.value = Range(headerFind("School") & emptyRow).value
@@ -277,6 +290,7 @@ Private Sub Reload_Click()
 
     Supv1 = Lookup("Supervision_Program_Num")(Range(headerFind("Supervision Ordered #1", tempHead) & emptyRow).value)
     Supv1Pro = Lookup("Community_Based_Supervision_Provider_Num")(Range(headerFind("Community-Based Agency #1", tempHead) & emptyRow).value)
+    Supv1Re1 = Lookup("Supervision_Referral_Reason_Num")(Range(headerFind("Reason #1 for Supervision Referral", tempHead) & emptyRow).value)
     Supv2 = Lookup("Supervision_Program_Num")(Range(headerFind("Supervision Ordered #2", tempHead) & emptyRow).value)
     Supv2Pro = Lookup("Community_Based_Supervision_Provider_Num")(Range(headerFind("Community-Based Agency #2", tempHead) & emptyRow).value)
     DetentionFacility = Lookup("Detention_Facility_Num")(Range(hFind("Detention Facility", "DETENTION") & emptyRow).value)
@@ -287,7 +301,7 @@ Private Sub Reload_Click()
     Cond2Pro = Lookup("Condition_Provider_Num")(Range(headerFind("Other Condition #2 Provider", tempHead) & emptyRow).value)
     Cond3 = Lookup("Condition_Num")(Range(headerFind("Other Condition #3", tempHead) & emptyRow).value)
     Cond3Pro = Lookup("Condition_Provider_Num")(Range(headerFind("Other Condition #3 Provider", tempHead) & emptyRow).value)
-
+    
 
     DiversionProgram.value = Lookup("Generic_YNOU_Num")(Range(headerFind("Referred to Diversion?", petitionHead) & emptyRow).value)
     DiversionProgramReferralDate.value = Range(headerFind("Diversion Referral Date", petitionHead) & emptyRow).value
@@ -672,6 +686,10 @@ Private Sub Submit_Click()
         Exit Sub
     End If
 
+    If School.value = "" Then
+        MsgBox "School Required"
+        Exit Sub
+    End If
 
     If InConfDate.value = "" And InConfRecord.value = "Yes" Then
         MsgBox "Intake Date Required if record available"
@@ -732,6 +750,46 @@ Private Sub Submit_Click()
 
     If DiversionProgram.value = "No" And NoDiversionReason1.value = "N/A" Then
         MsgBox "Reason Not Diverted Required"
+        Exit Sub
+    End If
+
+    If SchoolBased.value = "" Then
+        MsgBox "'School-Based Incident?' Required"
+        Exit Sub
+    End If
+
+    If SchoolIncidentType.value = "N/A" And SchoolBased.value = "Yes" Then
+        MsgBox "'School-Based Incident Type' Required"
+        Exit Sub
+    End If
+    
+    If HomeBased.value = "" Then
+        MsgBox "'Home-Based Incident?' Required"
+        Exit Sub
+    End If
+    
+    If HomeIncidentType.value = "N/A" And HomeBased.value = "Yes" Then
+        MsgBox "'Home-Based Incident Type' Required"
+        Exit Sub
+    End If
+    
+     If DHS_Status.value = "" And InConfRecord.value = "Yes" Then
+        MsgBox "'DHS Status' Required"
+        Exit Sub
+    End If
+    
+     If Diagnosis1.value = "" And InConfRecord.value = "Yes" Then
+        MsgBox "Diagnosis #1 Required"
+        Exit Sub
+    End If
+    
+    If Treatment1.value = "" And InConfRecord.value = "Yes" Then
+        MsgBox "Treatment #1 Required"
+        Exit Sub
+    End If
+    
+    If TraumaType1.value = "" And InConfRecord.value = "Yes" Then
+        MsgBox "Trauma #1 Required"
         Exit Sub
     End If
 
@@ -806,6 +864,18 @@ Private Sub Submit_Click()
     
     Range(headerFind("Address") & emptyRow).value = Address.value
     Range(headerFind("Zipcode") & emptyRow).value = Zipcode.value
+    
+    Range(headerFind("Diagnosis #1") & emptyRow).value = Lookup("Diagnosis_Name")(Diagnosis1.value)
+    Range(headerFind("Diagnosis #2") & emptyRow).value = Lookup("Diagnosis_Name")(Diagnosis2.value)
+    Range(headerFind("Diagnosis #3") & emptyRow).value = Lookup("Diagnosis_Name")(Diagnosis3.value)
+    Range(headerFind("Trauma Type #1") & emptyRow).value = Lookup("Trauma_Type_Name")(TraumaType1.value)
+    Range(headerFind("Trauma Type #2") & emptyRow).value = Lookup("Trauma_Type_Name")(TraumaType2.value)
+    Range(headerFind("Trauma Type #3") & emptyRow).value = Lookup("Trauma_Type_Name")(TraumaType3.value)
+    Range(headerFind("Treatment #1") & emptyRow).value = Lookup("Treatment_Name")(Treatment1.value)
+    Range(headerFind("Treatment #2") & emptyRow).value = Lookup("Treatment_Name")(Treatment2.value)
+    Range(headerFind("Treatment #3") & emptyRow).value = Lookup("Treatment_Name")(Treatment3.value)
+    
+    
     Range(headerFind("Phone #") & emptyRow).value = PhoneNumber.value
     Range(headerFind("School") & emptyRow).value = School.value
     Range(headerFind("Grade") & emptyRow).value = Grade.value

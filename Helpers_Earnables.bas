@@ -276,18 +276,23 @@ Sub autoCalcRestitution(ByVal userRow As Long)
     
     Range(headerFind("Total Amount Remaining", sectionHead) & userRow).value = totalAmountFiled - totalAmountPaid
     
+    Range(headerFind("LOS to File", sectionHead) & userRow).value _
+            = calcLOS(Range(headerFind("Arrest Date") & userRow).value, dateOfLastFiling)
+    
     'Calc Restitution Status
     Dim restitutionStatus As String
     
     If totalAmountPaid >= totalAmountFiled Then
         restitutionStatus = 1 ' Paid in Full
         Range(headerFind("Date Paid in Full", sectionHead) & userRow).value = dateOfLastPayment
-        Range(headerFind("LOS to File", sectionHead) & userRow).value _
-            = calcLOS(Range(headerFind("Arrest Date") & userRow).value, dateOfLastFiling)
         Range(headerFind("LOS to Pay in Full", sectionHead) & userRow).value = calcLOS(dateOfFirstFiling, dateOfLastPayment)
         Range(headerFind("LOS to Pay in Full (from arrest)", sectionHead) & userRow).value = calcLOS(Range(headerFind("Arrest Date") & userRow).value, dateOfLastPayment)
     Else
         restitutionStatus = 3 ' Active and Unpaid
+        Range(headerFind("Date Paid in Full", sectionHead) & userRow).value = ""
+        Range(headerFind("LOS to Pay in Full", sectionHead) & userRow).value = ""
+        Range(headerFind("LOS to Pay in Full (from arrest)", sectionHead) & userRow).value = ""
+    
     End If
         
             
@@ -421,17 +426,20 @@ Sub autoCalcCourtCost(ByVal userRow As Long)
     
     Range(headerFind("Total Amount Remaining", sectionHead) & userRow).value = totalAmountFiled - totalAmountPaid
     
+    Range(headerFind("LOS to File", sectionHead) & userRow).value _
+            = calcLOS(Range(headerFind("Arrest Date") & userRow).value, dateOfLastFiling)
     'Calc Court Cost Status
     
     If totalAmountPaid >= totalAmountFiled Then
         Range(headerFind("Court Cost Status", sectionHead) & userRow).value = 1 ' Paid in Full
         Range(headerFind("Date Paid in Full", sectionHead) & userRow).value = dateOfLastPayment
-        Range(headerFind("LOS to File", sectionHead) & userRow).value _
-            = calcLOS(Range(headerFind("Arrest Date") & userRow).value, dateOfLastFiling)
         Range(headerFind("LOS to Pay in Full", sectionHead) & userRow).value = calcLOS(dateOfFirstFiling, dateOfLastPayment)
         Range(headerFind("LOS to Pay in Full (from arrest)", sectionHead) & userRow).value = calcLOS(Range(headerFind("Arrest Date") & userRow).value, dateOfLastPayment)
     Else
         Range(headerFind("Court Cost Status", sectionHead) & userRow).value = 3 ' Active and Unpaid
+        Range(headerFind("Date Paid in Full", sectionHead) & userRow).value = ""
+        Range(headerFind("LOS to Pay in Full", sectionHead) & userRow).value = ""
+        Range(headerFind("LOS to Pay in Full (from arrest)", sectionHead) & userRow).value = ""
     End If
      
      Call autoCalcCostsAndRest(userRow)
@@ -458,6 +466,17 @@ Sub autoCalcCostsAndRest(ByVal userRow As Long)
     Range(headerFind("Aggregate Owed", aggHead) & userRow).value = aggOwed
     Range(headerFind("Aggregate Paid", aggHead) & userRow).value = aggPaid
     Range(headerFind("Aggregate Remaining", aggHead) & userRow).value = aggOwed - aggPaid
+    
+    If Range(headerFind("LOS to File", costHead) & userRow).value _
+        > Range(headerFind("LOS to File", restHead) & userRow).value Then
+        
+        Range(headerFind("LOS to File", aggHead) & userRow).value _
+        = Range(headerFind("LOS to File", costHead) & userRow).value
+    Else
+        Range(headerFind("LOS to File", aggHead) & userRow).value _
+        = Range(headerFind("LOS to File", restHead) & userRow).value
+    End If
+        
     
     If aggPaid >= aggOwed Then
         Dim dateOfFirstRest As String
@@ -496,47 +515,14 @@ Sub autoCalcCostsAndRest(ByVal userRow As Long)
                 dateOfLastPayment = dateOfLastCost
         End Select
 
-        Dim i As Integer
-        Dim bucketHead As String
-        Dim dateOfLastRestitutionFiling As String
-        
-        For i = NUM_COURT_COST_FILED_BUCKETS To 1 Step -1
-            If isNotEmptyOrZero(Range(headerFind("Amount Filed #" & i, costHead) & userRow)) Then
-                bucketHead = headerFind("Amount Filed #" & i, costHead)
-                dateOfLastFiling = CDate(Range(headerFind("Date", bucketHead) & userRow).value)
-                Exit For
-            End If
-        Next i
-        
-        For i = NUM_RESTITUTION_FILED_BUCKETS To 1 Step -1
-            If isNotEmptyOrZero(Range(headerFind("Amount Filed #" & i, restHead) & userRow)) Then
-                bucketHead = headerFind("Amount Filed #" & i, restHead)
-                dateOfLastRestitutionFiling = CDate(Range(headerFind("Date", bucketHead) & userRow).value)
-                    Select Case True
-                        Case dateOfLastFiling = "12:00:00 AM"
-                            dateOfLastFiling = dateOfLastRestitutionFiling
-                        Case dateOfLastRestitutionFiling = "12:00:00 AM"
-                            dateOfLastFiling = dateOfLastFiling
-                        Case dateOfLastFiling > dateOfLastRestitutionFiling
-                            dateOfLastFiling = dateOfLastFiling
-                        Case dateOfLastFiling < dateOfLastRestitutionFiling
-                            dateOfLastFiling = dateOfLastRestitutionFiling
-                    End Select
-                Exit For
-            End If
-        Next i
-        
+ 
         Range(headerFind("Total Cost Status", aggHead) & userRow).value = 1 ' Paid in Full
-        Range(headerFind("LOS to File", aggHead) & userRow).value _
-            = calcLOS(Range(headerFind("Arrest Date") & userRow).value, dateOfLastFiling)
         Range(headerFind("LOS to Pay in Full", aggHead) & userRow).value _
             = calcLOS(dateOfFirstFiling, dateOfLastPayment)
         Range(headerFind("LOS to Pay in Full (from arrest)", aggHead) & userRow).value _
             = calcLOS(Range(headerFind("Arrest Date") & userRow).value, dateOfLastPayment)
     Else
         Range(headerFind("Total Cost Status", aggHead) & userRow).value = 3 ' Active and Unpaid
-        Range(headerFind("LOS to File", aggHead) & userRow).value _
-            = calcLOS(Range(headerFind("Arrest Date") & userRow).value, dateOfLastFiling)
         Range(headerFind("LOS to Pay in Full", aggHead) & userRow).value = ""
         Range(headerFind("LOS to Pay in Full (from arrest)", aggHead) & userRow).value = ""
     End If
