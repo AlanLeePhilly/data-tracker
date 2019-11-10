@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} DiversionUpdateForm 
    Caption         =   "DetentionReferral"
-   ClientHeight    =   11700
+   ClientHeight    =   10575
    ClientLeft      =   45
    ClientTop       =   375
    ClientWidth     =   16440
@@ -19,6 +19,10 @@ Option Explicit
 
 
 
+Private Sub FollowupMP_Change()
+
+End Sub
+
 Private Sub FollowupResult_Change()
     Select Case FollowupResult
         Case "Rearrest"
@@ -30,6 +34,10 @@ Private Sub FollowupResult_Change()
         Case Else
             FollowupMP.value = 0
     End Select
+End Sub
+
+Private Sub HearingMP_Change()
+
 End Sub
 
 Private Sub ReviewOpt_Click()
@@ -387,7 +395,15 @@ Private Sub FirstHearingSubmit_Click()
     Dim diversionHead As String
     'courtHead = headerFind(ReferredTo.value)
     diversionHead = headerFind("DIVERSION")
-
+    
+    Call addNotes( _
+        Courtroom:="Diversion", _
+        DateOf:=DateOfHearing.value, _
+        userRow:=updateRow, _
+        Notes:=FirstNotes.value, _
+        DA:=FirstHearingDA.value _
+    )
+    
     'ADD FRONT NEXT COURT DATE & BUMP TO PREVIOUS
 
     Range(headerFind("Next Court Date") & updateRow).value _
@@ -428,10 +444,16 @@ Private Sub FirstHearingSubmit_Click()
         Range(headerFind("LOS Diversion", diversionHead) & updateRow).value _
             = calcLOS(Range(headerFind("Arrest Date") & updateRow).value, DateOfHearing.value)
         Range(headerFind("Detailed YAP Outcome", diversionHead) & updateRow).value = 2 'FTA
+        
+        Range(hFind("Petition Filed?", "JUVENILE PETITION") & updateRow).value = 1 'yes
+        Range(hFind("Date Filed", "JUVENILE PETITION") & updateRow).value = DateOfHearing.value
+        
         Call ReferClientTo( _
             referralDate:=DateOfHearing.value, _
             clientRow:=updateRow, _
-            toCR:=BreachCourtroom.value _
+            fromCR:="Diversion", _
+            toCR:=BreachCourtroom.value, _
+            newLegalStatus:="Pretrial" _
             )
         Call addFTA( _
             updateRow, _
@@ -461,15 +483,26 @@ Private Sub FirstHearingSubmit_Click()
             = Lookup("Diversion_Court_Recommendation_Reason_Name")(RecToCourtReason5.value)
 
         Range(headerFind("Courtroom of Transfer", diversionHead) & updateRow).value _
-            = Lookup("Courtroom")(CourtroomReferredTo.value)
+            = Lookup("Courtroom_Name")(CourtroomReferredTo.value)
         Range(headerFind("Nature of Discharge", diversionHead) & updateRow).value = 2 'negative
         Range(headerFind("Discharge Date", diversionHead) & updateRow).value = DateOfHearing.value
         Range(headerFind("LOS Diversion", diversionHead) & updateRow).value _
             = calcLOS(Range(headerFind("Arrest Date") & updateRow).value, DateOfHearing.value)
         Range(headerFind("Detailed YAP Outcome", diversionHead) & updateRow).value = 14 'Admittance Not Granted
-        'TODO ReferTo
+        
+        Range(hFind("Petition Filed?", "JUVENILE PETITION") & updateRow).value = 1 'yes
+        Range(hFind("Date Filed", "JUVENILE PETITION") & updateRow).value = DateOfHearing.value
+        
+        Call ReferClientTo( _
+            referralDate:=DateOfHearing.value, _
+            clientRow:=updateRow, _
+            fromCR:="Diversion", _
+            toCR:=CourtroomReferredTo.value, _
+            newLegalStatus:="Pretrial" _
+            )
     End If
-
+    
+    
 
     Unload DiversionUpdateForm
 
@@ -493,9 +526,18 @@ Private Sub FollowupSubmit_Click()
     'courtHead = headerFind(ReferredTo.value)
     diversionHead = headerFind("DIVERSION")
 
+
+    Call addNotes( _
+        Courtroom:="Diversion", _
+        DateOf:=DateOfHearing.value, _
+        userRow:=updateRow, _
+        Notes:=FollowupNotes.value, _
+        DA:=FollowupDA.value _
+    )
+    
     'ADD FRONT NEXT COURT DATE & BUMP TO PREVIOUS
     Range(headerFind("Next Court Date") & updateRow).value _
-            = FirstHearingNextCourtDate.value
+            = FollowupNextCourtDate.value
 
     If ReviewOpt = False Then
         If ExitOpt = False Then
@@ -564,10 +606,16 @@ Private Sub FollowupSubmit_Click()
             Range(headerFind("LOS Diversion", diversionHead) & updateRow).value _
                     = calcLOS(Range(headerFind("Arrest Date") & updateRow).value, DateOfHearing.value)
             Range(headerFind("Detailed YAP Outcome", diversionHead) & updateRow).value = 2 'FTA
+            
+            Range(hFind("Petition Filed?", "JUVENILE PETITION") & updateRow).value = 1 'yes
+            Range(hFind("Date Filed", "JUVENILE PETITION") & updateRow).value = DateOfHearing.value
+        
             Call ReferClientTo( _
                     referralDate:=DateOfHearing.value, _
                     clientRow:=updateRow, _
-                    toCR:=FollowupBreachCourt.value _
+                    fromCR:="Diversion", _
+                    toCR:=FollowupBreachCourt.value, _
+                    newLegalStatus:="Pretrial" _
                     )
             Call addFTA( _
                     updateRow, _
@@ -581,16 +629,31 @@ Private Sub FollowupSubmit_Click()
                     Lookup("Courtroom_Num")(Range(hFind("Active Courtroom") & updateRow).value), _
                     "Diversion")
         Case "Recommended to Court"
-            Range(headerFind("Reason #1 Recommended to Court", diversionHead) & updateRow).value _
-                    = Lookup("Diversion_Court_Recommendation_Reason_Name")(FollowupRecReason.value)
+            Range(headerFind("Reason #1 for Negative Discharge", diversionHead) & updateRow).value _
+                    = Lookup("Diversion_Reason_for_Negative_Discharge_Name")(FollowupRecReason1.value)
+            Range(headerFind("Reason #2 for Negative Discharge", diversionHead) & updateRow).value _
+                    = Lookup("Diversion_Reason_for_Negative_Discharge_Name")(FollowupRecReason2.value)
+            Range(headerFind("Reason #3 for Negative Discharge", diversionHead) & updateRow).value _
+                    = Lookup("Diversion_Reason_for_Negative_Discharge_Name")(FollowupRecReason3.value)
+            Range(headerFind("Reason #4 for Negative Discharge", diversionHead) & updateRow).value _
+                    = Lookup("Diversion_Reason_for_Negative_Discharge_Name")(FollowupRecReason4.value)
+            Range(headerFind("Reason #5 for Negative Discharge", diversionHead) & updateRow).value _
+                    = Lookup("Diversion_Reason_for_Negative_Discharge_Name")(FollowupRecReason5.value)
+                    
             Range(headerFind("Reasons Recommended to Court #" & i, headerFind(hearingType, diversionHead)) & updateRow).value _
-                    = Lookup("Diversion_Court_Recommendation_Reason_Name")(FollowupRecReason.value)
+                    = Lookup("Diversion_Court_Recommendation_Reason_Name")(FollowupRecReason1.value)
             Range(headerFind("Courtroom of Transfer", diversionHead) & updateRow).value _
                     = Lookup("Courtroom_Name")(FollowupCourtroom.value)
+                    
+            Range(hFind("Petition Filed?", "JUVENILE PETITION") & updateRow).value = 1 'yes
+            Range(hFind("Date Filed", "JUVENILE PETITION") & updateRow).value = DateOfHearing.value
+            
             Call ReferClientTo( _
                     referralDate:=DateOfHearing.value, _
                     clientRow:=updateRow, _
-                    toCR:=FollowupCourtroom.value _
+                    fromCR:="Diversion", _
+                    toCR:=FollowupCourtroom.value, _
+                    newLegalStatus:="Pretrial" _
                     )
             Range(headerFind("Nature of Discharge", diversionHead) & updateRow).value = 2 'negative
             Range(headerFind("Discharge Date", diversionHead) & updateRow).value = DateOfHearing.value
@@ -620,7 +683,7 @@ Private Sub FollowupSubmit_Click()
 
     End Select
 
-    'zerofill?
+    
 
 
     Unload DiversionUpdateForm

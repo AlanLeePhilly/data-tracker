@@ -33,6 +33,8 @@ Sub ReferClientTo( _
             fromHead = headerFind("Crossover")
         Case "Intake Conf."
             fromHead = headerFind("INTAKE CONFERENCE")
+        Case "Diversion"
+            fromHead = headerFind("DIVERSION")
         Case "N/A"
             fromHead = "A"
         Case Else
@@ -444,6 +446,12 @@ Sub ReferClientTo( _
             If statusHasAgg(submitLegalStatus) Then
                 If isNotEmptyOrZero(Range(hFind("Courtroom of Origin", submitLegalStatus, "AGGREGATES") & clientRow)) Then
                     CRofOrigin = Lookup("Courtroom_Num")(Range(hFind("Courtroom of Origin", submitLegalStatus, "AGGREGATES") & clientRow).value)
+                End If
+            Else
+                If Not fromCR = "" Then
+                    CRofOrigin = fromCR
+                Else
+                    CRofOrigin = toCR
                 End If
             End If
 
