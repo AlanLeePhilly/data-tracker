@@ -18,11 +18,11 @@ Sub RearrestIntake(userRow As Long, rearrestNum As Long)
 
         .GuardianFirstName1.value = Range(headerFind("Guardian #1 First") & userRow).value
         .GuardianLastName1.value = Range(headerFind("Guardian #1 Last") & userRow).value
-        .GuardianRelation1.value = Range(headerFind("Guardian #1 Relation") & userRow).value
+        .GuardianRelation1.value = Lookup("Relation_Num")(Range(headerFind("Guardian #1 Relation") & userRow).value)
         
         .GuardianFirstName2.value = Range(headerFind("Guardian #2 First") & userRow).value
         .GuardianLastName2.value = Range(headerFind("Guardian #2 Last") & userRow).value
-        .GuardianRelation2.value = Range(headerFind("Guardian #2 Relation") & userRow).value
+        .GuardianRelation2.value = Lookup("Relation_Num")(Range(headerFind("Guardian #2 Relation") & userRow).value)
 
         .Address.value = Range(headerFind("Address") & userRow).value
         .Zipcode.value = Range(headerFind("Zipcode") & userRow).value

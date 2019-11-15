@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} NewClientForm 
    Caption         =   "NewClientUserForm"
-   ClientHeight    =   10575
+   ClientHeight    =   8580.001
    ClientLeft      =   45
    ClientTop       =   375
    ClientWidth     =   18075
@@ -158,13 +158,24 @@ Private Sub Reload_Click()
     
     DHS_Status = Lookup("DHS_Status_at_Arrest_Num")(Range(hFind("Status at Arrest", "DHS") & emptyRow).value)
     
-    Diagnosis1.value = Lookup("Diagnosis_Num")(Range(headerFind("Diagnosis #1") & emptyRow).value)
+    If Not Range(headerFind("Diagnosis #1") & emptyRow).value = "" Then
+        Diagnosis1.value = Lookup("Diagnosis_Num")(Range(headerFind("Diagnosis #1") & emptyRow).value)
+    End If
+    
     Diagnosis2.value = Lookup("Diagnosis_Num")(Range(headerFind("Diagnosis #2") & emptyRow).value)
     Diagnosis3.value = Lookup("Diagnosis_Num")(Range(headerFind("Diagnosis #3") & emptyRow).value)
-    TraumaType1.value = Lookup("Trauma_Type_Num")(Range(headerFind("Trauma Type #1") & emptyRow).value)
+    
+    If Not Range(headerFind("Trauma Type #1") & emptyRow).value = "" Then
+        TraumaType1.value = Lookup("Trauma_Type_Num")(Range(headerFind("Trauma Type #1") & emptyRow).value)
+    End If
+    
     TraumaType2.value = Lookup("Trauma_Type_Num")(Range(headerFind("Trauma Type #2") & emptyRow).value)
     TraumaType3.value = Lookup("Trauma_Type_Num")(Range(headerFind("Trauma Type #3") & emptyRow).value)
-    Treatment1.value = Lookup("Treatment_Num")(Range(headerFind("Treatment #1") & emptyRow).value)
+    
+    If Not Range(headerFind("Treatment #1") & emptyRow).value = "" Then
+        Treatment1.value = Lookup("Treatment_Num")(Range(headerFind("Treatment #1") & emptyRow).value)
+    End If
+    
     Treatment2.value = Lookup("Treatment_Num")(Range(headerFind("Treatment #2") & emptyRow).value)
     Treatment3.value = Lookup("Treatment_Num")(Range(headerFind("Treatment #3") & emptyRow).value)
     
@@ -752,6 +763,11 @@ Private Sub Submit_Click()
         MsgBox "Reason Not Diverted Required"
         Exit Sub
     End If
+    
+    If DiversionProgram.value = "Yes" And NameOfProgram.value = "N/A" Then
+        MsgBox "Diversion Program Required"
+        Exit Sub
+    End If
 
     If SchoolBased.value = "" Then
         MsgBox "'School-Based Incident?' Required"
@@ -790,6 +806,16 @@ Private Sub Submit_Click()
     
     If TraumaType1.value = "" And InConfRecord.value = "Yes" Then
         MsgBox "Trauma #1 Required"
+        Exit Sub
+    End If
+    
+    If DiversionProgram.value = "Yes" And NameOfProgram.value = "N/A" Then
+        MsgBox "Diversion Program Name Required"
+        Exit Sub
+    End If
+    
+    If InitialHearingLocation.value = "Diversion" And ConfOutcome.value = "Release for Court" Then
+        MsgBox "Diversion is not a valid courtroom for release"
         Exit Sub
     End If
 
