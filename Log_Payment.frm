@@ -2,8 +2,8 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} Log_Payment 
    Caption         =   "Filed Payment & Hours"
    ClientHeight    =   6405
-   ClientLeft      =   45
-   ClientTop       =   375
+   ClientLeft      =   48
+   ClientTop       =   372
    ClientWidth     =   12540
    OleObjectBlob   =   "Log_Payment.frx":0000
    StartUpPosition =   1  'CenterOwner

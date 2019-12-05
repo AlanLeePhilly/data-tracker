@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} ClientUpdateForm 
    Caption         =   "ClientUpdateForm"
    ClientHeight    =   10575
-   ClientLeft      =   45
-   ClientTop       =   -75
-   ClientWidth     =   15975
+   ClientLeft      =   48
+   ClientTop       =   -72
+   ClientWidth     =   15972
    OleObjectBlob   =   "ClientUpdateForm.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -378,15 +378,6 @@ End Sub
 
 Sub Adult_Submit_Click()
     On Error GoTo err
-
-    Worksheets("Entry").Activate
-    Dim restorer As Variant
-    restorer = Sheets("Entry").Range("C" & updateRow & ":" & hFind("END") & updateRow).value
-
-    With Application
-        .ScreenUpdating = False
-        .Calculation = xlCalculationManual
-    End With
 
     'VALIDATIONS
     If Adult_Legal_Status_Remain.BackColor = unselectedColor And _
@@ -1097,30 +1088,23 @@ Sub Adult_Submit_Click()
     )
     
     Call UnloadAll
-    Call Save_Countdown
-
-    With Application
-        .ScreenUpdating = True
-        .Calculation = xlCalculationAutomatic
-    End With
-    Worksheets("User Entry").Activate
+    
+    Call formSubmitEnd
 
 
 done:
 
-
     Exit Sub
 err:
-    Sheets("Entry").Range("C" & updateRow & ":" & hFind("END") & updateRow).value = restorer
-
+    Call loadFromCache(2)
 
     MsgBox "Something went wrong. Database has been restored to state prior to submission. " _
       & vbNewLine & vbNewLine & "Message: " & vbNewLine & err.Description _
       & vbNewLine & vbNewLine & "Source: " & vbNewLine & err.Source
     Call UnloadAll
 
-    Stop   'press F8 twice to see the error point
-    Resume
+    'Stop   'press F8 twice to see the error point
+    'Resume
 End Sub
 
 
@@ -1133,16 +1117,7 @@ Sub JTC_Submit_Click()
 
     On Error GoTo err
 
-    Dim restorer As Variant
-
-    restorer = Sheets("Entry").Range("C" & updateRow & ":" & hFind("END") & updateRow).value
-
-    With Application
-        .ScreenUpdating = False
-        .Calculation = xlCalculationManual
-    End With
-
-    Worksheets("Entry").Activate
+    Call formSubmitStart(updateRow)
 
     Dim oldPhaseHead As String
     Dim newPhaseHead As String
@@ -1984,24 +1959,17 @@ Sub JTC_Submit_Click()
     Call closeCallIn(DateOfHearing.value, updateRow)
     Call closeIntakeConference(DateOfHearing.value, updateRow)
     
-    Call Save_Countdown
     Call UnloadAll
 
-    With Application
-        .ScreenUpdating = True
-        .Calculation = xlCalculationAutomatic
-    End With
-    Worksheets("User Entry").Activate
+    Call formSubmitEnd
 
 done:
-
-
     Exit Sub
 err:
-    Sheets("Entry").Range("C" & updateRow & ":" & hFind("END") & updateRow).value = restorer
 
-    Stop   'press F8 twice to see the error point
-    Resume
+    Call loadFromCache(2)
+    'Stop   'press F8 twice to see the error point
+    'Resume
     MsgBox "Something went wrong. Database has been restored to state prior to submission. " _
       & vbNewLine & vbNewLine & "Message: " & vbNewLine & err.Description _
       & vbNewLine & vbNewLine & "Source: " & vbNewLine & err.Source
@@ -2011,14 +1979,7 @@ End Sub
 Sub Standard_Submit_Click()
     On Error GoTo err
 
-    Worksheets("Entry").Activate
-    Dim restorer As Variant
-    restorer = Sheets("Entry").Range("C" & updateRow & ":" & hFind("END") & updateRow).value
-
-    With Application
-        .ScreenUpdating = False
-        .Calculation = xlCalculationManual
-    End With
+    Call formSubmitStart(updateRow)
 
     'VALIDATIONS
     If Standard_Legal_Status_Remain.BackColor = unselectedColor And _
@@ -2561,32 +2522,24 @@ Sub Standard_Submit_Click()
         DA:=DA.value _
     )
 
-    Call Save_Countdown
 
     Call CheckForConcurrency(updateRow, DateOfHearing.value)
 
-    With Application
-        .ScreenUpdating = True
-        .Calculation = xlCalculationAutomatic
-    End With
-    Worksheets("User Entry").Activate
-
+    Call formSubmitEnd
 
 done:
-
-
     Exit Sub
 err:
-    Sheets("Entry").Range("C" & updateRow & ":" & hFind("END") & updateRow).value = restorer
-
-
+    
+    Call loadFromCache(2)
+    
     MsgBox "Something went wrong. Database has been restored to state prior to submission. " _
       & vbNewLine & vbNewLine & "Message: " & vbNewLine & err.Description _
       & vbNewLine & vbNewLine & "Source: " & vbNewLine & err.Source
     Call UnloadAll
 
-    Stop   'press F8 twice to see the error point
-    Resume
+    'Stop   'press F8 twice to see the error point
+    'Resume
 End Sub
 
 
@@ -2596,7 +2549,8 @@ Private Sub PJJSC_Submit_Click()
     Dim bucketHead As String
     Dim detentionHead As String
 
-    Worksheets("Entry").Activate
+    Call formSubmitStart(updateRow)
+    
     Call addNotes( _
         Courtroom:="PJJSC", _
         DateOf:=DateOfHearing.value, _
@@ -2830,9 +2784,9 @@ Private Sub PJJSC_Submit_Click()
     Call closeIntakeConference(DateOfHearing.value, updateRow)
     Call closeIntakeDetentions(DateOfHearing.value, updateRow)
 
-    Worksheets("User Entry").Activate
-    Call Save_Countdown
     Call UnloadAll
+    
+    Call formSubmitEnd
 
 End Sub
 

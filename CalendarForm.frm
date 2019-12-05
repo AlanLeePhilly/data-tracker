@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} CalendarForm 
    Caption         =   "Select Date"
    ClientHeight    =   3360
-   ClientLeft      =   45
-   ClientTop       =   375
-   ClientWidth     =   2745
+   ClientLeft      =   48
+   ClientTop       =   372
+   ClientWidth     =   2748
    OleObjectBlob   =   "CalendarForm.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -816,8 +816,8 @@ Private Sub ClickControl(ctrl As MSForms.Control)
     SelectedYear = cmbYear.value
 
     'Get indices of date label from label name and selected day from caption
-    RowIndex = CLng(Left(Right(ctrl.Name, 2), 1))
-    ColumnIndex = CLng(Right(ctrl.Name, 1))
+    RowIndex = CLng(Left(Right(ctrl.name, 2), 1))
+    ColumnIndex = CLng(Right(ctrl.name, 1))
     SelectedDay = CLng(ctrl.Caption)
 
     'Selection is from previous month. The largest day that could exist in
@@ -880,7 +880,7 @@ Private Sub HoverControl(ctrl As MSForms.Control)
     If HoverControlName <> vbNullString Then
         Me.Controls(HoverControlName).BackColor = HoverControlColor
     End If
-    HoverControlName = ctrl.Name
+    HoverControlName = ctrl.name
     HoverControlColor = ctrl.BackColor
     ctrl.BackColor = bgDateHoverColor
 End Sub

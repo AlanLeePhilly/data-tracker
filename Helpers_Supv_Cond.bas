@@ -21,6 +21,11 @@ Sub addSupervision( _
     Dim bucketHead As String
     Dim section As String
     Dim i As Integer
+    
+    Call aggFlagSupervision( _
+        userRow:=clientRow, _
+        Courtroom:=Courtroom, _
+        supervisionName:=serviceType)
 
     If serviceType = "Placement" Then
         Call startPlacement( _
@@ -233,12 +238,17 @@ Sub addCondition( _
     )
     'WORKS FOR STANDARD (+Cross & WRAP) AND JTC (+ AGG), ADD PHASE FOR LEGAL FOR JTC
     Worksheets("Entry").Activate
-
+    
     Dim Num As Integer
     Dim bucketHead As String
     Dim section As String
     Dim i As Integer
-
+    
+    Call aggFlagCondition( _
+        userRow:=clientRow, _
+        Courtroom:=Courtroom, _
+        conditionName:=condition)
+    
     For i = 1 To 2
         If Courtroom = "Intake Conf." _
         Or Courtroom = "Call-In" _
@@ -556,3 +566,142 @@ Sub AggAggSupervisionsAndConditions(ByVal userRow As Long)
         End If
     Next i
 End Sub
+
+Sub aggFlagsConditionsSetNo(ByVal userRow As Long, bucketHead As String)
+    Call flagNo(Range(headerFind("Was Youth Ordered Anger Mgt.?", bucketHead) & userRow))
+    Call flagNo(Range(headerFind("Was Youth Ordered Alternative School?", bucketHead) & userRow))
+    Call flagNo(Range(headerFind("Was Youth Ordered a BHE?", bucketHead) & userRow))
+    Call flagNo(Range(headerFind("Was Youth Ordered Community Service?", bucketHead) & userRow))
+    Call flagNo(Range(headerFind("Was Youth Ordered a Curfew?", bucketHead) & userRow))
+    Call flagNo(Range(headerFind("Was Youth Ordered Daily School?", bucketHead) & userRow))
+    Call flagNo(Range(headerFind("Was Youth Ordered Drug Screens?", bucketHead) & userRow))
+    Call flagNo(Range(headerFind("Was Youth Ordered Essay?", bucketHead) & userRow))
+    Call flagNo(Range(headerFind("Was Youth Ordered Family Therapy?", bucketHead) & userRow))
+    Call flagNo(Range(headerFind("Was Youth Ordered GED?", bucketHead) & userRow))
+    Call flagNo(Range(headerFind("Was Youth Ordered Grief Counseling?", bucketHead) & userRow))
+    Call flagNo(Range(headerFind("Was Youth Ordered Mental Health?", bucketHead) & userRow))
+    Call flagNo(Range(headerFind("Was Youth Ordered Inpatient D&A?", bucketHead) & userRow))
+    Call flagNo(Range(headerFind("Was Youth Ordered IOP?", bucketHead) & userRow))
+    Call flagNo(Range(headerFind("Was Youth Ordered Restitution?", bucketHead) & userRow))
+    Call flagNo(Range(headerFind("Was Youth Ordered Sexual Counseling?", bucketHead) & userRow))
+    Call flagNo(Range(headerFind("Was Youth Ordered Victim Conference?", bucketHead) & userRow))
+    Call flagNo(Range(headerFind("Was Youth Ordered 1st Violation Hold?", bucketHead) & userRow))
+    Call flagNo(Range(headerFind("Was Youth Ordered Other Condition?", bucketHead) & userRow))
+End Sub
+
+Sub aggFlagsSupervisionsSetNo(ByVal userRow As Long, bucketHead As String)
+    Call flagNo(Range(headerFind("Did Youth Have IPS?", bucketHead) & userRow))
+    Call flagNo(Range(headerFind("Did Youth Have Pre-ERC?", bucketHead) & userRow))
+    Call flagNo(Range(headerFind("Did Youth Have IHD?", bucketHead) & userRow))
+    Call flagNo(Range(headerFind("Did Youth Have ISP?", bucketHead) & userRow))
+    Call flagNo(Range(headerFind("Did Youth Have GPS?", bucketHead) & userRow))
+    Call flagNo(Range(headerFind("Did Youth Have Post-ERC?", bucketHead) & userRow))
+    Call flagNo(Range(headerFind("Did Youth Have Reintegration?", bucketHead) & userRow))
+    Call flagNo(Range(headerFind("Did Youth Have CUA?", bucketHead) & userRow))
+    Call flagNo(Range(headerFind("Did Youth Have RTF?", bucketHead) & userRow))
+    Call flagNo(Range(headerFind("Did Youth Have Inpatient D&A?", bucketHead) & userRow))
+    Call flagNo(Range(headerFind("Did Youth Have Other Supervision?", bucketHead) & userRow))
+End Sub
+
+Sub aggFlagCondition( _
+    ByVal userRow As Long, _
+    ByVal Courtroom As String, _
+    ByVal conditionName As String)
+    
+    Dim columnName As String
+    
+    Select Case conditionName
+        Case "Anger Mgt."
+            columnName = "Was Youth Ordered Anger Mgt.?"
+        Case "Alt. School"
+            columnName = "Was Youth Ordered Alternative School?"
+        Case "BHE"
+            columnName = "Was Youth Ordered a BHE?"
+        Case "Comm. Serv"
+            columnName = "Was Youth Ordered Community Service?"
+        Case "Curfew"
+            columnName = "Was Youth Ordered a Curfew?"
+        Case "Daily School"
+            columnName = "Was Youth Ordered Daily School?"
+        Case "Drug Screens", "Drug Screen - FW"
+            columnName = "Was Youth Ordered Drug Screens?"
+        Case "Essay"
+            columnName = "Was Youth Ordered Essay?"
+        Case "Family Therapy"
+            columnName = "Was Youth Ordered Family Therapy?"
+        Case "GED"
+            columnName = "Was Youth Ordered GED?"
+        Case "Grief Counseling"
+            columnName = "Was Youth Ordered Grief Counseling?"
+        Case "Mental Health"
+            columnName = "Was Youth Ordered Mental Health?"
+        Case "Inpatient D&A"
+            columnName = "Was Youth Ordered Inpatient D&A?"
+        Case "IOP"
+            columnName = "Was Youth Ordered IOP?"
+        Case "Restitution"
+            columnName = "Was Youth Ordered Restitution?"
+        Case "Sexual Couns."
+            columnName = "Was Youth Ordered Sexual Counseling?"
+        Case "Victim Conf."
+            columnName = "Was Youth Ordered Victim Conference?"
+        Case "1st Viol. Hold"
+            columnName = "Was Youth Ordered 1st Violation Hold?"
+        Case Else
+            columnName = "Was Youth Ordered Other Condition?"
+    End Select
+    
+    Select Case Courtroom
+        Case "4G", "4G", "4E", "6F", "6H", "3E", "Crossover", "WRAP", "JTC"
+            Call flagYes(Range(hFind(columnName, Courtroom) & userRow))
+        Case "Adult"
+            Call flagYes(Range(hFind(columnName, "ADULT") & userRow))
+    End Select
+
+    Call flagYes(Range(hFind(columnName, "Conditions", "AGGREGATES") & userRow))
+    Call flagYes(Range(hFind(columnName, "Aggregate Conditions", "AGGREGATES") & userRow))
+End Sub
+
+Sub aggFlagSupervision( _
+    ByVal userRow As Long, _
+    ByVal Courtroom As String, _
+    ByVal supervisionName As String)
+    
+    Dim columnName As String
+
+    Select Case supervisionName
+        Case "IPS"
+            columnName = "Did Youth Have IPS?"
+        Case "Pre-ERC"
+            columnName = "Did Youth Have Pre-ERC?"
+        Case "IHD"
+            columnName = "Did Youth Have IHD?"
+        Case "ISP"
+            columnName = "Did Youth Have ISP?"
+        Case "GPS"
+            columnName = "Did Youth Have GPS?"
+        Case "Post-ERC"
+            columnName = "Did Youth Have Post-ERC?"
+        Case "Reintegration"
+            columnName = "Did Youth Have Reintegration?"
+        Case "CUA"
+            columnName = "Did Youth Have CUA?"
+        Case "RTF"
+            columnName = "Did Youth Have RTF?"
+        Case "Inpatient D&A"
+            columnName = "Did Youth Have Inpatient D&A?"
+        Case Else
+            columnName = "Did Youth Have Other Supervision?"
+    End Select
+    
+    Select Case Courtroom
+        Case "4G", "4G", "4E", "6F", "6H", "3E", "Crossover", "WRAP", "JTC"
+            Call flagYes(Range(hFind(columnName, Courtroom) & userRow))
+        Case "Adult"
+            Call flagYes(Range(hFind(columnName, "ADULT") & userRow))
+    End Select
+
+    Call flagYes(Range(hFind(columnName, "Supervision Programs", "AGGREGATES") & userRow))
+    Call flagYes(Range(hFind(columnName, "Aggregate Supervision Programs", "AGGREGATES") & userRow))
+End Sub
+

@@ -5,7 +5,7 @@ Public Function headerFind(ByVal Query As String, Optional ByVal Start As String
         Start = "A"
     End If
 
-    Set Result = Worksheets("Entry").Range(Start & "2:XAA2").Find(Query, LookAt:=xlWhole)
+    Set Result = Worksheets("Entry").Range(Start & "2:XFD2").Find(Query, LookAt:=xlWhole)
 
 
     If Result Is Nothing Then

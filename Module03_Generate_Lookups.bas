@@ -1,6 +1,54 @@
 Attribute VB_Name = "Module03_Generate_Lookups"
-Sub RefreshNamedRanges()
+Sub UpdateList()
+    Call trimMasterListWhiteSpace
+    Call PrintToRawList
+    Call RefreshNamedRanges
+    Call Generate_Dictionaries
+    
+End Sub
+
+Sub PrintToRawList()
     With Worksheets("MasterList")
+
+        Dim lastRow As Long
+        Dim RawList As Worksheet
+        Dim Title As String
+        Dim rng As Range
+        Dim i As Long
+        Dim j As Long
+        Dim k As Long
+        
+        Set RawList = Worksheets("RawList")
+        RawList.UsedRange.ClearContents
+        k = 0
+        
+        For i = 1 To 10000
+            If Not IsEmpty(.Cells(1, i).value) Then
+                RawList.Cells(1, i).value = .Cells(1, i).value
+                lastRow = .Cells(.Rows.count, i).End(xlUp).row
+                
+                If Not IsEmpty(.Cells(1, i + 1).value) Then
+                    MsgBox "Something funky at " + .Cells(1, i + 1).value
+                End If
+                
+                For j = 2 To lastRow
+                    If Not IsEmpty(.Cells(j, i).value) Then
+                        RawList.Cells(j, i).value = .Cells(j, i).value
+                        RawList.Cells(j, i + 1).value = .Cells(j, i + 1).value
+                    Else
+                        k = k + 1
+                    End If
+            
+                Next j
+            End If
+        Next i
+    End With
+        
+        MsgBox "You skipped " & k & " rows. Congrats!"
+End Sub
+
+Sub RefreshNamedRanges()
+    With Worksheets("RawList")
 
         Dim lastRow As Long
         Dim Title As String
@@ -22,7 +70,7 @@ Sub RefreshNamedRanges()
                     Set rng = .Range(numToAlpha(i) + "2:" + numToAlpha(i) + CStr(lastRow))
                 End If
 
-                ThisWorkbook.Names.Add Name:=Title, RefersTo:=rng
+                ThisWorkbook.Names.Add name:=Title, RefersTo:=rng
             End If
         Next i
     End With
@@ -37,7 +85,7 @@ Sub RefreshNamedRanges()
 
         Set rng = .Range("A2:" + "E" + CStr(lastRow))
 
-        ThisWorkbook.Names.Add Name:=Title, RefersTo:=rng
+        ThisWorkbook.Names.Add name:=Title, RefersTo:=rng
 
     End With
 End Sub
@@ -56,8 +104,7 @@ Sub SetRangesToDictionaries()
 End Sub
 
 Public Function Generate_Dictionaries()
-
-    With Worksheets("MasterList")
+    With Worksheets("RawList")
         Dim Title As String
         Dim rng As Range
         Dim i As Integer
@@ -113,3 +160,27 @@ Public Function CodeConcat(ByVal Title As String, ByVal section As String, ByVal
         CodeConcat = Title & " - " & section
     End If
 End Function
+
+
+Sub trimMasterListWhiteSpace()
+    Dim countX As Long
+    Dim countY As Long
+
+    With Sheets("MasterList")
+        For countX = 1 To 200
+            For countY = 1 To 200
+                If Not Trim(.Range(numToAlpha(countX) & countY).value) = .Range(numToAlpha(countX) & countY).value _
+                    And Not IsNumeric(.Range(numToAlpha(countX) & countY).value) Then
+                        MsgBox "During update, an entry was discovered with trailing whitespace and was trimmed. Just a heads up! " & vbNewLine _
+                        & "Initial value: " & Chr(34) & .Range(numToAlpha(countX) & countY).value & Chr(34) & vbNewLine _
+                        & "New value: " & Chr(34) & Trim(.Range(numToAlpha(countX) & countY).value) & Chr(34)
+                    Debug.Print numToAlpha(countX) + CStr(countY)
+                    Debug.Print .Range(numToAlpha(countX) & countY).value
+                    Debug.Print Trim(.Range(numToAlpha(countX) & countY).value)
+
+                    '.Range(numToAlpha(countX) & countY).value = Trim(.Range(numToAlpha(countX) & countY).value)
+                End If
+            Next countY
+        Next countX
+    End With
+End Sub

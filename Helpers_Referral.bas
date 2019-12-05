@@ -45,6 +45,8 @@ Sub ReferClientTo( _
     Select Case toCR
         Case "4G", "4E", "6F", "6H", "3E", "JTC", "WRAP", "Adult"
             toHead = headerFind(toCR)
+        Case "Adult"
+            toHead = headerFind("ADULT")
         Case "PJJSC"
             toHead = headerFind("DETENTION")
         Case "5E"
@@ -140,6 +142,12 @@ Sub ReferClientTo( _
     ''''''''''''''''
     'START NEW ROOM'
     ''''''''''''''''
+    Select Case toCR
+        Case "4G", "4G", "4E", "6F", "6H", "3E", "Crossover", "WRAP", "JTC", "Adult"
+            Call aggFlagsSupervisionsSetNo(clientRow, toHead)
+            Call aggFlagsConditionsSetNo(clientRow, toHead)
+    End Select
+    
     If Not toCR = "N/A" Then
         Select Case toCR
             Case "4G", "4E", "6F", "6H", "3E"

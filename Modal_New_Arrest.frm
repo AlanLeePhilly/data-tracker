@@ -3,8 +3,8 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} Modal_New_Arrest
    Caption         =   "UserForm1"
    ClientHeight    =   11610
    ClientLeft      =   120
-   ClientTop       =   450
-   ClientWidth     =   17325
+   ClientTop       =   456
+   ClientWidth     =   17328
    OleObjectBlob   =   "Modal_New_Arrest.frx":0000
    StartUpPosition =   1  'CenterOwner
 End

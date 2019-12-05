@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} NewClientForm 
    Caption         =   "NewClientUserForm"
    ClientHeight    =   8580.001
-   ClientLeft      =   45
-   ClientTop       =   375
-   ClientWidth     =   18075
+   ClientLeft      =   48
+   ClientTop       =   372
+   ClientWidth     =   18072
    OleObjectBlob   =   "NewClientForm.frx":0000
 End
 Attribute VB_Name = "NewClientForm"
@@ -667,19 +667,27 @@ End Function
 
 
 Private Sub Submit_Click()
-    Dim restorer As Variant
+    On Error GoTo err
 
     Call Generate_Dictionaries
     'define variable Long(a big integer) named emptyRow
     Dim emptyRow As Long
 
-    'activate the spreadsheet as default selector
-    Worksheets("Entry").Activate
+    'find empty row by finding first 'first name' value from bottom
+    emptyRow = Range("C" & Rows.count).End(xlUp).row + 1
+    
+    If Reload_Row = "" Then
+        Call formSubmitStart
+    Else
+        If MsgBox("Warning, you are about to overwrite row " & Reload_Row.value, vbOKCancel) = vbCancel Then
+            Exit Sub
+        End If
 
-    With Application
-        .ScreenUpdating = False
-        .Calculation = xlCalculationManual
-    End With
+        emptyRow = Reload_Row
+        Call formSubmitStart(Reload_Row)
+        
+        Range("C" & emptyRow & ":" & hFind("END") & emptyRow).ClearContents
+    End If
 
     '''''''''''''
     'Validations'
@@ -819,24 +827,17 @@ Private Sub Submit_Click()
         Exit Sub
     End If
 
-    'find empty row by finding first 'first name' value from bottom
-    emptyRow = Range("C" & Rows.count).End(xlUp).row + 1
-    restorer = Range("C" & emptyRow & ":" & hFind("END") & emptyRow).value
-
-    If Not Reload_Row = "" Then
-        If MsgBox("Warning, you are about to overwrite row " & Reload_Row.value, vbOKCancel) = vbCancel Then
-            Exit Sub
-        End If
-
-        emptyRow = Reload_Row
-        restorer = Range("C" & emptyRow & ":" & hFind("END") & emptyRow).value
-        Range("C" & emptyRow & ":" & hFind("END") & emptyRow).ClearContents
-    End If
     
     
+    
+    '''''''''''
+    'AGG FLAGS'
+    '''''''''''
+    Call aggFlagsSupervisionsSetNo(userRow:=emptyRow, bucketHead:=headerFind("AGGREGATES"))
+    Call aggFlagsSupervisionsSetNo(userRow:=emptyRow, bucketHead:=hFind("Aggregate Supervision Programs", "AGGREGATES"))
 
-    On Error GoTo err
-
+    Call aggFlagsConditionsSetNo(userRow:=emptyRow, bucketHead:=headerFind("AGGREGATES"))
+    Call aggFlagsConditionsSetNo(userRow:=emptyRow, bucketHead:=hFind("Aggregate Conditions", "AGGREGATES"))
     ''''''''''''''
     'DEMOGRAPHICS'
     ''''''''''''''
@@ -1244,7 +1245,7 @@ Private Sub Submit_Click()
         Range(hFind("Status at Arrest", "DHS") & emptyRow).value _
                 = Lookup("DHS_Status_at_Arrest_Name")(DHS_Status.value)
         
-        If DHS_Status.value = "N/A" Or DHS_Status.value = "No" Or DHS_Status.value = "Unknown" Then
+        If DHS_Status.value = "N/A" Or DHS_Status.value = "None" Or DHS_Status.value = "Unknown" Then
             Range(hFind("Did youth have any DHS contact?", "DHS") & emptyRow).value = 2 'no
         Else
             Range(hFind("Did youth have any DHS contact?", "DHS") & emptyRow).value = 1 'yes
@@ -1593,23 +1594,21 @@ Private Sub Submit_Click()
     'Next counter
     Call aggFlag(emptyRow)
     Call courtsFlag(emptyRow)
+    
+    Call formSubmitEnd
+    
 done:
     'Call SaveAs_Countdown
-    Call Save_Countdown
     Call UnloadAll
-
-    Worksheets("User Entry").Activate
-    With Application
-        .ScreenUpdating = True
-        .Calculation = xlCalculationAutomatic
-    End With
     Exit Sub
 err:
 
-    Range("C" & emptyRow & ":" & headerFind("END") & emptyRow).value = restorer
+    If Not Reload_Row = "" Then
+        Call loadFromCache(2)
+    End If
 
-    Stop 'press F8 twice to see the error point
-    Resume
+    'Stop 'press F8 twice to see the error point
+    'Resume
     MsgBox "Something went wrong. Database has been restored to state prior to submission. " _
       & vbNewLine & vbNewLine & "Message: " & vbNewLine & err.Description _
       & vbNewLine & vbNewLine & "Source: " & vbNewLine & err.Source

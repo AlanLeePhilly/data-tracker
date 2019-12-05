@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} Modal_JTC_Discharge 
    Caption         =   "JTC - Discharge Client"
    ClientHeight    =   9735.001
-   ClientLeft      =   45
-   ClientTop       =   -75
-   ClientWidth     =   9690.001
+   ClientLeft      =   48
+   ClientTop       =   -72
+   ClientWidth     =   9684.001
    OleObjectBlob   =   "Modal_JTC_Discharge.frx":0000
    StartUpPosition =   1  'CenterOwner
 End

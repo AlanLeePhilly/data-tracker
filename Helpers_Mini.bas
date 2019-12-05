@@ -48,26 +48,6 @@ Sub trimmer()
     End With
 End Sub
 
-Sub trimmer2()
-    Dim countX As Long
-    Dim countY As Long
-
-    With Sheets("MasterList")
-        For countX = 1 To 200
-            For countY = 1 To 200
-                If Not Trim(.Range(numToAlpha(countX) & countY).value) = .Range(numToAlpha(countX) & countY).value _
-                    And Not IsNumeric(.Range(numToAlpha(countX) & countY).value) Then
-
-                    Debug.Print numToAlpha(countX) + CStr(countY)
-                    Debug.Print .Range(numToAlpha(countX) & countY).value
-                    Debug.Print Trim(.Range(numToAlpha(countX) & countY).value)
-
-                    '.Range(numToAlpha(countX) & countY).value = Trim(.Range(numToAlpha(countX) & countY).value)
-                End If
-            Next countY
-        Next countX
-    End With
-End Sub
 
 Function isNotEmptyOrZero(ByRef rng As Range) As Boolean
     If Not IsEmpty(rng) And rng.value > 0 Then
@@ -415,7 +395,7 @@ Sub UnloadAll()
 
     Dim i As Long
     For i = VBA.UserForms.count - 1 To 0 Step -1
-        nameOf = VBA.UserForms(i).Name
+        nameOf = VBA.UserForms(i).name
         Unload VBA.UserForms(i)
     Next i
 End Sub
