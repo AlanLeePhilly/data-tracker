@@ -20,6 +20,16 @@ Private Sub Continue_Click()
         MsgBox "Detailed Outcome Required"
         Exit Sub
     End If
+    
+    If Me.Legal_Status = "" Then
+        Select Case DetailedOutcome.value
+            Case "Rearrested & Held (adult)", "Positive Completion", "Aged Out", "Transfer to Dependent", "Transfer to Other County", "Admin. D/C - Reasonable Efforts"
+                'do nothing
+            Case Else
+                MsgBox "Legal status must be selected for this outcome"
+                Exit Sub
+        End Select
+    End If
 
     ''''''''''''
     'VALIDATION NEEDED: only some detailed outcomes can match with certain Natures of Discharge
@@ -81,19 +91,11 @@ Private Sub DetailedOutcome_Change()
             Legal_Status_Label.Enabled = False
             Legal_Status.Enabled = False
             Legal_Status.value = ""
-        Case "Show Cause"
+        Case Else
             New_CR_Label.Enabled = True
             New_CR.Enabled = True
             Legal_Status_Label.Enabled = True
             Legal_Status.Enabled = True
-            Legal_Status.value = "Probation"
-        'Case "Acceptance Not Granted", "Hosp. (Mental Health)", "Hosp. (Physical Health)", "Other", "Unknown"
-        Case Else
-            New_CR_Label.Enabled = True
-            New_CR.Enabled = True
-            Legal_Status_Label.Enabled = False
-            Legal_Status.Enabled = False
-            Legal_Status.value = "Probation"
     End Select
 End Sub
 

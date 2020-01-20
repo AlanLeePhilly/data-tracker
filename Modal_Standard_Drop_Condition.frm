@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} Modal_Standard_Drop_Condition 
    Caption         =   "Drop Condition"
-   ClientHeight    =   8025
+   ClientHeight    =   8028
    ClientLeft      =   48
    ClientTop       =   372
    ClientWidth     =   6348
@@ -51,6 +51,8 @@ Private Sub Cancel_Click()
     Reason1.value = "N/A"
     Reason2.value = "N/A"
     Reason3.value = "N/A"
+    Reason4.value = "N/A"
+    Reason5.value = "N/A"
     Notes.value = ""
     Modal_Standard_Drop_Condition.Hide
 End Sub
@@ -87,9 +89,7 @@ Private Sub Continue_Click()
                     returnBox.List(i, 3) = Discharge_Date
                     'location
                     returnBox.List(i, 5) = Nature
-                    returnBox.List(i, 6) = Reason1
-                    returnBox.List(i, 7) = Reason2
-                    returnBox.List(i, 8) = Reason3
+                    returnBox.List(i, 6) = encodeReasons(Reason1, Reason2, Reason3, Reason4, Reason5)
                     returnBox.List(i, 9) = Notes
                 End If
             End If
@@ -104,6 +104,8 @@ Private Sub Nature_Change()
         Reason1.Enabled = True
         Reason2.Enabled = True
         Reason3.Enabled = True
+        Reason4.Enabled = True
+        Reason5.Enabled = True
     Else
         Reasons_Label.Enabled = False
         Reason1.Enabled = False
@@ -112,6 +114,10 @@ Private Sub Nature_Change()
         Reason2.value = "N/A"
         Reason3.Enabled = False
         Reason3.value = "N/A"
+        Reason4.Enabled = False
+        Reason4.value = "N/A"
+        Reason5.Enabled = False
+        Reason5.value = "N/A"
     End If
 End Sub
 

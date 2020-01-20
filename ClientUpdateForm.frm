@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} ClientUpdateForm 
    Caption         =   "ClientUpdateForm"
-   ClientHeight    =   10575
+   ClientHeight    =   10572
    ClientLeft      =   48
    ClientTop       =   -72
    ClientWidth     =   15972
@@ -416,6 +416,9 @@ Sub Adult_Submit_Click()
         Exit Sub
     End If
 
+    Call formSubmitStart(updateRow)
+    
+
     Dim oldCourtHead As String
     Dim oldCourtroom As String
     Dim newCourtHead As String
@@ -466,7 +469,6 @@ Sub Adult_Submit_Click()
             'COPY VALUES FROM PETITION TO JUVENILE PETITION'
             ''''''''''''''''''''''''''''''''''''''''''''''''''
             
-            
 
             Range(headerFind("Initial Court Date", juvePetitionHead) & updateRow).value _
           = Range(headerFind("Initial Court Date", petitionHead) & updateRow).value
@@ -477,6 +479,7 @@ Sub Adult_Submit_Click()
             Range(headerFind("Prior Closed Petitons (Prior Results)", juvePetitionHead) & updateRow).value _
           = Range(headerFind("Prior Closed Petitons (Prior Results)", petitionHead) & updateRow).value
 
+            
             Range(headerFind("Arrest Date", juvePetitionHead) & updateRow).value _
           = Range(headerFind("Arrest Date", petitionHead) & updateRow).value
             Range(headerFind("Day of Arrest", juvePetitionHead) & updateRow).value _
@@ -712,9 +715,9 @@ Sub Adult_Submit_Click()
                                 agency:="PJJSC", _
                                 startDate:=.CallInDate.value, _
                                 endDate:=.InConfDate.value, _
-                                Re1:="", _
-                                Re2:="", _
-                                Re3:="", _
+                                re1:="", _
+                                re2:="", _
+                                re3:="", _
                                 Notes:="Held at call-in")
 
                     End Select
@@ -827,9 +830,9 @@ Sub Adult_Submit_Click()
                             DA:=DA.value, _
                             agency:="", _
                             startDate:=.InConfDate.value, _
-                            Re1:="", _
-                            Re2:="", _
-                            Re3:="", _
+                            re1:="", _
+                            re2:="", _
+                            re3:="", _
                             Notes:="Held at intake conference")
 
                         Case "Release for Court"
@@ -844,7 +847,8 @@ Sub Adult_Submit_Click()
                                 referralDate:=.PetitionBox.List(0, 0), _
                                 clientRow:=updateRow, _
                                 fromCR:="Adult", _
-                                DA:=DA.value _
+                                DA:=DA.value, _
+                                Notes:=Adult_Notes.value _
                                 )
                             If .NextHearingLocation.value = "5E" Then
                                 Range(hFind("Courtroom of Origin", "Crossover") & updateRow).value _
@@ -866,9 +870,9 @@ Sub Adult_Submit_Click()
                                 agency:=.Supv1Pro.value, _
                                 startDate:=.InConfDate.value, _
                                 NextCourtDate:=Adult_NextCourtDate.value, _
-                                Re1:=.Supv1Re1.value, _
-                                Re2:=.Supv1Re2.value, _
-                                Re3:=.Supv1Re3.value, _
+                                re1:=.Supv1Re1.value, _
+                                re2:=.Supv1Re2.value, _
+                                re3:=.Supv1Re3.value, _
                                 Notes:="Referred at intake conference")
                             End If
 
@@ -883,9 +887,9 @@ Sub Adult_Submit_Click()
                                 agency:=.Supv2Pro.value, _
                                 startDate:=.InConfDate.value, _
                                 NextCourtDate:=Adult_NextCourtDate.value, _
-                                Re1:=.Supv2Re1.value, _
-                                Re2:=.Supv2Re2.value, _
-                                Re3:=.Supv2Re3.value, _
+                                re1:=.Supv2Re1.value, _
+                                re2:=.Supv2Re2.value, _
+                                re3:=.Supv2Re3.value, _
                                 Notes:="Referred at intake conference")
                             End If
 
@@ -899,9 +903,9 @@ Sub Adult_Submit_Click()
                                 DA:=DA.value, _
                                 agency:=.Cond1Pro.value, _
                                 startDate:=.InConfDate.value, _
-                                Re1:="N/A", _
-                                Re2:="N/A", _
-                                Re3:="N/A", _
+                                re1:="N/A", _
+                                re2:="N/A", _
+                                re3:="N/A", _
                                 Notes:="Referred at intake conference")
                             End If
 
@@ -915,9 +919,9 @@ Sub Adult_Submit_Click()
                                 DA:=DA.value, _
                                 agency:=.Cond2Pro.value, _
                                 startDate:=.InConfDate.value, _
-                                Re1:="N/A", _
-                                Re2:="N/A", _
-                                Re3:="N/A", _
+                                re1:="N/A", _
+                                re2:="N/A", _
+                                re3:="N/A", _
                                 Notes:="Referred at intake conference")
                             End If
 
@@ -931,9 +935,9 @@ Sub Adult_Submit_Click()
                                 DA:=DA.value, _
                                 agency:=.Cond3Pro.value, _
                                 startDate:=.InConfDate.value, _
-                                Re1:="N/A", _
-                                Re2:="N/A", _
-                                Re3:="N/A", _
+                                re1:="N/A", _
+                                re2:="N/A", _
+                                re3:="N/A", _
                                 Notes:="Referred at intake conference")
                             End If
 
@@ -1014,6 +1018,8 @@ Sub Adult_Submit_Click()
                         = Lookup("Diversion_Rejection_Reason_Name")(.NoDiversionReason3.value)
                 End If
             End With
+        Else
+            MsgBox "Reslate debug: Reslate function not triggered because Hearing_Outcome was  '" & Modal_Adult_Reslate.Hearing_Outcome.value & "' and not 'Granted'"
         End If
     End If
 
@@ -1060,16 +1066,22 @@ Sub Adult_Submit_Click()
     'ADMISSION'
     '''''''''''
     If Adult_Admission_Update.BackColor = selectedColor Then
-        Call admissionStart( _
-            clientRow:=updateRow, _
-            petitionNum:=Modal_Adult_Admission.PetitionBox.value, _
-            statusType:=Lookup("Legal_Status_Num")(Range(headerFind("Legal Status") & updateRow).value), _
-            Courtroom:=newCourtroom, _
-            DA:=DA.value, _
-            startDate:=Modal_Adult_Admission.Admission_Date.value, _
-            Result:=Modal_Adult_Admission.Result.value, _
-            detailed:=Modal_Adult_Admission.Detailed_Result.value _
-        )
+        With Modal_Adult_Admission
+            Call admissionStart( _
+                clientRow:=updateRow, _
+                petitionNum:=Modal_Adult_Admission.PetitionBox.value, _
+                statusType:=Lookup("Legal_Status_Num")(Range(headerFind("Legal Status") & updateRow).value), _
+                Courtroom:=newCourtroom, _
+                DA:=DA.value, _
+                startDate:=Modal_Adult_Admission.Admission_Date.value, _
+                Result:=Modal_Adult_Admission.Result.value, _
+                detailed:=Modal_Adult_Admission.Detailed_Result.value, _
+                leadChargeCode:=.PetitionBox.List(.PetitionBox.listIndex, 4), _
+                leadChargeName:=.PetitionBox.List(.PetitionBox.listIndex, 5), _
+                chargeCategory:=.PetitionBox.List(.PetitionBox.listIndex, 3), _
+                chargeGradeSpecific:=.PetitionBox.List(.PetitionBox.listIndex, 2) _
+            )
+        End With
     End If
 
 
@@ -1350,6 +1362,9 @@ Sub JTC_Submit_Click()
         
         Range(headerFind("Total LOS in JTC", tempHead) & updateRow) _
         = calcLOS(Range(headerFind("Referral Date", courtHead) & updateRow), DateOfHearing.value)
+        
+        Range(headerFind("Total LOS from Arrest", tempHead) & updateRow) _
+        = calcLOS(Range(headerFind("Arrest Date") & updateRow), DateOfHearing.value)
  
 
         Call ReferClientTo( _
@@ -1567,32 +1582,45 @@ Sub JTC_Submit_Click()
     End If
 
     If JTC_Admission_Update.BackColor = selectedColor Then
-        Call admissionStart( _
+        With Modal_JTC_Admission
+        
+            Call admissionStart( _
                 clientRow:=updateRow, _
-                petitionNum:=Modal_JTC_Admission.PetitionBox.value, _
+                petitionNum:=.PetitionBox.value, _
                 statusType:="JTC", _
                 Courtroom:="JTC", _
                 DA:=DA.value, _
-                startDate:=Modal_JTC_Admission.Admission_Date.value, _
-                Result:=Modal_JTC_Admission.Result.value, _
-                detailed:=Modal_JTC_Admission.Detailed_Result.value _
+                startDate:=.Admission_Date.value, _
+                Result:=.Result.value, _
+                detailed:=.Detailed_Result.value, _
+                leadChargeCode:=.PetitionBox.List(.PetitionBox.listIndex, 4), _
+                leadChargeName:=.PetitionBox.List(.PetitionBox.listIndex, 5), _
+                chargeCategory:=.PetitionBox.List(.PetitionBox.listIndex, 3), _
+                chargeGradeSpecific:=.PetitionBox.List(.PetitionBox.listIndex, 2) _
             )
+            End With
     End If
 
     If JTC_Adjudication_Update.BackColor = selectedColor Then
-        Call adjudicationStart( _
-            clientRow:=updateRow, _
-            petitionNum:=Modal_JTC_Adjudication.PetitionBox.value, _
-            Courtroom:="JTC", _
-            DA:=DA.value, _
-            startDate:=Modal_JTC_Adjudication.Adjudication_Date.value, _
-            Type_of:=Modal_JTC_Adjudication.Type_of.value, _
-            Re1:=Modal_JTC_Adjudication.Reason1.value, _
-            Re2:=Modal_JTC_Adjudication.Reason2.value, _
-            Re3:=Modal_JTC_Adjudication.Reason3.value, _
-            Re4:=Modal_JTC_Adjudication.Reason4.value, _
-            Re5:=Modal_JTC_Adjudication.Reason5.value _
+        With Modal_JTC_Adjudication
+            Call adjudicationStart( _
+                clientRow:=updateRow, _
+                petitionNum:=.PetitionBox.value, _
+                Courtroom:="JTC", _
+                DA:=DA.value, _
+                startDate:=.Adjudication_Date.value, _
+                Type_of:=.Type_of.value, _
+                re1:=.Reason1.value, _
+                re2:=.Reason2.value, _
+                re3:=.Reason3.value, _
+                re4:=.Reason4.value, _
+                re5:=.Reason5.value, _
+                leadChargeCode:=.PetitionBox.List(.PetitionBox.listIndex, 4), _
+                leadChargeName:=.PetitionBox.List(.PetitionBox.listIndex, 5), _
+                chargeCategory:=.PetitionBox.List(.PetitionBox.listIndex, 3), _
+                chargeGradeSpecific:=.PetitionBox.List(.PetitionBox.listIndex, 2) _
             )
+        End With
     End If
 
     If JTC_Continuance_Update.BackColor = selectedColor Then
@@ -1628,9 +1656,11 @@ Sub JTC_Submit_Click()
                     agency:=.List(i, 1), _
                     startDate:=.List(i, 2), _
                     NextCourtDate:=NextCourtDate.value, _
-                    Re1:=.List(i, 6), _
-                    Re2:=.List(i, 7), _
-                    Re3:=.List(i, 8), _
+                    re1:=decodeReasons(.List(i, 6))(0), _
+                    re2:=decodeReasons(.List(i, 6))(1), _
+                    re3:=decodeReasons(.List(i, 6))(2), _
+                    re4:=decodeReasons(.List(i, 6))(3), _
+                    re5:=decodeReasons(.List(i, 6))(4), _
                     Notes:=.List(i, 9), _
                     phase:=JTC_Return_Phase.Caption)
             Else
@@ -1648,9 +1678,11 @@ Sub JTC_Submit_Click()
                             startDate:=.List(i, 2), _
                             endDate:=.List(i, 3), _
                             Nature:=.List(i, 5), _
-                            Re1:=.List(i, 6), _
-                            Re2:=.List(i, 7), _
-                            Re3:=.List(i, 8), _
+                            re1:=decodeReasons(.List(i, 6))(0), _
+                            re2:=decodeReasons(.List(i, 6))(1), _
+                            re3:=decodeReasons(.List(i, 6))(2), _
+                            re4:=decodeReasons(.List(i, 6))(3), _
+                            re5:=decodeReasons(.List(i, 6))(4), _
                             Notes:=.List(i, 9))
                     End If
                 Else
@@ -1666,9 +1698,11 @@ Sub JTC_Submit_Click()
                             startDate:=.List(i, 2), _
                             endDate:=.List(i, 3), _
                             Nature:=.List(i, 5), _
-                            Re1:=.List(i, 6), _
-                            Re2:=.List(i, 7), _
-                            Re3:=.List(i, 8), _
+                            re1:=decodeReasons(.List(i, 6))(0), _
+                            re2:=decodeReasons(.List(i, 6))(1), _
+                            re3:=decodeReasons(.List(i, 6))(2), _
+                            re4:=decodeReasons(.List(i, 6))(3), _
+                            re5:=decodeReasons(.List(i, 6))(4), _
                             Notes:=.List(i, 9))
                     Else
                     'if continued from somewhere else
@@ -1680,9 +1714,9 @@ Sub JTC_Submit_Click()
                             startDate:=.List(i, 2), _
                             endDate:=DateOfHearing.value, _
                             Nature:="Neutral", _
-                            Re1:="N/A", _
-                            Re2:="N/A", _
-                            Re3:="N/A", _
+                            re1:="N/A", _
+                            re2:="N/A", _
+                            re3:="N/A", _
                             Notes:="Continued in JTC")
     
                         Call addSupervision( _
@@ -1694,9 +1728,6 @@ Sub JTC_Submit_Click()
                             agency:=.List(i, 1), _
                             startDate:=DateOfHearing.value, _
                             NextCourtDate:=NextCourtDate.value, _
-                            Re1:="N/A", _
-                            Re2:="N/A", _
-                            Re3:="N/A", _
                             Notes:="Continued from " & .List(i, 4), _
                             phase:=JTC_Return_Phase.Caption)
                     End If
@@ -1720,9 +1751,11 @@ Sub JTC_Submit_Click()
                     DA:=DA.value, _
                     agency:=.List(i, 1), _
                     startDate:=.List(i, 2), _
-                    Re1:=.List(i, 6), _
-                    Re2:=.List(i, 7), _
-                    Re3:=.List(i, 8), _
+                    re1:=decodeReasons(.List(i, 6))(0), _
+                    re2:=decodeReasons(.List(i, 6))(1), _
+                    re3:=decodeReasons(.List(i, 6))(2), _
+                    re4:=decodeReasons(.List(i, 6))(3), _
+                    re5:=decodeReasons(.List(i, 6))(4), _
                     Notes:=.List(i, 9), _
                     phase:=JTC_Return_Phase.Caption)
                     
@@ -1738,6 +1771,13 @@ Sub JTC_Submit_Click()
                     Case "Comm. Serv"
                         Call startCommService( _
                             Amount:=ClientUpdateForm.JTC_Comm_Service.Caption, _
+                            Courtroom:="JTC", _
+                            DA:=DA.value, _
+                            DateOf:=.List(i, 2), _
+                            userRow:=updateRow)
+                    Case "Court Costs"
+                        Call startCourtCost( _
+                            Amount:=ClientUpdateForm.JTC_Court_Costs.Caption, _
                             Courtroom:="JTC", _
                             DA:=DA.value, _
                             DateOf:=.List(i, 2), _
@@ -1758,9 +1798,11 @@ Sub JTC_Submit_Click()
                             startDate:=.List(i, 2), _
                             endDate:=.List(i, 3), _
                             Nature:=.List(i, 5), _
-                            Re1:=.List(i, 6), _
-                            Re2:=.List(i, 7), _
-                            Re3:=.List(i, 8), _
+                            re1:=decodeReasons(.List(i, 6))(0), _
+                            re2:=decodeReasons(.List(i, 6))(1), _
+                            re3:=decodeReasons(.List(i, 6))(2), _
+                            re4:=decodeReasons(.List(i, 6))(3), _
+                            re5:=decodeReasons(.List(i, 6))(4), _
                             Notes:=.List(i, 9))
                     End If
                 Else
@@ -1776,9 +1818,11 @@ Sub JTC_Submit_Click()
                             startDate:=.List(i, 2), _
                             endDate:=.List(i, 3), _
                             Nature:=.List(i, 5), _
-                            Re1:=.List(i, 6), _
-                            Re2:=.List(i, 7), _
-                            Re3:=.List(i, 8), _
+                            re1:=decodeReasons(.List(i, 6))(0), _
+                            re2:=decodeReasons(.List(i, 6))(1), _
+                            re3:=decodeReasons(.List(i, 6))(2), _
+                            re4:=decodeReasons(.List(i, 6))(3), _
+                            re5:=decodeReasons(.List(i, 6))(4), _
                             Notes:=.List(i, 9))
                     Else
                     'if continued from somewhere else
@@ -1790,9 +1834,9 @@ Sub JTC_Submit_Click()
                             startDate:=.List(i, 2), _
                             endDate:=DateOfHearing.value, _
                             Nature:="Neutral", _
-                            Re1:="N/A", _
-                            Re2:="N/A", _
-                            Re3:="N/A", _
+                            re1:="N/A", _
+                            re2:="N/A", _
+                            re3:="N/A", _
                             Notes:="Continued in JTC")
     
                         Call addCondition( _
@@ -1803,9 +1847,6 @@ Sub JTC_Submit_Click()
                             DA:=DA.value, _
                             agency:=.List(i, 1), _
                             startDate:=DateOfHearing.value, _
-                            Re1:="N/A", _
-                            Re2:="N/A", _
-                            Re3:="N/A", _
                             Notes:="Continued from " & .List(i, 4), _
                             phase:=JTC_Return_Phase.Caption)
                     End If
@@ -1968,8 +2009,8 @@ done:
 err:
 
     Call loadFromCache(2)
-    'Stop   'press F8 twice to see the error point
-    'Resume
+    Stop   'press F8 twice to see the error point
+    Resume
     MsgBox "Something went wrong. Database has been restored to state prior to submission. " _
       & vbNewLine & vbNewLine & "Message: " & vbNewLine & err.Description _
       & vbNewLine & vbNewLine & "Source: " & vbNewLine & err.Source
@@ -2230,35 +2271,47 @@ Sub Standard_Submit_Click()
     'ADMISSION'
     '''''''''''
     If Standard_Admission_Update.BackColor = selectedColor Then
-        Call admissionStart( _
-            clientRow:=updateRow, _
-            petitionNum:=Modal_Standard_Admission.PetitionBox.value, _
-            statusType:=Lookup("Legal_Status_Num")(Range(headerFind("Legal Status") & updateRow).value), _
-            Courtroom:=newCourtroom, _
-            DA:=DA.value, _
-            startDate:=Modal_Standard_Admission.Admission_Date.value, _
-            Result:=Modal_Standard_Admission.Result.value, _
-            detailed:=Modal_Standard_Admission.Detailed_Result.value _
-        )
+        With Modal_Standard_Admission
+            Call admissionStart( _
+                clientRow:=updateRow, _
+                petitionNum:=Modal_Standard_Admission.PetitionBox.value, _
+                statusType:=Lookup("Legal_Status_Num")(Range(headerFind("Legal Status") & updateRow).value), _
+                Courtroom:=newCourtroom, _
+                DA:=DA.value, _
+                startDate:=Modal_Standard_Admission.Admission_Date.value, _
+                Result:=Modal_Standard_Admission.Result.value, _
+                detailed:=Modal_Standard_Admission.Detailed_Result.value, _
+                leadChargeCode:=.PetitionBox.List(.PetitionBox.listIndex, 4), _
+                leadChargeName:=.PetitionBox.List(.PetitionBox.listIndex, 5), _
+                chargeCategory:=.PetitionBox.List(.PetitionBox.listIndex, 3), _
+                chargeGradeSpecific:=.PetitionBox.List(.PetitionBox.listIndex, 2) _
+            )
+        End With
     End If
 
     ''''''''''''''
     'Adjudication'
     ''''''''''''''
     If Standard_Adjudication_Update.BackColor = selectedColor Then
-        Call adjudicationStart( _
-            clientRow:=updateRow, _
-            petitionNum:=Modal_Standard_Adjudication.PetitionBox.value, _
-            Courtroom:=newCourtroom, _
-            DA:=DA.value, _
-            startDate:=Modal_Standard_Adjudication.Adjudication_Date.value, _
-            Type_of:=Modal_Standard_Adjudication.Type_of.value, _
-            Re1:=Modal_Standard_Adjudication.Reason1.value, _
-            Re2:=Modal_Standard_Adjudication.Reason2.value, _
-            Re3:=Modal_Standard_Adjudication.Reason3.value, _
-            Re4:=Modal_Standard_Adjudication.Reason4.value, _
-            Re5:=Modal_Standard_Adjudication.Reason5.value _
-        )
+        With Modal_Standard_Adjudication
+            Call adjudicationStart( _
+                clientRow:=updateRow, _
+                petitionNum:=.PetitionBox.value, _
+                Courtroom:=newCourtroom, _
+                DA:=DA.value, _
+                startDate:=.Adjudication_Date.value, _
+                Type_of:=.Type_of.value, _
+                re1:=.Reason1.value, _
+                re2:=.Reason2.value, _
+                re3:=.Reason3.value, _
+                re4:=.Reason4.value, _
+                re5:=.Reason5.value, _
+                leadChargeCode:=.PetitionBox.List(.PetitionBox.listIndex, 4), _
+                leadChargeName:=.PetitionBox.List(.PetitionBox.listIndex, 5), _
+                chargeCategory:=.PetitionBox.List(.PetitionBox.listIndex, 3), _
+                chargeGradeSpecific:=.PetitionBox.List(.PetitionBox.listIndex, 2) _
+            )
+        End With
     End If
 
     '''''''''''''
@@ -2296,9 +2349,11 @@ Sub Standard_Submit_Click()
                     agency:=.List(i, 1), _
                     startDate:=.List(i, 2), _
                     NextCourtDate:=Standard_NextCourtDate.value, _
-                    Re1:=.List(i, 6), _
-                    Re2:=.List(i, 7), _
-                    Re3:=.List(i, 8), _
+                    re1:=decodeReasons(.List(i, 6))(0), _
+                    re2:=decodeReasons(.List(i, 6))(1), _
+                    re3:=decodeReasons(.List(i, 6))(2), _
+                    re4:=decodeReasons(.List(i, 6))(3), _
+                    re5:=decodeReasons(.List(i, 6))(4), _
                     Notes:=.List(i, 9))
             Else
                 If .List(i, 4) = oldCourtroom Then
@@ -2314,9 +2369,11 @@ Sub Standard_Submit_Click()
                             startDate:=.List(i, 2), _
                             endDate:=.List(i, 3), _
                             Nature:=.List(i, 5), _
-                            Re1:=.List(i, 6), _
-                            Re2:=.List(i, 7), _
-                            Re3:=.List(i, 8), _
+                            re1:=decodeReasons(.List(i, 6))(0), _
+                            re2:=decodeReasons(.List(i, 6))(1), _
+                            re3:=decodeReasons(.List(i, 6))(2), _
+                            re4:=decodeReasons(.List(i, 6))(3), _
+                            re5:=decodeReasons(.List(i, 6))(4), _
                             Notes:=.List(i, 9))
                     End If
                 Else
@@ -2332,9 +2389,11 @@ Sub Standard_Submit_Click()
                             startDate:=.List(i, 2), _
                             endDate:=.List(i, 3), _
                             Nature:=.List(i, 5), _
-                            Re1:=.List(i, 6), _
-                            Re2:=.List(i, 7), _
-                            Re3:=.List(i, 8), _
+                            re1:=decodeReasons(.List(i, 6))(0), _
+                            re2:=decodeReasons(.List(i, 6))(1), _
+                            re3:=decodeReasons(.List(i, 6))(2), _
+                            re4:=decodeReasons(.List(i, 6))(3), _
+                            re5:=decodeReasons(.List(i, 6))(4), _
                             Notes:=.List(i, 9))
                     Else
                     'if continued from somewhere else
@@ -2346,9 +2405,9 @@ Sub Standard_Submit_Click()
                             startDate:=.List(i, 2), _
                             endDate:=DateOfHearing.value, _
                             Nature:="Neutral", _
-                            Re1:="N/A", _
-                            Re2:="N/A", _
-                            Re3:="N/A", _
+                            re1:="N/A", _
+                            re2:="N/A", _
+                            re3:="N/A", _
                             Notes:="Continued in " & oldCourtroom)
     
                         Call addSupervision( _
@@ -2360,9 +2419,9 @@ Sub Standard_Submit_Click()
                             agency:=.List(i, 1), _
                             startDate:=DateOfHearing.value, _
                             NextCourtDate:=Standard_NextCourtDate.value, _
-                            Re1:="N/A", _
-                            Re2:="N/A", _
-                            Re3:="N/A", _
+                            re1:="N/A", _
+                            re2:="N/A", _
+                            re3:="N/A", _
                             Notes:="Continued from " & .List(i, 4))
                     End If
                 End If
@@ -2385,9 +2444,11 @@ Sub Standard_Submit_Click()
                     DA:=DA.value, _
                     agency:=.List(i, 1), _
                     startDate:=.List(i, 2), _
-                    Re1:=.List(i, 6), _
-                    Re2:=.List(i, 7), _
-                    Re3:=.List(i, 8), _
+                    re1:=decodeReasons(.List(i, 6))(0), _
+                    re2:=decodeReasons(.List(i, 6))(1), _
+                    re3:=decodeReasons(.List(i, 6))(2), _
+                    re4:=decodeReasons(.List(i, 6))(3), _
+                    re5:=decodeReasons(.List(i, 6))(4), _
                     Notes:=.List(i, 9))
                     
                 Select Case .List(i, 0)
@@ -2421,9 +2482,11 @@ Sub Standard_Submit_Click()
                             startDate:=.List(i, 2), _
                             endDate:=.List(i, 3), _
                             Nature:=.List(i, 5), _
-                            Re1:=.List(i, 6), _
-                            Re2:=.List(i, 7), _
-                            Re3:=.List(i, 8), _
+                            re1:=decodeReasons(.List(i, 6))(0), _
+                            re2:=decodeReasons(.List(i, 6))(1), _
+                            re3:=decodeReasons(.List(i, 6))(2), _
+                            re4:=decodeReasons(.List(i, 6))(3), _
+                            re5:=decodeReasons(.List(i, 6))(4), _
                             Notes:=.List(i, 9))
                     End If
                 Else
@@ -2439,9 +2502,11 @@ Sub Standard_Submit_Click()
                             startDate:=.List(i, 2), _
                             endDate:=.List(i, 3), _
                             Nature:=.List(i, 5), _
-                            Re1:=.List(i, 6), _
-                            Re2:=.List(i, 7), _
-                            Re3:=.List(i, 8), _
+                            re1:=decodeReasons(.List(i, 6))(0), _
+                            re2:=decodeReasons(.List(i, 6))(1), _
+                            re3:=decodeReasons(.List(i, 6))(2), _
+                            re4:=decodeReasons(.List(i, 6))(3), _
+                            re5:=decodeReasons(.List(i, 6))(4), _
                             Notes:=.List(i, 9))
                     Else
                     'if continued from somewhere else
@@ -2453,9 +2518,9 @@ Sub Standard_Submit_Click()
                             startDate:=.List(i, 2), _
                             endDate:=DateOfHearing.value, _
                             Nature:="Neutral", _
-                            Re1:="N/A", _
-                            Re2:="N/A", _
-                            Re3:="N/A", _
+                            re1:="N/A", _
+                            re2:="N/A", _
+                            re3:="N/A", _
                             Notes:="Continued in " & oldCourtroom)
     
                         Call addCondition( _
@@ -2466,9 +2531,9 @@ Sub Standard_Submit_Click()
                             DA:=DA.value, _
                             agency:=.List(i, 1), _
                             startDate:=DateOfHearing.value, _
-                            Re1:="N/A", _
-                            Re2:="N/A", _
-                            Re3:="N/A", _
+                            re1:="N/A", _
+                            re2:="N/A", _
+                            re3:="N/A", _
                             Notes:="Continued from " & .List(i, 4))
                     End If
                 End If
@@ -2618,9 +2683,9 @@ Private Sub PJJSC_Submit_Click()
             agency:=DRev_Facility.value, _
             startDate:=DateOfHearing.value, _
             NextCourtDate:=PJJSC_NextCourtDate.value, _
-            Re1:=ReasonForDetentionCommit1.value, _
-            Re2:=ReasonForDetentionCommit2.value, _
-            Re3:=ReasonForDetentionCommit3.value)
+            re1:=ReasonForDetentionCommit1.value, _
+            re2:=ReasonForDetentionCommit2.value, _
+            re3:=ReasonForDetentionCommit3.value)
     End If
 
     'IF RELEASED
@@ -2670,9 +2735,9 @@ Private Sub PJJSC_Submit_Click()
                 agency:=DRevSup1_Agency.value, _
                 startDate:=DateOfHearing.value, _
                 NextCourtDate:=PJJSC_NextCourtDate.value, _
-                Re1:=DRevSup1_Re1.value, _
-                Re2:=DRevSup1_Re2.value, _
-                Re3:=DRevSup1_Re3.value, _
+                re1:=DRevSup1_Re1.value, _
+                re2:=DRevSup1_Re2.value, _
+                re3:=DRevSup1_Re3.value, _
                 Notes:="Referred at detention")
         End If
 
@@ -2706,9 +2771,9 @@ Private Sub PJJSC_Submit_Click()
                 agency:=DRevSup2_Agency.value, _
                 startDate:=DateOfHearing.value, _
                 NextCourtDate:=PJJSC_NextCourtDate.value, _
-                Re1:=DRevSup2_Re1.value, _
-                Re2:=DRevSup2_Re2.value, _
-                Re3:=DRevSup2_Re3.value, _
+                re1:=DRevSup2_Re1.value, _
+                re2:=DRevSup2_Re2.value, _
+                re3:=DRevSup2_Re3.value, _
                 Notes:="Referred at detention")
         End If
 
@@ -2724,9 +2789,9 @@ Private Sub PJJSC_Submit_Click()
                 DA:=DA.value, _
                 agency:=DRev_C1P.value, _
                 startDate:=DateOfHearing.value, _
-                Re1:="N/A", _
-                Re2:="N/A", _
-                Re3:="N/A", _
+                re1:="N/A", _
+                re2:="N/A", _
+                re3:="N/A", _
                 Notes:="Referred at detention")
         End If
 
@@ -2742,9 +2807,9 @@ Private Sub PJJSC_Submit_Click()
                 DA:=DA.value, _
                 agency:=DRev_C2P.value, _
                 startDate:=DateOfHearing.value, _
-                Re1:="N/A", _
-                Re2:="N/A", _
-                Re3:="N/A", _
+                re1:="N/A", _
+                re2:="N/A", _
+                re3:="N/A", _
                 Notes:="Referred at detention")
         End If
 
@@ -2760,9 +2825,9 @@ Private Sub PJJSC_Submit_Click()
                 DA:=DA.value, _
                 agency:=DRev_C3P.value, _
                 startDate:=DateOfHearing.value, _
-                Re1:="N/A", _
-                Re2:="N/A", _
-                Re3:="N/A", _
+                re1:="N/A", _
+                re2:="N/A", _
+                re3:="N/A", _
                 Notes:="Referred at detention")
         End If
 

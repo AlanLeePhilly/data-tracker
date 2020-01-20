@@ -95,8 +95,6 @@ Sub Adult_Fetch()
         Next Num
     End With
 
-    'Call addPetitionsToBox(Modal_Adult_Adjudication.PetitionBox)
-    'Call addPetitionsToBox(Modal_Adult_Admission.PetitionBox)
 End Sub
 
 Sub Adult_Supervision_Box_Add(ByRef MyBox As Object, ByVal bucketHead As String)

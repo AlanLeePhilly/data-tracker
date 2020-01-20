@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} Modal_Standard_Add_Condition 
    Caption         =   "Add Condition"
-   ClientHeight    =   6540
+   ClientHeight    =   7608
    ClientLeft      =   48
    ClientTop       =   372
    ClientWidth     =   9348.001
@@ -92,9 +92,7 @@ Private Sub Continue_Click()
         'end date
         .List(ClientUpdateForm.Standard_Return_Condition_Box.ListCount - 1, 4) = "New"
         'nature
-        .List(ClientUpdateForm.Standard_Return_Condition_Box.ListCount - 1, 6) = Reason1
-        .List(ClientUpdateForm.Standard_Return_Condition_Box.ListCount - 1, 7) = Reason2
-        .List(ClientUpdateForm.Standard_Return_Condition_Box.ListCount - 1, 8) = Reason3
+        .List(ClientUpdateForm.Standard_Return_Condition_Box.ListCount - 1, 6) = encodeReasons(Reason1, Reason2, Reason3, Reason4, Reason5)
         .List(ClientUpdateForm.Standard_Return_Condition_Box.ListCount - 1, 9) = Notes
     End With
 

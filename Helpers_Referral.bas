@@ -20,43 +20,8 @@ Sub ReferClientTo( _
     'SET HEADS'
     '''''''''''
 
-
-
-    Select Case fromCR
-        Case "4G", "4E", "6F", "6H", "3E", "JTC", "WRAP"
-            fromHead = headerFind(fromCR)
-        Case "Adult"
-            fromHead = headerFind("ADULT")
-        Case "PJJSC"
-            fromHead = headerFind("DETENTION")
-        Case "5E"
-            fromHead = headerFind("Crossover")
-        Case "Intake Conf."
-            fromHead = headerFind("INTAKE CONFERENCE")
-        Case "Diversion"
-            fromHead = headerFind("DIVERSION")
-        Case "N/A"
-            fromHead = "A"
-        Case Else
-            MsgBox ("Courtroom " & fromCR & " not recognized. Contact your admin")
-
-    End Select
-
-    Select Case toCR
-        Case "4G", "4E", "6F", "6H", "3E", "JTC", "WRAP", "Adult"
-            toHead = headerFind(toCR)
-        Case "Adult"
-            toHead = headerFind("ADULT")
-        Case "PJJSC"
-            toHead = headerFind("DETENTION")
-        Case "5E"
-            toHead = headerFind("Crossover")
-        Case "N/A"
-            toHead = "A"
-        Case Else
-            MsgBox ("Courtroom " & toCR & " not recognized. Contact your admin")
-
-    End Select
+    fromHead = getCourtroomHead(fromCR)
+    toHead = getCourtroomHead(toCR)
 
     ''''''''''''''''
     'CLOSE OLD ROOM'
@@ -114,7 +79,7 @@ Sub ReferClientTo( _
                 Range(headerFind("Date of Overall Discharge", fromHead) & clientRow).value _
                     = referralDate
                 Range(headerFind("Courtroom of Discharge", fromHead) & clientRow).value _
-                    = Lookup("Courtroom_Name")(toCR)
+                    = Lookup("Courtroom_Name")(fromCR)
                 Range(headerFind("DA", fromHead) & clientRow).value _
                     = Lookup("DA_Last_Name_Name")(DA)
                 Range(headerFind("Legal Status of Discharge", fromHead) & clientRow).value _
@@ -149,6 +114,13 @@ Sub ReferClientTo( _
     End Select
     
     If Not toCR = "N/A" Then
+    
+        Select Case toCR
+            Case "4G", "4E", "6F", "6H", "3E", "JTC", "WRAP", "5E", "Adult"
+                Range(headerFind("Active in Room at Time of Referral?", toHead) & clientRow).value _
+                        = isActiveInCourtroom(clientRow, toCR, referralDate)
+        End Select
+    
         Select Case toCR
             Case "4G", "4E", "6F", "6H", "3E"
                 Range(headerFind("Was Youth in " & toCR & "?", toHead) & clientRow).value _
@@ -238,7 +210,10 @@ Sub ReferClientTo( _
             Case "Adult"
                 Call flagYes(Range(headerFind("Was Youth in Adult?", toHead) & clientRow))
                 Range(headerFind("Age at Start of Status", toHead) & clientRow).value _
-                    = calcLOS(Range(headerFind("DOB") & clientRow).value, referralDate) / 365
+                    = calcLOS( _
+                        Range(headerFind("DOB") & clientRow).value, _
+                        Range(hFind("Date Filed", "ADULT PETITION") & clientRow).value _
+                    ) / 365
                 Range(headerFind("Start Date", toHead) & clientRow).value _
                     = referralDate
                 Call append(Range(headerFind("Notes on " & toCR, toHead) & clientRow), Notes, referralDate)

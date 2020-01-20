@@ -87,8 +87,6 @@ Sub Standard_Fetch()
         Next Num
     End With
 
-    Call addPetitionsToBox(Modal_Standard_Adjudication.PetitionBox)
-    Call addPetitionsToBox(Modal_Standard_Admission.PetitionBox)
 End Sub
 
 Sub Standard_Supervision_Box_Add(ByRef MyBox As Object, ByVal bucketHead As String)

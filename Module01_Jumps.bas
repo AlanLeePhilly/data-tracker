@@ -156,7 +156,7 @@ Sub Aggregate_Other_Condition()
     Range(hFind("Was Youth Ordered Other Condition?", "AGGREGATES") & 2).Select
 End Sub
 Sub Aggregate_Restitution()
-    Range(hFind("Restitution & Costs", "AGGREGATES") & 2).Select
+    Range(hFind("Restitution", "AGGREGATES") & 2).Select
 End Sub
 Sub Aggregate_Comm_Service()
     Range(hFind("Comm. Service", "AGGREGATES") & 2).Select
@@ -181,6 +181,9 @@ Sub Respites()
 End Sub
 Sub Restitution()
     Range("EM2").Select
+End Sub
+Sub ListingHistory()
+    Range(headerFind("LISTINGS") & 2).Select
 End Sub
 Sub NextRestitutionEntry()
     ' Jumps to next restitution entry

@@ -8,6 +8,11 @@ Sub cacheRow(dataRow As Long)
     Dim Data As Worksheet
     Dim userData As Range
     
+    If dataRow < 3 Then
+        MsgBox "Debug: CacheRow attempting to cache row " & dataRow
+        Exit Sub
+    End If
+    
     Set Cache = Worksheets("Cache")
     Set Data = Worksheets("Entry")
     Set userData = Data.Range("C" & dataRow & ":" & hFind("END") & dataRow)
@@ -45,6 +50,11 @@ Sub loadFromCache(cacheRow As Long)
     
     If dataRow = 0 Then
         MsgBox "No record selected"
+        Exit Sub
+    End If
+    
+    If dataRow = 2 Then
+        MsgBox "You were about to overwrite one of the first two rows... something is very wrong"
         Exit Sub
     End If
     

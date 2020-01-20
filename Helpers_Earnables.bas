@@ -164,6 +164,7 @@ Sub startRestitution( _
     
     If isNotEmptyOrZero(Range(headerFind("Amount Filed #1", sectionHead) & userRow)) Then
         MsgBox "Warning: Restitution is already started for this client. Did not update to avoid overwrtiting"
+        Exit Sub
     End If
     
     Range(headerFind("Did Youth Have Restitution?", sectionHead) & userRow).value = 1 'Yes
@@ -269,6 +270,13 @@ Sub autoCalcRestitution(ByVal userRow As Long)
             bucketHead = headerFind("Amount Paid #" & i, sectionHead)
             totalAmountPaid = totalAmountPaid + CDbl(Range(bucketHead & userRow).value)
             dateOfLastPayment = Range(headerFind("Date", bucketHead) & userRow).value
+            
+            If i = 1 Then
+                Range(headerFind("LOS Arrest to First Payment", bucketHead) & userRow).value _
+                = calcLOS( _
+                    Range(hFind("Arrest Date") & userRow).value, _
+                    Range(headerFind("Date", bucketHead) & userRow).value)
+            End If
         End If
     Next i
     
@@ -315,6 +323,7 @@ Sub startCourtCost( _
     
     If isNotEmptyOrZero(Range(headerFind("Amount Filed #1", sectionHead) & userRow)) Then
         MsgBox "Warning: Court Cost is already started for this client. Did not update to avoid overwrtiting"
+        Exit Sub
     End If
     
     Range(headerFind("Did Youth Have Court Costs?", sectionHead) & userRow).value = 1 'Yes
@@ -324,7 +333,7 @@ Sub startCourtCost( _
     Range(headerFind("Date", sectionHead) & userRow).value = DateOf
     Range(headerFind("Courtroom", sectionHead) & userRow).value = Lookup("Courtroom_Name")(Courtroom)
     Range(headerFind("DA", sectionHead) & userRow).value = Lookup("DA_Last_Name_Name")(DA)
-    Range(headerFind("Court Costs Status", sectionHead) & userRow).value = 3 ' "Active and Unpaid"
+    Range(headerFind("Court Cost Status", sectionHead) & userRow).value = 3 ' "Active and Unpaid"
     
     Call autoCalcCourtCost(userRow)
     
@@ -419,6 +428,13 @@ Sub autoCalcCourtCost(ByVal userRow As Long)
             bucketHead = headerFind("Amount Paid #" & i, sectionHead)
             totalAmountPaid = totalAmountPaid + CDbl(Range(bucketHead & userRow).value)
             dateOfLastPayment = Range(headerFind("Date", bucketHead) & userRow).value
+            
+            If i = 1 Then
+                Range(headerFind("LOS Arrest to First Payment", bucketHead) & userRow).value _
+                = calcLOS( _
+                    Range(hFind("Arrest Date") & userRow).value, _
+                    Range(headerFind("Date", bucketHead) & userRow).value)
+            End If
         End If
     Next i
     
@@ -528,6 +544,7 @@ Sub autoCalcCostsAndRest(ByVal userRow As Long)
     End If
 End Sub
 
+
 Sub startCommService( _
     ByVal Amount As String, _
     ByVal Courtroom As String, _
@@ -535,19 +552,19 @@ Sub startCommService( _
     ByVal DateOf As String, _
     ByVal userRow As Long _
 )
-    
+        
     Dim sectionHead As String
     sectionHead = hFind("COMM. SERVICE", "AGGREGATES")
     
-    If isNotEmptyOrZero(Range(headerFind("Date Filed", sectionHead) & userRow)) Then
+    If isNotEmptyOrZero(Range(headerFind("Amount Filed #1", sectionHead) & userRow)) Then
         MsgBox "Warning: Community Service is already started for this client. Did not update to avoid overwrtiting"
+        Exit Sub
     End If
     
+    Range(headerFind("Amount Filed #1", sectionHead) & userRow).value = ClientUpdateForm.JTC_Court_Costs.Caption
     Range(headerFind("Did Youth Have Comm. Service?", sectionHead) & userRow).value = 1 'Yes
-    Range(headerFind("Date Filed", sectionHead) & userRow).value = DateOf
+    Range(headerFind("Date", sectionHead) & userRow).value = DateOf
     Range(headerFind("Courtroom", sectionHead) & userRow).value = Lookup("Courtroom_Name")(Courtroom)
     Range(headerFind("DA", sectionHead) & userRow).value = Lookup("DA_Last_Name_Name")(DA)
-    Range(headerFind("Amount Earned", sectionHead) & userRow).value = Amount
 
 End Sub
-

@@ -8,7 +8,11 @@ Sub addSupervision( _
     ByVal DA As String, _
     ByVal agency As String, _
     ByVal startDate As String, _
-    Optional Re1 As String, Optional Re2 As String, Optional Re3 As String, _
+    Optional ByVal re1 As String = "N/A", _
+    Optional ByVal re2 As String = "N/A", _
+    Optional ByVal re3 As String = "N/A", _
+    Optional ByVal re4 As String = "N/A", _
+    Optional ByVal re5 As String = "N/A", _
     Optional Notes As String = "", _
     Optional phase As String = "1", _
     Optional NextCourtDate As String, _
@@ -37,9 +41,9 @@ Sub addSupervision( _
             agency:=agency, _
             startDate:=startDate, _
             Notes:=Notes, _
-            Re1:=Re1, _
-            Re2:=Re2, _
-            Re3:=Re3 _
+            re1:=re1, _
+            re2:=re2, _
+            re3:=re3 _
         )
     End If
 
@@ -115,9 +119,11 @@ Sub addSupervision( _
             Range(headerFind("Community-Based Agency", bucketHead) & clientRow).value = Lookup("Community_Based_Supervision_Provider_Name")(agency)
         End If
         Range(headerFind("Start Date", bucketHead) & clientRow).value = startDate
-        Range(headerFind("Reason #1 for Referral", bucketHead) & clientRow).value = Lookup("Supervision_Referral_Reason_Name")(Re1)
-        Range(headerFind("Reason #2 for Referral", bucketHead) & clientRow).value = Lookup("Supervision_Referral_Reason_Name")(Re2)
-        Range(headerFind("Reason #3 for Referral", bucketHead) & clientRow).value = Lookup("Supervision_Referral_Reason_Name")(Re3)
+        Range(headerFind("Reason #1 for Referral", bucketHead) & clientRow).value = Lookup("Supervision_Referral_Reason_Name")(re1)
+        Range(headerFind("Reason #2 for Referral", bucketHead) & clientRow).value = Lookup("Supervision_Referral_Reason_Name")(re2)
+        Range(headerFind("Reason #3 for Referral", bucketHead) & clientRow).value = Lookup("Supervision_Referral_Reason_Name")(re3)
+        Range(headerFind("Reason #4 for Referral", bucketHead) & clientRow).value = Lookup("Supervision_Referral_Reason_Name")(re4)
+        Range(headerFind("Reason #5 for Referral", bucketHead) & clientRow).value = Lookup("Supervision_Referral_Reason_Name")(re5)
         Range(headerFind("Supervision Description", bucketHead) & clientRow).value = Notes
 
         If Not endDate = "" Then
@@ -139,7 +145,11 @@ Sub dropSupervision( _
     ByVal startDate As String, _
     ByVal endDate As String, _
     ByVal Nature As String, _
-    Optional Re1 As String, Optional Re2 As String, Optional Re3 As String, _
+    Optional ByVal re1 As String = "N/A", _
+    Optional ByVal re2 As String = "N/A", _
+    Optional ByVal re3 As String = "N/A", _
+    Optional ByVal re4 As String = "N/A", _
+    Optional ByVal re5 As String = "N/A", _
     Optional Notes As String = "")
 
     Worksheets("Entry").Activate
@@ -157,9 +167,9 @@ Sub dropSupervision( _
             endDate:=endDate, _
             Nature:=Nature, _
             Notes:=Notes, _
-            Re1:=Re1, _
-            Re2:=Re2, _
-            Re3:=Re3 _
+            re1:=re1, _
+            re2:=re2, _
+            re3:=re3 _
         )
     End If
 
@@ -212,9 +222,11 @@ Sub dropSupervision( _
         Range(headerFind("Nature of Discharge", bucketHead) & clientRow) = Lookup("Nature_of_Discharge_Name")(Nature)
 
         If Not Nature = "Positive" Then
-            Range(headerFind("Reason #1 for Negative D/C", bucketHead) & clientRow) = Lookup("Negative_Discharge_Reason_Name")(Re1)
-            Range(headerFind("Reason #2 for Negative D/C", bucketHead) & clientRow) = Lookup("Negative_Discharge_Reason_Name")(Re2)
-            Range(headerFind("Reason #3 for Negative D/C", bucketHead) & clientRow) = Lookup("Negative_Discharge_Reason_Name")(Re3)
+            Range(headerFind("Reason #1 for Negative D/C", bucketHead) & clientRow) = Lookup("Negative_Discharge_Reason_Name")(re1)
+            Range(headerFind("Reason #2 for Negative D/C", bucketHead) & clientRow) = Lookup("Negative_Discharge_Reason_Name")(re2)
+            Range(headerFind("Reason #3 for Negative D/C", bucketHead) & clientRow) = Lookup("Negative_Discharge_Reason_Name")(re3)
+            Range(headerFind("Reason #4 for Negative D/C", bucketHead) & clientRow) = Lookup("Negative_Discharge_Reason_Name")(re4)
+            Range(headerFind("Reason #5 for Negative D/C", bucketHead) & clientRow) = Lookup("Negative_Discharge_Reason_Name")(re5)
         End If
 
         Call append(Range(headerFind("Discharge Description", bucketHead) & clientRow), Notes)
@@ -231,7 +243,11 @@ Sub addCondition( _
     ByVal DA As String, _
     ByVal agency As String, _
     ByVal startDate As String, _
-    Optional Re1 As String, Optional Re2 As String, Optional Re3 As String, _
+    Optional ByVal re1 As String = "N/A", _
+    Optional ByVal re2 As String = "N/A", _
+    Optional ByVal re3 As String = "N/A", _
+    Optional ByVal re4 As String = "N/A", _
+    Optional ByVal re5 As String = "N/A", _
     Optional Notes As String = "", _
     Optional phase As String = "1", _
     Optional CourtroomOfOrder As String = "" _
@@ -306,9 +322,12 @@ Sub addCondition( _
 
         Range(headerFind("Condition Agency", bucketHead) & clientRow).value = Lookup("Condition_Provider_Name")(agency)
         Range(headerFind("Start Date", bucketHead) & clientRow).value = startDate
-        Range(headerFind("Reason #1 for Referral", bucketHead) & clientRow).value = Lookup("Supervision_Referral_Reason_Name")(Re1)
-        Range(headerFind("Reason #2 for Referral", bucketHead) & clientRow).value = Lookup("Supervision_Referral_Reason_Name")(Re2)
-        Range(headerFind("Reason #3 for Referral", bucketHead) & clientRow).value = Lookup("Supervision_Referral_Reason_Name")(Re3)
+        Range(headerFind("Reason #1 for Referral", bucketHead) & clientRow).value = Lookup("Supervision_Referral_Reason_Name")(re1)
+        Range(headerFind("Reason #2 for Referral", bucketHead) & clientRow).value = Lookup("Supervision_Referral_Reason_Name")(re2)
+        Range(headerFind("Reason #3 for Referral", bucketHead) & clientRow).value = Lookup("Supervision_Referral_Reason_Name")(re3)
+        Range(headerFind("Reason #4 for Referral", bucketHead) & clientRow).value = Lookup("Supervision_Referral_Reason_Name")(re4)
+        Range(headerFind("Reason #5 for Referral", bucketHead) & clientRow).value = Lookup("Supervision_Referral_Reason_Name")(re5)
+        
         Range(headerFind("Condition Description", bucketHead) & clientRow).value = Notes
     Next i
 End Sub
@@ -320,7 +339,11 @@ Sub dropCondition( _
     ByVal startDate As String, _
     ByVal endDate As String, _
     ByVal Nature As String, _
-    Optional Re1 As Variant, Optional Re2 As Variant, Optional Re3 As Variant, _
+    Optional ByVal re1 As String = "N/A", _
+    Optional ByVal re2 As String = "N/A", _
+    Optional ByVal re3 As String = "N/A", _
+    Optional ByVal re4 As String = "N/A", _
+    Optional ByVal re5 As String = "N/A", _
     Optional Notes As String = "")
 
     Worksheets("Entry").Activate
@@ -381,9 +404,11 @@ Sub dropCondition( _
         Range(headerFind("Nature of Discharge", bucketHead) & clientRow) = Lookup("Nature_of_Discharge_Name")(Nature)
 
         If Not Nature = "Positive" Then
-            Range(headerFind("Reason #1 for Negative D/C", bucketHead) & clientRow) = Lookup("Negative_Discharge_Reason_Name")(Re1)
-            Range(headerFind("Reason #2 for Negative D/C", bucketHead) & clientRow) = Lookup("Negative_Discharge_Reason_Name")(Re2)
-            Range(headerFind("Reason #3 for Negative D/C", bucketHead) & clientRow) = Lookup("Negative_Discharge_Reason_Name")(Re3)
+            Range(headerFind("Reason #1 for Negative D/C", bucketHead) & clientRow) = Lookup("Negative_Discharge_Reason_Name")(re1)
+            Range(headerFind("Reason #2 for Negative D/C", bucketHead) & clientRow) = Lookup("Negative_Discharge_Reason_Name")(re2)
+            Range(headerFind("Reason #3 for Negative D/C", bucketHead) & clientRow) = Lookup("Negative_Discharge_Reason_Name")(re3)
+            Range(headerFind("Reason #4 for Negative D/C", bucketHead) & clientRow) = Lookup("Negative_Discharge_Reason_Name")(re4)
+            Range(headerFind("Reason #5 for Negative D/C", bucketHead) & clientRow) = Lookup("Negative_Discharge_Reason_Name")(re5)
         End If
 
         Call append(Range(headerFind("Discharge Description", bucketHead) & clientRow), Notes)
@@ -471,9 +496,9 @@ Sub closeIntakeDetentions(ByVal DateOf As String, ByVal userRow As Long)
                             startDate:=Range(headerFind("Start Date", bucketHead) & userRow).value, _
                             endDate:=DateOf, _
                             Nature:="Neutral", _
-                            Re1:="N/A", _
-                            Re2:="N/A", _
-                            Re3:="N/A", _
+                            re1:="N/A", _
+                            re2:="N/A", _
+                            re3:="N/A", _
                             Notes:="Continued from Intake Conference.")
                     End If
                 End If
@@ -481,47 +506,74 @@ Sub closeIntakeDetentions(ByVal DateOf As String, ByVal userRow As Long)
         End If
     Next i
 End Sub
-
 Sub AggAggSupervisionsAndConditions(ByVal userRow As Long)
-    Dim i As Integer, k As Integer, emptyBucketNum As Integer, lastBucketNum As Integer
-    Dim aggHead As String, aggAggHead As String, aggBucketHead As String, aggAggBucketHead
+    Call AggAggSupervisions(userRow)
+    Call AggAggConditions(userRow)
+End Sub
+
+Sub AggAggSupervisions(ByVal userRow As Long)
+    Dim i As Integer
+    Dim k As Integer
+    Dim emptyBucketNum As Integer
+    Dim closingBucketNum As Integer
+    
+    Dim aggHead As String
+    Dim aggAggHead As String
+    Dim aggBucketHead As String
+    Dim aggBucketHead2 As String
+    Dim aggAggBucketHead As String
+    Dim closingBucketHead As String
+    
     Dim isFirstInstance As Boolean
    
     Worksheets("Entry").Activate
     aggHead = hFind("Supervision Programs", "AGGREGATES")
     aggAggHead = hFind("Aggregate Supervision Programs", "AGGREGATES")
+    Range(aggAggHead & userRow & ":" & headerFind("LOS", headerFind("Supervision Ordered #" & NUM_AGG_SUPERVISION_BUCKETS, aggAggHead)) & userRow).Clear
     
+    
+    'Crawl through Agg buckets
     For i = 1 To NUM_AGG_SUPERVISION_BUCKETS
         
+        'Set head of bucket
         aggBucketHead = headerFind("Supervision Ordered #" & i, aggHead)
-        
+                'If the bucket has content
         If isNotEmptyOrZero(Range(aggBucketHead & userRow)) Then
             
             isFirstInstance = True
             
-            For k = 1 To NUM_AGG_AGG_SUPERVISION_BUCKETS
-                
-                aggAggBucketHead = headerFind("Supervision Ordered #" & k, aggAggHead)
-                
-                If isEmptyOrZero(Range(aggAggBucketHead & userRow)) Then
+            'Crawl through Agg buckets until current
+            For k = 1 To i
+            
+                'If reached current bucket
+                If k = i Then
                     Exit For
                 End If
                 
-                If Range(aggAggBucketHead & userRow).value = Range(aggBucketHead & userRow).value Then
+                'Set head of bucket
+                aggBucketHead2 = headerFind("Supervision Ordered #" & k, aggHead)
+                
+                'If matches w/ startDate/endDate and type, isFirst = false
+                If Range(headerFind("Start Date", aggBucketHead) & userRow).value = Range(headerFind("End Date", aggBucketHead2) & userRow).value And _
+                 Range(aggBucketHead & userRow).value = Range(aggBucketHead2 & userRow).value Then
                     isFirstInstance = False
                     Exit For
                 End If
             Next k
             
+            
             If isFirstInstance Then
                 
+                'Crawl AggAgg buckets
                 For k = 1 To NUM_AGG_AGG_SUPERVISION_BUCKETS
                     
+                    'Set head
                     aggAggBucketHead = headerFind("Supervision Ordered #" & k, aggAggHead)
                     
+                    'IF Empty
                     If isEmptyOrZero(Range(aggAggBucketHead & userRow)) Then
                         emptyBucketNum = k
-                        'Fill in opening of new bucket from agg bucket i we're in
+                        'Fill in opening of new bucket from agg bucket we're in
                         Range(aggAggBucketHead & userRow).value = Range(aggBucketHead & userRow).value
                         Range(headerFind("Legal Status of Order", aggAggBucketHead) & userRow).value = Range(headerFind("Legal Status of Order", aggBucketHead) & userRow).value
                         Range(headerFind("Courtroom of Order", aggAggBucketHead) & userRow).value = Range(headerFind("Courtroom of Order", aggBucketHead) & userRow).value
@@ -540,17 +592,23 @@ Sub AggAggSupervisionsAndConditions(ByVal userRow As Long)
                     End If
                 Next k
                 
-                For k = 1 To NUM_AGG_SUPERVISION_BUCKETS
-                    If Range(aggBucketHead & userRow).value _
-                        = Range(headerFind("Supervision Ordered #" & k, aggHead) & userRow) Then
-                        
-                        lastBucketNum = k
+                closingBucketHead = headerFind("Supervision Ordered #" & i, aggHead)
+                
+                For k = i To NUM_AGG_SUPERVISION_BUCKETS
+                
+                    'Set head of bucket
+                    aggBucketHead2 = headerFind("Supervision Ordered #" & k, aggHead)
+                    
+                    'each time that next bucket has matching start/endDate and type, attach new current bucket
+                    If Range(headerFind("End Date", closingBucketHead) & userRow).value = Range(headerFind("Start Date", aggBucketHead2) & userRow).value And _
+                     Range(closingBucketHead & userRow).value = Range(aggBucketHead2 & userRow).value Then
+                        closingBucketHead = headerFind("Supervision Ordered #" & k, aggHead)
                         
                     End If
                 Next k
                 
                 'Fill in closing bucket details with
-                aggBucketHead = headerFind("Supervision Ordered #" & lastBucketNum, aggHead)
+                aggBucketHead = closingBucketHead
                 
                 Range(headerFind("End Date", aggAggBucketHead) & userRow).value = Range(headerFind("End Date", aggBucketHead) & userRow).value
                 Range(headerFind("Nature of Discharge", aggAggBucketHead) & userRow).value = Range(headerFind("Nature of Discharge", aggBucketHead) & userRow).value
@@ -560,12 +618,127 @@ Sub AggAggSupervisionsAndConditions(ByVal userRow As Long)
                 Range(headerFind("Reason #4 for Negative D/C", aggAggBucketHead) & userRow).value = Range(headerFind("Reason #4 for Negative D/C", aggBucketHead) & userRow).value
                 Range(headerFind("Reason #5 for Negative D/C", aggAggBucketHead) & userRow).value = Range(headerFind("Reason #5 for Negative D/C", aggBucketHead) & userRow).value
                 Range(headerFind("Discharge Description", aggAggBucketHead) & userRow).value = Range(headerFind("Discharge Description", aggBucketHead) & userRow).value
-                Range(headerFind("LOS", aggAggBucketHead) & userRow).value = Range(headerFind("LOS", aggBucketHead) & userRow).value
+                Range(headerFind("LOS", aggAggBucketHead) & userRow).value = calcLOS(Range(headerFind("Start Date", aggAggBucketHead) & userRow).value, Range(headerFind("End Date", aggAggBucketHead) & userRow).value)
                 
             End If
         End If
     Next i
 End Sub
+
+Sub AggAggConditions(ByVal userRow As Long)
+    Dim i As Integer
+    Dim k As Integer
+    Dim emptyBucketNum As Integer
+    Dim closingBucketNum As Integer
+    
+    Dim aggHead As String
+    Dim aggAggHead As String
+    Dim aggBucketHead As String
+    Dim aggBucketHead2 As String
+    Dim aggAggBucketHead As String
+    Dim closingBucketHead As String
+    
+    Dim isFirstInstance As Boolean
+   
+    Worksheets("Entry").Activate
+    aggHead = hFind("Conditions", "AGGREGATES")
+    aggAggHead = hFind("Aggregate Conditions", "AGGREGATES")
+    Range(aggAggHead & userRow & ":" & headerFind("LOS", headerFind("Condition Ordered #" & NUM_AGG_CONDITION_BUCKETS, aggAggHead)) & userRow).Clear
+    
+    
+    'Crawl through Agg buckets
+    For i = 1 To NUM_AGG_CONDITION_BUCKETS
+        
+        'Set head of bucket
+        aggBucketHead = headerFind("Condition Ordered #" & i, aggHead)
+                'If the bucket has content
+        If isNotEmptyOrZero(Range(aggBucketHead & userRow)) Then
+            
+            isFirstInstance = True
+            
+            'Crawl through Agg buckets until current
+            For k = 1 To i
+            
+                'If reached current bucket
+                If k = i Then
+                    Exit For
+                End If
+                
+                'Set head of bucket
+                aggBucketHead2 = headerFind("Condition Ordered #" & k, aggHead)
+                
+                'If matches w/ startDate/endDate and type, isFirst = false
+                If Range(headerFind("Start Date", aggBucketHead) & userRow).value = Range(headerFind("End Date", aggBucketHead2) & userRow).value And _
+                 Range(aggBucketHead & userRow).value = Range(aggBucketHead2 & userRow).value Then
+                    isFirstInstance = False
+                    Exit For
+                End If
+            Next k
+            
+            
+            If isFirstInstance Then
+                
+                'Crawl AggAgg buckets
+                For k = 1 To NUM_AGG_AGG_CONDITION_BUCKETS
+                    
+                    'Set head
+                    aggAggBucketHead = headerFind("Condition Ordered #" & k, aggAggHead)
+                    
+                    'IF Empty
+                    If isEmptyOrZero(Range(aggAggBucketHead & userRow)) Then
+                        emptyBucketNum = k
+                        'Fill in opening of new bucket from agg bucket we're in
+                        Range(aggAggBucketHead & userRow).value = Range(aggBucketHead & userRow).value
+                        Range(headerFind("Legal Status of Order", aggAggBucketHead) & userRow).value = Range(headerFind("Legal Status of Order", aggBucketHead) & userRow).value
+                        Range(headerFind("Courtroom of Order", aggAggBucketHead) & userRow).value = Range(headerFind("Courtroom of Order", aggBucketHead) & userRow).value
+                        Range(headerFind("DA", aggAggBucketHead) & userRow).value = Range(headerFind("DA", aggBucketHead) & userRow).value
+                        Range(headerFind("Condition Agency", aggAggBucketHead) & userRow).value = Range(headerFind("Condition Agency", aggBucketHead) & userRow).value
+                        Range(headerFind("Start Date", aggAggBucketHead) & userRow).value = Range(headerFind("Start Date", aggBucketHead) & userRow).value
+                        Range(headerFind("Reason #1 for Referral", aggAggBucketHead) & userRow).value = Range(headerFind("Reason #1 for Referral", aggBucketHead) & userRow).value
+                        Range(headerFind("Reason #2 for Referral", aggAggBucketHead) & userRow).value = Range(headerFind("Reason #2 for Referral", aggBucketHead) & userRow).value
+                        Range(headerFind("Reason #3 for Referral", aggAggBucketHead) & userRow).value = Range(headerFind("Reason #3 for Referral", aggBucketHead) & userRow).value
+                        Range(headerFind("Reason #4 for Referral", aggAggBucketHead) & userRow).value = Range(headerFind("Reason #4 for Referral", aggBucketHead) & userRow).value
+                        Range(headerFind("Reason #5 for Referral", aggAggBucketHead) & userRow).value = Range(headerFind("Reason #5 for Referral", aggBucketHead) & userRow).value
+                        Range(headerFind("Condition Description", aggAggBucketHead) & userRow).value = Range(headerFind("Condition Description", aggBucketHead) & userRow).value
+                        
+                        Exit For
+                    End If
+                Next k
+                
+                closingBucketHead = headerFind("Condition Ordered #" & i, aggHead)
+                
+                For k = i To NUM_AGG_CONDITION_BUCKETS
+                
+                    'Set head of bucket
+                    aggBucketHead2 = headerFind("Condition Ordered #" & k, aggHead)
+                    
+                    'each time that next bucket has matching start/endDate and type, attach new current bucket
+                    If Range(headerFind("End Date", closingBucketHead) & userRow).value = Range(headerFind("Start Date", aggBucketHead2) & userRow).value And _
+                     Range(closingBucketHead & userRow).value = Range(aggBucketHead2 & userRow).value Then
+                        closingBucketHead = headerFind("Condition Ordered #" & k, aggHead)
+                        
+                    End If
+                Next k
+                
+                'Fill in closing bucket details with
+                aggBucketHead = closingBucketHead
+                
+                Range(headerFind("End Date", aggAggBucketHead) & userRow).value = Range(headerFind("End Date", aggBucketHead) & userRow).value
+                Range(headerFind("Nature of Discharge", aggAggBucketHead) & userRow).value = Range(headerFind("Nature of Discharge", aggBucketHead) & userRow).value
+                Range(headerFind("Reason #1 for Negative D/C", aggAggBucketHead) & userRow).value = Range(headerFind("Reason #1 for Negative D/C", aggBucketHead) & userRow).value
+                Range(headerFind("Reason #2 for Negative D/C", aggAggBucketHead) & userRow).value = Range(headerFind("Reason #2 for Negative D/C", aggBucketHead) & userRow).value
+                Range(headerFind("Reason #3 for Negative D/C", aggAggBucketHead) & userRow).value = Range(headerFind("Reason #3 for Negative D/C", aggBucketHead) & userRow).value
+                Range(headerFind("Reason #4 for Negative D/C", aggAggBucketHead) & userRow).value = Range(headerFind("Reason #4 for Negative D/C", aggBucketHead) & userRow).value
+                Range(headerFind("Reason #5 for Negative D/C", aggAggBucketHead) & userRow).value = Range(headerFind("Reason #5 for Negative D/C", aggBucketHead) & userRow).value
+                Range(headerFind("Discharge Description", aggAggBucketHead) & userRow).value = Range(headerFind("Discharge Description", aggBucketHead) & userRow).value
+                Range(headerFind("LOS", aggAggBucketHead) & userRow).value = calcLOS(Range(headerFind("Start Date", aggAggBucketHead) & userRow).value, Range(headerFind("End Date", aggAggBucketHead) & userRow).value)
+                
+            End If
+        End If
+    Next i
+End Sub
+
+
 
 Sub aggFlagsConditionsSetNo(ByVal userRow As Long, bucketHead As String)
     Call flagNo(Range(headerFind("Was Youth Ordered Anger Mgt.?", bucketHead) & userRow))
@@ -596,6 +769,7 @@ Sub aggFlagsSupervisionsSetNo(ByVal userRow As Long, bucketHead As String)
     Call flagNo(Range(headerFind("Did Youth Have ISP?", bucketHead) & userRow))
     Call flagNo(Range(headerFind("Did Youth Have GPS?", bucketHead) & userRow))
     Call flagNo(Range(headerFind("Did Youth Have Post-ERC?", bucketHead) & userRow))
+    Call flagNo(Range(headerFind("Did Youth Have Detention?", bucketHead) & userRow))
     Call flagNo(Range(headerFind("Did Youth Have Reintegration?", bucketHead) & userRow))
     Call flagNo(Range(headerFind("Did Youth Have CUA?", bucketHead) & userRow))
     Call flagNo(Range(headerFind("Did Youth Have RTF?", bucketHead) & userRow))
@@ -682,6 +856,8 @@ Sub aggFlagSupervision( _
             columnName = "Did Youth Have GPS?"
         Case "Post-ERC"
             columnName = "Did Youth Have Post-ERC?"
+        Case "Detention (respite)"
+            columnName = "Did Youth Have Detention?"
         Case "Reintegration"
             columnName = "Did Youth Have Reintegration?"
         Case "CUA"

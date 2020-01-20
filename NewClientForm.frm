@@ -511,7 +511,7 @@ End Sub
 
 Private Sub Cancel_Click()
     Call Clear_Click
-    NewClientUserForm.Hide
+    NewClientForm.Hide
 End Sub
 
 Private Sub Clear_Click()
@@ -670,24 +670,8 @@ Private Sub Submit_Click()
     On Error GoTo err
 
     Call Generate_Dictionaries
-    'define variable Long(a big integer) named emptyRow
-    Dim emptyRow As Long
-
-    'find empty row by finding first 'first name' value from bottom
-    emptyRow = Range("C" & Rows.count).End(xlUp).row + 1
     
-    If Reload_Row = "" Then
-        Call formSubmitStart
-    Else
-        If MsgBox("Warning, you are about to overwrite row " & Reload_Row.value, vbOKCancel) = vbCancel Then
-            Exit Sub
-        End If
-
-        emptyRow = Reload_Row
-        Call formSubmitStart(Reload_Row)
-        
-        Range("C" & emptyRow & ":" & hFind("END") & emptyRow).ClearContents
-    End If
+    
 
     '''''''''''''
     'Validations'
@@ -827,8 +811,33 @@ Private Sub Submit_Click()
         Exit Sub
     End If
 
+    'define variable Long(a big integer) named emptyRow
+    Dim emptyRow As Long
+
     
     
+    
+    
+    If Reload_Row = "" Then
+        Call formSubmitStart
+        
+        'find empty row by finding first 'first name' value from bottom
+        emptyRow = Range("C" & Rows.count).End(xlUp).row + 1
+    Else
+        If MsgBox("Warning, you are about to overwrite row " & Reload_Row.value, vbOKCancel) = vbCancel Then
+            Exit Sub
+        End If
+
+        emptyRow = Reload_Row
+        Call formSubmitStart(Reload_Row)
+        
+        Range("C" & emptyRow & ":" & hFind("END") & emptyRow).ClearContents
+    End If
+    
+    If emptyRow < 3 Then
+        MsgBox "Debug error: attempting to write on row: " & emptyRow
+        Exit Sub
+    End If
     
     '''''''''''
     'AGG FLAGS'
@@ -1193,9 +1202,9 @@ Private Sub Submit_Click()
                     agency:="PJJSC", _
                     startDate:=CallInDate.value, _
                     endDate:=InConfDate.value, _
-                    Re1:="", _
-                    Re2:="", _
-                    Re3:="", _
+                    re1:="", _
+                    re2:="", _
+                    re3:="", _
                     Notes:="Held at call-in")
 
         End Select
@@ -1319,9 +1328,9 @@ Private Sub Submit_Click()
                     DA:=DA.value, _
                     agency:="", _
                     startDate:=InConfDate.value, _
-                    Re1:="", _
-                    Re2:="", _
-                    Re3:="", _
+                    re1:="", _
+                    re2:="", _
+                    re3:="", _
                     Notes:="Held at intake conference")
 
             Case "Release for Court"
@@ -1352,9 +1361,9 @@ Private Sub Submit_Click()
                         agency:=Supv1Pro.value, _
                         startDate:=InConfDate.value, _
                         NextCourtDate:=InitialHearingDate.value, _
-                        Re1:=Supv1Re1.value, _
-                        Re2:=Supv1Re2.value, _
-                        Re3:=Supv1Re3.value, _
+                        re1:=Supv1Re1.value, _
+                        re2:=Supv1Re2.value, _
+                        re3:=Supv1Re3.value, _
                         Notes:="Referred at intake conference")
                 End If
 
@@ -1369,9 +1378,9 @@ Private Sub Submit_Click()
                         agency:=Supv2Pro.value, _
                         startDate:=InConfDate.value, _
                         NextCourtDate:=InitialHearingDate.value, _
-                        Re1:=Supv2Re1.value, _
-                        Re2:=Supv2Re2.value, _
-                        Re3:=Supv2Re3.value, _
+                        re1:=Supv2Re1.value, _
+                        re2:=Supv2Re2.value, _
+                        re3:=Supv2Re3.value, _
                         Notes:="Referred at intake conference")
                 End If
 
@@ -1385,9 +1394,9 @@ Private Sub Submit_Click()
                         DA:=DA.value, _
                         agency:=Cond1Pro.value, _
                         startDate:=InConfDate.value, _
-                        Re1:="N/A", _
-                        Re2:="N/A", _
-                        Re3:="N/A", _
+                        re1:="N/A", _
+                        re2:="N/A", _
+                        re3:="N/A", _
                         Notes:="Referred at intake conference")
                 End If
 
@@ -1401,9 +1410,9 @@ Private Sub Submit_Click()
                         DA:=DA.value, _
                         agency:=Cond2Pro.value, _
                         startDate:=InConfDate.value, _
-                        Re1:="N/A", _
-                        Re2:="N/A", _
-                        Re3:="N/A", _
+                        re1:="N/A", _
+                        re2:="N/A", _
+                        re3:="N/A", _
                         Notes:="Referred at intake conference")
                 End If
 
@@ -1417,9 +1426,9 @@ Private Sub Submit_Click()
                         DA:=DA.value, _
                         agency:=Cond3Pro.value, _
                         startDate:=InConfDate.value, _
-                        Re1:="N/A", _
-                        Re2:="N/A", _
-                        Re3:="N/A", _
+                        re1:="N/A", _
+                        re2:="N/A", _
+                        re3:="N/A", _
                         Notes:="Referred at intake conference")
                 End If
 
@@ -1486,7 +1495,7 @@ Private Sub Submit_Click()
                     = Lookup("Police_District_Name")(CInt(YAPDistrict.value))
         Else
             Range(headerFind("YAP Panel District #", diversionHead) & emptyRow) _
-                    = Lookup("Police_District_Name")(YAPDistrict.value)
+                    = Lookup("YAP_Panel_Name")(YAPDistrict.value)
         End If
 
 
@@ -1702,6 +1711,12 @@ Private Sub TestFillPetition_Click()
 
     InConfDate.value = "02/01/2019"
     ConfOutcome.value = "Release for Court"
+    DHS_Status = "N/A"
+    
+    
+    Diagnosis1.value = "N/A"
+    TraumaType1.value = "N/A"
+    Treatment1.value = "N/A"
 
     NoDiversionReason1 = "Charge Ineligible"
 

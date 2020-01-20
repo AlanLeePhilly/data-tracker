@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} Modal_JTC_Add_Service 
    Caption         =   "JTC - Add Service"
-   ClientHeight    =   6765
+   ClientHeight    =   7980
    ClientLeft      =   48
    ClientTop       =   -72
    ClientWidth     =   6324
@@ -41,6 +41,8 @@ Private Sub Cancel_Click()
     Reason1.value = "N/A"
     Reason2.value = "N/A"
     Reason3.value = "N/A"
+    Reason4.value = "N/A"
+    Reason5.value = "N/A"
     Notes.value = ""
     Me.Hide
 End Sub
@@ -70,9 +72,7 @@ Private Sub Continue_Click()
         'end date
         .List(ClientUpdateForm.JTC_Return_Service_Box.ListCount - 1, 4) = "New"
         'nature
-        .List(ClientUpdateForm.JTC_Return_Service_Box.ListCount - 1, 6) = Reason1.value
-        .List(ClientUpdateForm.JTC_Return_Service_Box.ListCount - 1, 7) = Reason2.value
-        .List(ClientUpdateForm.JTC_Return_Service_Box.ListCount - 1, 8) = Reason3.value
+        .List(ClientUpdateForm.JTC_Return_Service_Box.ListCount - 1, 6) = encodeReasons(Reason1, Reason2, Reason3, Reason4, Reason5)
         .List(ClientUpdateForm.JTC_Return_Service_Box.ListCount - 1, 9) = Notes
         'notes
     End With

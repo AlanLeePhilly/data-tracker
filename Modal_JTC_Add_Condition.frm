@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} Modal_JTC_Add_Condition 
    Caption         =   "JTC Add Condition"
-   ClientHeight    =   6630
+   ClientHeight    =   8772.001
    ClientLeft      =   48
    ClientTop       =   372
-   ClientWidth     =   9480.001
+   ClientWidth     =   10872
    OleObjectBlob   =   "Modal_JTC_Add_Condition.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -17,29 +17,23 @@ Attribute VB_Exposed = False
 Private Sub ConditionType_Change()
     Select Case ConditionType.value
         Case "Restitution"
-            Restitution_Label.Visible = True
-            Restitution.Visible = True
-            Restitution.value = ""
-            
-            Comm_Service_Label.Visible = False
-            Comm_Service.Visible = False
-            Comm_Service.value = ""
+            Label.Visible = True
+            Label.Caption = "Restitution:  $"
+            Amount.Visible = True
+            Amount.value = ""
         Case "Comm. Serv"
-            Restitution_Label.Visible = False
-            Restitution.Visible = False
-            Restitution.value = ""
-            
-            Comm_Service_Label.Visible = True
-            Comm_Service.Visible = True
-            Comm_Service.value = ""
+            Label.Visible = True
+            Label.Caption = "Comm. Service Hrs: "
+            Amount.Visible = True
+            Amount.value = ""
+        Case "Court Costs"
+            Label.Visible = True
+            Label.Caption = "Court Costs:  $"
+            Amount.Visible = True
+            Amount.value = ""
         Case Else
-            Restitution_Label.Visible = False
-            Restitution.Visible = False
-            Restitution.value = ""
-            
-            Comm_Service_Label.Visible = False
-            Comm_Service.Visible = False
-            Comm_Service.value = ""
+            Label.Visible = False
+            Amount.Visible = False
     End Select
 End Sub
 
@@ -93,9 +87,7 @@ Private Sub Continue_Click()
         'end date
         .List(ClientUpdateForm.JTC_Return_Condition_Box.ListCount - 1, 4) = "New"
         'nature
-        .List(ClientUpdateForm.JTC_Return_Condition_Box.ListCount - 1, 6) = Reason1
-        .List(ClientUpdateForm.JTC_Return_Condition_Box.ListCount - 1, 7) = Reason2
-        .List(ClientUpdateForm.JTC_Return_Condition_Box.ListCount - 1, 8) = Reason3
+        .List(ClientUpdateForm.JTC_Return_Condition_Box.ListCount - 1, 6) = encodeReasons(Reason1, Reason2, Reason3, Reason4, Reason5)
         .List(ClientUpdateForm.JTC_Return_Condition_Box.ListCount - 1, 9) = Notes
     End With
 
@@ -114,11 +106,15 @@ Private Sub Continue_Click()
         Case "Restitution"
             ClientUpdateForm.JTC_Restitution.Visible = True
             ClientUpdateForm.JTC_Restitution_Label.Visible = True
-            ClientUpdateForm.JTC_Restitution.Caption = Restitution.value
+            ClientUpdateForm.JTC_Restitution.Caption = Amount.value
         Case "Comm. Serv"
             ClientUpdateForm.JTC_Comm_Service.Visible = True
             ClientUpdateForm.JTC_Comm_Service_Label.Visible = True
-            ClientUpdateForm.JTC_Comm_Service.Caption = Comm_Service.value
+            ClientUpdateForm.JTC_Comm_Service.Caption = Amount.value
+        Case "Court Costs"
+            ClientUpdateForm.JTC_Court_Costs.Visible = True
+            ClientUpdateForm.JTC_Court_Costs_Label.Visible = True
+            ClientUpdateForm.JTC_Court_Costs.Caption = Amount.value
     End Select
     
     Unload Modal_JTC_Add_Condition

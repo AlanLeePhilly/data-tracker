@@ -1,9 +1,9 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} CacheLoader 
    Caption         =   "CacheLoader"
-   ClientHeight    =   4872
+   ClientHeight    =   4860
    ClientLeft      =   36
-   ClientTop       =   384
+   ClientTop       =   396
    ClientWidth     =   8580.001
    OleObjectBlob   =   "CacheLoader.frx":0000
    StartUpPosition =   1  'CenterOwner

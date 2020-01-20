@@ -15,7 +15,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
 Private Sub UserForm_Initialize()
-    Call addPetitionsToBox(PetitionBox)
+    Call addChargesToBox(PetitionBox)
 End Sub
 
 '''''''''''''
@@ -57,7 +57,7 @@ Private Sub Continue_Click()
         Exit Sub
     End If
     If PetitionBox.value = Null Then
-        MsgBox "Please select a petition"
+        MsgBox "Please select a charge"
         Exit Sub
     End If
 

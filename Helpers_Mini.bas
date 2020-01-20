@@ -354,35 +354,84 @@ Sub addNotes( _
         End If
     Next i
 End Sub
+Function getCourtroomHead(Courtroom As String) As String
+    Worksheets("Entry").Activate
+    
+    Select Case Courtroom
+        Case "4G", "4E", "6F", "6H", "3E", "JTC", "WRAP"
+            getCourtroomHead = headerFind(Courtroom)
+        Case "Adult"
+            getCourtroomHead = headerFind("ADULT")
+        Case "PJJSC"
+            getCourtroomHead = headerFind("DETENTION")
+        Case "5E"
+            getCourtroomHead = headerFind("Crossover")
+        Case "Intake Conf."
+            getCourtroomHead = headerFind("INTAKE CONFERENCE")
+        Case "Diversion"
+            getCourtroomHead = headerFind("DIVERSION")
+        Case "N/A"
+            getCourtroomHead = "A"
+        Case Else
+            MsgBox ("Debug: Courtroom " & Courtroom & " not recognized. Contact your admin")
+    End Select
 
-Sub addPetitionsToBox(ByRef MyBox As Object)
-    Dim i As Integer
-    Dim bucketHead As String
+End Function
+
+Function isReferralCourtroom(Courtroom As String) As String
+    Select Case Courtroom
+        Case "4G", "4E", "6F", "6H", "3E", "Adult", "PJJSC"
+            isReferralCourtroom = False
+        Case "JTC", "WRAP", "5E"
+            isReferralCourtroom = True
+        Case Else
+            isReferralCourtroom = False
+    End Select
+End Function
+
+Sub addChargesToBox(ByRef MyBox As Object)
+    Dim i As Integer, k As Integer
+    Dim bucketHead As String, petitionHead As String
     MyBox.Clear
     Worksheets("Entry").Activate
 
     For i = 1 To 5
         If Range(hFind("Petition Filed?", "Petition #" & i, "PETITION") & updateRow).value = Lookup("Generic_YNOU_Name")("Yes") Then
-            bucketHead = hFind("Petition #" & i, "PETITION")
-            With MyBox
-                .ColumnCount = 6
-                .ColumnWidths = "50;50;30;50;65;50"
-                ' 0 Petition Number
-                ' 1 Date Filed
-                ' 2 Charge Grade
-                ' 3 Charge Group
-                ' 4 Charge Code
-                ' 5 Charge Name
-
-                .AddItem Range(bucketHead & updateRow).value
-                .List(MyBox.ListCount - 1, 0) = Range(bucketHead & updateRow).value
-                .List(MyBox.ListCount - 1, 1) = Range(headerFind("Date Filed", bucketHead) & updateRow).value
-                .List(MyBox.ListCount - 1, 2) = Lookup("Charge_Grade_Specific_Num")(Range(headerFind("Charge Grade (specific) #1", bucketHead) & updateRow).value)
-                .List(MyBox.ListCount - 1, 3) = Lookup("Charge_Num")(Range(headerFind("Charge Category #1", bucketHead) & updateRow).value)
-                .List(MyBox.ListCount - 1, 4) = Range(headerFind("Lead Charge Code", bucketHead) & updateRow).value
-                .List(MyBox.ListCount - 1, 5) = Range(headerFind("Lead Charge Name", bucketHead) & updateRow).value
-
-            End With
+            petitionHead = hFind("Petition #" & i, "PETITION")
+            
+            For k = 1 To 5
+                If k = 1 Then
+                    bucketHead = hFind("Lead Charge Code", "Petition #" & i, "PETITION")
+                Else
+                    bucketHead = hFind("Charge Code #" & k, "Petition #" & i, "PETITION")
+                End If
+                
+                If isNotEmptyOrZero(Range(bucketHead & updateRow)) Then
+                    With MyBox
+                        .ColumnCount = 6
+                        .ColumnWidths = "50;50;30;50;65;50"
+                        ' 0 Petition Number
+                        ' 1 Date Filed
+                        ' 2 Charge Grade
+                        ' 3 Charge Group
+                        ' 4 Charge Code
+                        ' 5 Charge Name
+        
+                        .AddItem Range(hFind("Petition #" & i, "PETITION") & updateRow).value
+                        .List(MyBox.ListCount - 1, 0) = Range(petitionHead & updateRow).value
+                        .List(MyBox.ListCount - 1, 1) = Range(headerFind("Date Filed", petitionHead) & updateRow).value
+                        .List(MyBox.ListCount - 1, 2) = Lookup("Charge_Grade_Specific_Num")(Range(headerFind("Charge Grade (specific) #" & k, bucketHead) & updateRow).value)
+                        .List(MyBox.ListCount - 1, 3) = Lookup("Charge_Num")(Range(headerFind("Charge Category #" & k, bucketHead) & updateRow).value)
+                        .List(MyBox.ListCount - 1, 4) = Range(bucketHead & updateRow).value
+                        
+                        If k = 1 Then
+                            .List(MyBox.ListCount - 1, 5) = Range(headerFind("Lead Charge Name", bucketHead) & updateRow).value
+                        Else
+                            .List(MyBox.ListCount - 1, 5) = Range(headerFind("Charge Name #" & k, bucketHead) & updateRow).value
+                        End If
+                    End With
+                End If
+            Next k
         End If
     Next i
 

@@ -354,7 +354,11 @@ Sub admissionStart( _
     ByVal DA As String, _
     ByVal startDate As String, _
     ByVal Result As String, _
-    ByVal detailed As String _
+    ByVal detailed As String, _
+    leadChargeCode As String, _
+    leadChargeName As String, _
+    chargeCategory As String, _
+    chargeGradeSpecific As String _
 )
     Worksheets("Entry").Activate
 
@@ -393,31 +397,24 @@ Sub admissionStart( _
         Range(headerFind("Detailed Result", bucketHead) & clientRow) _
             = Lookup("Detailed_Result_of_Admission_Name")(detailed)
 
-        For j = 1 To 5
-            If Range(hFind("Petition #" & j, "PETITION") & clientRow).value = petitionNum Then
-                petitionHead = hFind("Petition #" & j, "PETITION")
-                j = 5
-            End If
-        Next j
-
         Range(headerFind("Petition #", bucketHead) & clientRow) _
-            = Range(petitionHead & clientRow)
+            = petitionNum
 
         Range(headerFind("Lead Charge Code", bucketHead) & clientRow) _
-            = Range(headerFind("Lead Charge Code", petitionHead) & clientRow)
-
+            = leadChargeCode
+            
         Range(headerFind("Lead Charge Name", bucketHead) & clientRow) _
-            = Range(headerFind("Lead Charge Name", petitionHead) & clientRow)
+            = leadChargeName
 
         Range(headerFind("Charge Category", bucketHead) & clientRow) _
-            = Range(headerFind("Charge Category #1", petitionHead) & clientRow)
-
+            = Lookup("Charge_Name")(chargeCategory)
+            
         Range(headerFind("Charge Grade (specific)", bucketHead) & clientRow) _
-            = Range(headerFind("Charge Grade (specific) #1", petitionHead) & clientRow)
+            = Lookup("Charge_Grade_Specific_Name")(chargeGradeSpecific)
 
         Range(headerFind("Charge Grade (broad)", bucketHead) & clientRow) _
-            = Range(headerFind("Charge Grade (broad) #1", petitionHead) & clientRow)
-
+            = calcChargeBroad(chargeGradeSpecific)
+            
         Range(headerFind("LOS Admission", bucketHead) & clientRow) _
             = calcLOS(Range(headerFind("Arrest Date") & clientRow).value, startDate)
     Next i
@@ -431,7 +428,11 @@ Sub adjudicationStart( _
     ByVal DA As String, _
     ByVal startDate As String, _
     ByVal Type_of As String, _
-    Re1 As String, Re2 As String, Re3 As String, Re4 As String, Re5 As String _
+    re1 As String, re2 As String, re3 As String, re4 As String, re5 As String, _
+    leadChargeCode As String, _
+    leadChargeName As String, _
+    chargeCategory As String, _
+    chargeGradeSpecific As String _
 )
     Worksheets("Entry").Activate
 
@@ -466,44 +467,33 @@ Sub adjudicationStart( _
         Range(headerFind("Guilty or Supervision Adjudication", bucketHead) & clientRow) _
             = Lookup("Reason_for_Adjudication_Name")(Type_of)
         Range(headerFind("Reason #1 for Technical Adjudication", bucketHead) & clientRow) _
-            = Lookup("Negative_Discharge_Reason_Name")(Re1)
+            = Lookup("Negative_Discharge_Reason_Name")(re1)
         Range(headerFind("Reason #2 for Technical Adjudication", bucketHead) & clientRow) _
-            = Lookup("Negative_Discharge_Reason_Name")(Re2)
+            = Lookup("Negative_Discharge_Reason_Name")(re2)
         Range(headerFind("Reason #3 for Technical Adjudication", bucketHead) & clientRow) _
-            = Lookup("Negative_Discharge_Reason_Name")(Re3)
+            = Lookup("Negative_Discharge_Reason_Name")(re3)
         Range(headerFind("Reason #4 for Technical Adjudication", bucketHead) & clientRow) _
-            = Lookup("Negative_Discharge_Reason_Name")(Re4)
+            = Lookup("Negative_Discharge_Reason_Name")(re4)
         Range(headerFind("Reason #5 for Technical Adjudication", bucketHead) & clientRow) _
-            = Lookup("Negative_Discharge_Reason_Name")(Re5)
-
-        For j = 1 To 5
-            If Range(hFind("Petition #" & j, "PETITION") & clientRow).value = petitionNum Then
-                petitionHead = hFind("Petition #" & j, "PETITION")
-                j = 5
-            Else
-                If j = 5 Then
-                    MsgBox "Warning: Unable to find petition #" & petitionNum & " for adjudication update"
-                End If
-            End If
-        Next j
-
+            = Lookup("Negative_Discharge_Reason_Name")(re5)
+            
         Range(headerFind("Petition #1", bucketHead) & clientRow) _
-            = Range(headerFind("Petition #", petitionHead) & clientRow)
+            = petitionNum
 
         Range(headerFind("Lead Charge Code", bucketHead) & clientRow) _
-            = Range(headerFind("Lead Charge Code", petitionHead) & clientRow)
-
+            = leadChargeCode
+            
         Range(headerFind("Lead Charge Name", bucketHead) & clientRow) _
-            = Range(headerFind("Lead Charge Name", petitionHead) & clientRow)
+            = leadChargeName
 
         Range(headerFind("Charge Category", bucketHead) & clientRow) _
-            = Range(headerFind("Charge Category #1", petitionHead) & clientRow)
-
+            = Lookup("Charge_Name")(chargeCategory)
+            
         Range(headerFind("Charge Grade (specific)", bucketHead) & clientRow) _
-            = Range(headerFind("Charge Grade (specific) #1", petitionHead) & clientRow)
+            = Lookup("Charge_Grade_Specific_Name")(chargeGradeSpecific)
 
         Range(headerFind("Charge Grade (broad)", bucketHead) & clientRow) _
-            = Range(headerFind("Charge Grade (broad) #1", petitionHead) & clientRow)
+            = calcChargeBroad(chargeGradeSpecific)
 
         Range(headerFind("LOS Adjudication", bucketHead) & clientRow) _
             = calcLOS(Range(headerFind("Arrest Date") & clientRow).value, startDate)
@@ -518,7 +508,7 @@ Sub continuanceStart( _
     ByVal startDate As String, _
     ByVal nextDate As String, _
     ByVal contType As String, _
-    Re1 As String, Re2 As String, Re3 As String _
+    re1 As String, re2 As String, re3 As String _
 )
     Worksheets("Entry").Activate
 
@@ -566,16 +556,16 @@ Sub continuanceStart( _
             = Lookup("Type_of_Continuance_Name")(contType)
 
         tmpHead = headerFind("Detailed Reason #1 for Commonwealth Continuance", bucketHead)
-        Range(tmpHead & clientRow) = Lookup("Detailed_Reason_for_Commonwealth_Continuance_Name")(Re1)
-        Range(headerFind("Reason for Continuance Category", tmpHead) & clientRow) = commonwealthCat(Re1)
+        Range(tmpHead & clientRow) = Lookup("Detailed_Reason_for_Commonwealth_Continuance_Name")(re1)
+        Range(headerFind("Reason for Continuance Category", tmpHead) & clientRow) = commonwealthCat(re1)
 
         tmpHead = headerFind("Detailed Reason #2 for Commonwealth Continuance", bucketHead)
-        Range(tmpHead & clientRow) = Lookup("Detailed_Reason_for_Commonwealth_Continuance_Name")(Re2)
-        Range(headerFind("Reason for Continuance Category", tmpHead) & clientRow) = commonwealthCat(Re2)
+        Range(tmpHead & clientRow) = Lookup("Detailed_Reason_for_Commonwealth_Continuance_Name")(re2)
+        Range(headerFind("Reason for Continuance Category", tmpHead) & clientRow) = commonwealthCat(re2)
 
         tmpHead = headerFind("Detailed Reason #3 for Commonwealth Continuance", bucketHead)
-        Range(tmpHead & clientRow) = Lookup("Detailed_Reason_for_Commonwealth_Continuance_Name")(Re3)
-        Range(headerFind("Reason for Continuance Category", tmpHead) & clientRow) = commonwealthCat(Re3)
+        Range(tmpHead & clientRow) = Lookup("Detailed_Reason_for_Commonwealth_Continuance_Name")(re3)
+        Range(headerFind("Reason for Continuance Category", tmpHead) & clientRow) = commonwealthCat(re3)
 
         Range(headerFind("LOS Continuance", bucketHead) & clientRow) _
             = calcLOS(startDate, nextDate)
@@ -643,47 +633,6 @@ Sub addFTA( _
 End Sub
 
 
-
-Sub SupervisionSingles(ByVal clientRow As Long, ByVal head As String)
-    Worksheets("Entry").Activate
-
-    Range(headerFind("Did Youth Have IPS?", head) & clientRow).value = Lookup("Generic_YN_Name")("No")
-    Range(headerFind("Did Youth Have Pre-ERC?", head) & clientRow).value = Lookup("Generic_YN_Name")("No")
-    Range(headerFind("Did Youth Have IHD?", head) & clientRow).value = Lookup("Generic_YN_Name")("No")
-    Range(headerFind("Did Youth Have ISP?", head) & clientRow).value = Lookup("Generic_YN_Name")("No")
-    Range(headerFind("Did Youth Have GPS?", head) & clientRow).value = Lookup("Generic_YN_Name")("No")
-    Range(headerFind("Did Youth Have Post-ERC?", head) & clientRow).value = Lookup("Generic_YN_Name")("No")
-    Range(headerFind("Did Youth Have Reintegration?", head) & clientRow).value = Lookup("Generic_YN_Name")("No")
-    Range(headerFind("Did Youth Have CUA?", head) & clientRow).value = Lookup("Generic_YN_Name")("No")
-    Range(headerFind("Did Youth Have RTF?", head) & clientRow).value = Lookup("Generic_YN_Name")("No")
-    Range(headerFind("Did Youth Have Inpatient D&A?", head) & clientRow).value = Lookup("Generic_YN_Name")("No")
-    Range(headerFind("Did Youth Have Other Supervision?", head) & clientRow).value = Lookup("Generic_YN_Name")("No")
-End Sub
-
-Sub ConditionSingles(ByVal clientRow As Long, ByVal head As String)
-    Worksheets("Entry").Activate
-
-    Range(headerFind("Was Youth Ordered Anger Mgt.?", head) & clientRow).value = Lookup("Generic_YN_Name")("No")
-    Range(headerFind("Was Youth Ordered Alternative School?", head) & clientRow).value = Lookup("Generic_YN_Name")("No")
-    Range(headerFind("Was Youth Ordered a BHE?", head) & clientRow).value = Lookup("Generic_YN_Name")("No")
-    Range(headerFind("Was Youth Ordered Community Service?", head) & clientRow).value = Lookup("Generic_YN_Name")("No")
-    Range(headerFind("Was Youth Ordered a Curfew?", head) & clientRow).value = Lookup("Generic_YN_Name")("No")
-    Range(headerFind("Was Youth Ordered Daily School?", head) & clientRow).value = Lookup("Generic_YN_Name")("No")
-    Range(headerFind("Was Youth Ordered Drug Screens?", head) & clientRow).value = Lookup("Generic_YN_Name")("No")
-    Range(headerFind("Was Youth Ordered Essay?", head) & clientRow).value = Lookup("Generic_YN_Name")("No")
-    Range(headerFind("Was Youth Ordered Family Therapy?", head) & clientRow).value = Lookup("Generic_YN_Name")("No")
-    Range(headerFind("Was Youth Ordered GED?", head) & clientRow).value = Lookup("Generic_YN_Name")("No")
-    Range(headerFind("Was Youth Ordered Grief Counseling?", head) & clientRow).value = Lookup("Generic_YN_Name")("No")
-    Range(headerFind("Was Youth Ordered Mental Health?", head) & clientRow).value = Lookup("Generic_YN_Name")("No")
-    Range(headerFind("Was Youth Ordered Inpatient D&A?", head) & clientRow).value = Lookup("Generic_YN_Name")("No")
-    Range(headerFind("Was Youth Ordered IOP?", head) & clientRow).value = Lookup("Generic_YN_Name")("No")
-    Range(headerFind("Was Youth Ordered Restitution?", head) & clientRow).value = Lookup("Generic_YN_Name")("No")
-    Range(headerFind("Was Youth Ordered Sexual Counseling?", head) & clientRow).value = Lookup("Generic_YN_Name")("No")
-    Range(headerFind("Was Youth Ordered Victim Conference?", head) & clientRow).value = Lookup("Generic_YN_Name")("No")
-    Range(headerFind("Was Youth Ordered 1st Violation Hold?", head) & clientRow).value = Lookup("Generic_YN_Name")("No")
-    Range(headerFind("Was Youth Ordered Other Condition?", head) & clientRow).value = Lookup("Generic_YN_Name")("No")
-End Sub
-
 Sub startPlacement( _
     ByVal clientRow As Long, _
     ByVal DA As String, _
@@ -693,7 +642,7 @@ Sub startPlacement( _
     ByVal agency As String, _
     ByVal startDate As String, _
     Optional Notes As String = "", _
-    Optional Re1 As String, Optional Re2 As String, Optional Re3 As String _
+    Optional re1 As String, Optional re2 As String, Optional re3 As String _
 )
     Dim bucketHead As String
     Dim courtHead As String
@@ -760,9 +709,9 @@ Sub startPlacement( _
         Range(headerFind("LOS Original Order", bucketHead) & clientRow).value = calcLOS(startDate, NextCourtDate)
         Range(headerFind("Residential Agency", bucketHead) & clientRow).value = Lookup("Residential_Supervision_Provider_Name")(agency)
         Range(headerFind("Start Date", bucketHead) & clientRow).value = startDate
-        Range(headerFind("Reason #1 for Placement", bucketHead) & clientRow).value = Lookup("Supervision_Referral_Reason_Name")(Re1)
-        Range(headerFind("Reason #2 for Placement", bucketHead) & clientRow).value = Lookup("Supervision_Referral_Reason_Name")(Re2)
-        Range(headerFind("Reason #3 for Placement", bucketHead) & clientRow).value = Lookup("Supervision_Referral_Reason_Name")(Re3)
+        Range(headerFind("Reason #1 for Placement", bucketHead) & clientRow).value = Lookup("Supervision_Referral_Reason_Name")(re1)
+        Range(headerFind("Reason #2 for Placement", bucketHead) & clientRow).value = Lookup("Supervision_Referral_Reason_Name")(re2)
+        Range(headerFind("Reason #3 for Placement", bucketHead) & clientRow).value = Lookup("Supervision_Referral_Reason_Name")(re3)
         Range(headerFind("Placement Description", bucketHead) & clientRow).value = Notes
     Next i
 
@@ -777,7 +726,7 @@ Sub endPlacement( _
     ByVal startDate As String, _
     ByVal endDate As String, _
     ByVal Nature As String, _
-    Optional Re1 As String, Optional Re2 As String, Optional Re3 As String, _
+    Optional re1 As String, Optional re2 As String, Optional re3 As String, _
     Optional Notes As String = "")
 
     Worksheets("Entry").Activate
@@ -829,9 +778,9 @@ Sub endPlacement( _
         Range(headerFind("Nature of Discharge", bucketHead) & clientRow) = Lookup("Nature_of_Discharge_Name")(Nature)
 
         If Not Nature = "Positive" Then
-            Range(headerFind("Reason #1 for Negative D/C", bucketHead) & clientRow) = Lookup("Negative_Discharge_Reason_Name")(Re1)
-            Range(headerFind("Reason #2 for Negative D/C", bucketHead) & clientRow) = Lookup("Negative_Discharge_Reason_Name")(Re2)
-            Range(headerFind("Reason #3 for Negative D/C", bucketHead) & clientRow) = Lookup("Negative_Discharge_Reason_Name")(Re3)
+            Range(headerFind("Reason #1 for Negative D/C", bucketHead) & clientRow) = Lookup("Negative_Discharge_Reason_Name")(re1)
+            Range(headerFind("Reason #2 for Negative D/C", bucketHead) & clientRow) = Lookup("Negative_Discharge_Reason_Name")(re2)
+            Range(headerFind("Reason #3 for Negative D/C", bucketHead) & clientRow) = Lookup("Negative_Discharge_Reason_Name")(re3)
         End If
 
         Call append(Range(headerFind("Discharge Description", bucketHead) & clientRow), Notes)

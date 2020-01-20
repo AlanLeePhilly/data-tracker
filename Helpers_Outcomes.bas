@@ -33,6 +33,10 @@ Sub totalOutcome( _
         = calcLOS(Range(hFind("Date Filed", "Petition #1", "JUVENILE PETITION") & clientRow).value, DateOf)
     Range(headerFind("Total LOS From Arrest", outcomeHead) & clientRow).value _
         = calcLOS(Range(hFind("Arrest Date") & clientRow).value, DateOf)
+    
+    'if had Paid in full
+    'hFind "LOS from Pay in Full to Discharge", "RESTITUTION"
+    'calcLOS ln2 & dateOf
         
     Select Case Courtroom
         Case "4G", "4E", "6F", "6H", "3E"

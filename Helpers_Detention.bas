@@ -7,11 +7,11 @@ Sub initialDetention( _
     ByVal DA_actionAccepted As String, _
     ByVal decision As String, _
     ByVal Facility As String, _
-    ByVal Re1 As String, _
-    ByVal Re2 As String, _
-    ByVal Re3 As String, _
-    ByVal Re4 As String, _
-    ByVal Re5 As String)
+    ByVal re1 As String, _
+    ByVal re2 As String, _
+    ByVal re3 As String, _
+    ByVal re4 As String, _
+    ByVal re5 As String)
 
     Dim bucketHead As String
 
@@ -33,13 +33,13 @@ Sub initialDetention( _
         = Lookup("Detention_Facility_Name")(Facility)
 
     Range(headerFind("Reason #1 for Detention Commit", bucketHead) & clientRow).value _
-        = Lookup("Detention_Hearing_Reason_Name")(Re1)
+        = Lookup("Detention_Hearing_Reason_Name")(re1)
     Range(headerFind("Reason #2 for Detention Commit", bucketHead) & clientRow).value _
-        = Lookup("Detention_Hearing_Reason_Name")(Re2)
+        = Lookup("Detention_Hearing_Reason_Name")(re2)
     Range(headerFind("Reason #3 for Detention Commit", bucketHead) & clientRow).value _
-        = Lookup("Detention_Hearing_Reason_Name")(Re3)
+        = Lookup("Detention_Hearing_Reason_Name")(re3)
     Range(headerFind("Reason #4 for Detention Commit", bucketHead) & clientRow).value _
-        = Lookup("Detention_Hearing_Reason_Name")(Re4)
+        = Lookup("Detention_Hearing_Reason_Name")(re4)
     Range(headerFind("Reason #5 for Detention Commit", bucketHead) & clientRow).value _
-        = Lookup("Detention_Hearing_Reason_Name")(Re5)
+        = Lookup("Detention_Hearing_Reason_Name")(re5)
 End Sub

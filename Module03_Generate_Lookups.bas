@@ -17,11 +17,12 @@ Sub PrintToRawList()
         Dim i As Long
         Dim j As Long
         Dim k As Long
+        Dim l As Long
         
         Set RawList = Worksheets("RawList")
         RawList.UsedRange.ClearContents
-        k = 0
         
+        l = 0
         For i = 1 To 10000
             If Not IsEmpty(.Cells(1, i).value) Then
                 RawList.Cells(1, i).value = .Cells(1, i).value
@@ -31,20 +32,22 @@ Sub PrintToRawList()
                     MsgBox "Something funky at " + .Cells(1, i + 1).value
                 End If
                 
+                
+                k = 2
                 For j = 2 To lastRow
                     If Not IsEmpty(.Cells(j, i).value) Then
-                        RawList.Cells(j, i).value = .Cells(j, i).value
-                        RawList.Cells(j, i + 1).value = .Cells(j, i + 1).value
-                    Else
+                        RawList.Cells(k, i).value = .Cells(j, i).value
+                        RawList.Cells(k, i + 1).value = .Cells(j, i + 1).value
                         k = k + 1
+                    Else
+                        l = l + 1
                     End If
-            
                 Next j
             End If
         Next i
     End With
         
-        MsgBox "You skipped " & k & " rows. Congrats!"
+        MsgBox "You skipped " & l & " rows. Congrats!"
 End Sub
 
 Sub RefreshNamedRanges()
@@ -172,13 +175,14 @@ Sub trimMasterListWhiteSpace()
                 If Not Trim(.Range(numToAlpha(countX) & countY).value) = .Range(numToAlpha(countX) & countY).value _
                     And Not IsNumeric(.Range(numToAlpha(countX) & countY).value) Then
                         MsgBox "During update, an entry was discovered with trailing whitespace and was trimmed. Just a heads up! " & vbNewLine _
+                        & "List: " & .Range(numToAlpha(countX) & 1).value & vbNewLine _
                         & "Initial value: " & Chr(34) & .Range(numToAlpha(countX) & countY).value & Chr(34) & vbNewLine _
                         & "New value: " & Chr(34) & Trim(.Range(numToAlpha(countX) & countY).value) & Chr(34)
                     Debug.Print numToAlpha(countX) + CStr(countY)
                     Debug.Print .Range(numToAlpha(countX) & countY).value
                     Debug.Print Trim(.Range(numToAlpha(countX) & countY).value)
 
-                    '.Range(numToAlpha(countX) & countY).value = Trim(.Range(numToAlpha(countX) & countY).value)
+                    .Range(numToAlpha(countX) & countY).value = Trim(.Range(numToAlpha(countX) & countY).value)
                 End If
             Next countY
         Next countX
