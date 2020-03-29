@@ -358,7 +358,7 @@ Function getCourtroomHead(Courtroom As String) As String
     Worksheets("Entry").Activate
     
     Select Case Courtroom
-        Case "4G", "4E", "6F", "6H", "3E", "JTC", "WRAP"
+        Case "4G", "4E", "6F", "6H", "3E", "JTC", "WRAP", "Crossover"
             getCourtroomHead = headerFind(Courtroom)
         Case "Adult"
             getCourtroomHead = headerFind("ADULT")

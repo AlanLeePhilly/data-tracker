@@ -8,7 +8,7 @@ Sub fetchFiledRecord(ByVal userRow As Long)
     Dim commHead As String
     Dim bucketHead As String
     
-    
+    Worksheets("Entry").Activate
     Log_Payment.History.Clear
     
     'FETCH RESTITUTION
@@ -253,6 +253,8 @@ Sub autoCalcRestitution(ByVal userRow As Long)
             dateOfLastFiling = Range(headerFind("Date", bucketHead) & userRow).value
             If i = 1 Then
                 dateOfFirstFiling = Range(headerFind("Date", bucketHead) & userRow).value
+                Range(headerFind("LOS Arrest to First Payment", sectionHead) & userRow).value _
+                    = calcLOS(Range(hFind("Arrest Date") & userRow).value, dateOfFirstFiling)
             End If
         End If
     Next i
@@ -310,7 +312,7 @@ Sub autoCalcRestitution(ByVal userRow As Long)
 
 End Sub
 
-Sub startCourtCost( _
+Sub startCourtCosts( _
     ByVal Amount As String, _
     ByVal Courtroom As String, _
     ByVal DA As String, _
@@ -412,6 +414,8 @@ Sub autoCalcCourtCost(ByVal userRow As Long)
             dateOfLastFiling = Range(headerFind("Date", bucketHead) & userRow).value
             If i = 1 Then
                 dateOfFirstFiling = Range(headerFind("Date", bucketHead) & userRow).value
+                Range(headerFind("LOS Arrest to First Payment", sectionHead) & userRow).value _
+                    = calcLOS(Range(hFind("Arrest Date") & userRow).value, dateOfFirstFiling)
             End If
         End If
     Next i
@@ -561,10 +565,120 @@ Sub startCommService( _
         Exit Sub
     End If
     
-    Range(headerFind("Amount Filed #1", sectionHead) & userRow).value = ClientUpdateForm.JTC_Court_Costs.Caption
+    Range(headerFind("Amount Filed #1", sectionHead) & userRow).value = Amount
     Range(headerFind("Did Youth Have Comm. Service?", sectionHead) & userRow).value = 1 'Yes
     Range(headerFind("Date", sectionHead) & userRow).value = DateOf
     Range(headerFind("Courtroom", sectionHead) & userRow).value = Lookup("Courtroom_Name")(Courtroom)
     Range(headerFind("DA", sectionHead) & userRow).value = Lookup("DA_Last_Name_Name")(DA)
+    
+    
+    Call autoCalcCommServ(userRow)
 
 End Sub
+
+Sub updateCommService( _
+    ByVal Courtroom As String, _
+    ByVal DA As String, _
+    ByVal userRow As Long, _
+    Optional ByVal DateOf As String = "", _
+    Optional ByVal amountFiled As String = "", _
+    Optional ByVal amountEarned As String = "" _
+)
+    Dim i As Integer
+    Dim sectionHead As String
+    Dim bucketHead As String
+    sectionHead = hFind("Comm. Service", "AGGREGATES")
+    
+    Range(headerFind("Did Youth Have Comm. Service?", sectionHead) & userRow).value = 1 'Yes
+    
+    If Not amountFiled = "" Then
+        For i = 1 To NUM_COMM_SERVICE_FILED_BUCKETS
+            If isEmptyOrZero(Range(headerFind("Amount Filed #" & i, sectionHead) & userRow)) Then
+                bucketHead = headerFind("Amount Filed #" & i, sectionHead)
+                
+                Range(bucketHead & userRow).value = amountFiled
+                Range(headerFind("Date", bucketHead) & userRow).value = DateOf
+                Range(headerFind("Courtroom", bucketHead) & userRow).value = Lookup("Courtroom_Name")(Courtroom)
+                Range(headerFind("DA", bucketHead) & userRow).value = Lookup("DA_Last_Name_Name")(DA)
+                
+                Exit For
+                ' TODO Warning for exceeding buckets
+            End If
+        Next i
+    End If
+
+    
+    If Not amountEarned = "" Then
+        For i = 1 To NUM_COMM_SERVICE_EARNED_BUCKETS
+            If isEmptyOrZero(Range(headerFind("Amount Earned #" & i, sectionHead) & userRow)) Then
+                bucketHead = headerFind("Amount Earned #" & i, sectionHead)
+                
+                Range(bucketHead & userRow).value = amountEarned
+                Range(headerFind("Date", bucketHead) & userRow).value = DateOf
+                Range(headerFind("Courtroom", bucketHead) & userRow).value = Lookup("Courtroom_Name")(Courtroom)
+                Range(headerFind("DA", bucketHead) & userRow).value = Lookup("DA_Last_Name_Name")(DA)
+                
+                Exit For
+                ' TODO Warning for exceeding buckets
+            End If
+        Next i
+    End If
+    
+    Call autoCalcCommServ(userRow)
+    
+End Sub
+
+Sub autoCalcCommServ(ByVal userRow As Long)
+    Dim i As Integer
+    Dim sectionHead As String
+    Dim bucketHead As String
+    Dim dateOfLastEarning As String
+    Dim dateOfFirstFiling As String
+    Dim dateOfLastFiling As String
+    sectionHead = hFind("Comm. Service", "AGGREGATES")
+    
+    'Calc Total Amount Filed
+    Dim totalAmountFiled As Double
+    totalAmountFiled = 0
+    
+    For i = 1 To NUM_COMM_SERVICE_FILED_BUCKETS
+        If isNotEmptyOrZero(Range(headerFind("Amount Filed #" & i, sectionHead) & userRow)) Then
+            bucketHead = headerFind("Amount Filed #" & i, sectionHead)
+            totalAmountFiled = totalAmountFiled + CDbl(Range(bucketHead & userRow).value)
+            dateOfLastFiling = Range(headerFind("Date", bucketHead) & userRow).value
+            If i = 1 Then
+                dateOfFirstFiling = Range(headerFind("Date", bucketHead) & userRow).value
+            End If
+        End If
+    Next i
+    
+    Range(headerFind("Total Amount Filed", sectionHead) & userRow).value = totalAmountFiled
+    
+    
+    'Calc Total Amount Remaining
+    Dim totalAmountEarned As Double
+    totalAmountEarned = 0
+    
+    For i = 1 To NUM_COMM_SERVICE_EARNED_BUCKETS
+        If isNotEmptyOrZero(Range(headerFind("Amount Earned #" & i, sectionHead) & userRow)) Then
+            bucketHead = headerFind("Amount Earned #" & i, sectionHead)
+            totalAmountEarned = totalAmountEarned + CDbl(Range(bucketHead & userRow).value)
+            dateOfLastPayment = Range(headerFind("Date", bucketHead) & userRow).value
+        End If
+    Next i
+    
+    Range(headerFind("Total Amount Earned", sectionHead) & userRow).value = totalAmountEarned
+    
+    Range(headerFind("Total Amount Remaining", sectionHead) & userRow).value = totalAmountFiled - totalAmountEarned
+    
+    If totalAmountEarned >= totalAmountFiled Then
+        Range(headerFind("Comm. Service Status", sectionHead) & userRow).value = 1 ' Paid in Full
+        Range(headerFind("Date Earned in Full", sectionHead) & userRow).value = dateOfLastEarning
+        Range(headerFind("LOS to Earn in Full", sectionHead) & userRow).value = calcLOS(dateOfFirstFiling, dateOfLastPayment)
+    Else
+        Range(headerFind("Comm. Service Status", sectionHead) & userRow).value = 3 ' Active and Unpaid
+        Range(headerFind("Date Earned in Full", sectionHead) & userRow).value = ""
+        Range(headerFind("LOS to Earn in Full", sectionHead) & userRow).value = ""
+    End If
+End Sub
+

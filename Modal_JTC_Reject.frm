@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} Modal_JTC_Reject 
    Caption         =   "JTC - Reject Client"
    ClientHeight    =   3765
-   ClientLeft      =   48
-   ClientTop       =   372
-   ClientWidth     =   6252
+   ClientLeft      =   45
+   ClientTop       =   375
+   ClientWidth     =   6255
    OleObjectBlob   =   "Modal_JTC_Reject.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -17,6 +17,7 @@ Attribute VB_Exposed = False
 Private Sub Continue_Click()
     ClientUpdateForm.JTC_Reject.BackColor = &H8000000A
     ClientUpdateForm.JTC_Accept.BackColor = &H8000000F
+    ClientUpdateForm.JTC_Phase_Remain.BackColor = unselectedColor
 
     ClientUpdateForm.JTC_Return_Phase = "Rejected"
 
@@ -34,24 +35,6 @@ Private Sub Continue_Click()
     ClientUpdateForm.JTC_Pushback_Reason1.Caption = ""
     ClientUpdateForm.JTC_Pushback_Reason2.Caption = ""
     ClientUpdateForm.JTC_Pushback_Reason3.Caption = ""
-
-    ClientUpdateForm.JTC_Treatment_Stepdown.Enabled = False
-    ClientUpdateForm.JTC_Treatment_Stepdown.BackColor = &H8000000F
-    ClientUpdateForm.JTC_Treatment_Provider_Update.Enabled = False
-    ClientUpdateForm.JTC_Treatment_Provider_Update.BackColor = &H8000000F
-    ClientUpdateForm.JTC_Treatment_Provider_Remain.Enabled = False
-    ClientUpdateForm.JTC_Treatment_Provider_Remain.BackColor = &H8000000F
-
-    ClientUpdateForm.JTC_Return_Treatment_Provider_Label.Enabled = False
-    ClientUpdateForm.JTC_Return_Treatment_Provider.Caption = ""
-    ClientUpdateForm.JTC_Stepdown_Label.Enabled = False
-    ClientUpdateForm.JTC_Return_Stepdown_Date.Caption = ""
-
-    ClientUpdateForm.JTC_Service_Add.Enabled = False
-    ClientUpdateForm.JTC_Service_Discharge.Enabled = False
-
-
-    ClientUpdateForm.JTC_Return_Service_Box_Label.Enabled = False
 
     Me.Hide
 
@@ -73,3 +56,6 @@ Private Sub InsertDoH_Click()
     DateOfRejection.value = ClientUpdateForm.DateOfHearing.value
 End Sub
 
+Private Sub UserForm_Click()
+
+End Sub

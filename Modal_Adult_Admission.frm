@@ -3,8 +3,8 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} Modal_Adult_Admission
    Caption         =   "UserForm1"
    ClientHeight    =   6945
    ClientLeft      =   120
-   ClientTop       =   456
-   ClientWidth     =   9396.001
+   ClientTop       =   450
+   ClientWidth     =   9390.001
    OleObjectBlob   =   "Modal_Adult_Admission.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -13,6 +13,8 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
+
 Private Sub UserForm_Initialize()
     Call addChargesToBox(PetitionBox)
 End Sub

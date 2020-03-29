@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} Modal_JTC_Add_Service 
    Caption         =   "JTC - Add Service"
    ClientHeight    =   7980
-   ClientLeft      =   48
-   ClientTop       =   -72
-   ClientWidth     =   6324
+   ClientLeft      =   45
+   ClientTop       =   -75
+   ClientWidth     =   6330
    OleObjectBlob   =   "Modal_JTC_Add_Service.frx":0000
    StartUpPosition =   1  'CenterOwner
 End

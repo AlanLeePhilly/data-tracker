@@ -372,12 +372,8 @@ Sub admissionStart( _
     For i = 1 To 2
         Select Case i
             Case 1
-                Select Case Courtroom
-                    Case "5E"
-                        bucketHead = hFind("Admissions", "COURT PROCEEDINGS", "Crossover")
-                    Case "4G", "4E", "6F", "6H", "3E", "WRAP", "JTC"
-                        bucketHead = hFind("Admissions", "COURT PROCEEDINGS", Courtroom)
-                End Select
+                bucketHead = getCourtroomHead(Courtroom)
+                bucketHead = headerFind("Admissions", bucketHead)
             Case 2
                 bucketHead = hFind("Admissions", "COURT PROCEEDINGS", "AGGREGATES")
         End Select

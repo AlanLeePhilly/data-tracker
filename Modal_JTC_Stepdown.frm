@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} Modal_JTC_Stepdown 
    Caption         =   "JTC - Treatment Stepdown"
    ClientHeight    =   3195
-   ClientLeft      =   48
-   ClientTop       =   372
-   ClientWidth     =   5484
+   ClientLeft      =   45
+   ClientTop       =   375
+   ClientWidth     =   5490
    OleObjectBlob   =   "Modal_JTC_Stepdown.frx":0000
    StartUpPosition =   1  'CenterOwner
 End

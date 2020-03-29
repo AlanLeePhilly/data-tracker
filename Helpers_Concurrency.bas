@@ -39,19 +39,19 @@ Function isActiveInCourtroom(userRow As Long, Courtroom As String, DateOf As Str
         For i = 3 To lastRow
             If Range(hFind("PID #") & i).value = currentPID _
             And Not i = userRow Then
-                If IsDate(Range(headerFind("Accepted Date", courtroomHead) & i).value) Then
-                    If Range(headerFind("Accepted Date", courtroomHead) & i).value < DateOf Then
+                If IsDate(Range(headerFind("Referral Date", courtroomHead) & i).value) Then
+                    If Range(headerFind("Referral Date", courtroomHead) & i).value < DateOf Then
                         If Not IsDate(Range(headerFind("End Date", courtroomHead) & i).value) _
-                        Or Range(headerFind("Accepted Date", courtroomHead) & i).value > DateOf Then
+                        Or Range(headerFind("End Date", courtroomHead) & i).value > DateOf Then
                             isActiveInCourtroom = 1 'Yes
                         Else
                             MsgBox "'Active in Courtroom' debug: Found same client at row " & i & " but End Date in " & Courtroom & " is before " & DateOf
                         End If
                     Else
-                        MsgBox "'Active in Courtroom' debug: Found same client at row " & i & " but Accepted Date in " & Courtroom & " is not before " & DateOf
+                        MsgBox "'Active in Courtroom' debug: Found same client at row " & i & " but Referral Date in " & Courtroom & " is not before " & DateOf
                     End If
                 Else
-                    MsgBox "'Active in Courtroom' debug: Found same client at row " & i & " but no Accepted Date in " & Courtroom
+                    MsgBox "'Active in Courtroom' debug: Found same client at row " & i & " but no Referral Date in " & Courtroom
                 End If
             End If
         Next i
@@ -62,8 +62,9 @@ Function isActiveInCourtroom(userRow As Long, Courtroom As String, DateOf As Str
                 If IsDate(Range(headerFind("Start Date", courtroomHead) & i).value) Then
                     If Range(headerFind("Start Date", courtroomHead) & i).value < DateOf Then
                         If Not IsDate(Range(headerFind("End Date", courtroomHead) & i).value) _
-                        Or Range(headerFind("Accepted Date", courtroomHead) & i).value > DateOf Then
+                        Or Range(headerFind("End Date", courtroomHead) & i).value > DateOf Then
                             isActiveInCourtroom = 1 'Yes
+                            MsgBox "'Active in Courtroom' logged: Found same client at row " & i & " in courtroom " & Courtroom & " on " & DateOf
                         Else
                             MsgBox "'Active in Courtroom' debug: Found same client at row " & i & " but End Date in " & Courtroom & " is before " & DateOf
                         End If

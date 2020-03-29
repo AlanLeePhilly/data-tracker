@@ -2,8 +2,8 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} Modal_JTC_Accept 
    Caption         =   "JTC - Accept Client"
    ClientHeight    =   3840
-   ClientLeft      =   48
-   ClientTop       =   372
+   ClientLeft      =   45
+   ClientTop       =   375
    ClientWidth     =   6000
    OleObjectBlob   =   "Modal_JTC_Accept.frx":0000
    StartUpPosition =   1  'CenterOwner
@@ -54,7 +54,8 @@ Private Sub Continue_Click()
 
     ClientUpdateForm.JTC_Reject.BackColor = &H8000000F
     ClientUpdateForm.JTC_Accept.BackColor = &H8000000A
-
+    ClientUpdateForm.JTC_Phase_Remain.BackColor = unselectedColor
+    
     ClientUpdateForm.JTC_Return_Phase.Caption = 1
 
     ClientUpdateForm.JTC_Accept_Reject_Date.Caption = DateOfAcceptance.value

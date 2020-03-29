@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} Modal_Standard_Drop_Condition 
    Caption         =   "Drop Condition"
    ClientHeight    =   8028
-   ClientLeft      =   48
-   ClientTop       =   372
-   ClientWidth     =   6348
+   ClientLeft      =   45
+   ClientTop       =   375
+   ClientWidth     =   6345
    OleObjectBlob   =   "Modal_Standard_Drop_Condition.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -79,6 +79,10 @@ Private Sub Continue_Click()
                         ClientUpdateForm.Standard_Comm_Service.Visible = False
                         ClientUpdateForm.Standard_Comm_Service_Label.Visible = False
                         ClientUpdateForm.Standard_Comm_Service.Caption = ""
+                    Case "Court Costs"
+                        ClientUpdateForm.Standard_Court_Costs.Visible = False
+                        ClientUpdateForm.Standard_Court_Costs_Label.Visible = False
+                        ClientUpdateForm.Standard_Court_Costs.Caption = ""
                 End Select
             
             

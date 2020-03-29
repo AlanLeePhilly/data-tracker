@@ -3,8 +3,8 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} Modal_Adult_Reslate
    Caption         =   "UserForm1"
    ClientHeight    =   4995
    ClientLeft      =   120
-   ClientTop       =   456
-   ClientWidth     =   8796.001
+   ClientTop       =   450
+   ClientWidth     =   8790.001
    OleObjectBlob   =   "Modal_Adult_Reslate.frx":0000
    StartUpPosition =   1  'CenterOwner
 End

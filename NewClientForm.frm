@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} NewClientForm 
    Caption         =   "NewClientUserForm"
    ClientHeight    =   8580.001
-   ClientLeft      =   48
-   ClientTop       =   372
-   ClientWidth     =   18072
+   ClientLeft      =   45
+   ClientTop       =   375
+   ClientWidth     =   18075
    OleObjectBlob   =   "NewClientForm.frx":0000
 End
 Attribute VB_Name = "NewClientForm"
@@ -318,7 +318,7 @@ Private Sub Reload_Click()
     DiversionProgramReferralDate.value = Range(headerFind("Diversion Referral Date", petitionHead) & emptyRow).value
     ReferralSource.value = Lookup("Diversion_Referral_Source_Num")(Range(headerFind("Referral Source", diversionHead) & emptyRow).value)
     NameOfProgram.value = Lookup("Diversion_Program_Num")(Range(headerFind("Diversion Program Ordered", diversionHead) & emptyRow).value)
-    YAPDistrict.value = Lookup("Police_District_Num")(Range(headerFind("YAP Panel District #", diversionHead) & emptyRow).value)
+    YAPDistrict.value = Lookup("YAP_Panel_Num")(Range(headerFind("YAP Panel District #", diversionHead) & emptyRow).value)
     NoDiversionReason1 = Lookup("Diversion_Rejection_Reason_Num")(Range(headerFind("Reason #1 Not Diverted", diversionHead) & emptyRow).value)
     NoDiversionReason2 = Lookup("Diversion_Rejection_Reason_Num")(Range(headerFind("Reason #2 Not Diverted", diversionHead) & emptyRow).value)
     NoDiversionReason3 = Lookup("Diversion_Rejection_Reason_Num")(Range(headerFind("Reason #3 Not Diverted", diversionHead) & emptyRow).value)
@@ -1742,82 +1742,7 @@ Private Sub TestFillPetition_Click()
 End Sub
 
 Private Sub TestFillDiversion_Click()
-    FirstName.value = "David"
-    LastName.value = "Sterling"
-    DateOfBirth.value = "3/7/2002"
-
-    Race.value = "White"
-    Sex.value = "Male"
-    Latino = "Not Latino"
-
-    GuardianFirstName1.value = "Ma"
-    GuardianLastName1.value = "Serlin"
-    GuardianRelation1.value = "Mother"
-    
-    GuardianFirstName2.value = "Pa"
-    GuardianLastName2.value = "Serlin"
-    GuardianRelation2.value = "Father"
-
-    Address.value = "817 N. 2nd St."
-    Zipcode.value = "19123"
-
-
-    PhoneNumber.value = "123-456-7890"
-    School.value = "Franklin High School"
-    Grade.value = "12"
-
-
-    IncidentDate.value = "02/01/2019"
-    TimeOfIncident_H.value = "04"
-    TimeOfIncident_M.value = "00"
-    TimeOfIncident_P.value = "PM"
-    IncidentDistrict.value = "22"
-    IncidentAddress.value = "1501 Market St."
-    IncidentZipcode.value = "19102"
-
-    ArrestDate.value = "02/01/2019"
-    TimeOfArrest_H.value = "02"
-    TimeOfArrest_M.value = "30"
-    TimeOfArrest_P.value = "PM"
-    TimeReferredToDA_H.value = "10"
-    TimeReferredToDA_M.value = "00"
-    TimeReferredToDA_P.value = "AM"
-    ArrestingDistrict.value = "22"
-
-    ActiveAtArrest.value = "No"
-    NumOfPriorArrests.value = 0
-    DCNum.value = "12345"
-    PIDNum.value = "5467"
-    SIDNum.value = "87980"
-
-    Officer1.value = "AO1Test"
-    Officer2.value = "AO2Test"
-    Officer3.value = "AO3Test"
-    Officer4.value = "AO4Test"
-    Officer4.value = "AO5Test"
-
-    VictimFirstName = "VicFirstTest"
-    VictimLastName = "VicLastTest"
-
-    'Petitions
-
-    With PetitionBox
-        .ColumnCount = 7
-        .ColumnWidths = "50;50;30;50;65;50;0"
-        .AddItem "08/01/2018"
-        .List(0, 1) = "13579"
-        .List(0, 2) = "F"
-        .List(0, 3) = "Assaults"
-        .List(0, 4) = "18 - 2702"
-        .List(0, 5) = "AGGRAVATED ASSAULT"
-        .List(0, 6) = "No"
-    End With
-
-    CallInDate.value = "02/01/2019"
-    Was_DRAI_Administered.value = "Yes"
-    DRAI_Score.value = "4"
-    DRAI_Rec.value = "Release"
-    DRAI_Action.value = "Follow - Release"
+    Call TestFillPetition_Click
 
     InConfDate.value = "02/01/2019"
     ConfOutcome.value = "Release for Diversion"
@@ -1826,7 +1751,7 @@ Private Sub TestFillDiversion_Click()
     DiversionProgramReferralDate.value = "2/1/19"
     ReferralSource.value = "Pre-Petition DA"
     NameOfProgram.value = "YAP"
-    YAPDistrict.value = 2
+    YAPDistrict.value = "5th"
 
     GeneralNotes.value = "Gen Notes Test"
 

@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} ClientUpdateForm 
    Caption         =   "ClientUpdateForm"
-   ClientHeight    =   10572
-   ClientLeft      =   48
-   ClientTop       =   -72
-   ClientWidth     =   15972
+   ClientHeight    =   10575
+   ClientLeft      =   45
+   ClientTop       =   -75
+   ClientWidth     =   15975
    OleObjectBlob   =   "ClientUpdateForm.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -19,11 +19,20 @@ Option Explicit
 
 
 
+
+
+Private Sub Adult_NextCourtDate_Enter()
+    Adult_NextCourtDate.value = CalendarForm.GetDate(RangeOfYears:=5)
+End Sub
+Private Sub Adult_NextCourtDate_Exit(ByVal Cancel As MSForms.ReturnBoolean)
+    Set ctl = ClientUpdateForm.Adult_NextCourtDate
+
+    Call DateValidation(ctl, Cancel)
+End Sub
+
 Private Sub JTC_NCD_NA_Click()
     NextCourtDate.value = "N/A"
 End Sub
-
-
 
 
 
@@ -36,6 +45,8 @@ Private Sub LogPayment_Click()
     Log_Payment.Show
     
 End Sub
+
+
 
 Private Sub RearrestIntake_Click()
     Modal_Rearrest_Intake.Show
@@ -305,6 +316,8 @@ Sub Lookup_Button_Click()
         Case "Adult"
             MultiPage1.value = 3
             Call Adult_Fetch
+        Case "Intake Conf."
+            MultiPage1.value = 5
         Case Else
             MsgBox "Please select a valid courtroom to continue!"
             Exit Sub
@@ -423,19 +436,15 @@ Sub Adult_Submit_Click()
     Dim oldCourtroom As String
     Dim newCourtHead As String
     Dim newCourtroom As String
-    oldCourtroom = "ADULT"
-    newCourtroom = "ADULT"
+    oldCourtroom = "Adult"
+    newCourtroom = "Adult"
 
     If Adult_Return_Reslate.BackColor = selectedColor Then
         newCourtroom = Adult_Reslate_Juvenile_Petition.NextHearingLocation.value
     End If
 
-    If newCourtHead = "5E" Then
-        newCourtHead = headerFind("Crossover")
-    Else
-        newCourtHead = headerFind(newCourtroom)
-    End If
-
+    oldCourtHead = getCourtroomHead(oldCourtroom)
+    newCourtHead = getCourtroomHead(newCourtroom)
 
     'append PCD
     Call append(Range(headerFind("Previous Court Dates") & updateRow), DateOfHearing.value)
@@ -455,7 +464,58 @@ Sub Adult_Submit_Click()
 
     If Adult_Reslate_Update.BackColor = selectedColor Then
         If Modal_Adult_Reslate.Hearing_Outcome.value = "Granted" Then
-
+        
+            ''''''''''''''''''''''
+            ''Close out Adult CR''
+            ''''''''''''''''''''''
+            Dim referralDate As String
+            referralDate = DateOfHearing.value
+                
+                
+                Range(headerFind("Discharging Courtroom", oldCourtHead) & updateRow).value _
+                    = Lookup("Courtroom_Name")(oldCourtroom)
+                Range(headerFind("Discharging DA", oldCourtHead) & updateRow).value _
+                    = Lookup("DA_Last_Name_Name")(DA.value)
+            
+                Range(headerFind("End Date", oldCourtHead) & updateRow).value _
+                    = referralDate
+                Range(headerFind("Nature of Discharge", oldCourtHead) & updateRow).value _
+                    = 1 'Positive
+                Range(headerFind("Detailed Status Outcome", oldCourtHead) & updateRow).value _
+                    = 16 'Transfer to New Del. Room - Positive
+                Range(headerFind("LOS", oldCourtHead) & updateRow).value _
+                    = calcLOS( _
+                        Range(headerFind("Start Date", oldCourtHead) & updateRow).value, _
+                        Range(headerFind("End Date", oldCourtHead) & updateRow).value)
+                        
+                Range(headerFind("Notes on Outcome", oldCourtHead) & updateRow).value _
+                    = Adult_Notes.value
+                Range(headerFind("Date of Overall Discharge", oldCourtHead) & updateRow).value _
+                    = referralDate
+                Range(headerFind("Courtroom of Discharge", oldCourtHead) & updateRow).value _
+                    = Lookup("Courtroom_Name")(oldCourtroom)
+                Range(hFind("DA", "OUTCOMES", "ADULT") & updateRow).value _
+                    = Lookup("DA_Last_Name_Name")(DA.value)
+                Range(headerFind("Legal Status of Discharge", oldCourtHead) & updateRow).value _
+                    = 10 'Adult
+                Range(headerFind("Active or Discharged", oldCourtHead) & updateRow).value _
+                    = 2 'Discharged
+                Range(headerFind("Nature of Courtroom Outcome", oldCourtHead) & updateRow).value _
+                    = 1 'Positive
+                Range(headerFind("Detailed Courtroom Outcome", oldCourtHead) & updateRow).value _
+                    = 16 'Transfer to New Del. Room - Positive
+                Range(headerFind("Acquittal or Supervision Discharge?", oldCourtHead) & updateRow).value _
+                    = 0 'N/A
+                Range(headerFind("Total LOS in Adult", oldCourtHead) & updateRow).value _
+                    = calcLOS( _
+                        Range(headerFind("Start Date", oldCourtHead) & updateRow).value, _
+                        Range(headerFind("End Date", oldCourtHead) & updateRow).value)
+                Range(headerFind("Total LOS From Arrest", oldCourtHead) & updateRow).value _
+                    = calcLOS( _
+                        Range(headerFind("Arrest Date") & updateRow).value, _
+                        Range(headerFind("End Date", oldCourtHead) & updateRow).value)
+            
+            
             ''''''''''''
             ''PETITION''
             ''''''''''''
@@ -760,11 +820,19 @@ Sub Adult_Submit_Click()
                     Range(headerFind("DA", tempHead) & updateRow).value _
                         = Lookup("DA_Last_Name_Name")(DA.value)
 
-
                     Range(headerFind("Intake Conference Outcome", tempHead) & updateRow).value _
                         = Lookup("Intake_Conference_Outcome_Name")(.ConfOutcome.value)
 
-
+                    Range(hFind("Status at Arrest", "DHS") & updateRow).value _
+                        = Lookup("DHS_Status_at_Arrest_Name")(.DHS_Status.value)
+                    
+                    If .DHS_Status.value = "N/A" Or .DHS_Status.value = "None" Or .DHS_Status.value = "Unknown" Then
+                        Range(hFind("Did youth have any DHS contact?", "DHS") & updateRow).value = 2 'no
+                    Else
+                        Range(hFind("Did youth have any DHS contact?", "DHS") & updateRow).value = 1 'yes
+                    End If
+                    
+                    
                     Range(headerFind("Location of Next Event", tempHead) & updateRow).value _
                         = Lookup("Courtroom_Name")(.NextHearingLocation.value)
 
@@ -815,6 +883,21 @@ Sub Adult_Submit_Click()
                     Range(headerFind("Other Condition #3 Provider", tempHead) & updateRow).value _
                         = Lookup("Condition_Provider_Name")(.Cond3Pro.value)
 
+                    
+                    Range(headerFind("Diagnosis #1") & updateRow).value = Lookup("Diagnosis_Name")(.Diagnosis1.value)
+                    Range(headerFind("Diagnosis #2") & updateRow).value = Lookup("Diagnosis_Name")(.Diagnosis2.value)
+                    Range(headerFind("Diagnosis #3") & updateRow).value = Lookup("Diagnosis_Name")(.Diagnosis3.value)
+                    Range(headerFind("Trauma Type #1") & updateRow).value = Lookup("Trauma_Type_Name")(.TraumaType1.value)
+                    Range(headerFind("Trauma Type #2") & updateRow).value = Lookup("Trauma_Type_Name")(.TraumaType2.value)
+                    Range(headerFind("Trauma Type #3") & updateRow).value = Lookup("Trauma_Type_Name")(.TraumaType3.value)
+                    Range(headerFind("Treatment #1") & updateRow).value = Lookup("Treatment_Name")(.Treatment1.value)
+                    Range(headerFind("Treatment #2") & updateRow).value = Lookup("Treatment_Name")(.Treatment2.value)
+                    Range(headerFind("Treatment #3") & updateRow).value = Lookup("Treatment_Name")(.Treatment3.value)
+                    
+                    
+                    
+                    
+                    
                     Select Case .ConfOutcome.value
                         Case "Hold for Detention"
                             Range(headerFind("Active Courtroom") & updateRow).value _
@@ -823,18 +906,20 @@ Sub Adult_Submit_Click()
                             Range(hFind("Detention Facility", "DETENTION") & updateRow).value _
                                  = Lookup("Detention_Facility_Name")(.DetentionFacility.value)
                             Call addSupervision( _
-                            clientRow:=updateRow, _
-                            serviceType:="Detention (not respite)", _
-                            legalStatus:="Pretrial", _
-                            Courtroom:="Intake Conf.", _
-                            DA:=DA.value, _
-                            agency:="", _
-                            startDate:=.InConfDate.value, _
-                            re1:="", _
-                            re2:="", _
-                            re3:="", _
-                            Notes:="Held at intake conference")
-
+                                clientRow:=updateRow, _
+                                serviceType:="Detention (not respite)", _
+                                legalStatus:="Pretrial", _
+                                Courtroom:="Intake Conf.", _
+                                DA:=DA.value, _
+                                agency:="", _
+                                startDate:=.InConfDate.value, _
+                                re1:="", _
+                                re2:="", _
+                                re3:="", _
+                                Notes:="Held at intake conference")
+                        Case "Roll to Detention Hearing"
+                            Range(headerFind("Active Courtroom") & updateRow).value _
+                                 = Lookup("Courtroom_Name")("PJJSC")
                         Case "Release for Court"
                             Call ReferClientTo( _
                                 referralDate:=.InConfDate.value, _
@@ -842,13 +927,6 @@ Sub Adult_Submit_Click()
                                 fromCR:="Intake Conf.", _
                                 toCR:=.NextHearingLocation.value, _
                                 DA:=DA.value _
-                                )
-                            Call ReferClientTo( _
-                                referralDate:=.PetitionBox.List(0, 0), _
-                                clientRow:=updateRow, _
-                                fromCR:="Adult", _
-                                DA:=DA.value, _
-                                Notes:=Adult_Notes.value _
                                 )
                             If .NextHearingLocation.value = "5E" Then
                                 Range(hFind("Courtroom of Origin", "Crossover") & updateRow).value _
@@ -1070,7 +1148,7 @@ Sub Adult_Submit_Click()
             Call admissionStart( _
                 clientRow:=updateRow, _
                 petitionNum:=Modal_Adult_Admission.PetitionBox.value, _
-                statusType:=Lookup("Legal_Status_Num")(Range(headerFind("Legal Status") & updateRow).value), _
+                statusType:="Adult", _
                 Courtroom:=newCourtroom, _
                 DA:=DA.value, _
                 startDate:=Modal_Adult_Admission.Admission_Date.value, _
@@ -1374,9 +1452,9 @@ Sub JTC_Submit_Click()
             fromCR:="JTC", _
             Notes:="Rejected from JTC", _
             DA:=DA.value)
-        Call Cancel_Click
-        Worksheets("User Entry").Activate
-        Exit Sub
+        'Call Cancel_Click
+        'Worksheets("User Entry").Activate
+        'Exit Sub
     End If
 
     If JTC_Accept.BackColor = selectedColor Then
@@ -1524,19 +1602,19 @@ Sub JTC_Submit_Click()
     If JTC_Treatment_Discharge.BackColor = selectedColor Then
         'find latest entry & enter DoH as discharge date
         Select Case True
-            Case Range(hFind("IOP Provider #3", "JTC") & updateRow).value = Lookup("IOP_Provider_Name")(JTC_Return_Treatment_Provider.Caption)
+            Case Range(hFind("IOP Provider #3", "JTC") & updateRow).value = Lookup("IOP_Provider_Name")(JTC_Fetch_Treatment_Provider.Caption)
                 Range(hFind("Discharge Date", "IOP Provider #3", "JTC") & updateRow) = DateOfHearing
                 Range(hFind("LOS IOP", "IOP Provider #3", "JTC") & updateRow) _
                     = calcLOS(Range(hFind("Referral Date", "IOP Provider #3", "JTC") & updateRow), _
                       Range(hFind("Discharge Date", "IOP Provider #3", "JTC") & updateRow))
 
-            Case Range(hFind("IOP Provider #2", "JTC") & updateRow).value = Lookup("IOP_Provider_Name")(JTC_Return_Treatment_Provider.Caption)
+            Case Range(hFind("IOP Provider #2", "JTC") & updateRow).value = Lookup("IOP_Provider_Name")(JTC_Fetch_Treatment_Provider.Caption)
                 Range(hFind("Discharge Date", "IOP Provider #2", "JTC") & updateRow) = DateOfHearing
                 Range(hFind("LOS IOP", "IOP Provider #2", "JTC") & updateRow) _
                     = calcLOS(Range(hFind("Referral Date", "IOP Provider #2", "JTC") & updateRow), _
                       Range(hFind("Discharge Date", "IOP Provider #2", "JTC") & updateRow))
 
-            Case Range(hFind("IOP Provider #1", "JTC") & updateRow).value = Lookup("IOP_Provider_Name")(JTC_Return_Treatment_Provider.Caption)
+            Case Range(hFind("IOP Provider #1", "JTC") & updateRow).value = Lookup("IOP_Provider_Name")(JTC_Fetch_Treatment_Provider.Caption)
                 Range(hFind("Discharge Date", "IOP Provider #1", "JTC") & updateRow) = DateOfHearing
                 Range(hFind("LOS IOP", "IOP Provider #1", "JTC") & updateRow) _
                       = calcLOS(Range(hFind("Referral Date", "IOP Provider #1", "JTC") & updateRow), _
@@ -1776,7 +1854,7 @@ Sub JTC_Submit_Click()
                             DateOf:=.List(i, 2), _
                             userRow:=updateRow)
                     Case "Court Costs"
-                        Call startCourtCost( _
+                        Call startCourtCosts( _
                             Amount:=ClientUpdateForm.JTC_Court_Costs.Caption, _
                             Courtroom:="JTC", _
                             DA:=DA.value, _
@@ -1892,7 +1970,7 @@ Sub JTC_Submit_Click()
                     DA:=DA.value, _
                     legalStatus:="JTC", _
                     Nature:=Modal_JTC_Discharge.NatureOfOutcome.value, _
-                    detailed:="Rearrested & Held", _
+                    detailed:="Rearrested & Held (adult)", _
                     Notes:=JTC_Notes.value)
 
                 ''''''''''''''''''''''
@@ -2094,7 +2172,7 @@ Sub Standard_Submit_Click()
     Range(headerFind("Legal Status") & updateRow) _
                 = Lookup("Legal_Status_Name")(Standard_Return_Legal_Status.Caption)
 
-    'ASSUMPTION: NO COURTROOM CHANGE
+   
 
     Dim oldLegalHead As String
     Dim newLegalHead As String
@@ -2313,7 +2391,7 @@ Sub Standard_Submit_Click()
             )
         End With
     End If
-
+    
     '''''''''''''
     'CONTINUANCE'
     '''''''''''''
@@ -2463,6 +2541,14 @@ Sub Standard_Submit_Click()
                     Case "Comm. Serv"
                         Call startCommService( _
                             Amount:=ClientUpdateForm.Standard_Comm_Service.Caption, _
+                            Courtroom:=oldCourtroom, _
+                            DA:=DA.value, _
+                            DateOf:=.List(i, 2), _
+                            userRow:=updateRow)
+                            
+                    Case "Court Costs"
+                        Call startCourtCosts( _
+                            Amount:=ClientUpdateForm.Standard_Court_Costs.Caption, _
                             Courtroom:=oldCourtroom, _
                             DA:=DA.value, _
                             DateOf:=.List(i, 2), _
@@ -3087,6 +3173,7 @@ Sub JTC_Phase_Remain_Click()
     JTC_Phase_Remain.BackColor = selectedColor
     JTC_Phase_Stepup.BackColor = unselectedColor
     JTC_Phase_Pushback.BackColor = unselectedColor
+    JTC_Reject.BackColor = unselectedColor
     JTC_Discharge.BackColor = unselectedColor
 End Sub
 
@@ -3218,8 +3305,552 @@ Private Sub JTC_Remain_All_Click()
         Call JTC_Continuance_Remain_Click
     End If
 
-    If Not JTC_Treatment_Provider_Update.BackColor = selectedColor Then
+    If Not JTC_Treatment_Provider_Update.BackColor = selectedColor _
+    And Not JTC_Treatment_Discharge.BackColor = selectedColor _
+    And Not JTC_Treatment_Stepdown.BackColor = selectedColor Then
         Call JTC_Treatment_Provider_Remain_Click
     End If
 
 End Sub
+
+
+Private Sub DRAI_Score_Change()
+    If IsNumeric(DRAI_Score.value) Then
+        Select Case DRAI_Score.value
+            Case Is < 10
+                DRAI_Rec.value = "Release"
+            Case Is < 15
+                DRAI_Rec.value = "Release w/ Supervision"
+            Case Is >= 15
+                DRAI_Rec.value = "Hold"
+            Case Else
+                DRAI_Rec.value = "Unknown"
+        End Select
+    End If
+End Sub
+Private Sub DRAI_Action_Change()
+    Select Case DRAI_Action.value
+        Case "Follow - Hold", "Override - Hold"
+            InitialHearingLocation.value = "PJJSC"
+            DetentionFacility.Enabled = True
+            DetentionFacilityLabel.Enabled = True
+
+            Supv1.Enabled = False
+            Supv1Pro.Enabled = False
+            Supv1Re1.Enabled = False
+            Supv1Re2.Enabled = False
+            Supv1Re3.Enabled = False
+
+            Supv2.Enabled = False
+            Supv2Pro.Enabled = False
+            Supv2Re1.Enabled = False
+            Supv2Re2.Enabled = False
+            Supv2Re3.Enabled = False
+
+            Cond1.Enabled = False
+            Cond1Pro.Enabled = False
+            Cond2.Enabled = False
+            Cond2Pro.Enabled = False
+            Cond3.Enabled = False
+            Cond3Pro.Enabled = False
+
+        Case Else
+            Supv1.Enabled = True
+            Supv1Pro.Enabled = True
+            Supv1Re1.Enabled = True
+            Supv1Re2.Enabled = True
+            Supv1Re3.Enabled = True
+
+            Supv2.Enabled = True
+            Supv2Pro.Enabled = True
+            Supv2Re1.Enabled = True
+            Supv2Re2.Enabled = True
+            Supv2Re3.Enabled = True
+
+            Cond1.Enabled = True
+            Cond1Pro.Enabled = True
+            Cond2.Enabled = True
+            Cond2Pro.Enabled = True
+            Cond3.Enabled = True
+            Cond3Pro.Enabled = True
+
+    End Select
+End Sub
+
+Private Sub InConfDate_Enter()
+    InConfDate.value = CalendarForm.GetDate(RangeOfYears:=5)
+End Sub
+Private Sub InConfDate_Exit(ByVal Cancel As MSForms.ReturnBoolean)
+    Set ctl = Me.InConfDate
+    Call DateValidation(ctl, Cancel)
+End Sub
+Private Sub CallInDate_Enter()
+    CallInDate.value = CalendarForm.GetDate(RangeOfYears:=5)
+End Sub
+Private Sub CallInDate_Exit(ByVal Cancel As MSForms.ReturnBoolean)
+    Set ctl = Me.CallInDate
+    Call DateValidation(ctl, Cancel)
+End Sub
+
+
+
+Private Sub InitialHearingLocation_Change()
+    If InitialHearingLocation.value = "Intake Conf." Then
+        MsgBox "Not a valid value for this prompt"
+        InitialHearingLocation.value = "N/A"
+        Exit Sub
+    End If
+End Sub
+
+
+Private Sub InitialHearingDate_Enter()
+    InitialHearingDate.value = CalendarForm.GetDate(RangeOfYears:=5)
+End Sub
+Private Sub InitialHearingDate_Exit(ByVal Cancel As MSForms.ReturnBoolean)
+    Set ctl = Me.InitialHearingDate
+    Call DateValidation(ctl, Cancel)
+End Sub
+
+
+Private Sub Intake_Cancel_Click()
+    Unload Me
+End Sub
+
+
+Private Sub Intake_Submit_Click()
+    On Error GoTo err
+
+    Call Generate_Dictionaries
+    
+    
+
+    '''''''''''''
+    'Validations'
+    '''''''''''''
+
+    If InConfDate.value = "" And InConfRecord.value = "Yes" Then
+        MsgBox "Intake Date Required if record available"
+        Exit Sub
+    End If
+
+    If ConfOutcome.value = "N/A" And InConfRecord.value = "Yes" Then
+        MsgBox "Conference Outcome Required if record available"
+        Exit Sub
+    End If
+
+    If CallInDate.value = "" And CallInRecord.value = "Yes" Then
+        MsgBox "Call-in Date required if record available"
+        Exit Sub
+    End If
+
+    If DRAI_Action.value = "Follow - Hold" Or DRAI_Action.value = "Override - Hold" Then
+        If DetentionFacility.value = "N/A" Then
+            MsgBox "Detention facility required for call-in hold"
+            Exit Sub
+        End If
+    End If
+
+    
+    If DHS_Status.value = "" And InConfRecord.value = "Yes" Then
+        MsgBox "'DHS Status' Required"
+        Exit Sub
+    End If
+    
+     If Diagnosis1.value = "" And InConfRecord.value = "Yes" Then
+        MsgBox "Diagnosis #1 Required"
+        Exit Sub
+    End If
+    
+    If Treatment1.value = "" And InConfRecord.value = "Yes" Then
+        MsgBox "Treatment #1 Required"
+        Exit Sub
+    End If
+    
+    If TraumaType1.value = "" And InConfRecord.value = "Yes" Then
+        MsgBox "Trauma #1 Required"
+        Exit Sub
+    End If
+    
+    
+    If InitialHearingLocation.value = "Diversion" And ConfOutcome.value = "Release for Court" Then
+        MsgBox "Diversion is not a valid courtroom for release"
+        Exit Sub
+    End If
+
+    Call formSubmitStart(updateRow)
+
+    ''''''''''''''''''
+    'SET LEGAL STATUS'
+    ''''''''''''''''''
+
+    Dim bucketHead As String
+
+
+    If InitialHearingLocation.value = "Adult" Then
+        Call legalStatusStart( _
+            clientRow:=updateRow, _
+            statusType:="Adult", _
+            Courtroom:="Adult", _
+            DA:=DA.value, _
+            startDate:=DateOfHearing.value)
+    End If
+
+
+    '''''''''''''''''''
+    ''''''CALL IN''''''
+    '''''''''''''''''''
+
+    tempHead = headerFind("CALL-IN")
+
+    If CallInRecord.value = "Yes" Then
+        Range(headerFind("Did Youth Have Call-In?", tempHead) & updateRow).value _
+                = Lookup("Generic_NYNOU_Name")("Yes")
+
+        Range(headerFind("Date of Call-In", tempHead) & updateRow).value _
+                    = CallInDate.value
+
+        Range(headerFind("Was DRAI Administered?", tempHead) & updateRow).value _
+                = Lookup("Generic_NYNOU_Name")(Was_DRAI_Administered.value)
+
+        Range(headerFind("DRAI Score", tempHead) & updateRow).value _
+                = DRAI_Score.value
+
+        Select Case DRAI_Score.value
+            Case Is < 10
+                Range(hFind("DRAI Recommendation", "CALL-IN") & updateRow).value _
+                        = Lookup("DRAI_Recommendation_Name")("Release")
+            Case Is < 15
+                Range(hFind("DRAI Recommendation", "CALL-IN") & updateRow).value _
+                        = Lookup("DRAI_Recommendation_Name")("Release w/ Supervision")
+            Case Is < 30
+                Range(hFind("DRAI Recommendation", "CALL-IN") & updateRow).value _
+                        = Lookup("DRAI_Recommendation_Name")("Release w/ Supervision")
+            Case Else
+                Range(hFind("DRAI Recommendation", "CALL-IN") & updateRow).value _
+                        = Lookup("DRAI_Recommendation_Name")("Unknown")
+        End Select
+
+
+        Range(headerFind("DRAI Recommendation", tempHead) & updateRow).value _
+                = Lookup("DRAI_Recommendation_Name")(DRAI_Rec.value)
+
+        Range(headerFind("DRAI Action", tempHead) & updateRow).value _
+                = Lookup("DRAI_Action_Name")(DRAI_Action.value)
+
+        Select Case DRAI_Action.value
+            Case "Override - Hold", "Follow - Hold"
+                Range(headerFind("End Date", tempHead) & updateRow).value _
+                        = InConfDate.value
+                Range(headerFind("LOS in Detention", tempHead) & updateRow).value _
+                        = calcLOS(CallInDate.value, InConfDate.value)
+                Call addSupervision( _
+                    clientRow:=updateRow, _
+                    serviceType:="Detention (not respite)", _
+                    legalStatus:="Pretrial", _
+                    Courtroom:="Call-In", _
+                    CourtroomOfOrder:="Call-In", _
+                    DA:=DA.value, _
+                    agency:="PJJSC", _
+                    startDate:=CallInDate.value, _
+                    endDate:=InConfDate.value, _
+                    re1:="", _
+                    re2:="", _
+                    re3:="", _
+                    Notes:="Held at call-in")
+
+        End Select
+        Range(headerFind("LOS Until Next Hearing", tempHead) & updateRow).value _
+                        = calcLOS(CallInDate.value, InConfDate.value)
+
+        Range(headerFind("Detention Facility", tempHead) & updateRow).value _
+                    = Lookup("Detention_Facility_Name")(DetentionFacility.value)
+
+        Range(headerFind("Reason #1 for Override Hold", tempHead) & updateRow).value _
+                = Lookup("DRAI_Override_Reason_Name")(OverrideHoldRe1.value)
+        Range(headerFind("Reason #2 for Override Hold", tempHead) & updateRow).value _
+                = Lookup("DRAI_Override_Reason_Name")(OverrideHoldRe2.value)
+        Range(headerFind("Reason #3 for Override Hold", tempHead) & updateRow).value _
+                = Lookup("DRAI_Override_Reason_Name")(OverrideHoldRe3.value)
+    Else
+        Range(headerFind("Did Youth Have Call-In?", tempHead) & updateRow).value _
+                = Lookup("Generic_NYNOU_Name")("Unknown")
+    End If
+
+
+    '''''''''''''''''''
+    'Intake Conference'
+    '''''''''''''''''''
+
+    tempHead = headerFind("INTAKE CONFERENCE 2")
+
+
+
+    If InConfRecord.value = "Yes" Then
+        Range(headerFind("Did Youth Have an Intake Conference?", tempHead) & updateRow).value _
+                = Lookup("Generic_NYNOU_Name")("Yes")
+
+        Range(headerFind("Date of Intake Conference", tempHead) & updateRow).value _
+                = InConfDate.value
+
+        Range(headerFind("Intake Conference Type", tempHead) & updateRow).value _
+                = Lookup("Intake_Conference_Type_Name")(InConfType.value)
+
+        Range(headerFind("DA", tempHead) & updateRow).value _
+                = Lookup("DA_Last_Name_Name")(DA.value)
+
+
+        Range(headerFind("Intake Conference Outcome", tempHead) & updateRow).value _
+                = Lookup("Intake_Conference_Outcome_Name")(ConfOutcome.value)
+        
+        Range(hFind("Status at Arrest", "DHS") & updateRow).value _
+                = Lookup("DHS_Status_at_Arrest_Name")(DHS_Status.value)
+        
+        If DHS_Status.value = "N/A" Or DHS_Status.value = "None" Or DHS_Status.value = "Unknown" Then
+            Range(hFind("Did youth have any DHS contact?", "DHS") & updateRow).value = 2 'no
+        Else
+            Range(hFind("Did youth have any DHS contact?", "DHS") & updateRow).value = 1 'yes
+        End If
+
+        Range(headerFind("Location of Next Event", tempHead) & updateRow).value _
+                = Lookup("Courtroom_Name")(InitialHearingLocation.value)
+
+        Range(headerFind("Next Event Date", tempHead) & updateRow).value _
+                = InitialHearingDate.value
+
+        Range(headerFind("LOS from Arrest Until Conference", tempHead) & updateRow).value _
+                    = calcLOS(Range(headerFind("Arrest Date") & updateRow).value, InConfDate.value)
+
+        tempHead = headerFind("Supervision Ordered #1", tempHead)
+
+        Range(tempHead & updateRow).value _
+                = Lookup("Supervision_Program_Name")(Supv1.value)
+        Range(headerFind("Community-Based Agency #1", tempHead) & updateRow).value _
+                = Lookup("Community_Based_Supervision_Provider_Name")(Supv1Pro.value)
+
+        Range(headerFind("Reason #1 for Supervision Referral", tempHead) & updateRow).value _
+                = Lookup("Supervision_Referral_Reason_Name")(Supv1Re1.value)
+        Range(headerFind("Reason #2 for Supervision Referral", tempHead) & updateRow).value _
+                = Lookup("Supervision_Referral_Reason_Name")(Supv1Re2.value)
+        Range(headerFind("Reason #3 for Supervision Referral", tempHead) & updateRow).value _
+                = Lookup("Supervision_Referral_Reason_Name")(Supv1Re3.value)
+
+        tempHead = headerFind("Supervision Ordered #2", tempHead)
+
+        Range(tempHead & updateRow).value _
+                = Lookup("Supervision_Program_Name")(Supv2.value)
+        Range(headerFind("Community-Based Agency #2", tempHead) & updateRow).value _
+                = Lookup("Community_Based_Supervision_Provider_Name")(Supv2Pro.value)
+
+
+        Range(headerFind("Reason #1 for Supervision Referral", tempHead) & updateRow).value _
+                = Lookup("Supervision_Referral_Reason_Name")(Supv2Re1.value)
+        Range(headerFind("Reason #2 for Supervision Referral", tempHead) & updateRow).value _
+                = Lookup("Supervision_Referral_Reason_Name")(Supv2Re2.value)
+        Range(headerFind("Reason #3 for Supervision Referral", tempHead) & updateRow).value _
+                = Lookup("Supervision_Referral_Reason_Name")(Supv2Re3.value)
+
+        Range(headerFind("Other Condition #1", tempHead) & updateRow).value _
+                = Lookup("Condition_Name")(Cond1.value)
+        Range(headerFind("Other Condition #1 Provider", tempHead) & updateRow).value _
+                = Lookup("Condition_Provider_Name")(Cond1Pro.value)
+
+        Range(headerFind("Other Condition #2", tempHead) & updateRow).value _
+                = Lookup("Condition_Name")(Cond2.value)
+        Range(headerFind("Other Condition #2 Provider", tempHead) & updateRow).value _
+                = Lookup("Condition_Provider_Name")(Cond2Pro.value)
+
+        Range(headerFind("Other Condition #3", tempHead) & updateRow).value _
+                = Lookup("Condition_Name")(Cond3.value)
+        Range(headerFind("Other Condition #3 Provider", tempHead) & updateRow).value _
+                = Lookup("Condition_Provider_Name")(Cond3Pro.value)
+                
+        Range(headerFind("Diagnosis #1") & updateRow).value _
+                = Lookup("Diagnosis_Name")(Diagnosis1.value)
+        Range(headerFind("Diagnosis #2") & updateRow).value _
+                = Lookup("Diagnosis_Name")(Diagnosis2.value)
+        Range(headerFind("Diagnosis #3") & updateRow).value _
+                = Lookup("Diagnosis_Name")(Diagnosis3.value)
+        
+
+        Range(headerFind("Notes on Intake Conference", tempHead) & updateRow).value _
+                = GeneralNotes.value
+
+        Select Case ConfOutcome.value
+            Case "Hold for Detention"
+                Range(headerFind("Active Courtroom") & updateRow).value _
+                         = Lookup("Courtroom_Name")("PJJSC")
+                Call flagNo(Range(hFind("Did Youth Have Initial Detention Hearing?", "DETENTION") & updateRow))
+                Range(hFind("Detention Facility", "DETENTION") & updateRow).value _
+                         = Lookup("Detention_Facility_Name")(DetentionFacility.value)
+                Call addSupervision( _
+                    clientRow:=updateRow, _
+                    serviceType:="Detention (not respite)", _
+                    legalStatus:="Pretrial", _
+                    Courtroom:="Intake Conf.", _
+                    DA:=DA.value, _
+                    agency:="", _
+                    startDate:=InConfDate.value, _
+                    re1:="", _
+                    re2:="", _
+                    re3:="", _
+                    Notes:="Held at intake conference")
+            Case "Roll to Detention Hearing"
+                    Range(headerFind("Active Courtroom") & updateRow).value _
+                         = Lookup("Courtroom_Name")("PJJSC")
+
+            Case "Release for Court"
+                Call ReferClientTo( _
+                    referralDate:=InConfDate.value, _
+                    clientRow:=updateRow, _
+                    fromCR:="Intake Conf.", _
+                    toCR:=InitialHearingLocation.value, _
+                    DA:=DA.value _
+                    )
+                If InitialHearingLocation.value = "5E" Then
+                    Range(hFind("Courtroom of Origin", "Crossover") & updateRow).value _
+                            = Lookup("Courtroom_Name")("Intake Conf.")
+                Else
+                    Range(hFind("Courtroom of Origin", InitialHearingLocation.value) & updateRow).value _
+                            = Lookup("Courtroom_Name")("Intake Conf.")
+                End If
+
+                'add supervisions and conditions if assigned
+                If Not Supv1.value = "None" Then
+                    Call addSupervision( _
+                        clientRow:=updateRow, _
+                        serviceType:=Supv1.value, _
+                        legalStatus:="Pretrial", _
+                        Courtroom:="Intake Conf.", _
+                        CourtroomOfOrder:="Intake Conf.", _
+                        DA:=DA.value, _
+                        agency:=Supv1Pro.value, _
+                        startDate:=InConfDate.value, _
+                        NextCourtDate:=InitialHearingDate.value, _
+                        re1:=Supv1Re1.value, _
+                        re2:=Supv1Re2.value, _
+                        re3:=Supv1Re3.value, _
+                        Notes:="Referred at intake conference")
+                End If
+
+                If Not Supv2.value = "None" Then
+                    Call addSupervision( _
+                        clientRow:=updateRow, _
+                        serviceType:=Supv2.value, _
+                        legalStatus:="Pretrial", _
+                        Courtroom:="Intake Conf.", _
+                        CourtroomOfOrder:="Intake Conf.", _
+                        DA:=DA.value, _
+                        agency:=Supv2Pro.value, _
+                        startDate:=InConfDate.value, _
+                        NextCourtDate:=InitialHearingDate.value, _
+                        re1:=Supv2Re1.value, _
+                        re2:=Supv2Re2.value, _
+                        re3:=Supv2Re3.value, _
+                        Notes:="Referred at intake conference")
+                End If
+
+                If Not Cond1.value = "None" Then
+                    Call addCondition( _
+                        clientRow:=updateRow, _
+                        condition:=Cond1.value, _
+                        legalStatus:="Pretrial", _
+                        Courtroom:="Intake Conf.", _
+                        CourtroomOfOrder:="Intake Conf.", _
+                        DA:=DA.value, _
+                        agency:=Cond1Pro.value, _
+                        startDate:=InConfDate.value, _
+                        re1:="N/A", _
+                        re2:="N/A", _
+                        re3:="N/A", _
+                        Notes:="Referred at intake conference")
+                End If
+
+                If Not Cond2.value = "None" Then
+                    Call addCondition( _
+                        clientRow:=updateRow, _
+                        condition:=Cond2.value, _
+                        legalStatus:="Pretrial", _
+                        Courtroom:="Intake Conf.", _
+                        CourtroomOfOrder:="Intake Conf.", _
+                        DA:=DA.value, _
+                        agency:=Cond2Pro.value, _
+                        startDate:=InConfDate.value, _
+                        re1:="N/A", _
+                        re2:="N/A", _
+                        re3:="N/A", _
+                        Notes:="Referred at intake conference")
+                End If
+
+                If Not Cond3.value = "None" Then
+                    Call addCondition( _
+                        clientRow:=updateRow, _
+                        condition:=Cond3.value, _
+                        legalStatus:="Pretrial", _
+                        Courtroom:="Intake Conf.", _
+                        CourtroomOfOrder:="Intake Conf.", _
+                        DA:=DA.value, _
+                        agency:=Cond3Pro.value, _
+                        startDate:=InConfDate.value, _
+                        re1:="N/A", _
+                        re2:="N/A", _
+                        re3:="N/A", _
+                        Notes:="Referred at intake conference")
+                End If
+
+            Case "Release for Diversion"
+
+        End Select
+    Else
+        Range(headerFind("Did Youth Have an Intake Conference?", tempHead) & updateRow).value _
+                = Lookup("Generic_NYNOU_Name")("Unknown")
+
+        Select Case InitialHearingLocation.value
+            Case "4G", "4E", "6F", "6H", "3E", "JTC", "5E", "WRAP", "Adult"
+                Call ReferClientTo( _
+                    referralDate:=DateOfHearing.value, _
+                    clientRow:=updateRow, _
+                    toCR:=InitialHearingLocation.value, _
+                    DA:=DA.value _
+                    )
+        End Select
+    End If
+    
+
+    Dim noteDate As String
+    
+    If Not InConfDate.value = "" Then
+        noteDate = InConfDate.value
+    Else
+        If Not InitialHearingDate.value = "" Then
+            noteDate = InitialHearingDate.value
+        Else
+            noteDate = "Date not available"
+        End If
+    End If
+    
+    Call addNotes( _
+        Courtroom:=InitialHearingLocation.value, _
+        DateOf:=noteDate, _
+        userRow:=updateRow, _
+        Notes:=GeneralNotes, _
+        DA:=DA.value _
+    )
+    
+    Call formSubmitEnd
+    
+done:
+    Call UnloadAll
+    Exit Sub
+err:
+
+        Call loadFromCache(2)
+
+    'Stop 'press F8 twice to see the error point
+    'Resume
+    MsgBox "Something went wrong. Database has been restored to state prior to submission. " _
+      & vbNewLine & vbNewLine & "Message: " & vbNewLine & err.Description _
+      & vbNewLine & vbNewLine & "Source: " & vbNewLine & err.Source
+
+    Call UnloadAll
+End Sub
+

@@ -58,7 +58,17 @@ Sub addSupervision( _
         Select Case i
             Case 1
                 section = Courtroom
+                MsgBox _
+                    "Opening Bucket" & vbNewLine & _
+                    "Location: " & Courtroom & vbNewLine & _
+                    "Type: Supervision" & vbNewLine & _
+                    "Program: " & serviceType
             Case 2
+                MsgBox _
+                    "Opening Bucket" & vbNewLine & _
+                    "Location: Aggregate" & vbNewLine & _
+                    "Type: Supervision" & vbNewLine & _
+                    "Program: " & serviceType
                 section = "AGGREGATES"
         End Select
 
@@ -183,8 +193,18 @@ Sub dropSupervision( _
 
         Select Case i
             Case 1
+                MsgBox _
+                    "Closing Bucket" & vbNewLine & _
+                    "Location: " & Courtroom & vbNewLine & _
+                    "Type: Supervision" & vbNewLine & _
+                    "Program: " & serviceType
                 section = Courtroom
             Case 2
+                MsgBox _
+                    "Closing Bucket" & vbNewLine & _
+                    "Location: Aggregate" & vbNewLine & _
+                    "Type: Supervision" & vbNewLine & _
+                    "Program: " & serviceType
                 section = "AGGREGATES"
         End Select
         
@@ -275,8 +295,18 @@ Sub addCondition( _
 
         Select Case i
             Case 1
+                MsgBox _
+                    "Opening Bucket" & vbNewLine & _
+                    "Location: " & Courtroom & vbNewLine & _
+                    "Type: Condition" & vbNewLine & _
+                    "Program: " & condition
                 section = Courtroom
             Case 2
+                MsgBox _
+                    "Opening Bucket" & vbNewLine & _
+                    "Location: Aggregate" & vbNewLine & _
+                    "Type: Condition" & vbNewLine & _
+                    "Program: " & condition
                 section = "AGGREGATES"
         End Select
 
@@ -365,8 +395,18 @@ Sub dropCondition( _
             
         Select Case i
             Case 1
+                MsgBox _
+                    "Closing Bucket" & vbNewLine & _
+                    "Location: " & Courtroom & vbNewLine & _
+                    "Type: Condition" & vbNewLine & _
+                    "Program: " & condition
                 section = Courtroom
             Case 2
+                MsgBox _
+                    "Closing Bucket" & vbNewLine & _
+                    "Location: Aggregate" & vbNewLine & _
+                    "Type: Condition" & vbNewLine & _
+                    "Program: " & condition
                 section = "AGGREGATES"
         End Select
         
@@ -529,11 +569,11 @@ Sub AggAggSupervisions(ByVal userRow As Long)
     Worksheets("Entry").Activate
     aggHead = hFind("Supervision Programs", "AGGREGATES")
     aggAggHead = hFind("Aggregate Supervision Programs", "AGGREGATES")
-    Range(aggAggHead & userRow & ":" & headerFind("LOS", headerFind("Supervision Ordered #" & NUM_AGG_SUPERVISION_BUCKETS, aggAggHead)) & userRow).Clear
+    Range(aggAggHead & userRow & ":" & headerFind("LOS", headerFind("Supervision Ordered #" & NUM_SUPERVISION_BUCKETS_AGG, aggAggHead)) & userRow).Clear
     
     
     'Crawl through Agg buckets
-    For i = 1 To NUM_AGG_SUPERVISION_BUCKETS
+    For i = 1 To NUM_SUPERVISION_BUCKETS_AGG
         
         'Set head of bucket
         aggBucketHead = headerFind("Supervision Ordered #" & i, aggHead)
@@ -565,7 +605,7 @@ Sub AggAggSupervisions(ByVal userRow As Long)
             If isFirstInstance Then
                 
                 'Crawl AggAgg buckets
-                For k = 1 To NUM_AGG_AGG_SUPERVISION_BUCKETS
+                For k = 1 To NUM_SUPERVISION_BUCKETS_AGG_AGG
                     
                     'Set head
                     aggAggBucketHead = headerFind("Supervision Ordered #" & k, aggAggHead)
@@ -594,7 +634,7 @@ Sub AggAggSupervisions(ByVal userRow As Long)
                 
                 closingBucketHead = headerFind("Supervision Ordered #" & i, aggHead)
                 
-                For k = i To NUM_AGG_SUPERVISION_BUCKETS
+                For k = i To NUM_SUPERVISION_BUCKETS_AGG
                 
                     'Set head of bucket
                     aggBucketHead2 = headerFind("Supervision Ordered #" & k, aggHead)
@@ -643,11 +683,11 @@ Sub AggAggConditions(ByVal userRow As Long)
     Worksheets("Entry").Activate
     aggHead = hFind("Conditions", "AGGREGATES")
     aggAggHead = hFind("Aggregate Conditions", "AGGREGATES")
-    Range(aggAggHead & userRow & ":" & headerFind("LOS", headerFind("Condition Ordered #" & NUM_AGG_CONDITION_BUCKETS, aggAggHead)) & userRow).Clear
+    Range(aggAggHead & userRow & ":" & headerFind("LOS", headerFind("Condition Ordered #" & NUM_CONDITION_BUCKETS_AGG, aggAggHead)) & userRow).Clear
     
     
     'Crawl through Agg buckets
-    For i = 1 To NUM_AGG_CONDITION_BUCKETS
+    For i = 1 To NUM_CONDITION_BUCKETS_AGG
         
         'Set head of bucket
         aggBucketHead = headerFind("Condition Ordered #" & i, aggHead)
@@ -679,7 +719,7 @@ Sub AggAggConditions(ByVal userRow As Long)
             If isFirstInstance Then
                 
                 'Crawl AggAgg buckets
-                For k = 1 To NUM_AGG_AGG_CONDITION_BUCKETS
+                For k = 1 To NUM_CONDITION_BUCKETS_AGG_AGG
                     
                     'Set head
                     aggAggBucketHead = headerFind("Condition Ordered #" & k, aggAggHead)
@@ -707,7 +747,7 @@ Sub AggAggConditions(ByVal userRow As Long)
                 
                 closingBucketHead = headerFind("Condition Ordered #" & i, aggHead)
                 
-                For k = i To NUM_AGG_CONDITION_BUCKETS
+                For k = i To NUM_CONDITION_BUCKETS_AGG
                 
                     'Set head of bucket
                     aggBucketHead2 = headerFind("Condition Ordered #" & k, aggHead)
@@ -770,6 +810,7 @@ Sub aggFlagsSupervisionsSetNo(ByVal userRow As Long, bucketHead As String)
     Call flagNo(Range(headerFind("Did Youth Have GPS?", bucketHead) & userRow))
     Call flagNo(Range(headerFind("Did Youth Have Post-ERC?", bucketHead) & userRow))
     Call flagNo(Range(headerFind("Did Youth Have Detention?", bucketHead) & userRow))
+    Call flagNo(Range(headerFind("Did Youth Have Placement?", bucketHead) & userRow))
     Call flagNo(Range(headerFind("Did Youth Have Reintegration?", bucketHead) & userRow))
     Call flagNo(Range(headerFind("Did Youth Have CUA?", bucketHead) & userRow))
     Call flagNo(Range(headerFind("Did Youth Have RTF?", bucketHead) & userRow))
@@ -858,6 +899,8 @@ Sub aggFlagSupervision( _
             columnName = "Did Youth Have Post-ERC?"
         Case "Detention (respite)"
             columnName = "Did Youth Have Detention?"
+        Case "Placement"
+            columnName = "Did Youth Have Placement?"
         Case "Reintegration"
             columnName = "Did Youth Have Reintegration?"
         Case "CUA"
@@ -871,7 +914,7 @@ Sub aggFlagSupervision( _
     End Select
     
     Select Case Courtroom
-        Case "4G", "4G", "4E", "6F", "6H", "3E", "Crossover", "WRAP", "JTC"
+        Case "4G", "4E", "6F", "6H", "3E", "Crossover", "WRAP", "JTC", "ADULT"
             Call flagYes(Range(hFind(columnName, Courtroom) & userRow))
         Case "Adult"
             Call flagYes(Range(hFind(columnName, "ADULT") & userRow))
@@ -879,5 +922,181 @@ Sub aggFlagSupervision( _
 
     Call flagYes(Range(hFind(columnName, "Supervision Programs", "AGGREGATES") & userRow))
     Call flagYes(Range(hFind(columnName, "Aggregate Supervision Programs", "AGGREGATES") & userRow))
+End Sub
+
+Sub aggFlagScanner(ByVal userRow As Long)
+    Call formSubmitStart(userRow)
+    Call Generate_Dictionaries
+    On Error GoTo err:
+    
+    Dim i As Integer
+    Dim k As Integer
+    Dim sCount As Integer
+    Dim cCount As Integer
+    Dim courtHead As String
+    
+    Dim CR(8) As String
+    
+    CR(0) = "4G"
+    CR(1) = "4E"
+    CR(2) = "6F"
+    CR(3) = "6H"
+    CR(4) = "3E"
+    CR(5) = "Crossover"
+    CR(6) = "WRAP"
+    CR(7) = "JTC"
+    CR(8) = "Adult"
+    
+    
+    For i = LBound(CR) To UBound(CR)
+    
+    courtHead = getCourtroomHead(CR(i))
+    
+        Select Case CR(i)
+            Case "4G", "4E", "6F", "6H", "3E", "Crossover", "WRAP"
+                sCount = NUM_SUPERVISION_BUCKETS_STANDARD
+                cCount = NUM_CONDITION_BUCKETS_STANDARD
+            Case "JTC"
+                sCount = NUM_SUPERVISION_BUCKETS_JTC
+                cCount = NUM_CONDITION_BUCKETS_JTC
+            Case "ADULT"
+                sCount = NUM_SUPERVISION_BUCKETS_ADULT
+                cCount = NUM_CONDITION_BUCKETS_ADULT
+        End Select
+        
+        Call aggFlagsSupervisionsSetNo(userRow, courtHead)
+        Call aggFlagsConditionsSetNo(userRow, courtHead)
+        
+        For k = 1 To sCount
+            If isNotEmptyOrZero(Range(headerFind("Supervision Ordered #" & k, courtHead) & userRow)) Then
+                
+                Call aggFlagSupervision( _
+                    userRow, _
+                    CR(i), _
+                    Lookup("Supervision_Program_Num")(Range(headerFind("Supervision Ordered #" & k, courtHead) & userRow).value))
+            End If
+        Next k
+        
+        For k = 1 To cCount
+            If isNotEmptyOrZero(Range(headerFind("Condition Ordered #" & k, courtHead) & userRow)) Then
+                Call aggFlagCondition( _
+                    userRow, _
+                    CR(i), _
+                    Lookup("Condition_Num")(Range(headerFind("Condition Ordered #" & k, courtHead) & userRow).value))
+            End If
+        Next k
+
+    Next i
+    
+    Call aggFlagsSupervisionsSetNo(userRow, hFind("AGGREGATES"))
+    Call aggFlagsSupervisionsSetNo(userRow, hFind("Aggregate Supervision Programs"))
+    Call aggFlagsConditionsSetNo(userRow, hFind("AGGREGATES"))
+    Call aggFlagsConditionsSetNo(userRow, hFind("Aggregate Conditions"))
+    
+    Call formSubmitEnd
+    Exit Sub
+err:
+
+MsgBox err.Description & ": " & err.Source
+
+'Stop
+'resume
+    Call loadFromCache(2)
+    
+End Sub
+
+Sub aggFlagScannerDemo()
+    Worksheets("TestOutput").Activate
+    
+    If (Range("J1").value > 2) Then
+    
+        Call aggFlagScanner(Range("J1").value)
+    Else
+        MsgBox "Invalid value: " & Range("J1").value
+    End If
+End Sub
+
+Sub aggFlagScannerWipeout()
+    Dim i As Integer
+    Dim k As Integer
+    Dim userRow As Long
+    Dim sCount As Integer
+    Dim cCount As Integer
+    Dim head As String
+    
+    Worksheets("TestOutput").Activate
+    
+    
+    If (Range("L1").value > 2) Then
+        userRow = Range("L1").value
+    Else
+        MsgBox "Invalid value: " & Range("L1").value
+        Exit Sub
+    End If
+    
+    Call formSubmitStart(userRow)
+    
+    Dim col(31) As String
+    col(0) = "Did Youth Have IPS?"
+    col(1) = "Did Youth Have Pre-ERC?"
+    col(2) = "Did Youth Have IHD?"
+    col(3) = "Did Youth Have ISP?"
+    col(4) = "Did Youth Have GPS?"
+    col(5) = "Did Youth Have Post-ERC?"
+    col(6) = "Did Youth Have Detention?"
+    col(7) = "Did Youth Have Placement?"
+    col(8) = "Did Youth Have Reintegration?"
+    col(9) = "Did Youth Have CUA?"
+    col(10) = "Did Youth Have RTF?"
+    col(11) = "Did Youth Have Inpatient D&A?"
+    col(12) = "Did Youth Have Other Supervision?"
+    
+    col(13) = "Was Youth Ordered Anger Mgt.?"
+    col(14) = "Was Youth Ordered Alternative School?"
+    col(15) = "Was Youth Ordered a BHE?"
+    col(16) = "Was Youth Ordered Community Service?"
+    col(17) = "Was Youth Ordered a Curfew?"
+    col(18) = "Was Youth Ordered Daily School?"
+    col(19) = "Was Youth Ordered Drug Screens?"
+    col(20) = "Was Youth Ordered Essay?"
+    col(21) = "Was Youth Ordered Family Therapy?"
+    col(22) = "Was Youth Ordered GED?"
+    col(23) = "Was Youth Ordered Grief Counseling?"
+    col(24) = "Was Youth Ordered Mental Health?"
+    col(25) = "Was Youth Ordered Inpatient D&A?"
+    col(26) = "Was Youth Ordered IOP?"
+    col(27) = "Was Youth Ordered Restitution?"
+    col(28) = "Was Youth Ordered Sexual Counseling?"
+    col(29) = "Was Youth Ordered Victim Conference?"
+    col(30) = "Was Youth Ordered 1st Violation Hold?"
+    col(31) = "Was Youth Ordered Other Condition?"
+
+
+
+    Dim overWrite As String
+    Dim count As Integer
+    
+    overWrite = ""
+    
+    For i = LBound(col) To UBound(col)
+    
+        On Error GoTo boot
+        
+        head = hFind(col(i))
+        
+        For k = 1 To 20
+            Range(head & userRow).value = overWrite
+            If head = headerFind(col(i), head) Then
+                count = k
+                Exit For
+            Else
+                head = headerFind(col(i), head)
+            End If
+            
+        Next k
+boot:
+    'MsgBox "Column name: " & col(i) & vbNewLine & "New value: " & vbNewLine & "Num replacements: " & count
+
+    Next i
 End Sub
 

@@ -34,9 +34,15 @@ Sub totalOutcome( _
     Range(headerFind("Total LOS From Arrest", outcomeHead) & clientRow).value _
         = calcLOS(Range(hFind("Arrest Date") & clientRow).value, DateOf)
     
-    'if had Paid in full
-    'hFind "LOS from Pay in Full to Discharge", "RESTITUTION"
-    'calcLOS ln2 & dateOf
+    If Range(hFind("Restitution Status", "AGGREGATES") & clientRow).value = 1 Then 'paid in full
+        Range(hFind("LOS from Pay in Full to Discharge", "Restitution Status", "AGGREGATES") & clientRow).value _
+            = calcLOS(Range(hFind("Date Paid in Full", "Restitution Status", "AGGREGATES") & clientRow).value, DateOf)
+    End If
+    If Range(hFind("Court Cost Status", "AGGREGATES") & clientRow).value = 1 Then 'paid in full
+        Range(hFind("LOS from Pay in Full to Discharge", "Court Cost Status", "AGGREGATES") & clientRow).value _
+            = calcLOS(Range(hFind("Date Paid in Full", "Court Cost Status", "AGGREGATES") & clientRow).value, DateOf)
+    End If
+
         
     Select Case Courtroom
         Case "4G", "4E", "6F", "6H", "3E"

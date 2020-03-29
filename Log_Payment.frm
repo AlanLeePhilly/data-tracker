@@ -2,8 +2,8 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} Log_Payment 
    Caption         =   "Filed Payment & Hours"
    ClientHeight    =   6405
-   ClientLeft      =   48
-   ClientTop       =   372
+   ClientLeft      =   45
+   ClientTop       =   375
    ClientWidth     =   12540
    OleObjectBlob   =   "Log_Payment.frx":0000
    StartUpPosition =   1  'CenterOwner
@@ -42,6 +42,9 @@ Private Sub Submit_Click()
         Exit Sub
     End If
     
+    Call formSubmitStart(updateRow)
+    On Error GoTo err
+    
     Select Case True
         Case Filing_Type.value = "Restitution" And Filing.value = True
             Call updateRestitution( _
@@ -57,23 +60,44 @@ Private Sub Submit_Click()
                 userRow:=updateRow, _
                 DateOf:=DateOf.value, _
                 amountPaid:=Amount.value)
-        Case Filing_Type.value = "Court Cost" And Filing.value = True
+        Case Filing_Type.value = "Court Costs" And Filing.value = True
             Call updateCourtCost( _
                 Courtroom:=ClientUpdateForm.Courtroom.value, _
                 DA:=ClientUpdateForm.DA.value, _
                 userRow:=updateRow, _
                 DateOf:=DateOf.value, _
                 amountFiled:=Amount.value)
-        Case Filing_Type.value = "Court Cost" And Payment.value = True
+        Case Filing_Type.value = "Court Costs" And Payment.value = True
             Call updateCourtCost( _
                 Courtroom:=ClientUpdateForm.Courtroom.value, _
                 DA:=ClientUpdateForm.DA.value, _
                 userRow:=updateRow, _
                 DateOf:=DateOf.value, _
                 amountPaid:=Amount.value)
+        Case Filing_Type.value = "Comm. Service" And Filing.value = True
+            Call updateCommService( _
+                Courtroom:=ClientUpdateForm.Courtroom.value, _
+                DA:=ClientUpdateForm.DA.value, _
+                userRow:=updateRow, _
+                DateOf:=DateOf.value, _
+                amountFiled:=Amount.value)
+        Case Filing_Type.value = "Comm. Service" And Payment.value = True
+            Call updateCommService( _
+                Courtroom:=ClientUpdateForm.Courtroom.value, _
+                DA:=ClientUpdateForm.DA.value, _
+                userRow:=updateRow, _
+                DateOf:=DateOf.value, _
+                amountEarned:=Amount.value)
     End Select
     
+    Call formSubmitEnd
+    
     Unload Me
+    
+    Exit Sub
+err:
+
+Call loadFromCache(2)
     
 End Sub
 

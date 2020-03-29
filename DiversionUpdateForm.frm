@@ -1,9 +1,9 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} DiversionUpdateForm 
    Caption         =   "DetentionReferral"
-   ClientHeight    =   10575
-   ClientLeft      =   48
-   ClientTop       =   372
+   ClientHeight    =   10608
+   ClientLeft      =   45
+   ClientTop       =   375
    ClientWidth     =   16440
    OleObjectBlob   =   "DiversionUpdateForm.frx":0000
    StartUpPosition =   1  'CenterOwner
@@ -18,15 +18,10 @@ Option Explicit
 
 
 
-
 Private Sub FollowupResult_Change()
     Select Case FollowupResult
-        Case "Rearrest"
-            FollowupMP.value = 1
-        Case "FTA - Breach"
-            FollowupMP.value = 1
         Case "Recommended to Court"
-            FollowupMP.value = 2
+            FollowupMP.value = 1
         Case Else
             FollowupMP.value = 0
     End Select
@@ -55,15 +50,16 @@ End Sub
 '''''''''''''
 'VALIDATIONS'
 '''''''''''''
+Private Sub DateOfHearing_Enter()
+    DateOfHearing.value = CalendarForm.GetDate(RangeOfYears:=5)
+End Sub
 Private Sub DateOfHearing_Exit(ByVal Cancel As MSForms.ReturnBoolean)
     Set ctl = Me.DateOfHearing
 
     Call DateValidation(ctl, Cancel)
 End Sub
 
-Private Sub HearingDateFill_Click()
-    DateOfContract.value = DateOfHearing.value
-End Sub
+
 Private Sub FirstHearingNextCourtDate_Enter()
     FirstHearingNextCourtDate.value = CalendarForm.GetDate(RangeOfYears:=5)
 End Sub
@@ -74,17 +70,30 @@ Private Sub FirstHearingNextCourtDate_Exit(ByVal Cancel As MSForms.ReturnBoolean
     Call DateValidation(ctl, Cancel)
 End Sub
 
+
+Private Sub FollowupNextCourtDate_Enter()
+    FollowupNextCourtDate.value = CalendarForm.GetDate(RangeOfYears:=5)
+End Sub
 Private Sub FollowupNextCourtDate_Exit(ByVal Cancel As MSForms.ReturnBoolean)
     Set ctl = Me.FollowupNextCourtDate
 
     Call DateValidation(ctl, Cancel)
 End Sub
 
+Private Sub DateOfContract_Enter()
+    DateOfContract.value = CalendarForm.GetDate(RangeOfYears:=5)
+End Sub
 Private Sub DateOfContract_Exit(ByVal Cancel As MSForms.ReturnBoolean)
     Set ctl = Me.DateOfContract
 
     Call DateValidation(ctl, Cancel)
 End Sub
+
+Private Sub HearingDateFill_Click()
+    DateOfContract.value = DateOfHearing.value
+End Sub
+
+
 
 Private Sub FirstTerm1_Change()
     Dim i As Integer
@@ -344,10 +353,6 @@ Private Sub FirstHearingResult_Change()
     Select Case FirstHearingResult.value
         Case "Contract Received"
             FirstHearingMP.value = 1
-        Case "FTA - Breach"
-            FirstHearingMP.value = 3
-        Case "Rearrest"
-            FirstHearingMP.value = 3
         Case "FTA - Continue"
             FirstHearingMP.value = 0
         Case "Recommended to Court"
@@ -377,13 +382,9 @@ Private Sub EditTerms_Click()
 End Sub
 
 Private Sub FirstHearingSubmit_Click()
+    
+    Call formSubmitStart(updateRow)
 
-    With Application
-        .ScreenUpdating = False
-        .Calculation = xlCalculationManual
-    End With
-
-    Worksheets("Entry").Activate
     'Dim courtHead As String
     Dim diversionHead As String
     'courtHead = headerFind(ReferredTo.value)
@@ -425,66 +426,7 @@ Private Sub FirstHearingSubmit_Click()
         Range(headerFind("Contract Term #5 Provider", diversionHead) & updateRow).value = Lookup("Condition_Provider_Name")(FirstTerm5Provider.value)
     End If
 
-    If FirstHearingResult.value = "FTA - Breach" Then
-        Range(headerFind("Reason #1 Recommended to Court", diversionHead) & updateRow).value _
-            = Lookup("Diversion_Reason_for_Negative_Discharge_Name")("FTA")
-        Range(headerFind("Reason #1 for Negative Discharge", diversionHead) & updateRow).value _
-                = Lookup("Diversion_Reason_for_Negative_Discharge_Name")("FTA")
-            
-        Range(headerFind("Date of First Hearing", diversionHead) & updateRow).value = DateOfHearing.value
-        Range(headerFind("Courtroom of Transfer", diversionHead) & updateRow).value _
-            = Lookup("Courtroom_Name")(FixedCourtroom.value)
 
-        Range(headerFind("Nature of Discharge", diversionHead) & updateRow).value = 2 'negative
-        Range(headerFind("Discharge Date", diversionHead) & updateRow).value = DateOfHearing.value
-        Range(headerFind("LOS Diversion", diversionHead) & updateRow).value _
-            = calcLOS(Range(headerFind("Arrest Date") & updateRow).value, DateOfHearing.value)
-        Range(headerFind("Detailed YAP Outcome", diversionHead) & updateRow).value = Lookup("Detailed_YAP_Outcome_Name")("FTA") 'FTA
-        
-        Range(hFind("Petition Filed?", "JUVENILE PETITION") & updateRow).value = 1 'yes
-        Range(hFind("Date Filed", "JUVENILE PETITION") & updateRow).value = DateOfHearing.value
-        
-        Call ReferClientTo( _
-            referralDate:=DateOfHearing.value, _
-            clientRow:=updateRow, _
-            fromCR:="Diversion", _
-            toCR:=FixedCourtroom.value, _
-            newLegalStatus:="Pretrial" _
-            )
-        Call addFTA( _
-            updateRow, _
-            DateOfHearing.value, _
-            Lookup("Courtroom_Num")(Range(hFind("Active Courtroom") & updateRow).value), _
-            "Diversion")
-    End If
-    
-    If FirstHearingResult.value = "Rearrest" Then
-        Range(headerFind("Reason #1 Recommended to Court", diversionHead) & updateRow).value _
-            = Lookup("Diversion_Reason_for_Negative_Discharge_Name")("Rearrest")
-        Range(headerFind("Reason #1 for Negative Discharge", diversionHead) & updateRow).value _
-                = Lookup("Diversion_Reason_for_Negative_Discharge_Name")("Rearrest")
-            
-        Range(headerFind("Date of First Hearing", diversionHead) & updateRow).value = DateOfHearing.value
-        Range(headerFind("Courtroom of Transfer", diversionHead) & updateRow).value _
-            = Lookup("Courtroom_Name")(FixedCourtroom.value)
-
-        Range(headerFind("Nature of Discharge", diversionHead) & updateRow).value = 2 'negative
-        Range(headerFind("Discharge Date", diversionHead) & updateRow).value = DateOfHearing.value
-        Range(headerFind("LOS Diversion", diversionHead) & updateRow).value _
-            = calcLOS(Range(headerFind("Arrest Date") & updateRow).value, DateOfHearing.value)
-        Range(headerFind("Detailed YAP Outcome", diversionHead) & updateRow).value = Lookup("Detailed_YAP_Outcome_Name")("Rearrest") 'FTA
-        
-        Range(hFind("Petition Filed?", "JUVENILE PETITION") & updateRow).value = 1 'yes
-        Range(hFind("Date Filed", "JUVENILE PETITION") & updateRow).value = DateOfHearing.value
-        
-        Call ReferClientTo( _
-            referralDate:=DateOfHearing.value, _
-            clientRow:=updateRow, _
-            fromCR:="Diversion", _
-            toCR:=FixedCourtroom.value, _
-            newLegalStatus:="Pretrial" _
-            )
-    End If
 
     If FirstHearingResult.value = "FTA - Continue" Then
         Call addFTA( _
@@ -526,39 +468,111 @@ Private Sub FirstHearingSubmit_Click()
             
             
         Dim Nature As Integer
+        Dim DetailedOutcome As Integer
         
         Nature = 2 'negative
+        DetailedOutcome = 9 'Acceptance Not Granted
         
         Select Case RecToCourtReason1
             Case "Claimed Innocent", "Parents Declined YAP", "Juvenile Refuses Interview"
-                Nature = 3 ' neutral
+                Nature = 3 ' Neutral
+                
+            Case "Rearrest"
+                DetailedOutcome = 1 'Rearrest
+                
+            Case "FTA"
+                Call addFTA( _
+                    updateRow, _
+                    DateOfHearing.value, _
+                    Lookup("Courtroom_Num")(Range(hFind("Active Courtroom") & updateRow).value), _
+                    "Diversion")
+                    
+                If Not DetailedOutcome = 1 Then
+                    DetailedOutcome = 2 'FTA
+                End If
         End Select
         
         Select Case RecToCourtReason2
             Case "Claimed Innocent", "Parents Declined YAP", "Juvenile Refuses Interview"
                 Nature = 3 ' neutral
+                
+            Case "Rearrest"
+                DetailedOutcome = 1 'Rearrest
+                
+            Case "FTA"
+                Call addFTA( _
+                    updateRow, _
+                    DateOfHearing.value, _
+                    Lookup("Courtroom_Num")(Range(hFind("Active Courtroom") & updateRow).value), _
+                    "Diversion")
+                    
+                If Not DetailedOutcome = 1 Then
+                    DetailedOutcome = 2 'FTA
+                End If
         End Select
         
         Select Case RecToCourtReason3
             Case "Claimed Innocent", "Parents Declined YAP", "Juvenile Refuses Interview"
                 Nature = 3 ' neutral
+                
+            Case "Rearrest"
+                DetailedOutcome = 1 'Rearrest
+                
+            Case "FTA"
+                Call addFTA( _
+                    updateRow, _
+                    DateOfHearing.value, _
+                    Lookup("Courtroom_Num")(Range(hFind("Active Courtroom") & updateRow).value), _
+                    "Diversion")
+                    
+                If Not DetailedOutcome = 1 Then
+                    DetailedOutcome = 2 'FTA
+                End If
         End Select
         
         Select Case RecToCourtReason4
             Case "Claimed Innocent", "Parents Declined YAP", "Juvenile Refuses Interview"
                 Nature = 3 ' neutral
+                
+            Case "Rearrest"
+                DetailedOutcome = 1 'Rearrest
+                
+            Case "FTA"
+                Call addFTA( _
+                    updateRow, _
+                    DateOfHearing.value, _
+                    Lookup("Courtroom_Num")(Range(hFind("Active Courtroom") & updateRow).value), _
+                    "Diversion")
+                    
+                If Not DetailedOutcome = 1 Then
+                    DetailedOutcome = 2 'FTA
+                End If
         End Select
         
         Select Case RecToCourtReason5
             Case "Claimed Innocent", "Parents Declined YAP", "Juvenile Refuses Interview"
                 Nature = 3 ' neutral
+                
+            Case "Rearrest"
+                DetailedOutcome = 1 'Rearrest
+                
+            Case "FTA"
+                Call addFTA( _
+                    updateRow, _
+                    DateOfHearing.value, _
+                    Lookup("Courtroom_Num")(Range(hFind("Active Courtroom") & updateRow).value), _
+                    "Diversion")
+                    
+                If Not DetailedOutcome = 1 Then
+                    DetailedOutcome = 2 'FTA
+                End If
         End Select
         
         
         Range(headerFind("Nature of Discharge", diversionHead) & updateRow).value = Nature
 
 
-        Range(headerFind("Detailed YAP Outcome", diversionHead) & updateRow).value = Lookup("Detailed_YAP_Outcome_Name")("Acceptance Not Granted")
+        Range(headerFind("Detailed YAP Outcome", diversionHead) & updateRow).value = DetailedOutcome
 
             
         
@@ -578,20 +592,13 @@ Private Sub FirstHearingSubmit_Click()
 
     Unload DiversionUpdateForm
 
-    Worksheets("User Entry").Activate
-    With Application
-        .ScreenUpdating = True
-        .Calculation = xlCalculationAutomatic
-    End With
+    Call formSubmitEnd
+    
 
 End Sub
 Private Sub FollowupSubmit_Click()
-    With Application
-        .ScreenUpdating = False
-        .Calculation = xlCalculationManual
-    End With
-
-    Worksheets("Entry").Activate
+    Call formSubmitStart(updateRow)
+    
     'Dim courtHead As String
     Dim diversionHead As String
     Dim hearingType As String
@@ -665,62 +672,6 @@ Private Sub FollowupSubmit_Click()
     Next j
 
     Select Case FollowupResult
-        Case "Rearrest"
-            Range(headerFind("Reason #1 for Negative Discharge", diversionHead) & updateRow).value _
-                    = Lookup("Diversion_Reason_for_Negative_Discharge_Name")("Rearrest")
-            Range(headerFind("Courtroom of Transfer", diversionHead) & updateRow).value _
-                    = Lookup("Courtroom_Name")(FollowupFixedCourtroom.value)
-
-            Range(headerFind("Nature of Discharge", diversionHead) & updateRow).value = 2 'negative
-            Range(headerFind("Discharge Date", diversionHead) & updateRow).value = DateOfHearing.value
-            Range(headerFind("LOS Diversion", diversionHead) & updateRow).value _
-                    = calcLOS(Range(headerFind("Arrest Date") & updateRow).value, DateOfHearing.value)
-            Range(headerFind("Detailed YAP Outcome", diversionHead) & updateRow).value = Lookup("Diversion_Reason_for_Negative_Discharge_Name")("Rearrest")
-            
-            Range(hFind("Petition Filed?", "JUVENILE PETITION") & updateRow).value = 1 'yes
-            Range(hFind("Date Filed", "JUVENILE PETITION") & updateRow).value = DateOfHearing.value
-        
-            Call ReferClientTo( _
-                    referralDate:=DateOfHearing.value, _
-                    clientRow:=updateRow, _
-                    fromCR:="Diversion", _
-                    toCR:=FollowupFixedCourtroom.value, _
-                    newLegalStatus:="Pretrial" _
-                    )
-                    
-        Case "FTA - Breach"
-            Range(headerFind("Reason #1 for Negative Discharge", diversionHead) & updateRow).value _
-                    = Lookup("Diversion_Reason_for_Negative_Discharge_Name")("FTA")
-            Range(headerFind("Courtroom of Transfer", diversionHead) & updateRow).value _
-                    = Lookup("Courtroom_Name")(FollowupFixedCourtroom.value)
-
-            Range(headerFind("Nature of Discharge", diversionHead) & updateRow).value = 2 'negative
-            Range(headerFind("Discharge Date", diversionHead) & updateRow).value = DateOfHearing.value
-            Range(headerFind("LOS Diversion", diversionHead) & updateRow).value _
-                    = calcLOS(Range(headerFind("Arrest Date") & updateRow).value, DateOfHearing.value)
-            Range(headerFind("Detailed YAP Outcome", diversionHead) & updateRow).value = Lookup("Diversion_Reason_for_Negative_Discharge_Name")("FTA")
-            
-            Range(hFind("Petition Filed?", "JUVENILE PETITION") & updateRow).value = 1 'yes
-            Range(hFind("Date Filed", "JUVENILE PETITION") & updateRow).value = DateOfHearing.value
-        
-            Call ReferClientTo( _
-                    referralDate:=DateOfHearing.value, _
-                    clientRow:=updateRow, _
-                    fromCR:="Diversion", _
-                    toCR:=FollowupFixedCourtroom.value, _
-                    newLegalStatus:="Pretrial" _
-                    )
-            Call addFTA( _
-                    updateRow, _
-                    DateOfHearing.value, _
-                    Lookup("Courtroom_Num")(Range(hFind("Active Courtroom") & updateRow).value), _
-                    "Diversion")
-        Case "FTA - Continue"
-            Call addFTA( _
-                    updateRow, _
-                    DateOfHearing.value, _
-                    Lookup("Courtroom_Num")(Range(hFind("Active Courtroom") & updateRow).value), _
-                    "Diversion")
         Case "Recommended to Court"
             Range(headerFind("Reason #1 for Negative Discharge", diversionHead) & updateRow).value _
                     = Lookup("Diversion_Reason_for_Negative_Discharge_Name")(FollowupRecReason1.value)
@@ -746,12 +697,118 @@ Private Sub FollowupSubmit_Click()
                     toCR:=FollowupSetCourtroom.value, _
                     newLegalStatus:="Pretrial" _
                     )
-            Range(headerFind("Nature of Discharge", diversionHead) & updateRow).value = 2 'negative
             Range(headerFind("Discharge Date", diversionHead) & updateRow).value = DateOfHearing.value
             Range(headerFind("LOS Diversion", diversionHead) & updateRow).value _
                     = calcLOS(Range(headerFind("Arrest Date") & updateRow).value, DateOfHearing.value)
-            Range(headerFind("Detailed YAP Outcome", diversionHead) & updateRow).value = Lookup("Detailed_YAP_Outcome_Name")("Contract Breach")
             
+            Dim Nature As Integer
+            Dim DetailedOutcome As Integer
+            
+            Nature = 2 'negative
+            DetailedOutcome = 13 'Contract Breach (Technical)
+            
+            Select Case FollowupRecReason1
+                Case "Claimed Innocent", "Parents Declined YAP", "Juvenile Refuses Interview"
+                    Nature = 3 ' Neutral
+                    
+                Case "Rearrest"
+                    DetailedOutcome = 1 'Rearrest
+                    
+                Case "FTA"
+                    Call addFTA( _
+                        updateRow, _
+                        DateOfHearing.value, _
+                        Lookup("Courtroom_Num")(Range(hFind("Active Courtroom") & updateRow).value), _
+                        "Diversion")
+                        
+                    If Not DetailedOutcome = 1 Then
+                        DetailedOutcome = 2 'FTA
+                    End If
+            End Select
+            
+            Select Case FollowupRecReason2
+                Case "Claimed Innocent", "Parents Declined YAP", "Juvenile Refuses Interview"
+                    Nature = 3 ' neutral
+                    
+                Case "Rearrest"
+                    DetailedOutcome = 1 'Rearrest
+                    
+                Case "FTA"
+                    Call addFTA( _
+                        updateRow, _
+                        DateOfHearing.value, _
+                        Lookup("Courtroom_Num")(Range(hFind("Active Courtroom") & updateRow).value), _
+                        "Diversion")
+                        
+                    If Not DetailedOutcome = 1 Then
+                        DetailedOutcome = 2 'FTA
+                    End If
+            End Select
+            
+            Select Case FollowupRecReason3
+                Case "Claimed Innocent", "Parents Declined YAP", "Juvenile Refuses Interview"
+                    Nature = 3 ' neutral
+                    
+                Case "Rearrest"
+                    DetailedOutcome = 1 'Rearrest
+                    
+                Case "FTA"
+                    Call addFTA( _
+                        updateRow, _
+                        DateOfHearing.value, _
+                        Lookup("Courtroom_Num")(Range(hFind("Active Courtroom") & updateRow).value), _
+                        "Diversion")
+                        
+                    If Not DetailedOutcome = 1 Then
+                        DetailedOutcome = 2 'FTA
+                    End If
+            End Select
+            
+            Select Case FollowupRecReason4
+                Case "Claimed Innocent", "Parents Declined YAP", "Juvenile Refuses Interview"
+                    Nature = 3 ' neutral
+                    
+                Case "Rearrest"
+                    DetailedOutcome = 1 'Rearrest
+                    
+                Case "FTA"
+                    Call addFTA( _
+                        updateRow, _
+                        DateOfHearing.value, _
+                        Lookup("Courtroom_Num")(Range(hFind("Active Courtroom") & updateRow).value), _
+                        "Diversion")
+                        
+                    If Not DetailedOutcome = 1 Then
+                        DetailedOutcome = 2 'FTA
+                    End If
+            End Select
+            
+            Select Case FollowupRecReason5
+                Case "Claimed Innocent", "Parents Declined YAP", "Juvenile Refuses Interview"
+                    Nature = 3 ' neutral
+                    
+                Case "Rearrest"
+                    DetailedOutcome = 1 'Rearrest
+                    
+                Case "FTA"
+                    Call addFTA( _
+                        updateRow, _
+                        DateOfHearing.value, _
+                        Lookup("Courtroom_Num")(Range(hFind("Active Courtroom") & updateRow).value), _
+                        "Diversion")
+                        
+                    If Not DetailedOutcome = 1 Then
+                        DetailedOutcome = 2 'FTA
+                    End If
+            End Select
+            
+            
+            Range(headerFind("Nature of Discharge", diversionHead) & updateRow).value = Nature
+    
+    
+            Range(headerFind("Detailed YAP Outcome", diversionHead) & updateRow).value = DetailedOutcome
+
+               
 
         Case "Pending Completion - Orginal Timeline"
         Case "Pending Completion - Extension"
@@ -780,11 +837,7 @@ Private Sub FollowupSubmit_Click()
 
     Unload DiversionUpdateForm
 
-    Worksheets("User Entry").Activate
-    With Application
-        .ScreenUpdating = True
-        .Calculation = xlCalculationAutomatic
-    End With
+   Call formSubmitEnd
 End Sub
 
 

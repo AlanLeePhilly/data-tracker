@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} Modal_Standard_Add_Condition 
    Caption         =   "Add Condition"
    ClientHeight    =   7608
-   ClientLeft      =   48
-   ClientTop       =   372
-   ClientWidth     =   9348.001
+   ClientLeft      =   45
+   ClientTop       =   375
+   ClientWidth     =   9345.001
    OleObjectBlob   =   "Modal_Standard_Add_Condition.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -16,29 +16,23 @@ Attribute VB_Exposed = False
 Private Sub ConditionType_Change()
     Select Case ConditionType.value
         Case "Restitution"
-            Restitution_Label.Visible = True
-            Restitution.Visible = True
-            Restitution.value = ""
-            
-            Comm_Service_Label.Visible = False
-            Comm_Service.Visible = False
-            Comm_Service.value = ""
+            Label.Visible = True
+            Label.Caption = "Restitution:  $"
+            Amount.Visible = True
+            Amount.value = ""
         Case "Comm. Serv"
-            Restitution_Label.Visible = False
-            Restitution.Visible = False
-            Restitution.value = ""
-            
-            Comm_Service_Label.Visible = True
-            Comm_Service.Visible = True
-            Comm_Service.value = ""
+            Label.Visible = True
+            Label.Caption = "Comm. Service Hrs: "
+            Amount.Visible = True
+            Amount.value = ""
+        Case "Court Costs"
+            Label.Visible = True
+            Label.Caption = "Court Costs:  $"
+            Amount.Visible = True
+            Amount.value = ""
         Case Else
-            Restitution_Label.Visible = False
-            Restitution.Visible = False
-            Restitution.value = ""
-            
-            Comm_Service_Label.Visible = False
-            Comm_Service.Visible = False
-            Comm_Service.value = ""
+            Label.Visible = False
+            Amount.Visible = False
     End Select
 End Sub
 
@@ -111,11 +105,15 @@ Private Sub Continue_Click()
         Case "Restitution"
             ClientUpdateForm.Standard_Restitution.Visible = True
             ClientUpdateForm.Standard_Restitution_Label.Visible = True
-            ClientUpdateForm.Standard_Restitution.Caption = Restitution.value
+            ClientUpdateForm.Standard_Restitution.Caption = Amount.value
         Case "Comm. Serv"
             ClientUpdateForm.Standard_Comm_Service.Visible = True
             ClientUpdateForm.Standard_Comm_Service_Label.Visible = True
-            ClientUpdateForm.Standard_Comm_Service.Caption = Comm_Service.value
+            ClientUpdateForm.Standard_Comm_Service.Caption = Amount.value
+        Case "Court Costs"
+            ClientUpdateForm.Standard_Court_Costs.Visible = True
+            ClientUpdateForm.Standard_Court_Costs_Label.Visible = True
+            ClientUpdateForm.Standard_Court_Costs.Caption = Amount.value
     End Select
 
     Unload Modal_Standard_Add_Condition

@@ -5,7 +5,7 @@ End Sub
 
 Sub formSubmitStart(Optional userRow As Long = -1)
     Worksheets("Entry").Activate
-    If userRow >= 0 Then
+    If userRow >= 3 Then
         Call cacheRow(userRow)
     End If
 
