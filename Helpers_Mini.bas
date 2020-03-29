@@ -396,43 +396,41 @@ Sub addChargesToBox(ByRef MyBox As Object)
     Worksheets("Entry").Activate
 
     For i = 1 To 5
-        If Range(hFind("Petition Filed?", "Petition #" & i, "PETITION") & updateRow).value = Lookup("Generic_YNOU_Name")("Yes") Then
-            petitionHead = hFind("Petition #" & i, "PETITION")
+        petitionHead = hFind("Petition #" & i, "PETITION")
             
-            For k = 1 To 5
-                If k = 1 Then
-                    bucketHead = hFind("Lead Charge Code", "Petition #" & i, "PETITION")
-                Else
-                    bucketHead = hFind("Charge Code #" & k, "Petition #" & i, "PETITION")
-                End If
-                
-                If isNotEmptyOrZero(Range(bucketHead & updateRow)) Then
-                    With MyBox
-                        .ColumnCount = 6
-                        .ColumnWidths = "50;50;30;50;65;50"
-                        ' 0 Petition Number
-                        ' 1 Date Filed
-                        ' 2 Charge Grade
-                        ' 3 Charge Group
-                        ' 4 Charge Code
-                        ' 5 Charge Name
-        
-                        .AddItem Range(hFind("Petition #" & i, "PETITION") & updateRow).value
-                        .List(MyBox.ListCount - 1, 0) = Range(petitionHead & updateRow).value
-                        .List(MyBox.ListCount - 1, 1) = Range(headerFind("Date Filed", petitionHead) & updateRow).value
-                        .List(MyBox.ListCount - 1, 2) = Lookup("Charge_Grade_Specific_Num")(Range(headerFind("Charge Grade (specific) #" & k, bucketHead) & updateRow).value)
-                        .List(MyBox.ListCount - 1, 3) = Lookup("Charge_Num")(Range(headerFind("Charge Category #" & k, bucketHead) & updateRow).value)
-                        .List(MyBox.ListCount - 1, 4) = Range(bucketHead & updateRow).value
-                        
-                        If k = 1 Then
-                            .List(MyBox.ListCount - 1, 5) = Range(headerFind("Lead Charge Name", bucketHead) & updateRow).value
-                        Else
-                            .List(MyBox.ListCount - 1, 5) = Range(headerFind("Charge Name #" & k, bucketHead) & updateRow).value
-                        End If
-                    End With
-                End If
-            Next k
-        End If
+        For k = 1 To 5
+            If k = 1 Then
+                bucketHead = hFind("Lead Charge Code", "Petition #" & i, "PETITION")
+            Else
+                bucketHead = hFind("Charge Code #" & k, "Petition #" & i, "PETITION")
+            End If
+            
+            If isNotEmptyOrZero(Range(bucketHead & updateRow)) Then
+                With MyBox
+                    .ColumnCount = 6
+                    .ColumnWidths = "50;50;30;50;65;50"
+                    ' 0 Petition Number
+                    ' 1 Date Filed
+                    ' 2 Charge Grade
+                    ' 3 Charge Group
+                    ' 4 Charge Code
+                    ' 5 Charge Name
+    
+                    .AddItem Range(hFind("Petition #" & i, "PETITION") & updateRow).value
+                    .List(MyBox.ListCount - 1, 0) = Range(petitionHead & updateRow).value
+                    .List(MyBox.ListCount - 1, 1) = Range(headerFind("Date Filed", petitionHead) & updateRow).value
+                    .List(MyBox.ListCount - 1, 2) = Lookup("Charge_Grade_Specific_Num")(Range(headerFind("Charge Grade (specific) #" & k, bucketHead) & updateRow).value)
+                    .List(MyBox.ListCount - 1, 3) = Lookup("Charge_Num")(Range(headerFind("Charge Category #" & k, bucketHead) & updateRow).value)
+                    .List(MyBox.ListCount - 1, 4) = Range(bucketHead & updateRow).value
+                    
+                    If k = 1 Then
+                        .List(MyBox.ListCount - 1, 5) = Range(headerFind("Lead Charge Name", bucketHead) & updateRow).value
+                    Else
+                        .List(MyBox.ListCount - 1, 5) = Range(headerFind("Charge Name #" & k, bucketHead) & updateRow).value
+                    End If
+                End With
+            End If
+        Next k
     Next i
 
 End Sub

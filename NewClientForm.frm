@@ -1508,9 +1508,12 @@ Private Sub Submit_Click()
                 = Lookup("Legal_Status_Name")("Diversion")
 
         Range(headerFind("Did Youth Receive a Review Hearing?", diversionHead) & emptyRow) _
-                = 2
+                = 2 'no
         Range(headerFind("Did Youth Receive an Exit Hearing?", diversionHead) & emptyRow) _
-                = 2
+                = 2 'no
+        Range(headerFind("Nature of Discharge", diversionHead) & emptyRow) _
+                = 4 'still active
+                
     End If
 
     If DiversionProgram.value = "No" Then
