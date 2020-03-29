@@ -3500,7 +3500,7 @@ Private Sub Intake_Submit_Click()
     ''''''CALL IN''''''
     '''''''''''''''''''
 
-    tempHead = headerFind("CALL-IN")
+    tempHead = headerFind("CALL-IN 2")
 
     If CallInRecord.value = "Yes" Then
         Range(headerFind("Did Youth Have Call-In?", tempHead) & updateRow).value _
@@ -3517,16 +3517,16 @@ Private Sub Intake_Submit_Click()
 
         Select Case DRAI_Score.value
             Case Is < 10
-                Range(hFind("DRAI Recommendation", "CALL-IN") & updateRow).value _
+                Range(hFind("DRAI Recommendation", "CALL-IN 2") & updateRow).value _
                         = Lookup("DRAI_Recommendation_Name")("Release")
             Case Is < 15
-                Range(hFind("DRAI Recommendation", "CALL-IN") & updateRow).value _
+                Range(hFind("DRAI Recommendation", "CALL-IN 2") & updateRow).value _
                         = Lookup("DRAI_Recommendation_Name")("Release w/ Supervision")
             Case Is < 30
-                Range(hFind("DRAI Recommendation", "CALL-IN") & updateRow).value _
+                Range(hFind("DRAI Recommendation", "CALL-IN 2") & updateRow).value _
                         = Lookup("DRAI_Recommendation_Name")("Release w/ Supervision")
             Case Else
-                Range(hFind("DRAI Recommendation", "CALL-IN") & updateRow).value _
+                Range(hFind("DRAI Recommendation", "CALL-IN 2") & updateRow).value _
                         = Lookup("DRAI_Recommendation_Name")("Unknown")
         End Select
 
@@ -3664,12 +3664,15 @@ Private Sub Intake_Submit_Click()
         Range(headerFind("Other Condition #3 Provider", tempHead) & updateRow).value _
                 = Lookup("Condition_Provider_Name")(Cond3Pro.value)
                 
-        Range(headerFind("Diagnosis #1") & updateRow).value _
-                = Lookup("Diagnosis_Name")(Diagnosis1.value)
-        Range(headerFind("Diagnosis #2") & updateRow).value _
-                = Lookup("Diagnosis_Name")(Diagnosis2.value)
-        Range(headerFind("Diagnosis #3") & updateRow).value _
-                = Lookup("Diagnosis_Name")(Diagnosis3.value)
+        Range(headerFind("Diagnosis #1") & updateRow).value = Lookup("Diagnosis_Name")(Diagnosis1.value)
+        Range(headerFind("Diagnosis #2") & updateRow).value = Lookup("Diagnosis_Name")(Diagnosis2.value)
+        Range(headerFind("Diagnosis #3") & updateRow).value = Lookup("Diagnosis_Name")(Diagnosis3.value)
+        Range(headerFind("Trauma Type #1") & updateRow).value = Lookup("Trauma_Type_Name")(TraumaType1.value)
+        Range(headerFind("Trauma Type #2") & updateRow).value = Lookup("Trauma_Type_Name")(TraumaType2.value)
+        Range(headerFind("Trauma Type #3") & updateRow).value = Lookup("Trauma_Type_Name")(TraumaType3.value)
+        Range(headerFind("Treatment #1") & updateRow).value = Lookup("Treatment_Name")(Treatment1.value)
+        Range(headerFind("Treatment #2") & updateRow).value = Lookup("Treatment_Name")(Treatment2.value)
+        Range(headerFind("Treatment #3") & updateRow).value = Lookup("Treatment_Name")(Treatment3.value)
         
 
         Range(headerFind("Notes on Intake Conference", tempHead) & updateRow).value _

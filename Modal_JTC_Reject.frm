@@ -56,6 +56,3 @@ Private Sub InsertDoH_Click()
     DateOfRejection.value = ClientUpdateForm.DateOfHearing.value
 End Sub
 
-Private Sub UserForm_Click()
-
-End Sub
