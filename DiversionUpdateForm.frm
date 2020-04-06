@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} DiversionUpdateForm 
    Caption         =   "DetentionReferral"
-   ClientHeight    =   10608
+   ClientHeight    =   10605
    ClientLeft      =   45
    ClientTop       =   375
    ClientWidth     =   16440
@@ -568,10 +568,8 @@ Private Sub FirstHearingSubmit_Click()
                 End If
         End Select
         
-        
+        Range(headerFind("Notes on Outcome", diversionHead) & updateRow).value = FirstNotes
         Range(headerFind("Nature of Discharge", diversionHead) & updateRow).value = Nature
-
-
         Range(headerFind("Detailed YAP Outcome", diversionHead) & updateRow).value = DetailedOutcome
 
             
@@ -802,10 +800,8 @@ Private Sub FollowupSubmit_Click()
                     End If
             End Select
             
-            
+            Range(headerFind("Notes on Outcome", diversionHead) & updateRow).value = FollowupNotes
             Range(headerFind("Nature of Discharge", diversionHead) & updateRow).value = Nature
-    
-    
             Range(headerFind("Detailed YAP Outcome", diversionHead) & updateRow).value = DetailedOutcome
 
                
@@ -814,6 +810,7 @@ Private Sub FollowupSubmit_Click()
         Case "Pending Completion - Extension"
             Range(headerFind("Projected Completion Date", diversionHead) & updateRow).value = DateOfHearing.value
         Case "Positive Completion"
+            Range(headerFind("Notes on Outcome", diversionHead) & updateRow).value = FollowupNotes
             Range(headerFind("Nature of Discharge", diversionHead) & updateRow).value = 1 'positive
             Range(headerFind("Discharge Date", diversionHead) & updateRow).value = DateOfHearing.value
             Range(headerFind("LOS Diversion", diversionHead) & updateRow).value _

@@ -8,6 +8,7 @@ Sub ReferClientTo( _
     Optional Notes As String = "", _
     Optional newLegalStatus As String = "", _
     Optional oldLegalStatus As String = "", _
+    Optional ignoreLegalStatus As Boolean = False, _
     Optional outcomeNature As String = "Neutral", _
     Optional outcomeNum As Integer = 0, _
     Optional DA As String = "Unknown")
@@ -352,6 +353,10 @@ Sub ReferClientTo( _
 '    End If
 
     'Update Legal Status
+
+    If ignoreLegalStatus = True Then
+        Exit Sub
+    End If
 
     Dim submitLegalStatus As String
     Dim submitWithAgg As Boolean

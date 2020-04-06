@@ -29,6 +29,7 @@ Function isActiveInCourtroom(userRow As Long, Courtroom As String, DateOf As Str
     Dim i As Long, hasAtLeastOne As Boolean
     Dim currentPID As String
     Dim courtroomHead As String
+    Dim dayDiff As Integer
     
     isActiveInCourtroom = 2 'No
     lastRow = Range("C" & Rows.count).End(xlUp).row
@@ -40,7 +41,9 @@ Function isActiveInCourtroom(userRow As Long, Courtroom As String, DateOf As Str
             If Range(hFind("PID #") & i).value = currentPID _
             And Not i = userRow Then
                 If IsDate(Range(headerFind("Referral Date", courtroomHead) & i).value) Then
-                    If Range(headerFind("Referral Date", courtroomHead) & i).value < DateOf Then
+                    dayDiff = DateDiff("d", Range(headerFind("Referral Date", courtroomHead) & i).value, DateOf)
+            
+                    If dayDiff >= 0 Then
                         If Not IsDate(Range(headerFind("End Date", courtroomHead) & i).value) _
                         Or Range(headerFind("End Date", courtroomHead) & i).value > DateOf Then
                             isActiveInCourtroom = 1 'Yes
@@ -48,7 +51,7 @@ Function isActiveInCourtroom(userRow As Long, Courtroom As String, DateOf As Str
                             MsgBox "'Active in Courtroom' debug: Found same client at row " & i & " but End Date in " & Courtroom & " is before " & DateOf
                         End If
                     Else
-                        MsgBox "'Active in Courtroom' debug: Found same client at row " & i & " but Referral Date in " & Courtroom & " is not before " & DateOf
+                        MsgBox "'Active in Courtroom' debug: Found same client at row " & i & " but Referral Date in " & Courtroom & " is not before or equal to " & DateOf
                     End If
                 Else
                     MsgBox "'Active in Courtroom' debug: Found same client at row " & i & " but no Referral Date in " & Courtroom
@@ -60,7 +63,9 @@ Function isActiveInCourtroom(userRow As Long, Courtroom As String, DateOf As Str
             If Range(hFind("PID #") & i).value = currentPID _
             And Not i = userRow Then
                 If IsDate(Range(headerFind("Start Date", courtroomHead) & i).value) Then
-                    If Range(headerFind("Start Date", courtroomHead) & i).value < DateOf Then
+                    dayDiff = DateDiff("d", Range(headerFind("Start Date", courtroomHead) & i).value, DateOf)
+                    
+                    If dayDiff >= 0 Then
                         If Not IsDate(Range(headerFind("End Date", courtroomHead) & i).value) _
                         Or Range(headerFind("End Date", courtroomHead) & i).value > DateOf Then
                             isActiveInCourtroom = 1 'Yes
@@ -69,7 +74,7 @@ Function isActiveInCourtroom(userRow As Long, Courtroom As String, DateOf As Str
                             MsgBox "'Active in Courtroom' debug: Found same client at row " & i & " but End Date in " & Courtroom & " is before " & DateOf
                         End If
                     Else
-                        MsgBox "'Active in Courtroom' debug: Found same client at row " & i & " but Start Date in " & Courtroom & " is not before " & DateOf
+                        MsgBox "'Active in Courtroom' debug: Found same client at row " & i & " but Start Date in " & Courtroom & " is not before or equal to " & DateOf
                     End If
                 Else
                     MsgBox "'Active in Courtroom' debug: Found same client at row " & i & " but no Start Date in " & Courtroom

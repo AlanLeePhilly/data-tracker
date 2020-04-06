@@ -29,7 +29,7 @@ Public Function alphaToNum(ColAlpha As String) As Long
 End Function
 
 Function hFind(ParamArray myArgs() As Variant) As String
-    ' PASS THIS FUNCTION JUST A LIST OF STRING ARGUMENTS IN ASCENDING SPECIFICITY
+    ' PASS THIS FUNCTION JUST A LIST OF STRING ARGUMENTS IN DESCENDING SPECIFICITY
     ' EXAMPLE: Call hFind("Start Date", "Pretrial", "4E")
 
     Dim Result As Variant

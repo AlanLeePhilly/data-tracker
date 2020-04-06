@@ -2220,14 +2220,19 @@ Sub Standard_Submit_Click()
                 End If
             End With
         Else
-            Call legalStatusStart( _
-                clientRow:=updateRow, _
-                statusType:=Standard_Return_Legal_Status.Caption, _
-                Courtroom:=oldCourtroom, _
-                DA:=DA.value, _
-                startDate:=DateOfHearing.value, _
-                Notes:=Standard_Notes.value, _
-                zeroLocal:=True)
+            With Modal_Standard_Legal_Status
+                Call legalStatusEnd( _
+                    clientRow:=updateRow, _
+                    statusType:=.Current_Legal_Status, _
+                    Courtroom:=oldCourtroom, _
+                    DA:=DA.value, _
+                    endDate:=.Current_Discharge_Date, _
+                    Nature:=.Current_Discharge_Nature, _
+                    withAgg:=True, _
+                    detailed:=.Current_Detailed_Outcome, _
+                    Reason1:=.Reason1, Reason2:=.Reason2, Reason3:=.Reason3, Reason4:=.Reason4, Reason5:=.Reason5, _
+                    Notes:=.Current_Notes)
+            End With
         End If
     Else
         Call legalStatusStart( _
@@ -2646,8 +2651,7 @@ Sub Standard_Submit_Click()
             Call ReferClientTo( _
                 referralDate:=DateOfHearing.value, _
                 clientRow:=updateRow, _
-                newLegalStatus:=Standard_Return_Legal_Status.Caption, _
-                oldLegalStatus:=Standard_Fetch_Legal_Status.Caption, _
+                ignoreLegalStatus:=True, _
                 toCR:=Modal_Standard_Court_Transfer.Courtroom.value, _
                 fromCR:=oldCourtroom, _
                 DA:=DA.value)
