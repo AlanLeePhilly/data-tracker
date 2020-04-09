@@ -195,20 +195,23 @@ Sub Archive()
 
 End Sub
 
-
-
-
-Sub ExportDataFile()
-    
+Sub calcAggAggForSheet()
     Dim rowNum As Long
     Dim lastRow As Long
     
     lastRow = Worksheets("Entry").Range("C" & Rows.count).End(xlUp).row
-
+    MsgBox "Updating AggAgg through " & lastRow & " rows"
     For rowNum = 3 To lastRow
         Call AggAggSupervisionsAndConditions(rowNum)
     Next rowNum
     
+    Worksheets("User Entry").Activate
+End Sub
+
+
+Sub ExportDataFile()
+    
+    Call calcAggAggForSheet
     
     'ARCHIVE BEFORE EXPORTING
     'declare the string variables we will need for the file name and file path
