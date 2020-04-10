@@ -79,7 +79,7 @@ Private Sub DRev_DetentionDecision_Change()
             Else
                 MultiPage2.value = 2
             End If
-        Case "Released"
+        Case "Released", "Remain Released"
             MultiPage2.value = 1
             DRev_Facility.value = "N/A"
             DRev_Facility.Enabled = False
@@ -2779,9 +2779,17 @@ Private Sub PJJSC_Submit_Click()
     End If
 
     'IF RELEASED
-    If DRev_DetentionDecision.value = "Released" Then
-        Range(headerFind("Date of Release", bucketHead) & updateRow).value = DateOfHearing.value
+    If DRev_DetentionDecision.value = "Released" Or DRev_DetentionDecision.value = "Remain Released" Then
+        If DRev_DetentionDecision.value = "Released" Then
+            Range(headerFind("Date of Release", bucketHead) & updateRow).value = DateOfHearing.value
+            Range(headerFind("LOS in Detention", bucketHead) & updateRow).value _
+                = calcLOS(Range(hFind("Date of Initial Detention Hearing", "DETENTION") & updateRow).value, DateOfHearing.value)
+        End If
+        
+        Range(headerFind("Notes on Detention", bucketHead) & updateRow).value = PJJSC_NotesOnDetentionOutcome.value
 
+        Range(headerFind("LOS from Arrest Until Hearing", bucketHead) & updateRow).value _
+            = calcLOS(Range(hFind("Arrest Date") & updateRow).value, Range(hFind("Date of Initial Detention Hearing", "DETENTION") & updateRow).value)
 
         'Range(headerFind("Courtroom That Released", bucketHead) & updateRow).value =
         Range(headerFind("Referred to Courtroom", bucketHead) & updateRow).value _
@@ -2922,11 +2930,6 @@ Private Sub PJJSC_Submit_Click()
         End If
 
 
-        Range(headerFind("Notes on Detention", bucketHead) & updateRow).value = PJJSC_NotesOnDetentionOutcome.value
-        Range(headerFind("LOS in Detention", bucketHead) & updateRow).value _
-            = calcLOS(Range(hFind("Date of Initial Detention Hearing", "DETENTION") & updateRow).value, DateOfHearing.value)
-        Range(headerFind("LOS from Arrest Until Hearing", bucketHead) & updateRow).value _
-            = calcLOS(Range(hFind("Arrest Date") & updateRow).value, Range(hFind("Date of Initial Detention Hearing", "DETENTION") & updateRow).value)
     End If
 
 
