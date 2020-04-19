@@ -2636,7 +2636,7 @@ Sub Standard_Submit_Click()
         Dim outcomeHead As String
         outcomeHead = headerFind("OUTCOMES", oldCourtHead)
 
-        Range(headerFind("Notes on Outcome", outcomeHead) & updateRow).value = "Transferred out of courtroom"
+        Range(headerFind("Notes on Outcome", outcomeHead) & updateRow).value = Standard_Notes.value
         Range(headerFind("Date of Overall Discharge", outcomeHead) & updateRow).value = DateOfHearing.value
         Range(headerFind("Courtroom of Discharge", outcomeHead) & updateRow).value = Lookup("Courtroom_Name")(oldCourtroom)
         Range(headerFind("Legal Status of Discharge", outcomeHead) & updateRow).value = Lookup("Legal_Status_Name")(Standard_Return_Legal_Status.Caption)
@@ -2678,7 +2678,7 @@ Sub Standard_Submit_Click()
     )
 
 
-    Call CheckForConcurrency(updateRow, DateOfHearing.value)
+    Call CheckForConcurrency(updateRow, newCourtroom, DateOfHearing.value)
 
     Call formSubmitEnd
 

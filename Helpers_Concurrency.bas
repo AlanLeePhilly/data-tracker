@@ -1,22 +1,53 @@
 Attribute VB_Name = "Helpers_Concurrency"
-Sub CheckForConcurrency(userRow As Long, DateOf As String)
+Sub CheckForConcurrency(userRow As Long, Courtroom As String, DateOf As String)
     Worksheets("Entry").Activate
     Dim lastRow As Long
     Dim i As Long, hasAtLeastOne As Boolean
+    Dim currentPID As String
+    Dim courtroomHead As String
+    Dim dayDiff As Integer
     
+    currentPID = Range(hFind("PID #") & userRow).value
+    courtroomHead = getCourtroomHead(Courtroom)
     hasAtLeastOne = False
     lastRow = Range("C" & Rows.count).End(xlUp).row
     
-    For i = 3 To lastRow
-        If Range(hFind("PID #") & i).value = Range(hFind("PID #") & userRow).value _
-            And Range(hFind("Active Courtroom") & i).value = Range(hFind("Active Courtroom") & userRow).value _
-            And Not i = userRow _
-            And Range(hFind("Active or Discharged (in courtroom)?") & i).value = 1 Then
-
-            hasAtLeastOne = True
-            Call addUserToBox(i, DateOf)
-        End If
-    Next i
+    
+    If isReferralCourtroom(Courtroom) Then
+        For i = 3 To lastRow
+            If Range(hFind("PID #") & i).value = currentPID _
+            And Not i = userRow Then
+                If IsDate(Range(headerFind("Referral Date", courtroomHead) & i).value) Then
+                    dayDiff = DateDiff("d", Range(headerFind("Referral Date", courtroomHead) & i).value, DateOf)
+            
+                    If dayDiff >= 0 Then
+                        If Not IsDate(Range(headerFind("End Date", courtroomHead) & i).value) _
+                        Or Range(headerFind("End Date", courtroomHead) & i).value > DateOf Then
+                            hasAtLeastOne = True
+                            Call addUserToBox(i, DateOf)
+                        End If
+                    End If
+                End If
+            End If
+        Next i
+    Else
+        For i = 3 To lastRow
+            If Range(hFind("PID #") & i).value = currentPID _
+            And Not i = userRow Then
+                If IsDate(Range(headerFind("Start Date", courtroomHead) & i).value) Then
+                    dayDiff = DateDiff("d", Range(headerFind("Start Date", courtroomHead) & i).value, DateOf)
+                    
+                    If dayDiff >= 0 Then
+                        If Not IsDate(Range(headerFind("End Date", courtroomHead) & i).value) _
+                        Or Range(headerFind("End Date", courtroomHead) & i).value > DateOf Then
+                            hasAtLeastOne = True
+                            Call addUserToBox(i, DateOf)
+                        End If
+                    End If
+                End If
+            End If
+        Next i
+    End If
 
     If hasAtLeastOne Then
         Concurrency.Show
