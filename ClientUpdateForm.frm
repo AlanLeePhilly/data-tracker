@@ -30,6 +30,10 @@ Private Sub Adult_NextCourtDate_Exit(ByVal Cancel As MSForms.ReturnBoolean)
     Call DateValidation(ctl, Cancel)
 End Sub
 
+Private Sub Apprehension_Click()
+    Modal_Apprehension.Show
+End Sub
+
 Private Sub JTC_NCD_NA_Click()
     NextCourtDate.value = "N/A"
 End Sub
@@ -274,6 +278,13 @@ Sub SearchResultsBox_Click()
     updateRow = SearchResultsBox.value
     Modal_New_Arrest.Active_Row = updateRow
     Courtroom.value = SearchResultsBox.List(SearchResultsBox.listIndex, 6)
+    
+    If Range(hFind("Active B/W?") & updateRow).value = 1 Then
+        Apprehension.Enabled = True
+    Else
+        Apprehension.Enabled = False
+    End If
+    
 End Sub
 
 ''''''''''''''''''''''
@@ -2755,15 +2766,7 @@ Private Sub PJJSC_Submit_Click()
     Range(headerFind("Notes on Detention", bucketHead) & updateRow).value = PJJSC_NotesOnDetentionOutcome.value
 
 
-    If DRev_DetentionDecision.value = "Held" _
-        And DRev_HoldAndTransfer.value = "Yes" Then
-        Call ReferClientTo( _
-            referralDate:=DateOfHearing.value, _
-            clientRow:=updateRow, _
-            fromCR:="PJJSC", _
-            toCR:=DRev_NextHearingLocation.value, _
-            DA:=DA.value)
-
+    If DRev_DetentionDecision.value = "Held" Then
         Call addSupervision( _
             clientRow:=updateRow, _
             serviceType:="Detention (not respite)", _
@@ -2776,6 +2779,15 @@ Private Sub PJJSC_Submit_Click()
             re1:=ReasonForDetentionCommit1.value, _
             re2:=ReasonForDetentionCommit2.value, _
             re3:=ReasonForDetentionCommit3.value)
+            
+        If DRev_HoldAndTransfer.value = "Yes" Then
+            Call ReferClientTo( _
+                referralDate:=DateOfHearing.value, _
+                clientRow:=updateRow, _
+                fromCR:="PJJSC", _
+                toCR:=DRev_NextHearingLocation.value, _
+                DA:=DA.value)
+        End If
     End If
 
     'IF RELEASED
