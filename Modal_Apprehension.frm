@@ -109,12 +109,11 @@ Private Sub Submit_Click()
     
     
     If IntakeOutcomeRelease = True Then
+        Range(headerFind("Intake Conference Outcome", bucketHead) & updateRow).value _
+            = Lookup("Intake_Conference_Outcome_Name")("Release for Court")
         Range(headerFind("B/W Lifted Date", bucketHead) & updateRow).value = IntakeDate
         Range(headerFind("LOS B/W", bucketHead) & updateRow) _
             = calcLOS(Range(bucketHead & updateRow).value, IntakeDate.value)
-            
-        Range(headerFind("Intake Conference Notes", bucketHead) & updateRow).value _
-            = Lookup("Intake_Conference_Outcome_Name")("Release for Court")
        
             
         If Not Supv1 = "None" Then
@@ -122,9 +121,8 @@ Private Sub Submit_Click()
                 clientRow:=updateRow, _
                 serviceType:=Supv1.value, _
                 legalStatus:=Lookup("Legal_Status_Num")(Range(hFind("Legal Status") & updateRow).value), _
-                Courtroom:=Lookup("Courtroom_Num")(Range(hFind("Active Courtroom") & updateRow).value), _
-                CourtroomOfOrder:="Intake Conf. BW", _
-                DA:="", _
+                Courtroom:="Intake Conf. BW", _
+                DA:=ClientUpdateForm.DA.value, _
                 agency:=Supv1Pro.value, _
                 startDate:=IntakeDate.value, _
                 re1:=Supv1Re1.value, _
@@ -138,9 +136,8 @@ Private Sub Submit_Click()
                 clientRow:=updateRow, _
                 serviceType:=Supv2.value, _
                 legalStatus:=Lookup("Legal_Status_Num")(Range(hFind("Legal Status") & updateRow).value), _
-                Courtroom:=Lookup("Courtroom_Num")(Range(hFind("Active Courtroom") & updateRow).value), _
-                CourtroomOfOrder:="Intake Conf. BW", _
-                DA:="", _
+                Courtroom:="Intake Conf. BW", _
+                DA:=ClientUpdateForm.DA.value, _
                 agency:=Supv2Pro.value, _
                 startDate:=IntakeDate.value, _
                 re1:=Supv2Re1.value, _
@@ -149,7 +146,16 @@ Private Sub Submit_Click()
                 Notes:="Referred at Bench Warrant Intake Conference ")
         End If
     End If
-
+    
+    Call addNotes( _
+        Courtroom:="Intake Conf. BW", _
+        DateOf:=IntakeDate.value, _
+        userRow:=updateRow, _
+        Notes:=Notes.value, _
+        DA:=ClientUpdateForm.DA.value _
+    )
+    
+    Call formSubmitEnd
     Unload Me
 End Sub
 

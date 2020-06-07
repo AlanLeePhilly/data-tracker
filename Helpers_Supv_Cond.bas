@@ -49,6 +49,7 @@ Sub addSupervision( _
 
     For i = 1 To 2
         If Courtroom = "Intake Conf." _
+        Or Courtroom = "Intake Conf. BW" _
         Or Courtroom = "Call-In" _
         Or Courtroom = "PJJSC" Then
             i = 2
@@ -185,6 +186,7 @@ Sub dropSupervision( _
 
     For i = 1 To 2
         If Courtroom = "Intake Conf." _
+        Or Courtroom = "Intake Conf. BW" _
         Or Courtroom = "Call-In" _
         Or Courtroom = "PJJSC" Then
             i = 2
@@ -287,6 +289,7 @@ Sub addCondition( _
     
     For i = 1 To 2
         If Courtroom = "Intake Conf." _
+        Or Courtroom = "Intake Conf. BW" _
         Or Courtroom = "Call-In" _
         Or Courtroom = "PJJSC" Then
             i = 2
@@ -387,6 +390,7 @@ Sub dropCondition( _
     For i = 1 To 2
     
         If Courtroom = "Intake Conf." _
+        Or Courtroom = "Intake Conf. BW" _
         Or Courtroom = "Call-In" _
         Or Courtroom = "PJJSC" Then
             i = 2
