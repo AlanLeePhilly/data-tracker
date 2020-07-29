@@ -4,7 +4,7 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} NewClientForm
    ClientHeight    =   8580.001
    ClientLeft      =   45
    ClientTop       =   375
-   ClientWidth     =   18075
+   ClientWidth     =   18225
    OleObjectBlob   =   "NewClientForm.frx":0000
 End
 Attribute VB_Name = "NewClientForm"
@@ -16,12 +16,27 @@ Public NCF_userRow As Long
 Public NCF_rearrestNum As Long
 
 Private Sub ConfOutcome_Change()
-    Select Case ConfOutcome.value
-        Case "Release for Diversion"
-            DiversionProgram.value = "Yes"
-        Case Else
-            DiversionProgram.value = "No"
-    End Select
+    If ConfOutcome.value = "Release for Diversion" Then
+        DiversionProgram.value = "Yes"
+    Else
+        DiversionProgram.value = "No"
+    End If
+    
+    If ConfOutcome.value = "Release for Court" Then
+        Call enableFrame(Supervisions_Frame)
+        Call enableFrame(Conditions_Frame)
+    Else
+        Call disableFrame(Supervisions_Frame)
+        Call disableFrame(Conditions_Frame)
+    End If
+    
+    If ConfOutcome.value = "Hold for Detention" Or _
+        ConfOutcome.value = "Roll to Detention Hearing" Then
+        InitialHearingLocation.value = "PJJSC"
+        InitialHearingLocation.Enabled = False
+    Else
+        InitialHearingLocation.Enabled = True
+    End If
 End Sub
 
 Private Sub DRAI_Score_Change()
@@ -44,46 +59,6 @@ Private Sub DRAI_Action_Change()
             InitialHearingLocation.value = "PJJSC"
             DetentionFacility.Enabled = True
             DetentionFacilityLabel.Enabled = True
-
-            Supv1.Enabled = False
-            Supv1Pro.Enabled = False
-            Supv1Re1.Enabled = False
-            Supv1Re2.Enabled = False
-            Supv1Re3.Enabled = False
-
-            Supv2.Enabled = False
-            Supv2Pro.Enabled = False
-            Supv2Re1.Enabled = False
-            Supv2Re2.Enabled = False
-            Supv2Re3.Enabled = False
-
-            Cond1.Enabled = False
-            Cond1Pro.Enabled = False
-            Cond2.Enabled = False
-            Cond2Pro.Enabled = False
-            Cond3.Enabled = False
-            Cond3Pro.Enabled = False
-
-        Case Else
-            Supv1.Enabled = True
-            Supv1Pro.Enabled = True
-            Supv1Re1.Enabled = True
-            Supv1Re2.Enabled = True
-            Supv1Re3.Enabled = True
-
-            Supv2.Enabled = True
-            Supv2Pro.Enabled = True
-            Supv2Re1.Enabled = True
-            Supv2Re2.Enabled = True
-            Supv2Re3.Enabled = True
-
-            Cond1.Enabled = True
-            Cond1Pro.Enabled = True
-            Cond2.Enabled = True
-            Cond2Pro.Enabled = True
-            Cond3.Enabled = True
-            Cond3Pro.Enabled = True
-
     End Select
 End Sub
 
@@ -322,6 +297,8 @@ Private Sub Reload_Click()
     NoDiversionReason1 = Lookup("Diversion_Rejection_Reason_Num")(Range(headerFind("Reason #1 Not Diverted", diversionHead) & emptyRow).value)
     NoDiversionReason2 = Lookup("Diversion_Rejection_Reason_Num")(Range(headerFind("Reason #2 Not Diverted", diversionHead) & emptyRow).value)
     NoDiversionReason3 = Lookup("Diversion_Rejection_Reason_Num")(Range(headerFind("Reason #3 Not Diverted", diversionHead) & emptyRow).value)
+    NoDiversionReason4 = Lookup("Diversion_Rejection_Reason_Num")(Range(headerFind("Reason #4 Not Diverted", diversionHead) & emptyRow).value)
+    NoDiversionReason5 = Lookup("Diversion_Rejection_Reason_Num")(Range(headerFind("Reason #5 Not Diverted", diversionHead) & emptyRow).value)
     InitialHearingDate.value = Range(headerFind("Initial Hearing Date") & emptyRow).value
     InitialHearingLocation.value = Lookup("Courtroom_Num")(Range(headerFind("Initial Hearing Location") & emptyRow).value)
     ListingType.value = Lookup("Listing_Type_Num")(Range(headerFind("Listing Type") & emptyRow).value)
@@ -334,16 +311,13 @@ Private Sub Reload_Click()
 End Sub
 
 
-Private Sub Supv2_Change()
-    If Supv2.value = "None " Then
-        MsgBox "wow wtf"
-    End If
-End Sub
 
 Private Sub UserForm_Initialize()
     Me.ScrollTop = 0
     DetentionFacilityLabel.Enabled = False
     DetentionFacility.Enabled = False
+    Call disableFrame(Supervisions_Frame)
+    Call disableFrame(Conditions_Frame)
 End Sub
 
 Private Sub AddPetition_Click()
@@ -559,6 +533,9 @@ Private Sub DiversionProgram_Change()
             NoDiversionReason1.Enabled = True
             NoDiversionReason2.Enabled = True
             NoDiversionReason3.Enabled = True
+            NoDiversionReason4.Enabled = True
+            NoDiversionReason5.Enabled = True
+        
         Case Else
 
             DiversionProgramReferralDateLabel.Enabled = True
@@ -577,9 +554,14 @@ Private Sub DiversionProgram_Change()
             NoDiversionReason1.Enabled = False
             NoDiversionReason2.Enabled = False
             NoDiversionReason3.Enabled = False
+            NoDiversionReason4.Enabled = False
+            NoDiversionReason5.Enabled = False
             NoDiversionReason1.value = "N/A"
             NoDiversionReason2.value = "N/A"
             NoDiversionReason3.value = "N/A"
+            NoDiversionReason4.value = "N/A"
+            NoDiversionReason5.value = "N/A"
+            
     End Select
 End Sub
 
@@ -811,6 +793,37 @@ Private Sub Submit_Click()
         Exit Sub
     End If
 
+    If DRAI_Action.value = "Override - Hold" And OverrideHoldRe1 = "N/A" Then
+        MsgBox "Must include reason for Call-In Override Hold"
+        Exit Sub
+    End If
+    
+    
+    Dim Msg, Style, Title, Response
+    
+    If calcLOS(CallInDate, InConfDate) > 7 And Not calcLOS(CallInDate, InConfDate) = "" Then
+        Msg = "Warning: Call-in date and Intake conference date are greater than 7 days apart. (" & CallInDate & ", " & InConfDate & "). Are you sure you want to submit?"
+        Style = vbYesNo + vbCritical + vbDefaultButton2
+        Title = "MsgBox Demonstration"    ' Define title.
+                ' Display message.
+        Response = MsgBox(Msg, Style, Title)
+        If Response = vbNo Then
+            Exit Sub
+        End If
+    End If
+    
+    If calcLOS(InConfDate, InitialHearingDate) > 21 And Not calcLOS(InConfDate, InitialHearingDate) = "" Then
+        Msg = "Warning: Call-in date and Intake conference date are greater than 7 days apart. (" & InConfDate & ", " & InitialHearingDate & "). Are you sure you want to submit?"
+        Style = vbYesNo + vbCritical + vbDefaultButton2
+        Title = "MsgBox Demonstration"    ' Define title.
+                ' Display message.
+        Response = MsgBox(Msg, Style, Title)
+        If Response = vbNo Then
+            Exit Sub
+        End If
+    End If
+    
+    
     'define variable Long(a big integer) named emptyRow
     Dim emptyRow As Long
 
@@ -870,8 +883,8 @@ Private Sub Submit_Click()
     'direct entry from textbox
     Range(headerFind("DOB") & emptyRow).value _
             = DateOfBirth.value
-    Range(headerFind("Age @ Intake") & emptyRow).value _
-            = ageAtTime(InitialHearingDate, emptyRow)
+    Range(headerFind("Age @ Arrest") & emptyRow).value _
+            = ageAtTime(ArrestDate.value, emptyRow)
     Select Case ageAtTime(InitialHearingDate, emptyRow)
         Case Is < 12
             Range(headerFind("Age Group") & emptyRow).value _
@@ -904,13 +917,18 @@ Private Sub Submit_Click()
     Range(headerFind("Diagnosis #1") & emptyRow).value = Lookup("Diagnosis_Name")(Diagnosis1.value)
     Range(headerFind("Diagnosis #2") & emptyRow).value = Lookup("Diagnosis_Name")(Diagnosis2.value)
     Range(headerFind("Diagnosis #3") & emptyRow).value = Lookup("Diagnosis_Name")(Diagnosis3.value)
+    Range(headerFind("Diagnosis #4") & emptyRow).value = Lookup("Diagnosis_Name")(Diagnosis4.value)
+    Range(headerFind("Diagnosis #5") & emptyRow).value = Lookup("Diagnosis_Name")(Diagnosis5.value)
     Range(headerFind("Trauma Type #1") & emptyRow).value = Lookup("Trauma_Type_Name")(TraumaType1.value)
     Range(headerFind("Trauma Type #2") & emptyRow).value = Lookup("Trauma_Type_Name")(TraumaType2.value)
     Range(headerFind("Trauma Type #3") & emptyRow).value = Lookup("Trauma_Type_Name")(TraumaType3.value)
+    Range(headerFind("Trauma Type #4") & emptyRow).value = Lookup("Trauma_Type_Name")(TraumaType4.value)
+    Range(headerFind("Trauma Type #5") & emptyRow).value = Lookup("Trauma_Type_Name")(TraumaType5.value)
     Range(headerFind("Treatment #1") & emptyRow).value = Lookup("Treatment_Name")(Treatment1.value)
     Range(headerFind("Treatment #2") & emptyRow).value = Lookup("Treatment_Name")(Treatment2.value)
     Range(headerFind("Treatment #3") & emptyRow).value = Lookup("Treatment_Name")(Treatment3.value)
-    
+    Range(headerFind("Treatment #4") & emptyRow).value = Lookup("Treatment_Name")(Treatment4.value)
+    Range(headerFind("Treatment #5") & emptyRow).value = Lookup("Treatment_Name")(Treatment5.value)
     
     Range(headerFind("Phone #") & emptyRow).value = PhoneNumber.value
     Range(headerFind("School") & emptyRow).value = School.value
@@ -1523,6 +1541,11 @@ Private Sub Submit_Click()
                 = Lookup("Diversion_Rejection_Reason_Name")(NoDiversionReason2.value)
         Range(headerFind("Reason #3 Not Diverted", diversionHead) & emptyRow) _
                 = Lookup("Diversion_Rejection_Reason_Name")(NoDiversionReason3.value)
+        Range(headerFind("Reason #4 Not Diverted", diversionHead) & emptyRow) _
+                = Lookup("Diversion_Rejection_Reason_Name")(NoDiversionReason4.value)
+        Range(headerFind("Reason #5 Not Diverted", diversionHead) & emptyRow) _
+                = Lookup("Diversion_Rejection_Reason_Name")(NoDiversionReason5.value)
+    
     End If
 
     '''''''''''''''''

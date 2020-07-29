@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} ClientUpdateForm 
    Caption         =   "ClientUpdateForm"
-   ClientHeight    =   10575
+   ClientHeight    =   13740
    ClientLeft      =   45
    ClientTop       =   -75
-   ClientWidth     =   15975
+   ClientWidth     =   16140
    OleObjectBlob   =   "ClientUpdateForm.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -16,10 +16,6 @@ Attribute VB_Exposed = False
 
 Public dataStore As Collection
 Option Explicit
-
-
-
-
 
 Private Sub Adult_NextCourtDate_Enter()
     Adult_NextCourtDate.value = CalendarForm.GetDate(RangeOfYears:=5)
@@ -38,8 +34,6 @@ Private Sub JTC_NCD_NA_Click()
     NextCourtDate.value = "N/A"
 End Sub
 
-
-
 Private Sub LogPayment_Click()
     If DA.value = "" Then
         MsgBox "DA Required"
@@ -49,6 +43,8 @@ Private Sub LogPayment_Click()
     Log_Payment.Show
     
 End Sub
+
+
 
 
 
@@ -71,63 +67,60 @@ Private Sub Standard_FTA_No_Click()
     Standard_FTA_No.BackColor = selectedColor
 End Sub
 
-Private Sub DRev_Cancel_Click()
+Private Sub PJJSC_Cancel_Click()
     Unload Me
 End Sub
 
-Private Sub DRev_DetentionDecision_Change()
-    Select Case DRev_DetentionDecision.value
-        Case "Held"
-            If Range(hFind("Did Youth Have Initial Detention Hearing?", "DETENTION") & updateRow).value = Lookup("Generic_YN_Name")("Yes") Then
-                MultiPage2.value = 3
-            Else
-                MultiPage2.value = 2
-            End If
-        Case "Released", "Remain Released"
-            MultiPage2.value = 1
-            DRev_Facility.value = "N/A"
-            DRev_Facility.Enabled = False
-        Case "Remain as Commit"
-            If Not Range(hFind("Did Youth Have Initial Detention Hearing?", "DETENTION") & updateRow).value _
-                = Lookup("Generic_YN_Name")("Yes") Then
-                MsgBox "It looks like this is the client's initial detention hearing. They cannot 'Remain as Commit', but they can be 'Held'"
-                DRev_DetentionDecision.value = "Held"
-            End If
-        Case Else
-            MultiPage2.value = 0
-    End Select
+Private Sub PJJSC_DetentionDecision_Change()
+    Dim val As String
+    val = PJJSC_DetentionDecision.value
+    
+    If val = "Released" Or val = "Remain Released" Then
+        Call enableFrame(PJJSC_Sup_Frame)
+        PJJSC_Facility.value = "N/A"
+        PJJSC_Facility.Enabled = False
+    Else
+        Call disableFrame(PJJSC_Sup_Frame)
+        PJJSC_Facility.Enabled = True
+    End If
+    
+    If val = "Held" Or val = "Remain as Commit" Then
+        Call enableFrame(PJJSC_Reasons_Frame)
+    Else
+        Call disableFrame(PJJSC_Reasons_Frame)
+    End If
+    
+    If val = "FTA" Then
+        Modal_FTA.Show
+    End If
+    
 End Sub
 
 
-Private Sub DRev_HoldAndTransfer_Change()
-    If DRev_HoldAndTransfer.value = "Yes" Then
-        DRev_NextHearingLocation.Enabled = True
-        DRev_NextHearingLocationLabel.Enabled = True
-    Else
-        DRev_NextHearingLocation.Enabled = False
-        DRev_NextHearingLocationLabel.Enabled = False
-        DRev_NextHearingLocation.value = "N/A"
-    End If
+
+Private Sub PJJSC_Lift_BW_Click()
+    Modal_Lift_BW.Show
 End Sub
 
-Private Sub DRevSup1_Change()
-    If isResidential(DRevSup1) Then
-        DRevSup1_Agency.RowSource = "Residential_Supervision_Provider"
+
+Private Sub PJJSC_Sup1_Change()
+    If isResidential(PJJSC_Sup1) Then
+        PJJSC_Sup1_Agency.RowSource = "Residential_Supervision_Provider"
     Else
-        DRevSup1_Agency.RowSource = "Community_Based_Supervision_Provider"
+        PJJSC_Sup1_Agency.RowSource = "Community_Based_Supervision_Provider"
     End If
 
-    DRevSup1_Agency.value = "None"
+    PJJSC_Sup1_Agency.value = "None"
 End Sub
 
-Private Sub DRevSup2_Change()
-    If isResidential(DRevSup1) Then
-        DRevSup2_Agency.RowSource = "Residential_Supervision_Provider"
+Private Sub PJJSC_Sup2_Change()
+    If isResidential(PJJSC_Sup1) Then
+        PJJSC_Sup2_Agency.RowSource = "Residential_Supervision_Provider"
     Else
-        DRevSup2_Agency.RowSource = "Community_Based_Supervision_Provider"
+        PJJSC_Sup2_Agency.RowSource = "Community_Based_Supervision_Provider"
     End If
 
-    DRevSup2_Agency.value = "None"
+    PJJSC_Sup2_Agency.value = "None"
 End Sub
 
 
@@ -186,7 +179,6 @@ Sub UserForm_Initialize()
     JTC_Reject.Visible = False
     JTC_Expungement.Visible = False
     MultiPage1.value = 0
-    MultiPage2.value = 0
     Me.ScrollTop = 0
 End Sub
 '''''''''''''
@@ -279,7 +271,8 @@ Sub SearchResultsBox_Click()
     Modal_New_Arrest.Active_Row = updateRow
     Courtroom.value = SearchResultsBox.List(SearchResultsBox.listIndex, 6)
     
-    If Range(hFind("Active B/W?") & updateRow).value = 1 Then
+    If Range(hFind("Active B/W?") & updateRow).value = 1 _
+      And Not Range(hFind("Active Courtroom") & updateRow).value = Lookup("Courtroom_Name")("PJJSC BW") Then
         Apprehension.Enabled = True
     Else
         Apprehension.Enabled = False
@@ -317,6 +310,34 @@ Sub Lookup_Button_Click()
             Else
                 DetentionHeader.Caption = "INITIAL DETENTION HEARING"
             End If
+            MultiPage1.value = 1
+        Case "PJJSC BW"
+            DetentionHeader.Caption = "BENCH WARRANT DETENTION HEARING"
+            PJJSC_DetentionDecision.RowSource = "Detention_Decision_Sub1"
+            
+            Dim priorCourtroom As String
+            Dim bucketHead As String
+            Dim Num As Integer
+            For Num = 100 To 1 Step -1
+                bucketHead = hFind("Court Date #" & Num, "LISTINGS")
+                If isNotEmptyOrZero(Range(bucketHead & updateRow)) _
+                    And Not Range(headerFind("Courtroom", bucketHead) & updateRow).value = Lookup("Courtroom_Name")("PJJSC BW") _
+                    And Not Range(headerFind("Courtroom", bucketHead) & updateRow).value = Lookup("Courtroom_Name")("Intake Conf. BW") Then
+                
+                        PJJSC_NextLocation.value = Lookup("Courtroom_Num")(Range(headerFind("Courtroom", bucketHead) & updateRow).value)
+                    Exit For
+                End If
+            Next Num
+            
+            Call disableFrame(PJJSC_Reasons_Frame)
+            Call disableFrame(PJJSC_Outcome_Frame)
+            Call disableFrame(PJJSC_Sup_Frame)
+            Call disableFrame(PJJSC_Cond_Frame)
+
+            PJJSC_Cancel.Enabled = False
+            PJJSC_Submit.Enabled = False
+            PJJSC_Lift_BW.ForeColor = &HFF&
+            
             MultiPage1.value = 1
         Case "4G", "4E", "6F", "6H", "3E", "5E", "WRAP"
             MultiPage1.value = 4
@@ -2718,230 +2739,455 @@ Private Sub PJJSC_Submit_Click()
     Call formSubmitStart(updateRow)
     
     Call addNotes( _
-        Courtroom:="PJJSC", _
+        Courtroom:=Courtroom.value, _
         DateOf:=DateOfHearing.value, _
         userRow:=updateRow, _
-        Notes:=PJJSC_NotesOnDetentionOutcome.value, _
+        Notes:=PJJSC_Notes.value, _
         DA:=DA.value _
     )
 
-    detentionHead = headerFind("DETENTION")
+    
 
-    'find empty review hearing bucket to enter data
-    For Num = 1 To 10
-        bucketHead = hFind("Date of Review #" & Num, "DETENTION")
-        If isEmptyOrZero(Range(bucketHead & updateRow)) Then
-            Num = 10
-        End If
-    Next Num
-
-    If Range(hFind("Did Youth Have Initial Detention Hearing?", "DETENTION") & updateRow).value _
-        = Lookup("Generic_YN_Name")("Yes") Then
-
-    Else
-        bucketHead = hFind("Date of Initial Detention Hearing", "DETENTION")
-        Call flagYes(Range(hFind("Did Youth Have Initial Detention Hearing?", "DETENTION") & updateRow))
-        Range(hFind("Type of Detention Hearing", "DETENTION") & updateRow).value _
-            = Lookup("Type_of_Detention_Hearing_Name")("Initial")
-        If DRev_DetentionDecision.value = "Held" Then
-            Range(hFind("Reason #1 for Detention Commit", "DETENTION") & updateRow).value _
-                = Lookup("Detention_Hearing_Reason_Name")(ReasonForDetentionCommit1.value)
-            Range(hFind("Reason #2 for Detention Commit", "DETENTION") & updateRow).value _
-                = Lookup("Detention_Hearing_Reason_Name")(ReasonForDetentionCommit2.value)
-            Range(hFind("Reason #3 for Detention Commit", "DETENTION") & updateRow).value _
-                = Lookup("Detention_Hearing_Reason_Name")(ReasonForDetentionCommit3.value)
-            Range(hFind("Reason #4 for Detention Commit", "DETENTION") & updateRow).value _
-                = Lookup("Detention_Hearing_Reason_Name")(ReasonForDetentionCommit4.value)
-            Range(hFind("Reason #5 for Detention Commit", "DETENTION") & updateRow).value _
-                = Lookup("Detention_Hearing_Reason_Name")(ReasonForDetentionCommit5.value)
-        End If
-    End If
-
-    Range(bucketHead & updateRow).value = DateOfHearing
-    Range(headerFind("DA", bucketHead) & updateRow).value = Lookup("DA_Last_Name_Name")(DA.value)
-    Range(headerFind("DA Action", bucketHead) & updateRow).value = Lookup("DA_Action_Name")(DRev_DA_Action.value)
-    Range(headerFind("DA Action Accepted?", bucketHead) & updateRow).value = Lookup("Generic_YNOU_Name")(DRev_ActionAccepted.value)
-    Range(headerFind("Detention Decision", bucketHead) & updateRow).value = Lookup("Detention_Decision_Name")(DRev_DetentionDecision.value)
-    Range(headerFind("Detention Facility", bucketHead) & updateRow).value = Lookup("Detention_Facility_Name")(DRev_Facility.value)
-    Range(headerFind("Notes on Detention", bucketHead) & updateRow).value = PJJSC_NotesOnDetentionOutcome.value
-
-
-    If DRev_DetentionDecision.value = "Held" Then
-        Call addSupervision( _
-            clientRow:=updateRow, _
-            serviceType:="Detention (not respite)", _
-            legalStatus:=Lookup("Legal_Status_Num")(Range(hFind("Legal Status") & updateRow).value), _
-            Courtroom:="PJJSC", _
-            DA:=DA.value, _
-            agency:=DRev_Facility.value, _
-            startDate:=DateOfHearing.value, _
-            NextCourtDate:=PJJSC_NextCourtDate.value, _
-            re1:=ReasonForDetentionCommit1.value, _
-            re2:=ReasonForDetentionCommit2.value, _
-            re3:=ReasonForDetentionCommit3.value)
+    If Courtroom.value = "PJJSC BW" Then
+        'Close out FTA
+        For Num = 15 To 1 Step -1
+            bucketHead = hFind("FTA #" & Num & " Date", "FTA")
+            If isNotEmptyOrZero(Range(headerFind("Intake Conference Outcome", bucketHead) & updateRow)) _
+            And isEmptyOrZero(Range(headerFind("B/W Lifted Date", bucketHead) & updateRow)) Then
+                Exit For
+            End If
+        Next Num
+        
+        Range(headerFind("B/W Lifted Date", bucketHead) & updateRow).value = DateOfHearing
+        Range(headerFind("LOS B/W", bucketHead) & updateRow).value _
+            = calcLOS(Range(bucketHead & updateRow).value, DateOfHearing)
             
-        If DRev_HoldAndTransfer.value = "Yes" Then
+        
+        Range(headerFind("Active B/W?") & updateRow).value = 2 'No
+        
+        'Find last courtroom by last listing that wasn't "PJJSC BW"
+        Dim priorCourtroom As String
+        For Num = 100 To 1 Step -1
+            bucketHead = hFind("Court Date #" & Num, "LISTINGS")
+            If isNotEmptyOrZero(Range(bucketHead & updateRow)) _
+                And Not Range(headerFind("Courtroom", bucketHead) & updateRow).value = Lookup("Courtroom_Name")("PJJSC BW") _
+                 And Not Range(headerFind("Courtroom", bucketHead) & updateRow).value = Lookup("Courtroom_Name")("Intake Conf. BW") Then
+            
+                    priorCourtroom = Lookup("Courtroom_Num")(Range(headerFind("Courtroom", bucketHead) & updateRow).value)
+                Exit For
+            End If
+        Next Num
+        
+        'Fill out VOP Bucket
+        
+        detentionHead = headerFind("DETENTION (VOP)")
+    
+        Call flagYes(Range(headerFind("Did Youth Have a VOP Detention Hearing?", detentionHead) & updateRow))
+        
+        'find empty review hearing bucket to enter data
+        For Num = 1 To 5
+            bucketHead = headerFind("Date of VOP Detention Hearing #" & Num, detentionHead)
+            If isEmptyOrZero(Range(bucketHead & updateRow)) Then
+                Exit For
+            End If
+        Next Num
+        
+        
+        Range(bucketHead & updateRow).value = DateOfHearing.value
+        
+        
+        Range(headerFind("Type of Detention Hearing", bucketHead) & updateRow).value _
+            = Lookup("Type_of_Detention_Hearing_Name")("Bench Warrant")
+        
+        Range(headerFind("Legal Status", bucketHead) & updateRow).value = Range(headerFind("Legal Status") & updateRow).value
+        Range(headerFind("Courtroom of Origin", bucketHead) & updateRow).value = Lookup("Courtroom_Name")(priorCourtroom)
+        Range(headerFind("Active Supervision Program", bucketHead) & updateRow).value = Range(headerFind("Active Supervision Program") & updateRow).value
+
+        Range(headerFind("Reason #1 for New Detention Hearing", bucketHead) & updateRow).value _
+            = Lookup("Detention_Hearing_Reason_Name")("B/W")
+            
+        Range(headerFind("DA", bucketHead) & updateRow).value = Lookup("DA_Last_Name_Name")(DA.value)
+        Range(headerFind("DA Action", bucketHead) & updateRow).value = Lookup("DA_Action_Name")(PJJSC_DA_Action.value)
+        Range(headerFind("DA Action Accepted?", bucketHead) & updateRow).value = Lookup("Generic_YNOU_Name")(PJJSC_ActionAccepted.value)
+        Range(headerFind("Detention Decision", bucketHead) & updateRow).value = Lookup("Detention_Decision_Name")(PJJSC_DetentionDecision.value)
+        Range(headerFind("Detention Facility", bucketHead) & updateRow).value = Lookup("Detention_Facility_Name")(PJJSC_Facility.value)
+        Range(headerFind("Notes", bucketHead) & updateRow).value = PJJSC_Notes.value
+        
+        
+        Select Case PJJSC_DetentionDecision.value
+            Case "Held"
+                Call addSupervision( _
+                    clientRow:=updateRow, _
+                    serviceType:="Detention BW", _
+                    legalStatus:=Lookup("Legal_Status_Num")(Range(hFind("Legal Status") & updateRow).value), _
+                    Courtroom:="PJJSC BW", _
+                    DA:=DA.value, _
+                    agency:=PJJSC_Facility.value, _
+                    startDate:=DateOfHearing.value, _
+                    NextCourtDate:=PJJSC_NextCourtDate.value, _
+                    re1:="B/W")
+            
+            Case "Released"
+                        
+                Range(headerFind("Active Courtroom") & updateRow).value = Lookup("Courtroom_Name")(priorCourtroom)
+            
+                If Not PJJSC_Sup1.value = "None" Then
+                    Call addSupervision( _
+                        clientRow:=updateRow, _
+                        serviceType:=PJJSC_Sup1.value, _
+                        legalStatus:=Lookup("Legal_Status_Num")(Range(hFind("Legal Status") & updateRow).value), _
+                        Courtroom:="PJJSC BW", _
+                        DA:=DA.value, _
+                        agency:=PJJSC_Sup1_Agency.value, _
+                        startDate:=DateOfHearing.value, _
+                        NextCourtDate:=PJJSC_NextCourtDate.value, _
+                        re1:=PJJSC_Sup1_Re1.value, _
+                        re2:=PJJSC_Sup1_Re2.value, _
+                        re3:=PJJSC_Sup1_Re3.value, _
+                        Notes:="Referred at BW detention")
+                End If
+                
+                If Not PJJSC_Sup2.value = "None" Then
+                    Call addSupervision( _
+                        clientRow:=updateRow, _
+                        serviceType:=PJJSC_Sup2.value, _
+                        legalStatus:=Lookup("Legal_Status_Num")(Range(hFind("Legal Status") & updateRow).value), _
+                        Courtroom:="PJJSC BW", _
+                        DA:=DA.value, _
+                        agency:=PJJSC_Sup2_Agency.value, _
+                        startDate:=DateOfHearing.value, _
+                        NextCourtDate:=PJJSC_NextCourtDate.value, _
+                        re1:=PJJSC_Sup2_Re1.value, _
+                        re2:=PJJSC_Sup2_Re2.value, _
+                        re3:=PJJSC_Sup2_Re3.value, _
+                        Notes:="Referred at BW detention")
+                End If
+            
+            Case Else
+        End Select
+        
+            If Not PJJSC_C1.value = "None" Then
+                Call addCondition( _
+                    clientRow:=updateRow, _
+                    condition:=PJJSC_C1.value, _
+                    legalStatus:=Lookup("Legal_Status_Num")(Range(hFind("Legal Status") & updateRow).value), _
+                    Courtroom:="PJJSC BW", _
+                    DA:=DA.value, _
+                    agency:=PJJSC_C1P.value, _
+                    startDate:=DateOfHearing.value, _
+                    re1:="N/A", _
+                    re2:="N/A", _
+                    re3:="N/A", _
+                    Notes:="Referred at BW detention")
+            End If
+            
+            If Not PJJSC_C2.value = "None" Then
+                Call addCondition( _
+                    clientRow:=updateRow, _
+                    condition:=PJJSC_C2.value, _
+                    legalStatus:=Lookup("Legal_Status_Num")(Range(hFind("Legal Status") & updateRow).value), _
+                    Courtroom:="PJJSC BW", _
+                    DA:=DA.value, _
+                    agency:=PJJSC_C2P.value, _
+                    startDate:=DateOfHearing.value, _
+                    re1:="N/A", _
+                    re2:="N/A", _
+                    re3:="N/A", _
+                    Notes:="Referred at BW detention")
+            End If
+    
+            If Not PJJSC_C3.value = "None" Then
+                Call addCondition( _
+                    clientRow:=updateRow, _
+                    condition:=PJJSC_C3.value, _
+                    legalStatus:=Lookup("Legal_Status_Num")(Range(hFind("Legal Status") & updateRow).value), _
+                    Courtroom:="PJJSC BW", _
+                    DA:=DA.value, _
+                    agency:=PJJSC_C3P.value, _
+                    startDate:=DateOfHearing.value, _
+                    re1:="N/A", _
+                    re2:="N/A", _
+                    re3:="N/A", _
+                    Notes:="Referred at BW detention")
+            End If
+    End If
+    
+    If Courtroom.value = "PJJSC" Then
+    
+    
+        If PJJSC_Lift_BW.BackColor = selectedColor Then
+            Range(hFind("Active B/W?") & updateRow).value = Lookup("Generic_YNOU_Name")("No")
+    
+            For i = 15 To 1 Step -1
+                If isNotEmptyOrZero(Range(hFind("FTA #" & i & " Date", "AGGREGATES") & updateRow)) _
+                        And Range(hFind("B/W Action", "FTA #" & i & " Date", "AGGREGATES") & updateRow).value _
+                            = Lookup("BW_Action_Name")("Begin B/W") Then
+    
+                    bucketHead = hFind("FTA #" & i & " Date", "AGGREGATES")
+    
+                    Range(headerFind("B/W Lifted Date", bucketHead) & updateRow).value _
+                            = Modal_Lift_BW.DateBox.value
+    
+                    Range(headerFind("LOS B/W", bucketHead) & updateRow).value _
+                                = calcLOS(Range(bucketHead & updateRow).value, Modal_Lift_BW.DateBox.value)
+                    i = 1
+                End If
+            Next i
+        End If
+        
+        
+        
+        
+        
+       
+        detentionHead = headerFind("DETENTION")
+    
+        'find empty review hearing bucket to enter data
+        For Num = 1 To 10
+            bucketHead = hFind("Date of Review #" & Num, "DETENTION")
+            If isEmptyOrZero(Range(bucketHead & updateRow)) Then
+                Exit For
+            End If
+        Next Num
+    
+        If Range(hFind("Did Youth Have Initial Detention Hearing?", "DETENTION") & updateRow).value _
+            = Lookup("Generic_YN_Name")("Yes") Then
+    
+        Else
+            bucketHead = hFind("Date of Initial Detention Hearing", "DETENTION")
+            Call flagYes(Range(hFind("Did Youth Have Initial Detention Hearing?", "DETENTION") & updateRow))
+            Range(hFind("Type of Detention Hearing", "DETENTION") & updateRow).value _
+                = Lookup("Type_of_Detention_Hearing_Name")("Initial")
+            If PJJSC_DetentionDecision.value = "Held" Then
+                Range(hFind("Reason #1 for Detention Commit", "DETENTION") & updateRow).value _
+                    = Lookup("Detention_Hearing_Reason_Name")(PJJSC_Reason1.value)
+                Range(hFind("Reason #2 for Detention Commit", "DETENTION") & updateRow).value _
+                    = Lookup("Detention_Hearing_Reason_Name")(PJJSC_Reason2.value)
+                Range(hFind("Reason #3 for Detention Commit", "DETENTION") & updateRow).value _
+                    = Lookup("Detention_Hearing_Reason_Name")(PJJSC_Reason3.value)
+                Range(hFind("Reason #4 for Detention Commit", "DETENTION") & updateRow).value _
+                    = Lookup("Detention_Hearing_Reason_Name")(PJJSC_Reason4.value)
+                Range(hFind("Reason #5 for Detention Commit", "DETENTION") & updateRow).value _
+                    = Lookup("Detention_Hearing_Reason_Name")(PJJSC_Reason5.value)
+            End If
+        End If
+    
+        Range(bucketHead & updateRow).value = DateOfHearing
+        Range(headerFind("DA", bucketHead) & updateRow).value = Lookup("DA_Last_Name_Name")(DA.value)
+        Range(headerFind("DA Action", bucketHead) & updateRow).value = Lookup("DA_Action_Name")(PJJSC_DA_Action.value)
+        Range(headerFind("DA Action Accepted?", bucketHead) & updateRow).value = Lookup("Generic_YNOU_Name")(PJJSC_ActionAccepted.value)
+        Range(headerFind("Detention Decision", bucketHead) & updateRow).value = Lookup("Detention_Decision_Name")(PJJSC_DetentionDecision.value)
+        Range(headerFind("Detention Facility", bucketHead) & updateRow).value = Lookup("Detention_Facility_Name")(PJJSC_Facility.value)
+        Range(headerFind("Notes on Detention", bucketHead) & updateRow).value = PJJSC_Notes.value
+    
+    
+        If PJJSC_DetentionDecision.value = "Held" Then
+            Call addSupervision( _
+                clientRow:=updateRow, _
+                serviceType:="Detention (not respite)", _
+                legalStatus:=Lookup("Legal_Status_Num")(Range(hFind("Legal Status") & updateRow).value), _
+                Courtroom:="PJJSC", _
+                DA:=DA.value, _
+                agency:=PJJSC_Facility.value, _
+                startDate:=DateOfHearing.value, _
+                NextCourtDate:=PJJSC_NextCourtDate.value, _
+                re1:=PJJSC_Reason1.value, _
+                re2:=PJJSC_Reason2.value, _
+                re3:=PJJSC_Reason3.value)
+        End If
+    
+        If PJJSC_DetentionDecision.value = "FTA" Then
+            Dim ftaBucketHead As String
+            
+            Call flagYes(Range(hFind("Did Youth FTA?", "AGGREGATES") & updateRow))
+
+            For i = 1 To 15
+                If isEmptyOrZero(Range(hFind("FTA #" & i & " Date", "AGGREGATES") & updateRow)) Then
+    
+                    ftaBucketHead = hFind("FTA #" & i & " Date", "AGGREGATES")
+    
+                    Range(ftaBucketHead & updateRow).value = DateOfHearing.value
+                    Range(headerFind("Day of FTA", ftaBucketHead) & updateRow).value _
+                            = Weekday(DateOfHearing.value, vbMonday) * 2 - 1
+                    Range(headerFind("Courtroom", ftaBucketHead) & updateRow).value = Range(hFind("Active Courtroom") & updateRow).value
+                    Range(headerFind("Legal Status", ftaBucketHead) & updateRow).value = Range(hFind("Legal Status") & updateRow).value
+    
+                    If i = 1 Then
+                        Range(headerFind("LOS to FTA", ftaBucketHead) & updateRow).value _
+                                = calcLOS(Range(hFind("Arrest Date") & updateRow).value, DateOfHearing.value)
+                    Else
+                        Range(headerFind("LOS Between FTAs", ftaBucketHead) & updateRow).value _
+                                = calcLOS(Range(hFind("FTA #" & (i - 1) & " Date", "AGGREGATES") & updateRow).value, DateOfHearing.value)
+                    End If
+    
+    
+                    If Range(hFind("Active B/W?") & updateRow).value = Lookup("Generic_YNOU_Name")("Yes") Then
+                        Range(headerFind("B/W Action", ftaBucketHead) & updateRow).value = Lookup("BW_Action_Name")("Continue B/W")
+                    End If
+    
+                    If Range(hFind("Active B/W?") & updateRow).value = Lookup("Generic_YNOU_Name")("No") Then
+                        If Modal_FTA.BW.value = "Yes" Then
+                            Range(headerFind("B/W Action", ftaBucketHead) & updateRow).value = Lookup("BW_Action_Name")("Begin B/W")
+                            Call flagYes(Range(hFind("Active B/W?") & updateRow))
+                        Else
+                            Range(headerFind("B/W Action", ftaBucketHead) & updateRow).value = Lookup("BW_Action_Name")("N/A")
+                        End If
+                    End If
+    
+                    i = 15
+                End If
+            Next i
+        End If
+    
+        'IF RELEASED
+        If PJJSC_DetentionDecision.value = "Released" Or PJJSC_DetentionDecision.value = "Remain Released" Then
+            If PJJSC_DetentionDecision.value = "Released" Then
+                Range(headerFind("Date of Release", bucketHead) & updateRow).value = DateOfHearing.value
+                Range(headerFind("LOS in Detention", bucketHead) & updateRow).value _
+                    = calcLOS(Range(hFind("Date of Initial Detention Hearing", "DETENTION") & updateRow).value, DateOfHearing.value)
+            End If
+            
+            Range(headerFind("Notes on Detention", bucketHead) & updateRow).value = PJJSC_Notes.value
+    
+            Range(headerFind("LOS from Arrest Until Hearing", bucketHead) & updateRow).value _
+                = calcLOS(Range(hFind("Arrest Date") & updateRow).value, Range(hFind("Date of Initial Detention Hearing", "DETENTION") & updateRow).value)
+    
+            'Range(headerFind("Courtroom That Released", bucketHead) & updateRow).value =
+            Range(headerFind("Referred to Courtroom", bucketHead) & updateRow).value _
+                = Lookup("Courtroom_Name")(PJJSC_NextLocation.value)
+    
+            'REFER TO COURTROOM
             Call ReferClientTo( _
                 referralDate:=DateOfHearing.value, _
                 clientRow:=updateRow, _
                 fromCR:="PJJSC", _
-                toCR:=DRev_NextHearingLocation.value, _
-                DA:=DA.value)
+                toCR:=PJJSC_NextLocation.value, _
+                DA:=DA.value _
+            )
+    
+            'ADD SUPERVISION #1 TO DETENTION SECTION
+            bucketHead = hFind("Supervision Ordered #1", "DETENTION")
+            Range(bucketHead & updateRow).value = Lookup("Supervision_Program_Name")(PJJSC_Sup1.value)
+            If isResidential(PJJSC_Sup1.value) Then
+                Range(headerFind("Residential Agency", bucketHead) & updateRow).value _
+                    = Lookup("Residential_Supervision_Provider_Name")(PJJSC_Sup1_Agency.value)
+            Else
+                Range(headerFind("Community-Based Agency", bucketHead) & updateRow).value _
+                    = Lookup("Community_Based_Supervision_Provider_Name")(PJJSC_Sup1_Agency.value)
+            End If
+    
+            Range(headerFind("Reason #1 for Supervision Referral", bucketHead) & updateRow).value = Lookup("Supervision_Referral_Reason_Name")(PJJSC_Sup1_Re1.value)
+            Range(headerFind("Reason #2 for Supervision Referral", bucketHead) & updateRow).value = Lookup("Supervision_Referral_Reason_Name")(PJJSC_Sup1_Re2.value)
+            Range(headerFind("Reason #3 for Supervision Referral", bucketHead) & updateRow).value = Lookup("Supervision_Referral_Reason_Name")(PJJSC_Sup1_Re3.value)
+    
+            'ADD SUPERVISION #1 TO NEW COURTROOM (AND AGG)
+            If Not PJJSC_Sup1.value = "None" Then
+                Call addSupervision( _
+                    clientRow:=updateRow, _
+                    serviceType:=PJJSC_Sup1.value, _
+                    legalStatus:=Lookup("Legal_Status_Num")(Range(hFind("Legal Status") & updateRow).value), _
+                    Courtroom:="PJJSC", _
+                    DA:=DA.value, _
+                    agency:=PJJSC_Sup1_Agency.value, _
+                    startDate:=DateOfHearing.value, _
+                    NextCourtDate:=PJJSC_NextCourtDate.value, _
+                    re1:=PJJSC_Sup1_Re1.value, _
+                    re2:=PJJSC_Sup1_Re2.value, _
+                    re3:=PJJSC_Sup1_Re3.value, _
+                    Notes:="Referred at detention")
+            End If
+    
+    
+            'ADD SUPERVISION #2 TO DETENTION SECTION
+            bucketHead = hFind("Supervision Ordered #2", "DETENTION")
+            Range(bucketHead & updateRow).value = Lookup("Supervision_Program_Name")(PJJSC_Sup2.value)
+            If isResidential(PJJSC_Sup2.value) Then
+                Range(headerFind("Residential Agency", bucketHead) & updateRow).value _
+                    = Lookup("Residential_Supervision_Provider_Name")(PJJSC_Sup1_Agency.value)
+            Else
+                Range(headerFind("Community-Based Agency", bucketHead) & updateRow).value _
+                    = Lookup("Community_Based_Supervision_Provider_Name")(PJJSC_Sup1_Agency.value)
+            End If
+    
+            Range(headerFind("Reason #1 for Supervision Referral", bucketHead) & updateRow).value = Lookup("Supervision_Referral_Reason_Name")(PJJSC_Sup2_Re1.value)
+            Range(headerFind("Reason #2 for Supervision Referral", bucketHead) & updateRow).value = Lookup("Supervision_Referral_Reason_Name")(PJJSC_Sup2_Re2.value)
+            Range(headerFind("Reason #3 for Supervision Referral", bucketHead) & updateRow).value = Lookup("Supervision_Referral_Reason_Name")(PJJSC_Sup2_Re3.value)
+    
+    
+            'ADD SUPERVISION #2 TO NEW COURTROOM (AND AGG)
+            If Not PJJSC_Sup2.value = "None" Then
+                Call addSupervision( _
+                    clientRow:=updateRow, _
+                    serviceType:=PJJSC_Sup2.value, _
+                    legalStatus:=Lookup("Legal_Status_Num")(Range(hFind("Legal Status") & updateRow).value), _
+                    Courtroom:="PJJSC", _
+                    DA:=DA.value, _
+                    agency:=PJJSC_Sup2_Agency.value, _
+                    startDate:=DateOfHearing.value, _
+                    NextCourtDate:=PJJSC_NextCourtDate.value, _
+                    re1:=PJJSC_Sup2_Re1.value, _
+                    re2:=PJJSC_Sup2_Re2.value, _
+                    re3:=PJJSC_Sup2_Re3.value, _
+                    Notes:="Referred at detention")
+            End If
+    
+            'CONDITION #1
+            Range(headerFind("Other Condition #1", bucketHead) & updateRow).value = Lookup("Condition_Name")(PJJSC_C1.value)
+            Range(headerFind("Other Condition #1 Provider", bucketHead) & updateRow).value = Lookup("Condition_Provider_Name")(PJJSC_C1P.value)
+            If Not PJJSC_C1.value = "None" Then
+                Call addCondition( _
+                    clientRow:=updateRow, _
+                    condition:=PJJSC_C1.value, _
+                    legalStatus:=Lookup("Legal_Status_Num")(Range(hFind("Legal Status") & updateRow).value), _
+                    Courtroom:="PJJSC", _
+                    DA:=DA.value, _
+                    agency:=PJJSC_C1P.value, _
+                    startDate:=DateOfHearing.value, _
+                    re1:="N/A", _
+                    re2:="N/A", _
+                    re3:="N/A", _
+                    Notes:="Referred at detention")
+            End If
+    
+            'CONDITION #2
+            Range(headerFind("Other Condition #2", bucketHead) & updateRow).value = Lookup("Condition_Name")(PJJSC_C2.value)
+            Range(headerFind("Other Condition #2 Provider", bucketHead) & updateRow).value = Lookup("Condition_Provider_Name")(PJJSC_C2P.value)
+            If Not PJJSC_C2.value = "None" Then
+                Call addCondition( _
+                    clientRow:=updateRow, _
+                    condition:=PJJSC_C2.value, _
+                    legalStatus:=Lookup("Legal_Status_Num")(Range(hFind("Legal Status") & updateRow).value), _
+                    Courtroom:="PJJSC", _
+                    DA:=DA.value, _
+                    agency:=PJJSC_C2P.value, _
+                    startDate:=DateOfHearing.value, _
+                    re1:="N/A", _
+                    re2:="N/A", _
+                    re3:="N/A", _
+                    Notes:="Referred at detention")
+            End If
+    
+            'CONDITION #3
+            Range(headerFind("Other Condition #3", bucketHead) & updateRow).value = Lookup("Condition_Name")(PJJSC_C3.value)
+            Range(headerFind("Other Condition #3 Provider", bucketHead) & updateRow).value = Lookup("Condition_Provider_Name")(PJJSC_C3P.value)
+            If Not PJJSC_C3.value = "None" Then
+                Call addCondition( _
+                    clientRow:=updateRow, _
+                    condition:=PJJSC_C3.value, _
+                    legalStatus:=Lookup("Legal_Status_Num")(Range(hFind("Legal Status") & updateRow).value), _
+                    Courtroom:="PJJSC", _
+                    DA:=DA.value, _
+                    agency:=PJJSC_C3P.value, _
+                    startDate:=DateOfHearing.value, _
+                    re1:="N/A", _
+                    re2:="N/A", _
+                    re3:="N/A", _
+                    Notes:="Referred at detention")
+            End If
+    
+    
         End If
-    End If
-
-    'IF RELEASED
-    If DRev_DetentionDecision.value = "Released" Or DRev_DetentionDecision.value = "Remain Released" Then
-        If DRev_DetentionDecision.value = "Released" Then
-            Range(headerFind("Date of Release", bucketHead) & updateRow).value = DateOfHearing.value
-            Range(headerFind("LOS in Detention", bucketHead) & updateRow).value _
-                = calcLOS(Range(hFind("Date of Initial Detention Hearing", "DETENTION") & updateRow).value, DateOfHearing.value)
-        End If
-        
-        Range(headerFind("Notes on Detention", bucketHead) & updateRow).value = PJJSC_NotesOnDetentionOutcome.value
-
-        Range(headerFind("LOS from Arrest Until Hearing", bucketHead) & updateRow).value _
-            = calcLOS(Range(hFind("Arrest Date") & updateRow).value, Range(hFind("Date of Initial Detention Hearing", "DETENTION") & updateRow).value)
-
-        'Range(headerFind("Courtroom That Released", bucketHead) & updateRow).value =
-        Range(headerFind("Referred to Courtroom", bucketHead) & updateRow).value _
-            = Lookup("Courtroom_Name")(DRev_ReferredTo.value)
-
-        'REFER TO COURTROOM
-        Call ReferClientTo( _
-            referralDate:=DateOfHearing.value, _
-            clientRow:=updateRow, _
-            fromCR:="PJJSC", _
-            toCR:=DRev_ReferredTo.value, _
-            DA:=DA.value _
-        )
-
-        'ADD SUPERVISION #1 TO DETENTION SECTION
-        bucketHead = hFind("Supervision Ordered #1", "DETENTION")
-        Range(bucketHead & updateRow).value = Lookup("Supervision_Program_Name")(DRevSup1.value)
-        If isResidential(DRevSup1.value) Then
-            Range(headerFind("Residential Agency", bucketHead) & updateRow).value _
-                = Lookup("Residential_Supervision_Provider_Name")(DRevSup1_Agency.value)
-        Else
-            Range(headerFind("Community-Based Agency", bucketHead) & updateRow).value _
-                = Lookup("Community_Based_Supervision_Provider_Name")(DRevSup1_Agency.value)
-        End If
-
-        Range(headerFind("Reason #1 for Supervision Referral", bucketHead) & updateRow).value = Lookup("Supervision_Referral_Reason_Name")(DRevSup1_Re1.value)
-        Range(headerFind("Reason #2 for Supervision Referral", bucketHead) & updateRow).value = Lookup("Supervision_Referral_Reason_Name")(DRevSup1_Re2.value)
-        Range(headerFind("Reason #3 for Supervision Referral", bucketHead) & updateRow).value = Lookup("Supervision_Referral_Reason_Name")(DRevSup1_Re3.value)
-        Range(headerFind("Reason #4 for Supervision Referral", bucketHead) & updateRow).value = Lookup("Supervision_Referral_Reason_Name")(DRevSup1_Re4.value)
-        Range(headerFind("Reason #5 for Supervision Referral", bucketHead) & updateRow).value = Lookup("Supervision_Referral_Reason_Name")(DRevSup1_Re5.value)
-
-
-        'ADD SUPERVISION #1 TO NEW COURTROOM (AND AGG)
-        If Not DRevSup1.value = "None" Then
-            Call addSupervision( _
-                clientRow:=updateRow, _
-                serviceType:=DRevSup1.value, _
-                legalStatus:=Lookup("Legal_Status_Num")(Range(hFind("Legal Status") & updateRow).value), _
-                Courtroom:="PJJSC", _
-                DA:=DA.value, _
-                agency:=DRevSup1_Agency.value, _
-                startDate:=DateOfHearing.value, _
-                NextCourtDate:=PJJSC_NextCourtDate.value, _
-                re1:=DRevSup1_Re1.value, _
-                re2:=DRevSup1_Re2.value, _
-                re3:=DRevSup1_Re3.value, _
-                Notes:="Referred at detention")
-        End If
-
-
-        'ADD SUPERVISION #2 TO DETENTION SECTION
-        bucketHead = hFind("Supervision Ordered #2", "DETENTION")
-        Range(bucketHead & updateRow).value = Lookup("Supervision_Program_Name")(DRevSup2.value)
-        If isResidential(DRevSup2.value) Then
-            Range(headerFind("Residential Agency", bucketHead) & updateRow).value _
-                = Lookup("Residential_Supervision_Provider_Name")(DRevSup1_Agency.value)
-        Else
-            Range(headerFind("Community-Based Agency", bucketHead) & updateRow).value _
-                = Lookup("Community_Based_Supervision_Provider_Name")(DRevSup1_Agency.value)
-        End If
-
-        Range(headerFind("Reason #1 for Supervision Referral", bucketHead) & updateRow).value = Lookup("Supervision_Referral_Reason_Name")(DRevSup2_Re1.value)
-        Range(headerFind("Reason #2 for Supervision Referral", bucketHead) & updateRow).value = Lookup("Supervision_Referral_Reason_Name")(DRevSup2_Re2.value)
-        Range(headerFind("Reason #3 for Supervision Referral", bucketHead) & updateRow).value = Lookup("Supervision_Referral_Reason_Name")(DRevSup2_Re3.value)
-        Range(headerFind("Reason #4 for Supervision Referral", bucketHead) & updateRow).value = Lookup("Supervision_Referral_Reason_Name")(DRevSup2_Re4.value)
-        Range(headerFind("Reason #5 for Supervision Referral", bucketHead) & updateRow).value = Lookup("Supervision_Referral_Reason_Name")(DRevSup2_Re5.value)
-
-
-        'ADD SUPERVISION #2 TO NEW COURTROOM (AND AGG)
-        If Not DRevSup2.value = "None" Then
-            Call addSupervision( _
-                clientRow:=updateRow, _
-                serviceType:=DRevSup2.value, _
-                legalStatus:=Lookup("Legal_Status_Num")(Range(hFind("Legal Status") & updateRow).value), _
-                Courtroom:="PJJSC", _
-                DA:=DA.value, _
-                agency:=DRevSup2_Agency.value, _
-                startDate:=DateOfHearing.value, _
-                NextCourtDate:=PJJSC_NextCourtDate.value, _
-                re1:=DRevSup2_Re1.value, _
-                re2:=DRevSup2_Re2.value, _
-                re3:=DRevSup2_Re3.value, _
-                Notes:="Referred at detention")
-        End If
-
-        'CONDITION #1
-        Range(headerFind("Other Condition #1", bucketHead) & updateRow).value = Lookup("Condition_Name")(DRev_C1.value)
-        Range(headerFind("Other Condition #1 Provider", bucketHead) & updateRow).value = Lookup("Condition_Provider_Name")(DRev_C1P.value)
-        If Not DRev_C1.value = "None" Then
-            Call addCondition( _
-                clientRow:=updateRow, _
-                condition:=DRev_C1.value, _
-                legalStatus:=Lookup("Legal_Status_Num")(Range(hFind("Legal Status") & updateRow).value), _
-                Courtroom:="PJJSC", _
-                DA:=DA.value, _
-                agency:=DRev_C1P.value, _
-                startDate:=DateOfHearing.value, _
-                re1:="N/A", _
-                re2:="N/A", _
-                re3:="N/A", _
-                Notes:="Referred at detention")
-        End If
-
-        'CONDITION #2
-        Range(headerFind("Other Condition #2", bucketHead) & updateRow).value = Lookup("Condition_Name")(DRev_C2.value)
-        Range(headerFind("Other Condition #2 Provider", bucketHead) & updateRow).value = Lookup("Condition_Provider_Name")(DRev_C2P.value)
-        If Not DRev_C2.value = "None" Then
-            Call addCondition( _
-                clientRow:=updateRow, _
-                condition:=DRev_C2.value, _
-                legalStatus:=Lookup("Legal_Status_Num")(Range(hFind("Legal Status") & updateRow).value), _
-                Courtroom:="PJJSC", _
-                DA:=DA.value, _
-                agency:=DRev_C2P.value, _
-                startDate:=DateOfHearing.value, _
-                re1:="N/A", _
-                re2:="N/A", _
-                re3:="N/A", _
-                Notes:="Referred at detention")
-        End If
-
-        'CONDITION #3
-        Range(headerFind("Other Condition #3", bucketHead) & updateRow).value = Lookup("Condition_Name")(DRev_C3.value)
-        Range(headerFind("Other Condition #3 Provider", bucketHead) & updateRow).value = Lookup("Condition_Provider_Name")(DRev_C3P.value)
-        If Not DRev_C3.value = "None" Then
-            Call addCondition( _
-                clientRow:=updateRow, _
-                condition:=DRev_C3.value, _
-                legalStatus:=Lookup("Legal_Status_Num")(Range(hFind("Legal Status") & updateRow).value), _
-                Courtroom:="PJJSC", _
-                DA:=DA.value, _
-                agency:=DRev_C3P.value, _
-                startDate:=DateOfHearing.value, _
-                re1:="N/A", _
-                re2:="N/A", _
-                re3:="N/A", _
-                Notes:="Referred at detention")
-        End If
-
-
+    
     End If
 
 

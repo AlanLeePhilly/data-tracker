@@ -21,6 +21,13 @@ End Sub
 Private Sub IntakeDate_Enter()
     IntakeDate.value = CalendarForm.GetDate(RangeOfYears:=5)
 End Sub
+Private Sub NextCourtDate_Enter()
+    NextCourtDate.value = CalendarForm.GetDate(RangeOfYears:=5)
+End Sub
+Private Sub NextCourtDate_Exit(ByVal Cancel As MSForms.ReturnBoolean)
+    Set ctl = Me.NextCourtDate
+    Call DateValidation(ctl, Cancel)
+End Sub
 
 
 
@@ -67,6 +74,10 @@ Private Sub Cancel_Click()
 End Sub
 
 
+
+
+
+
 Private Sub Submit_Click()
     If IntakeDate.value = "" Then
         MsgBox "Intake Date required"
@@ -79,15 +90,12 @@ Private Sub Submit_Click()
     End If
     
 
-    If IntakeOutcomeRoll = True Then
-        MsgBox "Someday, this will be functional :D"
-        Unload Me
-        Exit Sub
-    End If
+    
     
     Call formSubmitStart(updateRow)
     
-    Range(hFind("Active B/W?") & updateRow).value = Lookup("Generic_YNOU_Name")("No")
+    Range(hFind("Next Court Date") & updateRow).value = NextCourtDate.value
+    
 
     For i = 15 To 1 Step -1
         If isNotEmptyOrZero(Range(hFind("FTA #" & i & " Date", "AGGREGATES") & updateRow)) _
@@ -106,6 +114,14 @@ Private Sub Submit_Click()
     
     Range(headerFind("Intake Conference Date", bucketHead) & updateRow) = IntakeDate
     Range(headerFind("Intake Conference Notes", bucketHead) & updateRow) = Notes
+    
+    If IntakeOutcomeRoll = True Then
+        Range(headerFind("Intake Conference Outcome", bucketHead) & updateRow).value _
+            = Lookup("Intake_Conference_Outcome_Name")("Roll to Detention Hearing")
+        Range(headerFind("Active Courtroom") & updateRow).value _
+            = Lookup("Courtroom_Name")("PJJSC BW")
+    End If
+    
     
     
     If IntakeOutcomeRelease = True Then
@@ -159,6 +175,3 @@ Private Sub Submit_Click()
     Unload Me
 End Sub
 
-Private Sub UserForm_Click()
-
-End Sub

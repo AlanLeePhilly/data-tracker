@@ -1,5 +1,23 @@
 Attribute VB_Name = "Helpers_Mini"
+Sub disableFrame(frame As MSForms.Control)
+    Dim ctl As MSForms.Control
+    On Error Resume Next
+    
+    For Each ctl In frame.Controls
+        ctl.Enabled = False
+        ctl.value = ""
+        ctl.value = "None"
+        ctl.value = "N/A"
+    Next ctl
+End Sub
 
+Sub enableFrame(frame As MSForms.Control)
+    Dim ctl As MSForms.Control
+    
+    For Each ctl In frame.Controls
+        ctl.Enabled = True
+    Next ctl
+End Sub
 
 Sub append(ByRef rng As Range, val As String, Optional dateMark As String = "1/1/1900")
     Dim payload As String
@@ -309,6 +327,10 @@ Function calcLOS(ByVal event1 As String, ByVal event2 As String) As Variant
             & vbNewLine & "Date 1: " & event1 _
             & vbNewLine & "Date 2: " & event2
         End If
+    End If
+    
+    If calcLOS = 0 Then
+        calcLOS = 1
     End If
 End Function
 

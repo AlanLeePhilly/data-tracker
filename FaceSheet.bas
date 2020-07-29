@@ -561,7 +561,7 @@ Sub FaceSheetPrint()
     PrintSheet.Range("M54").value = DataSheet.Range(hFind("School") & userRow).value
     PrintSheet.Range("W54").value = DataSheet.Range(hFind("Grade") & userRow).value
     PrintSheet.Range("S52").value = ageAtTime(VBA.format(Now(), "mm/dd/yyyy"), userRow)
-    PrintSheet.Range("W52").value = DataSheet.Range(hFind("Age @ Intake") & userRow).value
+    PrintSheet.Range("W52").value = DataSheet.Range(hFind("Age @ Arrest") & userRow).value
     
     'Arrest Info
     PrintSheet.Range("M58").value = DataSheet.Range(hFind("DC #") & userRow).value

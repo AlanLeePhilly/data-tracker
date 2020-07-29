@@ -223,7 +223,7 @@ Sub ExportDataFile()
 
     'here you can set the name of the directory where you want the file to go.
     'note that the folder location must exist prior to saving it there
-    newFilePath = "H:\SJS Entry\Archives\"
+    newFilePath = "H:\SJS Archives\Archives\"
 
     'Here the new file name is composed of:
     'the filepath specified above
@@ -787,13 +787,13 @@ Sub ExportDataQuickFile()
 
 
 
-    'Karli EXPORT
+    'Chris A EXPORT
 
     Dim newFilePath4 As String
     Dim newFileName4 As String
 
 
-    newFilePath4 = "H:\SJS Analysis\Karli\Aggregate Data Set\"
+    newFilePath4 = "H:\SJS Analysis\Chris A\Aggregate Data Set\"
     newFileName4 = _
         newFilePath4 _
         & "Aggregate Data Set.xlsm"
@@ -803,11 +803,11 @@ Sub ExportDataQuickFile()
             Filename:=newFileName4
     OverwriteExisting = True
 
-    Workbooks.Open Filename:="H:\SJS Analysis\Karli\Aggregate Data Set\Aggregate Data Set.xlsm", Password:="DeathStar_911"
+    Workbooks.Open Filename:="H:\SJS Analysis\Chris A\Aggregate Data Set\Aggregate Data Set.xlsm", Password:="DeathStar_911"
     Application.ScreenUpdating = False
     Application.Calculation = xlCalculationManual
     Application.DisplayAlerts = False
-    ActiveWorkbook.SaveAs Filename:="H:\SJS Analysis\Karli\Aggregate Data Set\Aggregate Data Set.xlsm", Password:="DeathStar_911"
+    ActiveWorkbook.SaveAs Filename:="H:\SJS Analysis\Chris A\Aggregate Data Set\Aggregate Data Set.xlsm", Password:="DeathStar_911"
     OverwriteExisting = True
     ActiveWorkbook.Close
 
@@ -841,52 +841,52 @@ Sub ExportDataQuickFile()
 
     'Moshe EXPORT
 
-    Dim newFilePath6 As String
-    Dim newFileName6 As String
+    'Dim newFilePath6 As String
+    'Dim newFileName6 As String
 
 
-    newFilePath6 = "H:\SJS Analysis\Moshe\Aggregate Data Set\"
-    newFileName6 = _
-        newFilePath6 _
-        & "Aggregate Data Set.xlsm"
-    If Len(Dir(newFileName6)) Then Kill newFileName6 'identifies if file name already exists and deletes as SaveCopyAs doesn't allow overwrite
+    'newFilePath6 = "H:\SJS Analysis\Moshe\Aggregate Data Set\"
+    'newFileName6 = _
+     '   newFilePath6 _
+      '  & "Aggregate Data Set.xlsm"
+    'If Len(Dir(newFileName6)) Then Kill newFileName6 'identifies if file name already exists and deletes as SaveCopyAs doesn't allow overwrite
 
-    ThisWorkbook.SaveCopyAs _
+    'ThisWorkbook.SaveCopyAs _
             Filename:=newFileName6
-    OverwriteExisting = True
+    'OverwriteExisting = True
 
-    Workbooks.Open Filename:="H:\SJS Analysis\Moshe\Aggregate Data Set\Aggregate Data Set.xlsm", Password:="DeathStar_911"
-    Application.ScreenUpdating = False
-    Application.Calculation = xlCalculationManual
-    Application.DisplayAlerts = False
-    ActiveWorkbook.SaveAs Filename:="H:\SJS Analysis\Moshe\Aggregate Data Set\Aggregate Data Set.xlsm", Password:="DeathStar_911"
-    OverwriteExisting = True
-    ActiveWorkbook.Close
+    'Workbooks.Open Filename:="H:\SJS Analysis\Moshe\Aggregate Data Set\Aggregate Data Set.xlsm", Password:="DeathStar_911"
+    'Application.ScreenUpdating = False
+    'Application.Calculation = xlCalculationManual
+    'Application.DisplayAlerts = False
+    'ActiveWorkbook.SaveAs Filename:="H:\SJS Analysis\Moshe\Aggregate Data Set\Aggregate Data Set.xlsm", Password:="DeathStar_911"
+    'OverwriteExisting = True
+    'ActiveWorkbook.Close
 
 
     'Ebony EXPORT
 
-    Dim newFilePath7 As String
-    Dim newFileName7 As String
+    'Dim newFilePath7 As String
+    'Dim newFileName7 As String
 
 
-    newFilePath7 = "H:\SJS Analysis\Ebony\Aggregate Data Set\"
-    newFileName7 = _
-        newFilePath7 _
-        & "Aggregate Data Set.xlsm"
-    If Len(Dir(newFileName7)) Then Kill newFileName7 'identifies if file name already exists and deletes as SaveCopyAs doesn't allow overwrite
+    'newFilePath7 = "H:\SJS Analysis\Ebony\Aggregate Data Set\"
+    'newFileName7 = _
+     '   newFilePath7 _
+      '  & "Aggregate Data Set.xlsm"
+    'If Len(Dir(newFileName7)) Then Kill newFileName7 'identifies if file name already exists and deletes as SaveCopyAs doesn't allow overwrite
 
-    ThisWorkbook.SaveCopyAs _
-            Filename:=newFileName7
-    OverwriteExisting = True
+    'ThisWorkbook.SaveCopyAs _
+     '       Filename:=newFileName7
+    'OverwriteExisting = True
 
-    Workbooks.Open Filename:="H:\SJS Analysis\Ebony\Aggregate Data Set\Aggregate Data Set.xlsm", Password:="DeathStar_911"
-    Application.ScreenUpdating = False
-    Application.Calculation = xlCalculationManual
-    Application.DisplayAlerts = False
-    ActiveWorkbook.SaveAs Filename:="H:\SJS Analysis\Ebony\Aggregate Data Set\Aggregate Data Set.xlsm", Password:="DeathStar_911"
-    OverwriteExisting = True
-    ActiveWorkbook.Close
+    'Workbooks.Open Filename:="H:\SJS Analysis\Ebony\Aggregate Data Set\Aggregate Data Set.xlsm", Password:="DeathStar_911"
+    'Application.ScreenUpdating = False
+    'Application.Calculation = xlCalculationManual
+    'Application.DisplayAlerts = False
+    'ActiveWorkbook.SaveAs Filename:="H:\SJS Analysis\Ebony\Aggregate Data Set\Aggregate Data Set.xlsm", Password:="DeathStar_911"
+    'OverwriteExisting = True
+    'ActiveWorkbook.Close
 
     'Madeline EXPORT
 
@@ -939,52 +939,51 @@ Sub ExportDataQuickFile()
 
 'Aditi EXPORT
 
-    Dim newFilePath10 As String
-    Dim newFileName10 As String
+    'Dim newFilePath10 As String
+    'Dim newFileName10 As String
 
 
-    newFilePath10 = "H:\SJS Analysis\Aditi\Aggregate Data Set\"
-    newFileName10 = _
-        newFilePath10 _
-        & "Aggregate Data Set.xlsm"
-    If Len(Dir(newFileName10)) Then Kill newFileName10 'identifies if file name already exists and deletes as SaveCopyAs doesn't allow overwrite
+    'newFilePath10 = "H:\SJS Analysis\Aditi\Aggregate Data Set\"
+    'newFileName10 = _
+     '   newFilePath10 _
+      '  & "Aggregate Data Set.xlsm"
+    'If Len(Dir(newFileName10)) Then Kill newFileName10 'identifies if file name already exists and deletes as SaveCopyAs doesn't allow overwrite
 
-    ThisWorkbook.SaveCopyAs _
-            Filename:=newFileName10
-    OverwriteExisting = True
+    'ThisWorkbook.SaveCopyAs _
+     '       Filename:=newFileName10
+    'OverwriteExisting = True
 
-    Workbooks.Open Filename:="H:\SJS Analysis\Aditi\Aggregate Data Set\Aggregate Data Set.xlsm", Password:="DeathStar_911"
-    Application.ScreenUpdating = False
-    Application.Calculation = xlCalculationManual
-    Application.DisplayAlerts = False
-    ActiveWorkbook.SaveAs Filename:="H:\SJS Analysis\Aditi\Aggregate Data Set\Aggregate Data Set.xlsm", Password:="DeathStar_911"
-    OverwriteExisting = True
-    ActiveWorkbook.Close
+    'Workbooks.Open Filename:="H:\SJS Analysis\Aditi\Aggregate Data Set\Aggregate Data Set.xlsm", Password:="DeathStar_911"
+    'Application.ScreenUpdating = False
+    'Application.Calculation = xlCalculationManual
+    'Application.DisplayAlerts = False
+    'ActiveWorkbook.SaveAs Filename:="H:\SJS Analysis\Aditi\Aggregate Data Set\Aggregate Data Set.xlsm", Password:="DeathStar_911"
+    'OverwriteExisting = True
+    'ActiveWorkbook.Close
 
 'Christian EXPORT
 
-    Dim newFilePath11 As String
-    Dim newFileName11 As String
+   ' Dim newFilePath11 As String
+    'Dim newFileName11 As String
 
 
-    newFilePath11 = "H:\SJS Analysis\Christian\Aggregate Data Set\"
-    newFileName11 = _
-        newFilePath11 _
-        & "Aggregate Data Set.xlsm"
-    If Len(Dir(newFileName11)) Then Kill newFileName11 'identifies if file name already exists and deletes as SaveCopyAs doesn't allow overwrite
+    'newFilePath11 = "H:\SJS Analysis\Christian\Aggregate Data Set\"
+    'newFileName11 = _
+     '   newFilePath11 _
+      '  & "Aggregate Data Set.xlsm"
+    'If Len(Dir(newFileName11)) Then Kill newFileName11 'identifies if file name already exists and deletes as SaveCopyAs doesn't allow overwrite
 
-    ThisWorkbook.SaveCopyAs _
-            Filename:=newFileName11
-    OverwriteExisting = True
+    'ThisWorkbook.SaveCopyAs _
+     '       Filename:=newFileName11
+    'OverwriteExisting = True
 
-    Workbooks.Open Filename:="H:\SJS Analysis\Christian\Aggregate Data Set\Aggregate Data Set.xlsm", Password:="DeathStar_911"
-    Application.ScreenUpdating = False
-    Application.Calculation = xlCalculationManual
-    Application.DisplayAlerts = False
-    ActiveWorkbook.SaveAs Filename:="H:\SJS Analysis\Christian\Aggregate Data Set\Aggregate Data Set.xlsm", Password:="DeathStar_911"
-    OverwriteExisting = True
-    ActiveWorkbook.Close
+    'Workbooks.Open Filename:="H:\SJS Analysis\Christian\Aggregate Data Set\Aggregate Data Set.xlsm", Password:="DeathStar_911"
+    'Application.ScreenUpdating = False
+    'Application.Calculation = xlCalculationManual
+    'Application.DisplayAlerts = False
+    'ActiveWorkbook.SaveAs Filename:="H:\SJS Analysis\Christian\Aggregate Data Set\Aggregate Data Set.xlsm", Password:="DeathStar_911"
+    'OverwriteExisting = True
+    'ActiveWorkbook.Close
 
 
 End Sub
-

@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} Adult_Reslate_Juvenile_Petition 
    Caption         =   "UserForm1"
-   ClientHeight    =   14916
+   ClientHeight    =   8865.001
    ClientLeft      =   120
    ClientTop       =   450
    ClientWidth     =   18990

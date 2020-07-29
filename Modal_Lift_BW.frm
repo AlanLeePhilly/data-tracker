@@ -37,10 +37,24 @@ Private Sub Submit_Click()
 
     ClientUpdateForm.JTC_Lift_BW.BackColor = selectedColor
     ClientUpdateForm.Standard_Lift_BW.BackColor = selectedColor
+    ClientUpdateForm.PJJSC_Lift_BW.BackColor = selectedColor
+    
+    With ClientUpdateForm
+        Call enableFrame(.PJJSC_Reasons_Frame)
+        Call enableFrame(.PJJSC_Outcome_Frame)
+        Call enableFrame(.PJJSC_Sup_Frame)
+        Call enableFrame(.PJJSC_Cond_Frame)
+        .PJJSC_Cancel.Enabled = True
+        .PJJSC_Submit.Enabled = True
+    End With
+    
     Me.Hide
 End Sub
 Private Sub Cancel_Click()
     ClientUpdateForm.JTC_Lift_BW.BackColor = unselectedColor
     ClientUpdateForm.Standard_Lift_BW.BackColor = unselectedColor
+    ClientUpdateForm.PJJSC_Lift_BW.BackColor = unselectedColor
+    
     Me.Hide
 End Sub
+

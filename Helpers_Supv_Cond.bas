@@ -51,7 +51,8 @@ Sub addSupervision( _
         If Courtroom = "Intake Conf." _
         Or Courtroom = "Intake Conf. BW" _
         Or Courtroom = "Call-In" _
-        Or Courtroom = "PJJSC" Then
+        Or Courtroom = "PJJSC" _
+        Or Courtroom = "PJJSC BW" Then
             i = 2
             'if intake conf or PJJSC, only aggregate is needed
         End If
@@ -188,7 +189,8 @@ Sub dropSupervision( _
         If Courtroom = "Intake Conf." _
         Or Courtroom = "Intake Conf. BW" _
         Or Courtroom = "Call-In" _
-        Or Courtroom = "PJJSC" Then
+        Or Courtroom = "PJJSC" _
+        Or Courtroom = "PJJSC BW" Then
             i = 2
             'if intake conf or PJJSC, only aggregate is needed
         End If
@@ -291,7 +293,8 @@ Sub addCondition( _
         If Courtroom = "Intake Conf." _
         Or Courtroom = "Intake Conf. BW" _
         Or Courtroom = "Call-In" _
-        Or Courtroom = "PJJSC" Then
+        Or Courtroom = "PJJSC" _
+        Or Courtroom = "PJJSC BW" Then
             i = 2
             'if intake conf or PJJSC, only aggregate is needed
         End If
@@ -392,7 +395,8 @@ Sub dropCondition( _
         If Courtroom = "Intake Conf." _
         Or Courtroom = "Intake Conf. BW" _
         Or Courtroom = "Call-In" _
-        Or Courtroom = "PJJSC" Then
+        Or Courtroom = "PJJSC" _
+        Or Courtroom = "PJJSC BW" Then
             i = 2
             'if intake conf or PJJSC, only aggregate is needed
         End If
@@ -901,7 +905,7 @@ Sub aggFlagSupervision( _
             columnName = "Did Youth Have GPS?"
         Case "Post-ERC"
             columnName = "Did Youth Have Post-ERC?"
-        Case "Detention (respite)"
+        Case "Detention (respite)", "Detention (not respite)"
             columnName = "Did Youth Have Detention?"
         Case "Placement"
             columnName = "Did Youth Have Placement?"
