@@ -63,6 +63,10 @@ Private Sub DRAI_Action_Change()
 End Sub
 
 
+Private Sub NoDiversionReason3_Change()
+
+End Sub
+
 Private Sub SameDate_2_Click()
     CallInDate.value = ArrestDate.value
 End Sub
@@ -139,6 +143,9 @@ Private Sub Reload_Click()
     
     Diagnosis2.value = Lookup("Diagnosis_Num")(Range(headerFind("Diagnosis #2") & emptyRow).value)
     Diagnosis3.value = Lookup("Diagnosis_Num")(Range(headerFind("Diagnosis #3") & emptyRow).value)
+    Diagnosis4.value = Lookup("Diagnosis_Num")(Range(headerFind("Diagnosis #4") & emptyRow).value)
+    Diagnosis5.value = Lookup("Diagnosis_Num")(Range(headerFind("Diagnosis #5") & emptyRow).value)
+    
     
     If Not Range(headerFind("Trauma Type #1") & emptyRow).value = "" Then
         TraumaType1.value = Lookup("Trauma_Type_Num")(Range(headerFind("Trauma Type #1") & emptyRow).value)
@@ -146,6 +153,9 @@ Private Sub Reload_Click()
     
     TraumaType2.value = Lookup("Trauma_Type_Num")(Range(headerFind("Trauma Type #2") & emptyRow).value)
     TraumaType3.value = Lookup("Trauma_Type_Num")(Range(headerFind("Trauma Type #3") & emptyRow).value)
+    TraumaType4.value = Lookup("Trauma_Type_Num")(Range(headerFind("Trauma Type #4") & emptyRow).value)
+    TraumaType5.value = Lookup("Trauma_Type_Num")(Range(headerFind("Trauma Type #5") & emptyRow).value)
+    
     
     If Not Range(headerFind("Treatment #1") & emptyRow).value = "" Then
         Treatment1.value = Lookup("Treatment_Num")(Range(headerFind("Treatment #1") & emptyRow).value)
@@ -153,6 +163,8 @@ Private Sub Reload_Click()
     
     Treatment2.value = Lookup("Treatment_Num")(Range(headerFind("Treatment #2") & emptyRow).value)
     Treatment3.value = Lookup("Treatment_Num")(Range(headerFind("Treatment #3") & emptyRow).value)
+    Treatment4.value = Lookup("Treatment_Num")(Range(headerFind("Treatment #4") & emptyRow).value)
+    Treatment5.value = Lookup("Treatment_Num")(Range(headerFind("Treatment #5") & emptyRow).value)
     
 
     PhoneNumber.value = Range(headerFind("Phone #") & emptyRow).value
@@ -268,6 +280,7 @@ Private Sub Reload_Click()
     DRAI_Score.value = Range(headerFind("DRAI Score", tempHead) & emptyRow).value
     DRAI_Rec.value = Lookup("DRAI_Recommendation_Num")(Range(headerFind("DRAI Recommendation", tempHead) & emptyRow).value)
     DRAI_Action = Lookup("DRAI_Action_Num")(Range(headerFind("DRAI Action", tempHead) & emptyRow).value)
+    DetentionFacility = Lookup("Detention_Facility_Num")(Range(headerFind("Detention Facility", tempHead) & emptyRow).value)
     OverrideHoldRe1.value = Lookup("DRAI_Override_Reason_Num")(Range(headerFind("Reason #1 for Override Hold", tempHead) & emptyRow).value)
     OverrideHoldRe2.value = Lookup("DRAI_Override_Reason_Num")(Range(headerFind("Reason #2 for Override Hold", tempHead) & emptyRow).value)
     OverrideHoldRe3.value = Lookup("DRAI_Override_Reason_Num")(Range(headerFind("Reason #3 for Override Hold", tempHead) & emptyRow).value)
@@ -279,7 +292,7 @@ Private Sub Reload_Click()
     Supv1Re1 = Lookup("Supervision_Referral_Reason_Num")(Range(headerFind("Reason #1 for Supervision Referral", tempHead) & emptyRow).value)
     Supv2 = Lookup("Supervision_Program_Num")(Range(headerFind("Supervision Ordered #2", tempHead) & emptyRow).value)
     Supv2Pro = Lookup("Community_Based_Supervision_Provider_Num")(Range(headerFind("Community-Based Agency #2", tempHead) & emptyRow).value)
-    DetentionFacility = Lookup("Detention_Facility_Num")(Range(hFind("Detention Facility", "DETENTION") & emptyRow).value)
+    
 
     Cond1 = Lookup("Condition_Num")(Range(headerFind("Other Condition #1", tempHead) & emptyRow).value)
     Cond1Pro = Lookup("Condition_Provider_Num")(Range(headerFind("Other Condition #1 Provider", tempHead) & emptyRow).value)

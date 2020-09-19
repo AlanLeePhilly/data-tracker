@@ -30,6 +30,10 @@ Private Sub Apprehension_Click()
     Modal_Apprehension.Show
 End Sub
 
+Private Sub Assessment_Click()
+    YLS.Show
+End Sub
+
 Private Sub JTC_NCD_NA_Click()
     NextCourtDate.value = "N/A"
 End Sub
@@ -270,7 +274,7 @@ Sub SearchResultsBox_Click()
     updateRow = SearchResultsBox.value
     Modal_New_Arrest.Active_Row = updateRow
     Courtroom.value = SearchResultsBox.List(SearchResultsBox.listIndex, 6)
-    
+    Assessment.Enabled = True
     If Range(hFind("Active B/W?") & updateRow).value = 1 _
       And Not Range(hFind("Active Courtroom") & updateRow).value = Lookup("Courtroom_Name")("PJJSC BW") Then
         Apprehension.Enabled = True
