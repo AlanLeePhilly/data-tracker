@@ -20,7 +20,7 @@ Private Sub DB_Section_Change()
     DB_Subsection.value = "All"
 
     Select Case DB_Section.value
-        Case "Demographics", "Petition", "DRAI", "Detention"
+        Case "Demographics", "Petition", "DRAI", "Detention", "Call-In", "Intake Conference", "DHS", "YLS"
             DB_Subsection.RowSource = "DB_Subsection_All"
         Case "Detention (VOP)"
             DB_Subsection.RowSource = "DB_Subsection_VOP"
@@ -94,9 +94,18 @@ Private Sub Lookup_Button_Click()
             endCol = alphaToNum(headerFind("PETITION")) - 1
         Case "Petition"
             startCol = alphaToNum(headerFind("PETITION")) + 1
+            endCol = alphaToNum(headerFind("CALL-IN")) - 1
+        Case "Call-In"
+            startCol = alphaToNum(headerFind("CALL-IN")) + 1
             endCol = alphaToNum(headerFind("INTAKE CONFERENCE")) - 1
         Case "Intake Conference"
             startCol = alphaToNum(headerFind("INTAKE CONFERENCE")) + 1
+            endCol = alphaToNum(headerFind("DHS")) - 1
+        Case "DHS"
+            startCol = alphaToNum(headerFind("DHS")) + 1
+            endCol = alphaToNum(headerFind("YLS")) - 1
+        Case "YLS"
+            startCol = alphaToNum(headerFind("YLS")) + 1
             endCol = alphaToNum(headerFind("DETENTION")) - 1
         Case "Detention"
             startCol = alphaToNum(headerFind("DETENTION")) + 1
