@@ -123,6 +123,3 @@ Private Sub PJJSC_Submit_Click()
     Unload Me
 End Sub
 
-Private Sub YLSStrength_Change()
-
-End Sub
