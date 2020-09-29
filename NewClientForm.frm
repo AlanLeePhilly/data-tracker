@@ -30,6 +30,10 @@ Private Sub ConfOutcome_Change()
         Call disableFrame(Conditions_Frame)
     End If
     
+    If ConfOutcome.value = "FTA" Then
+        InitialHearingLocation.value = "PJJSC"
+    End If
+    
     If ConfOutcome.value = "Hold for Detention" Or _
         ConfOutcome.value = "Roll to Detention Hearing" Then
         InitialHearingLocation.value = "PJJSC"
@@ -62,10 +66,6 @@ Private Sub DRAI_Action_Change()
     End Select
 End Sub
 
-
-Private Sub NoDiversionReason3_Change()
-
-End Sub
 
 Private Sub SameDate_2_Click()
     CallInDate.value = ArrestDate.value
@@ -850,14 +850,15 @@ Private Sub Submit_Click()
         'find empty row by finding first 'first name' value from bottom
         emptyRow = Range("C" & Rows.count).End(xlUp).row + 1
     Else
-        If MsgBox("Warning, you are about to overwrite row " & Reload_Row.value, vbOKCancel) = vbCancel Then
+        If MsgBox("Warning, you are about to overwrite row (aside from YLS values)" & Reload_Row.value, vbOKCancel) = vbCancel Then
             Exit Sub
         End If
 
         emptyRow = Reload_Row
         Call formSubmitStart(Reload_Row)
         
-        Range("C" & emptyRow & ":" & hFind("END") & emptyRow).ClearContents
+        Range("C" & emptyRow & ":" & hFind("YLS") & emptyRow).ClearContents
+        Range(hFind("DETENTION") & emptyRow & ":" & hFind("END") & emptyRow).ClearContents
     End If
     
     If emptyRow < 3 Then
@@ -1015,7 +1016,9 @@ Private Sub Submit_Click()
         Range(headerFind("PID #", petitionHead) & emptyRow).value = PIDNum.value
         Range(headerFind("DC-PID #", petitionHead) & emptyRow).value = DCNum.value & "-" & PIDNum.value
         Range(headerFind("SID #", petitionHead) & emptyRow).value = SIDNum.value
-
+        Range(headerFind("Arrest ID", petitionHead) & emptyRow).value = PIDNum.value & "" & Replace(ArrestDate.value, "/", "")
+        Range(headerFind("Unique Incident ID", petitionHead) & emptyRow).value = Replace(IncidentDate.value, "/", "") & TimeOfIncident_H.value & TimeOfIncident_M.value & Replace(IncidentAddress.value, " ", "")
+        
         Range(headerFind("Officer #1", petitionHead) & emptyRow).value = Officer1.value
         Range(headerFind("Officer #2", petitionHead) & emptyRow).value = Officer2.value
         Range(headerFind("Officer #3", petitionHead) & emptyRow).value = Officer3.value
@@ -1232,7 +1235,6 @@ Private Sub Submit_Click()
                     DA:=DA.value, _
                     agency:="PJJSC", _
                     startDate:=CallInDate.value, _
-                    endDate:=InConfDate.value, _
                     re1:="", _
                     re2:="", _
                     re3:="", _

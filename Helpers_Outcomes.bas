@@ -26,6 +26,16 @@ Sub totalOutcome( _
         = Lookup("Nature_of_Discharge_Name")(Nature)
     Range(headerFind("Detailed Petition Outcome", outcomeHead) & clientRow).value _
         = Lookup("Detailed_Petition_Outcome_Name")(detailed)
+        
+    If detailed = "Judgment of Acquittal" Or detailed = "Petition Withdrawn" Then
+        Range(headerFind("Acquittal or Supervision Discharge?", outcomeHead) & clientRow).value _
+        = Lookup("Acquittal_or_Supervision_Discharge_Name")("Acquittal")
+    Else
+        Range(headerFind("Acquittal or Supervision Discharge?", outcomeHead) & clientRow).value _
+        = Lookup("Acquittal_or_Supervision_Discharge_Name")("Completion of Terms")
+    End If
+    
+    
     Range(headerFind("Acquittal or Supervision Discharge?", outcomeHead) & clientRow).value _
         = Lookup("Acquittal_or_Supervision_Discharge_Name")("Completion of Terms")
 

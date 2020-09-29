@@ -52,6 +52,10 @@ End Sub
 
 
 
+Private Sub PJJSC_DateNA_Click()
+    PJJSC_NextCourtDate.value = "N/A"
+End Sub
+
 Private Sub RearrestIntake_Click()
     Modal_Rearrest_Intake.Show
     
@@ -319,6 +323,11 @@ Sub Lookup_Button_Click()
             DetentionHeader.Caption = "BENCH WARRANT DETENTION HEARING"
             PJJSC_DetentionDecision.RowSource = "Detention_Decision_Sub1"
             
+            Call disableFrame(PJJSC_Reasons_Frame)
+            Call disableFrame(PJJSC_Outcome_Frame)
+            Call disableFrame(PJJSC_Sup_Frame)
+            Call disableFrame(PJJSC_Cond_Frame)
+            
             Dim priorCourtroom As String
             Dim bucketHead As String
             Dim Num As Integer
@@ -327,16 +336,11 @@ Sub Lookup_Button_Click()
                 If isNotEmptyOrZero(Range(bucketHead & updateRow)) _
                     And Not Range(headerFind("Courtroom", bucketHead) & updateRow).value = Lookup("Courtroom_Name")("PJJSC BW") _
                     And Not Range(headerFind("Courtroom", bucketHead) & updateRow).value = Lookup("Courtroom_Name")("Intake Conf. BW") Then
-                
+
                         PJJSC_NextLocation.value = Lookup("Courtroom_Num")(Range(headerFind("Courtroom", bucketHead) & updateRow).value)
                     Exit For
                 End If
             Next Num
-            
-            Call disableFrame(PJJSC_Reasons_Frame)
-            Call disableFrame(PJJSC_Outcome_Frame)
-            Call disableFrame(PJJSC_Sup_Frame)
-            Call disableFrame(PJJSC_Cond_Frame)
 
             PJJSC_Cancel.Enabled = False
             PJJSC_Submit.Enabled = False
@@ -2750,6 +2754,9 @@ Private Sub PJJSC_Submit_Click()
         DA:=DA.value _
     )
 
+    Call closeCallIn(DateOfHearing.value, updateRow)
+    Call closeIntakeConference(DateOfHearing.value, updateRow)
+    Call closeIntakeDetentions(DateOfHearing.value, updateRow)
     
 
     If Courtroom.value = "PJJSC BW" Then
@@ -2817,6 +2824,7 @@ Private Sub PJJSC_Submit_Click()
         Range(headerFind("Detention Facility", bucketHead) & updateRow).value = Lookup("Detention_Facility_Name")(PJJSC_Facility.value)
         Range(headerFind("Notes", bucketHead) & updateRow).value = PJJSC_Notes.value
         
+        Range(headerFind("Active Courtroom") & updateRow).value = Lookup("Courtroom_Name")(PJJSC_NextLocation.value)
         
         Select Case PJJSC_DetentionDecision.value
             Case "Held"
@@ -2833,7 +2841,7 @@ Private Sub PJJSC_Submit_Click()
             
             Case "Released"
                         
-                Range(headerFind("Active Courtroom") & updateRow).value = Lookup("Courtroom_Name")(priorCourtroom)
+                Range(headerFind("Active Courtroom") & updateRow).value = Lookup("Courtroom_Name")(PJJSC_NextLocation.value)
             
                 If Not PJJSC_Sup1.value = "None" Then
                     Call addSupervision( _
@@ -2917,8 +2925,6 @@ Private Sub PJJSC_Submit_Click()
     End If
     
     If Courtroom.value = "PJJSC" Then
-    
-    
         If PJJSC_Lift_BW.BackColor = selectedColor Then
             Range(hFind("Active B/W?") & updateRow).value = Lookup("Generic_YNOU_Name")("No")
     
@@ -2938,11 +2944,7 @@ Private Sub PJJSC_Submit_Click()
                 End If
             Next i
         End If
-        
-        
-        
-        
-        
+           
        
         detentionHead = headerFind("DETENTION")
     
@@ -2986,18 +2988,47 @@ Private Sub PJJSC_Submit_Click()
     
     
         If PJJSC_DetentionDecision.value = "Held" Then
-            Call addSupervision( _
-                clientRow:=updateRow, _
-                serviceType:="Detention (not respite)", _
-                legalStatus:=Lookup("Legal_Status_Num")(Range(hFind("Legal Status") & updateRow).value), _
-                Courtroom:="PJJSC", _
-                DA:=DA.value, _
-                agency:=PJJSC_Facility.value, _
-                startDate:=DateOfHearing.value, _
-                NextCourtDate:=PJJSC_NextCourtDate.value, _
-                re1:=PJJSC_Reason1.value, _
-                re2:=PJJSC_Reason2.value, _
-                re3:=PJJSC_Reason3.value)
+            Dim sectionHead2 As String, bucketHead2 As String
+            Dim hasOpenDetention As Boolean
+            hasOpenDetention = False
+            
+            sectionHead2 = hFind("Supervision Programs", "AGGREGATES")
+            For Num = 1 To 30
+                bucketHead2 = headerFind("Supervision Ordered #" & Num, sectionHead2)
+                If isNotEmptyOrZero(Range(bucketHead2 & updateRow)) Then
+                    If IsEmpty(Range(headerFind("End Date", bucketHead2) & updateRow)) Then
+                        If Lookup("Supervision_Program_Num")(Range(bucketHead2 & updateRow).value) = "Detention (not respite)" Then
+                           hasOpenDetention = True
+                        End If
+                    End If
+                End If
+            Next Num
+            
+            If Not hasOpenDetention Then
+                Call addSupervision( _
+                    clientRow:=updateRow, _
+                    serviceType:="Detention (not respite)", _
+                    legalStatus:=Lookup("Legal_Status_Num")(Range(hFind("Legal Status") & updateRow).value), _
+                    Courtroom:="PJJSC", _
+                    DA:=DA.value, _
+                    agency:=PJJSC_Facility.value, _
+                    startDate:=DateOfHearing.value, _
+                    NextCourtDate:=PJJSC_NextCourtDate.value, _
+                    re1:=PJJSC_Reason1.value, _
+                    re2:=PJJSC_Reason2.value, _
+                    re3:=PJJSC_Reason3.value)
+            End If
+            
+                
+            If Not PJJSC_NextLocation.value = "PJJSC" Then
+                Call ReferClientTo( _
+                    referralDate:=DateOfHearing.value, _
+                    clientRow:=updateRow, _
+                    fromCR:="PJJSC", _
+                    toCR:=PJJSC_NextLocation.value, _
+                    DA:=DA.value _
+                )
+            End If
         End If
     
         If PJJSC_DetentionDecision.value = "FTA" Then
@@ -3199,10 +3230,7 @@ Private Sub PJJSC_Submit_Click()
     Range(headerFind("Next Court Date") & updateRow) = PJJSC_NextCourtDate.value
 
 
-
-    Call closeCallIn(DateOfHearing.value, updateRow)
-    Call closeIntakeConference(DateOfHearing.value, updateRow)
-    Call closeIntakeDetentions(DateOfHearing.value, updateRow)
+    
 
     Call UnloadAll
     

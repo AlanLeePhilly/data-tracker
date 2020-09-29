@@ -26,12 +26,23 @@ Sub addSupervision( _
     Dim section As String
     Dim i As Integer
     
+    If serviceType = "" Or serviceType = "N/A" Or serviceType = "None" Then
+        MsgBox "debug note: empty supervision bucket avoided"
+        Exit Sub
+    End If
+    
     Call aggFlagSupervision( _
         userRow:=clientRow, _
         Courtroom:=Courtroom, _
         supervisionName:=serviceType)
 
-    If serviceType = "Placement" Then
+    If serviceType = "Placement" _
+    Or serviceType = "Dependent Placement" _
+    Or serviceType = "RTF" _
+    Or serviceType = "Inpatient D&A" _
+    Or serviceType = "Group Home - Delinquent" _
+    Or serviceType = "Group Home - Dependent" _
+    Then
         Call startPlacement( _
             clientRow:=clientRow, _
             DA:=DA, _
@@ -40,6 +51,7 @@ Sub addSupervision( _
             NextCourtDate:=NextCourtDate, _
             agency:=agency, _
             startDate:=startDate, _
+            serviceType:=serviceType, _
             Notes:=Notes, _
             re1:=re1, _
             re2:=re2, _
@@ -171,7 +183,7 @@ Sub dropSupervision( _
     Dim section As String
     Dim i As Integer
 
-    If serviceType = "Placement" Then
+    If serviceType = "Placement" Or serviceType = "Dependent Placement" Or serviceType = "RTF" Or serviceType = "Inpatient D&A" Then
         Call endPlacement( _
             clientRow:=clientRow, _
             serviceType:=serviceType, _
@@ -283,6 +295,11 @@ Sub addCondition( _
     Dim bucketHead As String
     Dim section As String
     Dim i As Integer
+    
+    If condition = "" Or condition = "N/A" Or condition = "None" Then
+        MsgBox "debug note: empty condition bucket avoided"
+        Exit Sub
+    End If
     
     Call aggFlagCondition( _
         userRow:=clientRow, _
@@ -536,7 +553,7 @@ Sub closeIntakeDetentions(ByVal DateOf As String, ByVal userRow As Long)
             If IsEmpty(Range(headerFind("End Date", bucketHead) & userRow)) Then
                 If Lookup("Supervision_Program_Num")(Range(bucketHead & userRow).value) = "Detention (not respite)" Then
                     If Lookup("Courtroom_Num")(Range(headerFind("Courtroom of Order", bucketHead) & userRow).value) = "Intake Conf." _
-                    Or Lookup("Courtroom_Num")(Range(headerFind("Courtroom of Order", bucketHead) & userRow).value) = "Call-In." Then
+                    Or Lookup("Courtroom_Num")(Range(headerFind("Courtroom of Order", bucketHead) & userRow).value) = "Call-In" Then
                         Call dropSupervision( _
                             clientRow:=userRow, _
                             Courtroom:="PJJSC", _

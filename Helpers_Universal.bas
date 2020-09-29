@@ -637,6 +637,7 @@ Sub startPlacement( _
     ByVal NextCourtDate As String, _
     ByVal agency As String, _
     ByVal startDate As String, _
+    ByVal serviceType As String, _
     Optional Notes As String = "", _
     Optional re1 As String, Optional re2 As String, Optional re3 As String _
 )
@@ -703,6 +704,7 @@ Sub startPlacement( _
         Range(headerFind("DA", bucketHead) & clientRow).value = Lookup("DA_Last_Name_Name")(DA)
 
         Range(headerFind("LOS Original Order", bucketHead) & clientRow).value = calcLOS(startDate, NextCourtDate)
+        Range(headerFind("Placement Type", bucketHead) & clientRow).value = Lookup("Supervision_Program_Name")(serviceType)
         Range(headerFind("Residential Agency", bucketHead) & clientRow).value = Lookup("Residential_Supervision_Provider_Name")(agency)
         Range(headerFind("Start Date", bucketHead) & clientRow).value = startDate
         Range(headerFind("Reason #1 for Placement", bucketHead) & clientRow).value = Lookup("Supervision_Referral_Reason_Name")(re1)
@@ -711,7 +713,7 @@ Sub startPlacement( _
         Range(headerFind("Placement Description", bucketHead) & clientRow).value = Notes
     Next i
 
-    Range(headerFind("Active Supervision") & clientRow).value = Lookup("Supervision_Program_Name")("Placement")
+    Range(headerFind("Active Supervision") & clientRow).value = Lookup("Supervision_Program_Name")(serviceType)
     Range(headerFind("Active Supervision Provider") & clientRow).value = Lookup("Residential_Supervision_Provider_Name")(agency)
 
 End Sub

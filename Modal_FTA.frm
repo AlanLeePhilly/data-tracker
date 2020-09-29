@@ -27,7 +27,25 @@ Private Sub Submit_Click()
     ClientUpdateForm.JTC_FTA_Yes.BackColor = selectedColor
     ClientUpdateForm.Standard_FTA_No.BackColor = unselectedColor
     ClientUpdateForm.Standard_FTA_Yes.BackColor = selectedColor
-
+    
+    If BW.value = "Yes" Then
+        ClientUpdateForm.PJJSC_DA_Action.value = "N/A"
+        ClientUpdateForm.PJJSC_DA_Action.Enabled = False
+        
+        ClientUpdateForm.PJJSC_ActionAccepted.value = "N/A"
+        ClientUpdateForm.PJJSC_ActionAccepted.Enabled = False
+        
+        ClientUpdateForm.PJJSC_Facility.value = "N/A"
+        ClientUpdateForm.PJJSC_Facility.Enabled = False
+        
+        ClientUpdateForm.PJJSC_NextLocation.value = "N/A"
+        ClientUpdateForm.PJJSC_NextLocation.Enabled = False
+    Else
+        ClientUpdateForm.PJJSC_DA_Action.Enabled = True
+        ClientUpdateForm.PJJSC_ActionAccepted.Enabled = True
+        ClientUpdateForm.PJJSC_Facility.Enabled = True
+        ClientUpdateForm.PJJSC_NextLocation.Enabled = True
+    End If
 
     Me.Hide
 End Sub
