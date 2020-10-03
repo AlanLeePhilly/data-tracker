@@ -1224,7 +1224,7 @@ Private Sub Submit_Click()
             Case "Override - Hold", "Follow - Hold"
                 Range(headerFind("End Date", tempHead) & emptyRow).value _
                         = InConfDate.value
-                Range(headerFind("LOS in Detention", tempHead) & emptyRow).value _
+                Range(headerFind("LOS in Detention (until Intake Conference)", tempHead) & emptyRow).value _
                         = calcLOS(CallInDate.value, InConfDate.value)
                 Call addSupervision( _
                     clientRow:=emptyRow, _
@@ -1241,7 +1241,7 @@ Private Sub Submit_Click()
                     Notes:="Held at call-in")
 
         End Select
-        Range(headerFind("LOS Until Next Hearing", tempHead) & emptyRow).value _
+        Range(headerFind("LOS Until Intake Conference", tempHead) & emptyRow).value _
                         = calcLOS(CallInDate.value, InConfDate.value)
 
         Range(headerFind("Detention Facility", tempHead) & emptyRow).value _

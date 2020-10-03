@@ -803,7 +803,7 @@ Sub Adult_Submit_Click()
                         Case "Override - Hold", "Follow - Hold"
                             Range(headerFind("End Date", tempHead) & updateRow).value _
                                 = .InConfDate.value
-                            Range(headerFind("LOS in Detention", tempHead) & updateRow).value _
+                            Range(headerFind("LOS in Detention (until Intake Conference)", tempHead) & updateRow).value _
                                 = calcLOS(.CallInDate.value, .InConfDate.value)
                             Call addSupervision( _
                                 clientRow:=updateRow, _
@@ -821,7 +821,7 @@ Sub Adult_Submit_Click()
                                 Notes:="Held at call-in")
 
                     End Select
-                    Range(headerFind("LOS Until Next Hearing", tempHead) & updateRow).value _
+                    Range(headerFind("LOS Until Intake Conference", tempHead) & updateRow).value _
                                 = calcLOS(.CallInDate.value, .InConfDate.value)
 
                     Range(headerFind("Detention Facility", tempHead) & updateRow).value _
@@ -2194,7 +2194,7 @@ Sub Standard_Submit_Click()
         oldCourtHead = headerFind(oldCourtroom)
     End If
 
-    If newCourtHead = "5E" Then
+    If newCourtroom = "5E" Then
         newCourtHead = headerFind("Crossover")
     Else
         newCourtHead = headerFind(newCourtroom)
@@ -2272,6 +2272,14 @@ Sub Standard_Submit_Click()
                     detailed:=.Current_Detailed_Outcome, _
                     Reason1:=.Reason1, Reason2:=.Reason2, Reason3:=.Reason3, Reason4:=.Reason4, Reason5:=.Reason5, _
                     Notes:=.Current_Notes)
+                    
+                Call legalStatusStart( _
+                    clientRow:=updateRow, _
+                    statusType:=.New_Legal_Status, _
+                    Courtroom:=newCourtroom, _
+                    DA:=DA.value, _
+                    startDate:=.New_Start_Date, _
+                    Notes:=.New_Notes)
             End With
         End If
     Else
@@ -2726,15 +2734,17 @@ done:
     Exit Sub
 err:
     
+     Stop   'press F8 twice to see the error point
+    Resume
     Call loadFromCache(2)
     
     MsgBox "Something went wrong. Database has been restored to state prior to submission. " _
       & vbNewLine & vbNewLine & "Message: " & vbNewLine & err.Description _
       & vbNewLine & vbNewLine & "Source: " & vbNewLine & err.Source
     Call UnloadAll
+    
+   
 
-    'Stop   'press F8 twice to see the error point
-    'Resume
 End Sub
 
 
@@ -2760,6 +2770,29 @@ Private Sub PJJSC_Submit_Click()
     
 
     If Courtroom.value = "PJJSC BW" Then
+        
+        'Close out call-in detention
+         For Num = 1 To 30
+            bucketHead = hFind("Supervision Ordered #" & Num, "AGGREGATES")
+            
+            If Range(bucketHead & updateRow) = Lookup("Supervision_Program_Name")("Detention (not respite)") _
+            And isEmptyOrZero(Range(headerFind("End Date", bucketHead) & updateRow)) Then
+                
+                Call dropSupervision( _
+                    clientRow:=updateRow, _
+                    Courtroom:="Intake Conf. BW", _
+                    serviceType:=Lookup("Supervision_Program_Num")(Range(bucketHead & updateRow).value), _
+                    startDate:=Range(headerFind("Start Date", bucketHead) & updateRow).value, _
+                    endDate:=DateOfHearing.value, _
+                    Nature:="Neutral", _
+                    Notes:="Ended at Detention hearing")
+                Exit For
+            End If
+        Next Num
+        
+        
+        
+    
         'Close out FTA
         For Num = 15 To 1 Step -1
             bucketHead = hFind("FTA #" & Num & " Date", "FTA")
@@ -3838,7 +3871,7 @@ Private Sub Intake_Submit_Click()
             Case "Override - Hold", "Follow - Hold"
                 Range(headerFind("End Date", tempHead) & updateRow).value _
                         = InConfDate.value
-                Range(headerFind("LOS in Detention", tempHead) & updateRow).value _
+                Range(headerFind("LOS in Detention (until Intake Conference)", tempHead) & updateRow).value _
                         = calcLOS(CallInDate.value, InConfDate.value)
                 Call addSupervision( _
                     clientRow:=updateRow, _
@@ -3856,7 +3889,7 @@ Private Sub Intake_Submit_Click()
                     Notes:="Held at call-in")
 
         End Select
-        Range(headerFind("LOS Until Next Hearing", tempHead) & updateRow).value _
+        Range(headerFind("LOS Until Intake Conference", tempHead) & updateRow).value _
                         = calcLOS(CallInDate.value, InConfDate.value)
 
         Range(headerFind("Detention Facility", tempHead) & updateRow).value _

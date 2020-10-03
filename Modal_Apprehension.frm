@@ -74,10 +74,6 @@ Private Sub Cancel_Click()
 End Sub
 
 
-
-
-
-
 Private Sub Submit_Click()
     If IntakeDate.value = "" Then
         MsgBox "Intake Date required"
@@ -90,8 +86,6 @@ Private Sub Submit_Click()
     End If
     
 
-    
-    
     Call formSubmitStart(updateRow)
     
     Range(hFind("Next Court Date") & updateRow).value = NextCourtDate.value
@@ -120,8 +114,17 @@ Private Sub Submit_Click()
             = Lookup("Intake_Conference_Outcome_Name")("Roll to Detention Hearing")
         Range(headerFind("Active Courtroom") & updateRow).value _
             = Lookup("Courtroom_Name")("PJJSC BW")
+            
+        Call addSupervision( _
+            clientRow:=updateRow, _
+            serviceType:="Detention (not respite)", _
+            legalStatus:=Lookup("Legal_Status_Num")(Range(hFind("Legal Status") & updateRow).value), _
+            Courtroom:="Intake Conf. BW", _
+            DA:=ClientUpdateForm.DA.value, _
+            agency:="PJJSC", _
+            startDate:=IntakeDate.value, _
+            Notes:="Referred at Bench Warrant Intake Conference ")
     End If
-    
     
     
     If IntakeOutcomeRelease = True Then

@@ -87,10 +87,17 @@ Sub addSupervision( _
         End Select
 
         Select Case section
-            Case "4G", "4E", "6F", "6H", "3E", "5E", "WRAP"
+            Case "4G", "4E", "6F", "6H", "3E", "WRAP"
                 For Num = 1 To 15
                     If isEmptyOrZero(Range(hFind("Supervision Ordered #" & Num, section) & clientRow)) Then
                         bucketHead = hFind("Supervision Ordered #" & Num, section)
+                        Num = 15
+                    End If
+                Next Num
+            Case "5E"
+                For Num = 1 To 15
+                    If isEmptyOrZero(Range(hFind("Supervision Ordered #" & Num, "Crossover") & clientRow)) Then
+                        bucketHead = hFind("Supervision Ordered #" & Num, "Crossover")
                         Num = 15
                     End If
                 Next Num
@@ -225,9 +232,18 @@ Sub dropSupervision( _
         End Select
         
         Select Case section
-            Case "4G", "4E", "6F", "6H", "3E", "5E", "WRAP"
+            Case "4G", "4E", "6F", "6H", "3E", "WRAP"
                 For Num = 1 To 15
                     bucketHead = hFind("Supervision Ordered #" & Num, section)
+                    
+                    If Range(bucketHead & clientRow) = Lookup("Supervision_Program_Name")(serviceType) _
+                    And Range(headerFind("Start Date", bucketHead) & clientRow) = startDate Then
+                        Num = 15
+                    End If
+                Next Num
+            Case "5E"
+                For Num = 1 To 15
+                    bucketHead = hFind("Supervision Ordered #" & Num, "Crossover")
                     
                     If Range(bucketHead & clientRow) = Lookup("Supervision_Program_Name")(serviceType) _
                     And Range(headerFind("Start Date", bucketHead) & clientRow) = startDate Then
@@ -335,10 +351,17 @@ Sub addCondition( _
 
 
         Select Case section
-            Case "4G", "4E", "6F", "6H", "3E", "JTC", "5E", "WRAP"
+            Case "4G", "4E", "6F", "6H", "3E", "JTC", "WRAP"
                 For Num = 1 To 15
                     If isEmptyOrZero(Range(hFind("Condition Ordered #" & Num, section) & clientRow)) Then
                         bucketHead = hFind("Condition Ordered #" & Num, section)
+                        Num = 15
+                    End If
+                Next Num
+            Case "5E"
+                For Num = 1 To 15
+                    If isEmptyOrZero(Range(hFind("Condition Ordered #" & Num, "Crossover") & clientRow)) Then
+                        bucketHead = hFind("Condition Ordered #" & Num, "Crossover")
                         Num = 15
                     End If
                 Next Num
@@ -436,9 +459,18 @@ Sub dropCondition( _
         End Select
         
         Select Case section
-            Case "4G", "4E", "6F", "6H", "3E", "JTC", "5E", "WRAP"
+            Case "4G", "4E", "6F", "6H", "3E", "JTC", "WRAP"
                 For Num = 1 To 15
                     bucketHead = hFind("Condition Ordered #" & Num, section)
+                    
+                    If Range(bucketHead & clientRow) = Lookup("Condition_Name")(condition) _
+                    And Range(headerFind("Start Date", bucketHead) & clientRow) = startDate Then
+                        Num = 15
+                    End If
+                Next Num
+            Case "5E"
+                For Num = 1 To 15
+                    bucketHead = hFind("Condition Ordered #" & Num, "Crossover")
                     
                     If Range(bucketHead & clientRow) = Lookup("Condition_Name")(condition) _
                     And Range(headerFind("Start Date", bucketHead) & clientRow) = startDate Then
@@ -939,8 +971,10 @@ Sub aggFlagSupervision( _
     End Select
     
     Select Case Courtroom
-        Case "4G", "4E", "6F", "6H", "3E", "Crossover", "WRAP", "JTC", "ADULT"
+        Case "4G", "4E", "6F", "6H", "3E", "WRAP", "JTC", "ADULT"
             Call flagYes(Range(hFind(columnName, Courtroom) & userRow))
+        Case "5E"
+            Call flagYes(Range(hFind(columnName, "Crossover") & userRow))
         Case "Adult"
             Call flagYes(Range(hFind(columnName, "ADULT") & userRow))
     End Select

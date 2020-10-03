@@ -31,6 +31,10 @@ Sub legalStatusStart( _
                     If isEmptyOrZero(Range(hFind("Start Date", statusType, "Legal Status", Courtroom) & clientRow)) Then
                         canWriteLocal = True
                     End If
+                Case "5E"
+                    If isEmptyOrZero(Range(hFind("Start Date", statusType, "Legal Status", "Crossover") & clientRow)) Then
+                        canWriteLocal = True
+                    End If
             End Select
     End Select
 
@@ -516,9 +520,15 @@ Sub continuanceStart( _
     Dim bucketHead As String
     Dim tmpHead As String
 
-    section = Courtroom
+    
+    If Courtroom = "5E" Then
+        section = "Crossover"
+    Else
+        section = Courtroom
+    End If
+    
 
-    Call flagYes(Range(hFind("Did Youth Have a Continuance?", "Continuances", Courtroom) & clientRow))
+    Call flagYes(Range(hFind("Did Youth Have a Continuance?", "Continuances", section) & clientRow))
     Call flagYes(Range(hFind("Did Youth Have a Continuance?", "Continuances", "AGGREGATES") & clientRow))
 
 
@@ -796,11 +806,6 @@ Sub closeCallIn(ByVal DateOf As String, ByVal userRow As Long)
         Or Lookup("DRAI_Action_Num")(Range(headerFind("DRAI Action", tempHead) & userRow).value) = "Override - Hold" Then
             If isEmptyOrZero(Range(headerFind("End Date", tempHead) & userRow)) Then
                 Range(headerFind("End Date", tempHead) & userRow).value = DateOf
-            End If
-            If isEmptyOrZero(Range(headerFind("LOS in Detention", tempHead) & userRow)) _
-                And isNotEmptyOrZero(Range(hFind("Date of Call-In", "CALL-IN") & userRow)) Then
-                Range(headerFind("LOS in Detention", tempHead) & userRow).value _
-                    = calcLOS(Range(headerFind("Date of Call-In", tempHead) & userRow).value, Range(headerFind("End Date", tempHead) & userRow).value)
             End If
         End If
     End If
