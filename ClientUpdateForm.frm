@@ -2253,7 +2253,7 @@ Sub Standard_Submit_Click()
                     Call legalStatusStart( _
                         clientRow:=updateRow, _
                         statusType:=.New_Legal_Status, _
-                        Courtroom:=newCourtroom, _
+                        Courtroom:=oldCourtroom, _
                         DA:=DA.value, _
                         startDate:=.New_Start_Date, _
                         Notes:=.New_Notes)
@@ -2272,7 +2272,16 @@ Sub Standard_Submit_Click()
                     detailed:=.Current_Detailed_Outcome, _
                     Reason1:=.Reason1, Reason2:=.Reason2, Reason3:=.Reason3, Reason4:=.Reason4, Reason5:=.Reason5, _
                     Notes:=.Current_Notes)
-                    
+                
+                Call legalStatusStart( _
+                    clientRow:=updateRow, _
+                    statusType:=.New_Legal_Status, _
+                    Courtroom:=oldCourtroom, _
+                    DA:=DA.value, _
+                    startDate:=DateOfHearing.value, _
+                    Notes:=Standard_Notes.value, _
+                    zeroLocal:=True)
+                
                 Call legalStatusStart( _
                     clientRow:=updateRow, _
                     statusType:=.New_Legal_Status, _
@@ -2381,9 +2390,9 @@ Sub Standard_Submit_Click()
         Else
             Call certificationStart( _
                 updateRow, _
-                headerFind("Certification", newCourtHead), _
+                headerFind("Certification", oldCourtHead), _
                 Lookup("Legal_Status_Num")(Range(headerFind("Legal Status") & updateRow).value), _
-                newCourtroom, _
+                oldCourtroom, _
                 DA.value, _
                 Modal_Standard_Certification.Motion_Date.value _
             )
@@ -2391,7 +2400,7 @@ Sub Standard_Submit_Click()
                 updateRow, _
                 hFind("Certification", "COURT PROCEEDINGS", "AGGREGATES"), _
                 Lookup("Legal_Status_Num")(Range(headerFind("Legal Status") & updateRow).value), _
-                newCourtroom, _
+                oldCourtroom, _
                 DA.value, _
                 Modal_Standard_Certification.Motion_Date.value _
             )
@@ -2407,7 +2416,7 @@ Sub Standard_Submit_Click()
                 clientRow:=updateRow, _
                 petitionNum:=Modal_Standard_Admission.PetitionBox.value, _
                 statusType:=Lookup("Legal_Status_Num")(Range(headerFind("Legal Status") & updateRow).value), _
-                Courtroom:=newCourtroom, _
+                Courtroom:=oldCourtroom, _
                 DA:=DA.value, _
                 startDate:=Modal_Standard_Admission.Admission_Date.value, _
                 Result:=Modal_Standard_Admission.Result.value, _
@@ -2428,7 +2437,7 @@ Sub Standard_Submit_Click()
             Call adjudicationStart( _
                 clientRow:=updateRow, _
                 petitionNum:=.PetitionBox.value, _
-                Courtroom:=newCourtroom, _
+                Courtroom:=oldCourtroom, _
                 DA:=DA.value, _
                 startDate:=.Adjudication_Date.value, _
                 Type_of:=.Type_of.value, _
@@ -2452,7 +2461,7 @@ Sub Standard_Submit_Click()
         Call continuanceStart( _
             updateRow, _
             Modal_Standard_Continuance.Status, _
-            newCourtroom, _
+            oldCourtroom, _
             DA.value, _
             DateOfHearing.value, _
             Standard_NextCourtDate.value, _
